@@ -20,6 +20,11 @@ class(alcoholic_beverages).
 class(coffee_and_substitutes).
 class(non_alcoholic_beverages).
 class(water).
+
+% ---------
+% Nutrient
+% ---------
+% Classes
 class(nutrient).
 class(alcoholic).
 class(amino_acidic).
@@ -29,15 +34,60 @@ class(lipids).
 class(minerals).
 class(protein).
 class(vitamin).
+
+% Subclasses
+subclass(nutrient, alcoholic).
+subclass(nutrient, amino_acidic).
+subclass(nutrient, carbs).
+subclass(nutrient, dietary_fiber).
+subclass(nutrient, lipids).
+subclass(nutrient, minerals).
+subclass(nutrient, protein).
+subclass(nutrient, vitamin).
+
+
+% ---------
+% Allergen
+% ---------
 class(allergen).
+
+
+
+% ---------
+% Person
+% ---------
 class(person).
+
+
+
+% ---------
+% Activity
+% ---------
+% Classes
 class(activity).
 class(sports).
 class(inactivity).
 class(walking).
+
+% Subclasses
+subclass(activity, sports).
+subclass(activity, inactivity).
+subclass(activity, walking).
+
+
+% ---------
+% Meal
+% ---------
+% Classes
 class(meal).
 class(main_meals).
 class(snacks).
+
+% Subclasses
+subclass(meal, main_meals).
+subclass(meal, snacks).
+
+
 
 % Subclasses
 subclass(food_beverage, food).
@@ -60,19 +110,8 @@ subclass(beverage, alcoholic_beverages).
 subclass(beverage, coffee_and_substitutes).
 subclass(beverage, non_alcoholic_beverages).
 subclass(beverage, water).
-subclass(nutrient, alcoholic).
-subclass(nutrient, amino_acidic).
-subclass(nutrient, carbs).
-subclass(nutrient, dietary_fiber).
-subclass(nutrient, lipids).
-subclass(nutrient, minerals).
-subclass(nutrient, protein).
-subclass(nutrient, vitamin).
-subclass(activity, sports).
-subclass(activity, inactivity).
-subclass(activity, walking).
-subclass(meal, main_meals).
-subclass(meal, snacks).
+
+
 
 % Relationships
 has(food_beverage, nutrient).
@@ -85,3 +124,17 @@ is_a(food_beverage, meal).
 compute_needed_calories(Person, Calories) :- ... % Placeholder for the actual computation.
 compute_calory_effort(Activity, Time, Calories) :- ... % Placeholder for the actual computation.
 compute_calories_amount(FoodBeverage, Portion, Calories) :- ... % Placeholder for the actual computation.
+
+
+
+% Add attribute predicate
+has_attribute(food_beverage, color).
+
+% Attribute values
+attribute_value(apple, color, red).
+attribute_value(banana, color, yellow).
+attribute_value(carrot, color, orange).
+% ... and so on for other entities
+
+% Predicate to check attribute value
+has_color(Entity, Color) :- attribute_value(Entity, color, Color).

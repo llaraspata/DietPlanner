@@ -4,10 +4,10 @@ fact(0, domain(dietplanner), 1).
 % Food and Beverage
 % ---------
 
-fact(1, entity(dietplanner, foodbeverage), 1).
+fact(1, entity(dietplanner, food_beverage), 1).
 
 % SubClasses
-fact(2, parent(dietplanner, foodbeverage, food), 1).
+fact(2, parent(dietplanner, food_beverage, food), 1).
 fact(3, entity(dietplanner, food), 1).
 fact(4, parent(dietplanner, food, cereal), 1).
 fact(5, entity(dietplanner, cereal), 1).
@@ -15,10 +15,10 @@ fact(6, parent(dietplanner, food, eggs), 1).
 fact(7, entity(dietplanner, eggs), 1).
 fact(8, parent(dietplanner, food, oils), 1).
 fact(9, entity(dietplanner, oils), 1).
-fact(10, parent(dietplanner, food, fishseafood), 1).
-fact(11, entity(dietplanner, fishseafood), 1).
-fact(12, parent(dietplanner, food, fruitsolives), 1).
-fact(13, entity(dietplanner, fruitsolives), 1).
+fact(10, parent(dietplanner, food, fish_seafood), 1).
+fact(11, entity(dietplanner, fish_seafood), 1).
+fact(12, parent(dietplanner, food, fruits_olives), 1).
+fact(13, entity(dietplanner, fruits_olives), 1).
 fact(14, parent(dietplanner, food, meats), 1).
 fact(15, entity(dietplanner, meats), 1).
 fact(16, parent(dietplanner, food, milk), 1).
@@ -40,12 +40,12 @@ fact(31, entity(dietplanner, vegetables), 1).
 fact(32, parent(dietplanner, food, legumes), 1).
 fact(33, entity(dietplanner, legumes), 1).
 
-fact(34, parent(dietplanner, foodbeverage, beverage), 1).
+fact(34, parent(dietplanner, food_beverage, beverage), 1).
 fact(35, entity(dietplanner, beverage), 1).
-fact(36, parent(dietplanner, beverage, alcoholicbeverages), 1).
-fact(37, entity(dietplanner, alcoholicbeverages), 1).
-fact(38, parent(dietplanner, beverage, coffeeenergydrinks), 1).
-fact(39, entity(dietplanner, coffeeenergydrinks), 1).
+fact(36, parent(dietplanner, beverage, alcoholic_beverages), 1).
+fact(37, entity(dietplanner, alcoholic_beverages), 1).
+fact(38, parent(dietplanner, beverage, coffee_energydrinks), 1).
+fact(39, entity(dietplanner, coffee_energydrinks), 1).
 fact(40, parent(dietplanner, beverage, soda), 1).
 fact(41, entity(dietplanner, soda), 1).
 fact(42, parent(dietplanner, beverage, juice), 1).
@@ -54,11 +54,11 @@ fact(44, parent(dietplanner, beverage, water), 1).
 fact(45, entity(dietplanner, water), 1).
 
 % Attributes Food and Beverage
-fact(46, attribute(dietplanner, foodbeverage, name, string), 1).
-fact(47, mandatory(dietplanner, foodbeverage, name), 1).
-fact(48, attribute(dietplanner, foodbeverage, description, string), 1).
-fact(49, attribute(dietplanner, foodbeverage, calories, string), 1).
-fact(50, mandatory(dietplanner, foodbeverage, calories), 1).
+fact(46, attribute(dietplanner, food_beverage, name, string), 1).
+fact(47, mandatory(dietplanner, food_beverage, name), 1).
+fact(48, attribute(dietplanner, food_beverage, description, string), 1).
+fact(49, attribute(dietplanner, food_beverage, calories, string), 1).
+fact(50, mandatory(dietplanner, food_beverage, calories), 1).
 
 % ---------
 % Nutrient

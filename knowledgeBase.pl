@@ -1,3 +1,4 @@
+:- dynamic(fact/3).
 %Domain
 fact(0, domain(dietplanner), 1).
 
@@ -206,15 +207,15 @@ has_color(Entity, Color) :- attribute_value(Entity, color, Color).
 
 % Subclass: food
 % Subclass: cereal
-fact(1000, instance(dietplanner, cereal), 1).
-fact(1001, attribute_value(dietplanner, cereal, name, "Oatmeal"), 1).
-fact(1002, attribute_value(dietplanner, cereal, description, "Whole grain oatmeal, a nutritious breakfast option."), 1).
-fact(1003, attribute_value(dietplanner, cereal, calories, "71"), 1).
+fact(18, cereal_istance(dietplanner, cereal, oatmeal), 1).
+fact(1001, attribute_value(dietplanner, oatmeal, name, "Oatmeal"), 1).
+fact(1002, attribute_value(dietplanner, oatmeal, description, "Whole grain oatmeal, a nutritious breakfast option."), 1).
+fact(1003, attribute_value(dietplanner, oatmeal, calories, 71), 1).
 
-fact(1004, instance(dietplanner, cereal), 1).
-fact(1005, attribute_value(dietplanner, cereal, name, "Corn Flakes"), 1).
-fact(1006, attribute_value(dietplanner, cereal, description, "Crispy and light cereal made from corn."), 1).
-fact(1007, attribute_value(dietplanner, cereal, calories, "101"), 1).
+fact(18, cereal_istance(dietplanner, cereal, corn_flakes), 1).
+fact(1005, attribute_value(dietplanner, corn_flakes, name, "Corn Flakes"), 1).
+fact(1006, attribute_value(dietplanner, corn_flakes, description, "Crispy and light cereal made from corn."), 1).
+fact(1007, attribute_value(dietplanner, corn_flakes, calories, 101), 1).
 
 fact(1008, instance(dietplanner, cereal), 1).
 fact(1009, attribute_value(dietplanner, cereal, name, "Rice Krispies"), 1).
@@ -1112,6 +1113,6 @@ fact(244, attribute_value(dietplanner, snacks, description, "Fresh apple slices 
 % Function to compute the total calories about a list of foods 
 compute_calories_amount([], 0).
 compute_calories_amount([Food|Rest], TotalCalories) :-
-    attribute_value(dietplanner, Food, calories, CaloriesFood)
+    fact(_, attribute_value(dietplanner, Food, calories, CaloriesFood), _),
     compute_calories_amount(Rest, RestCalories),
     TotalCalories is RestCalories + CaloriesFood.

@@ -150,22 +150,19 @@ fact(101, attribute(dietplanner, activity, calory_effort, integer), 1).
 fact(102, mandatory(dietplanner, activity, calory_effort), 1).
 
 % ---------
-% Meal
+% Dish
 % ---------
 % Classes
-fact(103, entity(dietplanner, meal), 1).
-fact(104, entity(dietplanner, main_meals), 1).
-fact(105, entity(dietplanner, snacks), 1).
-
-% Subclasses
-fact(106, parent(dietplanner, meal, main_meals), 1).
-fact(107, parent(dietplanner, meal, snacks), 1).
+fact(103, entity(dietplanner, dish), 1).
 
 % Attributes 
-fact(108, attribute(dietplanner, meal, name, string), 1).
-fact(109, mandatory(dietplanner, meal, name), 1).
-fact(110, attribute(dietplanner, meal, description, string), 1).
-fact(111, mandatory(dietplanner, meal, description), 1).
+fact(104, attribute(dietplanner, dish, name, string), 1).
+fact(105, mandatory(dietplanner, dish, name), 1).
+fact(116, attribute(dietplanner, dish, description, string), 1).
+fact(107, mandatory(dietplanner, dish, description), 1).
+fact(108, attribute(dietplanner, dish, type, select), 1).
+fact(109, values(dietplanner, dish, type, [main_meal, snak]), 1).
+
 
 
 %------------------------------------------------------------------------------------------------------------------
@@ -1049,67 +1046,82 @@ attribute_value(dietplanner, urban_walking, calory_effort, 250).
 
 % ---------
 % Class: meal
-instance(dietplanner, meal).
-attribute_value(dietplanner, meal, name, "Breakfast").
-attribute_value(dietplanner, meal, description, "Start your day with a healthy breakfast.").
+% Instances of Dish
+dish_instance(dietplanner, dish, grilled_chicken_salad).
+attribute_value(dietplanner, grilled_chicken_salad, name, "Grilled Chicken Salad").
+attribute_value(dietplanner, grilled_chicken_salad, description, "Healthy salad with grilled chicken, mixed greens, and veggies.").
+attribute_value(dietplanner, grilled_chicken_salad, type, main_meal).
 
-instance(dietplanner, meal).
-attribute_value(dietplanner, meal, name, "Lunch").
-attribute_value(dietplanner, meal, description, "A balanced lunch to keep you energized.").
+dish_instance(dietplanner, dish, hummus_and_veggie_platter).
+attribute_value(dietplanner, hummus_and_veggie_platter, name, "Hummus and Veggie Platter").
+attribute_value(dietplanner, hummus_and_veggie_platter, description, "Appetizer platter with hummus, carrot sticks, cucumber slices, and pita bread.").
+attribute_value(dietplanner, hummus_and_veggie_platter, type, snak).
 
-instance(dietplanner, meal).
-attribute_value(dietplanner, meal, name, "Dinner").
-attribute_value(dietplanner, meal, description, "A light and nutritious dinner option.").
+dish_instance(dietplanner, dish, spaghetti_bolognese).
+attribute_value(dietplanner, spaghetti_bolognese, name, "Spaghetti Bolognese").
+attribute_value(dietplanner, spaghetti_bolognese, description, "Classic Italian dish with spaghetti pasta and savory Bolognese sauce.").
+attribute_value(dietplanner, spaghetti_bolognese, type, main_meal).
 
-instance(dietplanner, meal).
-attribute_value(dietplanner, meal, name, "Snack 1").
-attribute_value(dietplanner, meal, description, "A quick and healthy snack.").
+dish_instance(dietplanner, dish, fruit_salad).
+attribute_value(dietplanner, fruit_salad, name, "Fruit Salad").
+attribute_value(dietplanner, fruit_salad, description, "Refreshing salad with a mix of fresh seasonal fruits.").
+attribute_value(dietplanner, fruit_salad, type, snak).
 
-instance(dietplanner, meal).
-attribute_value(dietplanner, meal, name, "Snack 2").
-attribute_value(dietplanner, meal, description, "Another tasty snack to curb your hunger.").
+dish_instance(dietplanner, dish, grilled_salmon_with_quinoa).
+attribute_value(dietplanner, grilled_salmon_with_quinoa, name, "Grilled Salmon with Quinoa").
+attribute_value(dietplanner, grilled_salmon_with_quinoa, description, "Grilled salmon fillet served with quinoa and steamed vegetables.").
+attribute_value(dietplanner, grilled_salmon_with_quinoa, type, main_meal).
 
-% Subclass: main_meals
-instance(dietplanner, main_meals).
-attribute_value(dietplanner, main_meals, name, "Chicken Stir-Fry").
-attribute_value(dietplanner, main_meals, description, "A flavorful stir-fry with lean chicken and vegetables.").
+dish_instance(dietplanner, dish, greek_yogurt_parfait).
+attribute_value(dietplanner, greek_yogurt_parfait, name, "Greek Yogurt Parfait").
+attribute_value(dietplanner, greek_yogurt_parfait, description, "Healthy dessert parfait with Greek yogurt, berries, and granola.").
+attribute_value(dietplanner, greek_yogurt_parfait, type, snak).
 
-instance(dietplanner, main_meals).
-attribute_value(dietplanner, main_meals, name, "Vegetable Curry").
-attribute_value(dietplanner, main_meals, description, "A hearty curry loaded with assorted vegetables.").
+dish_instance(dietplanner, dish, vegan_lentil_curry).
+attribute_value(dietplanner, vegan_lentil_curry, name, "Vegan Lentil Curry").
+attribute_value(dietplanner, vegan_lentil_curry, description, "Flavorful curry made with lentils, vegetables, and aromatic spices.").
+attribute_value(dietplanner, vegan_lentil_curry, type, main_meal).
 
-instance(dietplanner, main_meals).
-attribute_value(dietplanner, main_meals, name, "Grilled Salmon").
-attribute_value(dietplanner, main_meals, description, "Freshly grilled salmon fillet with a citrus glaze.").
+dish_instance(dietplanner, dish, trail_mix).
+attribute_value(dietplanner, trail_mix, name, "Trail Mix").
+attribute_value(dietplanner, trail_mix, description, "Energy-boosting snack mix with nuts, dried fruits, and seeds.").
+attribute_value(dietplanner, trail_mix, type, snak).
 
-instance(dietplanner, main_meals).
-attribute_value(dietplanner, main_meals, name, "Pasta Primavera").
-attribute_value(dietplanner, main_meals, description, "Pasta tossed with seasonal vegetables in a light sauce.").
+dish_instance(dietplanner, dish, caesar_salad).
+attribute_value(dietplanner, caesar_salad, name, "Caesar Salad").
+attribute_value(dietplanner, caesar_salad, description, "Classic salad with Romaine lettuce, croutons, Parmesan cheese, and Caesar dressing.").
+attribute_value(dietplanner, caesar_salad, type, main_meal).
 
-instance(dietplanner, main_meals).
-attribute_value(dietplanner, main_meals, name, "Quinoa Bowl").
-attribute_value(dietplanner, main_meals, description, "A nutritious bowl featuring quinoa, greens, and assorted toppings.").
+dish_instance(dietplanner, dish, veggie_spring_rolls).
+attribute_value(dietplanner, veggie_spring_rolls, name, "Veggie Spring Rolls").
+attribute_value(dietplanner, veggie_spring_rolls, description, "Light and crunchy spring rolls filled with fresh vegetables.").
+attribute_value(dietplanner, veggie_spring_rolls, type, snak).
 
-% Subclass: snacks
-instance(dietplanner, snacks).
-attribute_value(dietplanner, snacks, name, "Greek Yogurt Parfait").
-attribute_value(dietplanner, snacks, description, "Layers of Greek yogurt, granola, and fresh berries.").
+dish_instance(dietplanner, dish, grilled_steak_with_roasted_potatoes).
+attribute_value(dietplanner, grilled_steak_with_roasted_potatoes, name, "Grilled Steak with Roasted Potatoes").
+attribute_value(dietplanner, grilled_steak_with_roasted_potatoes, description, "Juicy grilled steak served with roasted potatoes and a side salad.").
+attribute_value(dietplanner, grilled_steak_with_roasted_potatoes, type, main_meal).
 
-instance(dietplanner, snacks).
-attribute_value(dietplanner, snacks, name, "Hummus and Veggies").
-attribute_value(dietplanner, snacks, description, "Crunchy vegetables paired with creamy hummus.").
+dish_instance(dietplanner, dish, smoothie_bowl).
+attribute_value(dietplanner, smoothie_bowl, name, "Smoothie Bowl").
+attribute_value(dietplanner, smoothie_bowl, description, "Thick and creamy smoothie bowl topped with fresh fruits, nuts, and seeds.").
+attribute_value(dietplanner, smoothie_bowl, type, snak).
 
-instance(dietplanner, snacks).
-attribute_value(dietplanner, snacks, name, "Trail Mix").
-attribute_value(dietplanner, snacks, description, "A mix of nuts, dried fruits, and chocolate chips for a quick snack.").
+dish_instance(dietplanner, dish, mushroom_risotto).
+attribute_value(dietplanner, mushroom_risotto, name, "Mushroom Risotto").
+attribute_value(dietplanner, mushroom_risotto, description, "Creamy risotto made with Arborio rice and sautéed mushrooms.").
+attribute_value(dietplanner, mushroom_risotto, type, main_meal).
 
-instance(dietplanner, snacks).
-attribute_value(dietplanner, snacks, name, "Rice Cakes with Peanut Butter").
-attribute_value(dietplanner, snacks, description, "Light rice cakes spread with peanut butter.").
+dish_instance(dietplanner, dish, popcorn).
+attribute_value(dietplanner, popcorn, name, "Popcorn").
+attribute_value(dietplanner, popcorn, description, "Light and crunchy popcorn, a great movie-time snack.").
+attribute_value(dietplanner, popcorn, type, snak).
 
-instance(dietplanner, snacks).
-attribute_value(dietplanner, snacks, name, "Apple Slices with Almond Butter").
-attribute_value(dietplanner, snacks, description, "Fresh apple slices served with almond butter.").
+dish_instance(dietplanner, dish, chicken_stir_fry).
+attribute_value(dietplanner, chicken_stir_fry, name, "Chicken Stir-Fry").
+attribute_value(dietplanner, chicken_stir_fry, description, "Quick and healthy chicken stir-fry with colorful vegetables.").
+attribute_value(dietplanner, chicken_stir_fry, type, main_meal).
+
 
 % Function to compute the total calories about a list of foods 
 compute_calories_amount([], 0).

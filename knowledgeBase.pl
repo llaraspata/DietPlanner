@@ -557,495 +557,495 @@ attribute_value(dietplanner, donut, calories, 452).
 
 % Subclass: beverage
 % Subclass: alcoholic_beverages
-instance(dietplanner, alcoholic_beverages).
-attribute_value(dietplanner, alcoholic_beverages, name, "Red Wine").
-attribute_value(dietplanner, alcoholic_beverages, description, "Classic red wine for a delightful evening.").
-attribute_value(dietplanner, alcoholic_beverages, calories, 85).
+alcoholic_beverages_instance(dietplanner, alcoholic_beverages, red_wine).
+attribute_value(dietplanner, red_wine, name, "Red Wine").
+attribute_value(dietplanner, red_wine, description, "Classic red wine for a delightful evening.").
+attribute_value(dietplanner, red_wine, calories, 85).
 
-instance(dietplanner, alcoholic_beverages).
-attribute_value(dietplanner, alcoholic_beverages, name, "Beer").
-attribute_value(dietplanner, alcoholic_beverages, description, "Classic beer for a casual drink.").
-attribute_value(dietplanner, alcoholic_beverages, calories, 43).
+alcoholic_beverages_instance(dietplanner, alcoholic_beverages, beer).
+attribute_value(dietplanner, beer, name, "Beer").
+attribute_value(dietplanner, beer, description, "Classic beer for a casual drink.").
+attribute_value(dietplanner, beer, calories, 43).
 
-instance(dietplanner, alcoholic_beverages).
-attribute_value(dietplanner, alcoholic_beverages, name, "Vodka").
-attribute_value(dietplanner, alcoholic_beverages, description, "Clear and versatile vodka for mixing or sipping.").
-attribute_value(dietplanner, alcoholic_beverages, calories, 96).
+alcoholic_beverages_instance(dietplanner, alcoholic_beverages, vodka).
+attribute_value(dietplanner, vodka, name, "Vodka").
+attribute_value(dietplanner, vodka, description, "Clear and versatile vodka for mixing or sipping.").
+attribute_value(dietplanner, vodka, calories, 96).
 
-instance(dietplanner, alcoholic_beverages).
-attribute_value(dietplanner, alcoholic_beverages, name, "Rum").
-attribute_value(dietplanner, alcoholic_beverages, description, "Smooth and flavorful rum for cocktails.").
-attribute_value(dietplanner, alcoholic_beverages, calories, 231).
+alcoholic_beverages_instance(dietplanner, alcoholic_beverages, rum).
+attribute_value(dietplanner, rum, name, "Rum").
+attribute_value(dietplanner, rum, description, "Smooth and flavorful rum for cocktails.").
+attribute_value(dietplanner, rum, calories, 231).
 
-instance(dietplanner, alcoholic_beverages).
-attribute_value(dietplanner, alcoholic_beverages, name, "Gin").
-attribute_value(dietplanner, alcoholic_beverages, description, "Juniper-infused gin for classic cocktails.").
-attribute_value(dietplanner, alcoholic_beverages, calories, 263).
+alcoholic_beverages_instance(dietplanner, alcoholic_beverages, gin).
+attribute_value(dietplanner, gin, name, "Gin").
+attribute_value(dietplanner, gin, description, "Juniper-infused gin for classic cocktails.").
+attribute_value(dietplanner, gin, calories, 263).
 
-instance(dietplanner, alcoholic_beverages).
-attribute_value(dietplanner, alcoholic_beverages, name, "Tequila").
-attribute_value(dietplanner, alcoholic_beverages, description, "Agave-based tequila for margaritas and more.").
-attribute_value(dietplanner, alcoholic_beverages, calories, 96).
+alcoholic_beverages_instance(dietplanner, alcoholic_beverages, tequila).
+attribute_value(dietplanner, tequila, name, "Tequila").
+attribute_value(dietplanner, tequila, description, "Agave-based tequila for margaritas and more.").
+attribute_value(dietplanner, tequila, calories, 96).
 
 % Subclass: coffee_energydrinks
-instance(dietplanner, coffee_energydrinks).
-attribute_value(dietplanner, coffee_energydrinks, name, "Espresso").
-attribute_value(dietplanner, coffee_energydrinks, description, "Strong and invigorating espresso shot.").
-attribute_value(dietplanner, coffee_energydrinks, calories, 2).
+coffee_energydrinks_instance(dietplanner, coffee_energydrinks, espresso).
+attribute_value(dietplanner, espresso, name, "Espresso").
+attribute_value(dietplanner, espresso, description, "Strong and invigorating espresso shot.").
+attribute_value(dietplanner, espresso, calories, 2).
 
-instance(dietplanner, coffee_energydrinks).
-attribute_value(dietplanner, coffee_energydrinks, name, "Cold Brew Coffee").
-attribute_value(dietplanner, coffee_energydrinks, description, "Smooth and cold brewed coffee for a refreshing kick.").
-attribute_value(dietplanner, coffee_energydrinks, calories, 3).
+coffee_energydrinks_instance(dietplanner, coffee_energydrinks, cold_brew_coffee).
+attribute_value(dietplanner, cold_brew_coffee, name, "Cold Brew Coffee").
+attribute_value(dietplanner, cold_brew_coffee, description, "Smooth and cold brewed coffee for a refreshing kick.").
+attribute_value(dietplanner, cold_brew_coffee, calories, 3).
 
-instance(dietplanner, coffee_energydrinks).
-attribute_value(dietplanner, coffee_energydrinks, name, "Energy Drink").
-attribute_value(dietplanner, coffee_energydrinks, description, "High-energy drink with caffeine for an energy boost.").
-attribute_value(dietplanner, coffee_energydrinks, calories, 45).
+coffee_energydrinks_instance(dietplanner, coffee_energydrinks, energy_drink).
+attribute_value(dietplanner, energy_drink, name, "Energy Drink").
+attribute_value(dietplanner, energy_drink, description, "High-energy drink with caffeine for an energy boost.").
+attribute_value(dietplanner, energy_drink, calories, 45).
 
-instance(dietplanner, coffee_energydrinks).
-attribute_value(dietplanner, coffee_energydrinks, name, "Iced Latte").
-attribute_value(dietplanner, coffee_energydrinks, description, "Chilled latte with espresso and milk for a creamy taste.").
-attribute_value(dietplanner, coffee_energydrinks, calories, 29).
+coffee_energydrinks_instance(dietplanner, coffee_energydrinks, iced_latte).
+attribute_value(dietplanner, iced_latte, name, "Iced Latte").
+attribute_value(dietplanner, iced_latte, description, "Chilled latte with espresso and milk for a creamy taste.").
+attribute_value(dietplanner, iced_latte, calories, 29).
 
-instance(dietplanner, coffee_energydrinks).
-attribute_value(dietplanner, coffee_energydrinks, name, "Black Coffee").
-attribute_value(dietplanner, coffee_energydrinks, description, "Strong and bold black coffee for a wake-up call.").
-attribute_value(dietplanner, coffee_energydrinks, calories, 2).
+coffee_energydrinks_instance(dietplanner, coffee_energydrinks, black_coffee).
+attribute_value(dietplanner, black_coffee, name, "Black Coffee").
+attribute_value(dietplanner, black_coffee, description, "Strong and bold black coffee for a wake-up call.").
+attribute_value(dietplanner, black_coffee, calories, 2).
 
-instance(dietplanner, coffee_energydrinks).
-attribute_value(dietplanner, coffee_energydrinks, name, "Mocha Frappuccino").
-attribute_value(dietplanner, coffee_energydrinks, description, "Creamy and chocolaty mocha frappuccino for a delightful treat.").
-attribute_value(dietplanner, coffee_energydrinks, calories, 54).
+coffee_energydrinks_instance(dietplanner, coffee_energydrinks, mocha_frappuccino).
+attribute_value(dietplanner, mocha_frappuccino, name, "Mocha Frappuccino").
+attribute_value(dietplanner, mocha_frappuccino, description, "Creamy and chocolaty mocha frappuccino for a delightful treat.").
+attribute_value(dietplanner, mocha_frappuccino, calories, 54).
 
 % Subclass: soda
-instance(dietplanner, soda).
-attribute_value(dietplanner, soda, name, "Cola").
-attribute_value(dietplanner, soda, description, "Classic cola soda for a refreshing taste.").
-attribute_value(dietplanner, soda, calories, 42).
+soda_instance(dietplanner, soda, cola).
+attribute_value(dietplanner, cola, name, "Cola").
+attribute_value(dietplanner, cola, description, "Classic cola soda for a refreshing taste.").
+attribute_value(dietplanner, cola, calories, 42).
 
-instance(dietplanner, soda).
-attribute_value(dietplanner, soda, name, "Lemon Lime Soda").
-attribute_value(dietplanner, soda, description, "Citrusy lemon-lime soda for a zesty flavor.").
-attribute_value(dietplanner, soda, calories, 41).
+soda_instance(dietplanner, soda, lemon_lime).
+attribute_value(dietplanner, lemon_lime, name, "Lemon Lime Soda").
+attribute_value(dietplanner, lemon_lime, description, "Citrusy lemon-lime soda for a zesty flavor.").
+attribute_value(dietplanner, lemon_lime, calories, 41).
 
-instance(dietplanner, soda).
-attribute_value(dietplanner, soda, name, "Cola Light").
-attribute_value(dietplanner, soda, description, "Light version of classic cola for reduced calories.").
-attribute_value(dietplanner, soda, calories, 0).
+soda_instance(dietplanner, soda, cola_light).
+attribute_value(dietplanner, cola_light, name, "Cola Light").
+attribute_value(dietplanner, cola_light, description, "Light version of classic cola for reduced calories.").
+attribute_value(dietplanner, cola_light, calories, 0).
 
-instance(dietplanner, soda).
-attribute_value(dietplanner, soda, name, "Ginger Ale").
-attribute_value(dietplanner, soda, description, "Bubbly ginger ale with a hint of spice.").
-attribute_value(dietplanner, soda, calories, 37).
+soda_instance(dietplanner, soda, ginger_ale).
+attribute_value(dietplanner, ginger_ale, name, "Ginger Ale").
+attribute_value(dietplanner, ginger_ale, description, "Bubbly ginger ale with a hint of spice.").
+attribute_value(dietplanner, ginger_ale, calories, 37).
 
-instance(dietplanner, soda).
-attribute_value(dietplanner, soda, name, "Orange Soda").
-attribute_value(dietplanner, soda, description, "Fizzy orange soda for a burst of citrus.").
-attribute_value(dietplanner, soda, calories, 42).
+soda_instance(dietplanner, soda, orange_soda).
+attribute_value(dietplanner, orange_soda, name, "Orange Soda").
+attribute_value(dietplanner, orange_soda, description, "Fizzy orange soda for a burst of citrus.").
+attribute_value(dietplanner, orange_soda, calories, 42).
 
-instance(dietplanner, soda).
-attribute_value(dietplanner, soda, name, "Root Beer").
-attribute_value(dietplanner, soda, description, "Classic root beer with a rich and creamy taste.").
-attribute_value(dietplanner, soda, calories, 46).
+soda_instance(dietplanner, soda, root_beer).
+attribute_value(dietplanner, root_beer, name, "Root Beer").
+attribute_value(dietplanner, root_beer, description, "Classic root beer with a rich and creamy taste.").
+attribute_value(dietplanner, root_beer, calories, 46).
 
 % Subclass: juice
-instance(dietplanner, juice).
-attribute_value(dietplanner, juice, name, "Orange Juice").
-attribute_value(dietplanner, juice, description, "Freshly squeezed orange juice for a vitamin C boost.").
-attribute_value(dietplanner, juice, calories, 45).
+juice_instance(dietplanner, juice, orange_juice).
+attribute_value(dietplanner, orange_juice, name, "Orange Juice").
+attribute_value(dietplanner, orange_juice, description, "Freshly squeezed orange juice for a vitamin C boost.").
+attribute_value(dietplanner, orange_juice, calories, 45).
 
-instance(dietplanner, juice).
-attribute_value(dietplanner, juice, name, "Grapefruit Juice").
-attribute_value(dietplanner, juice, description, "Tangy and invigorating grapefruit juice.").
-attribute_value(dietplanner, juice, calories, 39).
+juice_instance(dietplanner, juice, grapefruit_juice).
+attribute_value(dietplanner, grapefruit_juice, name, "Grapefruit Juice").
+attribute_value(dietplanner, grapefruit_juice, description, "Tangy and invigorating grapefruit juice.").
+attribute_value(dietplanner, grapefruit_juice, calories, 39).
 
-instance(dietplanner, juice).
-attribute_value(dietplanner, juice, name, "Pineapple Juice").
-attribute_value(dietplanner, juice, description, "Sweet and tropical pineapple juice.").
-attribute_value(dietplanner, juice, calories, 50).
+juice_instance(dietplanner, juice, pineapple_juice).
+attribute_value(dietplanner, pineapple_juice, name, "Pineapple Juice").
+attribute_value(dietplanner, pineapple_juice, description, "Sweet and tropical pineapple juice.").
+attribute_value(dietplanner, pineapple_juice, calories, 50).
 
-instance(dietplanner, juice).
-attribute_value(dietplanner, juice, name, "Cranberry Juice").
-attribute_value(dietplanner, juice, description, "Tart and antioxidant-rich cranberry juice.").
-attribute_value(dietplanner, juice, calories, 46).
+juice_instance(dietplanner, juice, cranberry_juice).
+attribute_value(dietplanner, cranberry_juice, name, "Cranberry Juice").
+attribute_value(dietplanner, cranberry_juice, description, "Tart and antioxidant-rich cranberry juice.").
+attribute_value(dietplanner, cranberry_juice, calories, 46).
 
-instance(dietplanner, juice).
-attribute_value(dietplanner, juice, name, "Mango Juice").
-attribute_value(dietplanner, juice, description, "Smooth and luscious mango juice.").
-attribute_value(dietplanner, juice, calories, 54).
+juice_instance(dietplanner, juice, mango_juice).
+attribute_value(dietplanner, mango_juice, name, "Mango Juice").
+attribute_value(dietplanner, mango_juice, description, "Smooth and luscious mango juice.").
+attribute_value(dietplanner, mango_juice, calories, 54).
 
-instance(dietplanner, juice).
-attribute_value(dietplanner, juice, name, "Watermelon Juice").
-attribute_value(dietplanner, juice, description, "Refreshing watermelon juice for hydration.").
-attribute_value(dietplanner, juice, calories, 30).
+juice_instance(dietplanner, juice, watermelon_juice).
+attribute_value(dietplanner, watermelon_juice, name, "Watermelon Juice").
+attribute_value(dietplanner, watermelon_juice, description, "Refreshing watermelon juice for hydration.").
+attribute_value(dietplanner, watermelon_juice, calories, 30).
 
 % Subclass: water
-instance(dietplanner, water).
-attribute_value(dietplanner, water, name, "Mineral Water").
-attribute_value(dietplanner, water, description, "Refreshing mineral water for hydration.").
-attribute_value(dietplanner, water, calories, 0).
+water_instance(dietplanner, water, mineral_water).
+attribute_value(dietplanner, mineral_water, name, "Mineral Water").
+attribute_value(dietplanner, mineral_water, description, "Refreshing mineral water for hydration.").
+attribute_value(dietplanner, mineral_water, calories, 0).
 
-instance(dietplanner, water).
-attribute_value(dietplanner, water, name, "Sparkling Water").
-attribute_value(dietplanner, water, description, "Bubbly sparkling water for a refreshing effervescence.").
-attribute_value(dietplanner, water, calories, 0).
+water_instance(dietplanner, water, sparkling_water).
+attribute_value(dietplanner, sparkling_water, name, "Sparkling Water").
+attribute_value(dietplanner, sparkling_water, description, "Bubbly sparkling water for a refreshing effervescence.").
+attribute_value(dietplanner, sparkling_water, calories, 0).
 
-instance(dietplanner, water).
-attribute_value(dietplanner, water, name, "Spring Water").
-attribute_value(dietplanner, water, description, "Fresh and pure spring water sourced from natural springs.").
-attribute_value(dietplanner, water, calories, 0).
+water_instance(dietplanner, water, spring_water).
+attribute_value(dietplanner, spring_water, name, "Spring Water").
+attribute_value(dietplanner, spring_water, description, "Fresh and pure spring water sourced from natural springs.").
+attribute_value(dietplanner, spring_water, calories, 0).
 
-instance(dietplanner, water).
-attribute_value(dietplanner, water, name, "Mineral Water with Lemon").
-attribute_value(dietplanner, water, description, "Mineral water infused with zesty lemon flavor.").
-attribute_value(dietplanner, water, calories, 2).
+water_instance(dietplanner, water, lemon_mineral_water).
+attribute_value(dietplanner, lemon_mineral_water, name, "Mineral Water with Lemon").
+attribute_value(dietplanner, lemon_mineral_water, description, "Mineral water infused with zesty lemon flavor.").
+attribute_value(dietplanner, lemon_mineral_water, calories, 2).
 
-instance(dietplanner, water).
-attribute_value(dietplanner, water, name, "Coconut Water").
-attribute_value(dietplanner, water, description, "Natural and hydrating coconut water.").
-attribute_value(dietplanner, water, calories, 19).
+water_instance(dietplanner, water, coconut_water).
+attribute_value(dietplanner, coconut_water, name, "Coconut Water").
+attribute_value(dietplanner, coconut_water, description, "Natural and hydrating coconut water.").
+attribute_value(dietplanner, coconut_water, calories, 19).
 
-instance(dietplanner, water).
-attribute_value(dietplanner, water, name, "Infused Water with Cucumber and Mint").
-attribute_value(dietplanner, water, description, "Refreshing infused water with cool cucumber and fresh mint.").
-attribute_value(dietplanner, water, calories, 0).
-
-
+water_instance(dietplanner, water, cucumber_mint_infused_water).
+attribute_value(dietplanner, cucumber_mint_infused_water, name, "Infused Water with Cucumber and Mint").
+attribute_value(dietplanner, cucumber_mint_infused_water, description, "Refreshing infused water with cool cucumber and fresh mint.").
+attribute_value(dietplanner, cucumber_mint_infused_water, calories, 0).
 
 % ---------
 % Class: nutrient
 
 % Subclass: alcoholic
-instance(dietplanner, alcoholic).
-attribute_value(dietplanner, alcoholic, name, "Ethanol").
-attribute_value(dietplanner, alcoholic, description, "The psychoactive ingredient in alcoholic beverages.").
+alcoholic_instance(dietplanner, alcoholic, ethanol).
+attribute_value(dietplanner, ethanol, name, "Ethanol").
+attribute_value(dietplanner, ethanol, description, "The psychoactive ingredient in alcoholic beverages.").
 
 % Subclass: amino_acidic
-instance(dietplanner, amino_acidic).
-attribute_value(dietplanner, amino_acidic, name, "Tryptophan").
-attribute_value(dietplanner, amino_acidic, description, "Essential amino acid important for mood regulation and serotonin production.").
+amino_acidic_instance(dietplanner, amino_acidic, tryptophan).
+attribute_value(dietplanner, tryptophan, name, "Tryptophan").
+attribute_value(dietplanner, tryptophan, description, "Essential amino acid important for mood regulation and serotonin production.").
 
-instance(dietplanner, amino_acidic).
-attribute_value(dietplanner, amino_acidic, name, "Leucine").
-attribute_value(dietplanner, amino_acidic, description, "Essential amino acid vital for muscle growth and repair.").
+amino_acidic_instance(dietplanner, amino_acidic, leucine).
+attribute_value(dietplanner, leucine, name, "Leucine").
+attribute_value(dietplanner, leucine, description, "Essential amino acid vital for muscle growth and repair.").
 
-instance(dietplanner, amino_acidic).
-attribute_value(dietplanner, amino_acidic, name, "Valine").
-attribute_value(dietplanner, amino_acidic, description, "Essential amino acid involved in energy production and tissue repair.").
+amino_acidic_instance(dietplanner, amino_acidic, valine).
+attribute_value(dietplanner, valine, name, "Valine").
+attribute_value(dietplanner, valine, description, "Essential amino acid involved in energy production and tissue repair.").
 
-instance(dietplanner, amino_acidic).
-attribute_value(dietplanner, amino_acidic, name, "Methionine").
-attribute_value(dietplanner, amino_acidic, description, "Essential amino acid important for metabolism and detoxification.").
+amino_acidic_instance(dietplanner, amino_acidic, methionine).
+attribute_value(dietplanner, methionine, name, "Methionine").
+attribute_value(dietplanner, methionine, description, "Essential amino acid important for metabolism and detoxification.").
 
-instance(dietplanner, amino_acidic).
-attribute_value(dietplanner, amino_acidic, name, "Phenylalanine").
-attribute_value(dietplanner, amino_acidic, description, "Essential amino acid precursor to various neurotransmitters and hormones.").
+amino_acidic_instance(dietplanner, amino_acidic, phenylalanine).
+attribute_value(dietplanner, phenylalanine, name, "Phenylalanine").
+attribute_value(dietplanner, phenylalanine, description, "Essential amino acid precursor to various neurotransmitters and hormones.").
 
 % Subclass: dietary_fiber
-instance(dietplanner, dietary_fiber).
-attribute_value(dietplanner, dietary_fiber, name, "Soluble Fiber").
-attribute_value(dietplanner, dietary_fiber, description, "Fiber that dissolves in water and forms a gel-like substance.").
+dietary_fiber_instance(dietplanner, dietary_fiber, soluble_fiber).
+attribute_value(dietplanner, soluble_fiber, name, "Soluble Fiber").
+attribute_value(dietplanner, soluble_fiber, description, "Fiber that dissolves in water and forms a gel-like substance.").
 
-instance(dietplanner, dietary_fiber).
-attribute_value(dietplanner, dietary_fiber, name, "Insoluble Fiber").
-attribute_value(dietplanner, dietary_fiber, description, "Fiber that does not dissolve in water and promotes regular bowel movements.").
+dietary_fiber_instance(dietplanner, dietary_fiber, insoluble_fiber).
+attribute_value(dietplanner, insoluble_fiber, name, "Insoluble Fiber").
+attribute_value(dietplanner, insoluble_fiber, description, "Fiber that does not dissolve in water and promotes regular bowel movements.").
 
-instance(dietplanner, dietary_fiber).
-attribute_value(dietplanner, dietary_fiber, name, "Pectin").
-attribute_value(dietplanner, dietary_fiber, description, "Soluble fiber found in fruits and used for making jams and jellies.").
+dietary_fiber_instance(dietplanner, dietary_fiber, pectin).
+attribute_value(dietplanner, pectin, name, "Pectin").
+attribute_value(dietplanner, pectin, description, "Soluble fiber found in fruits and used for making jams and jellies.").
 
-instance(dietplanner, dietary_fiber).
-attribute_value(dietplanner, dietary_fiber, name, "Cellulose").
-attribute_value(dietplanner, dietary_fiber, description, "Plant-based fiber that provides structure to plant cell walls.").
+dietary_fiber_instance(dietplanner, dietary_fiber, cellulose).
+attribute_value(dietplanner, cellulose, name, "Cellulose").
+attribute_value(dietplanner, cellulose, description, "Plant-based fiber that provides structure to plant cell walls.").
 
-instance(dietplanner, dietary_fiber).
-attribute_value(dietplanner, dietary_fiber, name, "Oligosaccharides").
-attribute_value(dietplanner, dietary_fiber, description, "Short-chain carbohydrates with potential prebiotic effects.").
+dietary_fiber_instance(dietplanner, dietary_fiber, oligosaccharides).
+attribute_value(dietplanner, oligosaccharides, name, "Oligosaccharides").
+attribute_value(dietplanner, oligosaccharides, description, "Short-chain carbohydrates with potential prebiotic effects.").
 
-instance(dietplanner, dietary_fiber).
-attribute_value(dietplanner, dietary_fiber, name, "Resistant Starch").
-attribute_value(dietplanner, dietary_fiber, description, "Starch that escapes digestion in the small intestine and provides benefits to the large intestine.").
+dietary_fiber_instance(dietplanner, dietary_fiber, resistant_starch).
+attribute_value(dietplanner, resistant_starch, name, "Resistant Starch").
+attribute_value(dietplanner, resistant_starch, description, "Starch that escapes digestion in the small intestine and provides benefits to the large intestine.").
 
 % Subclass: carbs
-instance(dietplanner, carbs).
-attribute_value(dietplanner, carbs, name, "Complex Carbohydrates").
-attribute_value(dietplanner, carbs, description, "Carbohydrates with longer chains of sugar molecules.").
+carbs_instance(dietplanner, carbs, complex_carbohydrates).
+attribute_value(dietplanner, complex_carbohydrates, name, "Complex Carbohydrates").
+attribute_value(dietplanner, complex_carbohydrates, description, "Carbohydrates with longer chains of sugar molecules.").
 
-instance(dietplanner, carbs).
-attribute_value(dietplanner, carbs, name, "Glucose").
-attribute_value(dietplanner, carbs, description, "Simple sugar and primary source of energy for the body.").
+carbs_instance(dietplanner, carbs, glucose).
+attribute_value(dietplanner, glucose, name, "Glucose").
+attribute_value(dietplanner, glucose, description, "Simple sugar and primary source of energy for the body.").
 
-instance(dietplanner, carbs).
-attribute_value(dietplanner, carbs, name, "Fructose").
-attribute_value(dietplanner, carbs, description, "Naturally occurring sugar found in fruits and honey.").
+carbs_instance(dietplanner, carbs, fructose).
+attribute_value(dietplanner, fructose, name, "Fructose").
+attribute_value(dietplanner, fructose, description, "Naturally occurring sugar found in fruits and honey.").
 
-instance(dietplanner, carbs).
-attribute_value(dietplanner, carbs, name, "Starch").
-attribute_value(dietplanner, carbs, description, "Complex carbohydrate providing sustained energy.").
+carbs_instance(dietplanner, carbs, starch).
+attribute_value(dietplanner, starch, name, "Starch").
+attribute_value(dietplanner, starch, description, "Complex carbohydrate providing sustained energy.").
 
-instance(dietplanner, carbs).
-attribute_value(dietplanner, carbs, name, "Lactose").
-attribute_value(dietplanner, carbs, description, "Sugar found in milk and dairy products.").
+carbs_instance(dietplanner, carbs, lactose).
+attribute_value(dietplanner, lactose, name, "Lactose").
+attribute_value(dietplanner, lactose, description, "Sugar found in milk and dairy products.").
 
-instance(dietplanner, carbs).
-attribute_value(dietplanner, carbs, name, "Galactose").
-attribute_value(dietplanner, carbs, description, "Simple sugar found in milk and as part of lactose.").
+carbs_instance(dietplanner, carbs, galactose).
+attribute_value(dietplanner, galactose, name, "Galactose").
+attribute_value(dietplanner, galactose, description, "Simple sugar found in milk and as part of lactose.").
 
 % Subclass: lipids
-instance(dietplanner, lipids).
-attribute_value(dietplanner, lipids, name, "Saturated Fats").
-attribute_value(dietplanner, lipids, description, "Fats with no double bonds between carbon molecules.").
+lipids_instance(dietplanner, lipids, saturated_fats).
+attribute_value(dietplanner, saturated_fats, name, "Saturated Fats").
+attribute_value(dietplanner, saturated_fats, description, "Fats with no double bonds between carbon molecules.").
 
-instance(dietplanner, lipids).
-attribute_value(dietplanner, lipids, name, "Monounsaturated Fat").
-attribute_value(dietplanner, lipids, description, "Healthy fat with one double bond in its structure.").
+lipids_instance(dietplanner, lipids, monounsaturated_fat).
+attribute_value(dietplanner, monounsaturated_fat, name, "Monounsaturated Fat").
+attribute_value(dietplanner, monounsaturated_fat, description, "Healthy fat with one double bond in its structure.").
 
-instance(dietplanner, lipids).
-attribute_value(dietplanner, lipids, name, "Polyunsaturated Fat").
-attribute_value(dietplanner, lipids, description, "Healthy fat with multiple double bonds in its structure.").
+lipids_instance(dietplanner, lipids, polyunsaturated_fat).
+attribute_value(dietplanner, polyunsaturated_fat, name, "Polyunsaturated Fat").
+attribute_value(dietplanner, polyunsaturated_fat, description, "Healthy fat with multiple double bonds in its structure.").
 
-instance(dietplanner, lipids).
-attribute_value(dietplanner, lipids, name, "Trans Fat").
-attribute_value(dietplanner, lipids, description, "Unhealthy fat created through hydrogenation, found in some processed foods.").
+lipids_instance(dietplanner, lipids, trans_fat).
+attribute_value(dietplanner, trans_fat, name, "Trans Fat").
+attribute_value(dietplanner, trans_fat, description, "Unhealthy fat created through hydrogenation, found in some processed foods.").
 
-instance(dietplanner, lipids).
-attribute_value(dietplanner, lipids, name, "Omega-3 Fatty Acids").
-attribute_value(dietplanner, lipids, description, "Essential fatty acids with anti-inflammatory benefits.").
+lipids_instance(dietplanner, lipids, omega_3_fatty_acids).
+attribute_value(dietplanner, omega_3_fatty_acids, name, "Omega-3 Fatty Acids").
+attribute_value(dietplanner, omega_3_fatty_acids, description, "Essential fatty acids with anti-inflammatory benefits.").
 
 % Subclass: minerals
-instance(dietplanner, minerals).
-attribute_value(dietplanner, minerals, name, "Calcium").
-attribute_value(dietplanner, minerals, description, "Mineral important for bone health and muscle function.").
+minerals_instance(dietplanner, minerals, calcium).
+attribute_value(dietplanner, calcium, name, "Calcium").
+attribute_value(dietplanner, calcium, description, "Mineral important for bone health and muscle function.").
 
-instance(dietplanner, minerals).
-attribute_value(dietplanner, minerals, name, "Iron").
-attribute_value(dietplanner, minerals, description, "Critical mineral for oxygen transport and energy production.").
+minerals_instance(dietplanner, minerals, iron).
+attribute_value(dietplanner, iron, name, "Iron").
+attribute_value(dietplanner, iron, description, "Critical mineral for oxygen transport and energy production.").
 
-instance(dietplanner, minerals).
-attribute_value(dietplanner, minerals, name, "Potassium").
-attribute_value(dietplanner, minerals, description, "Electrolyte crucial for fluid balance and nerve function.").
+minerals_instance(dietplanner, minerals, potassium).
+attribute_value(dietplanner, potassium, name, "Potassium").
+attribute_value(dietplanner, potassium, description, "Electrolyte crucial for fluid balance and nerve function.").
 
-instance(dietplanner, minerals).
-attribute_value(dietplanner, minerals, name, "Magnesium").
-attribute_value(dietplanner, minerals, description, "Involved in hundreds of biochemical reactions in the body.").
+minerals_instance(dietplanner, minerals, magnesium).
+attribute_value(dietplanner, magnesium, name, "Magnesium").
+attribute_value(dietplanner, magnesium, description, "Involved in hundreds of biochemical reactions in the body.").
 
-instance(dietplanner, minerals).
-attribute_value(dietplanner, minerals, name, "Zinc").
-attribute_value(dietplanner, minerals, description, "Essential trace mineral supporting immune function and more.").
+minerals_instance(dietplanner, minerals, zinc).
+attribute_value(dietplanner, zinc, name, "Zinc").
+attribute_value(dietplanner, zinc, description, "Essential trace mineral supporting immune function and more.").
 
 % Subclass: protein
-instance(dietplanner, protein).
-attribute_value(dietplanner, protein, name, "Whey Protein").
-attribute_value(dietplanner, protein, description, "High-quality protein derived from milk.").
+protein_instance(dietplanner, protein, whey_protein).
+attribute_value(dietplanner, whey_protein, name, "Whey Protein").
+attribute_value(dietplanner, whey_protein, description, "High-quality protein derived from milk.").
 
-instance(dietplanner, protein).
-attribute_value(dietplanner, protein, name, "Casein Protein").
-attribute_value(dietplanner, protein, description, "Slow-digesting protein found in milk products and supplements.").
+protein_instance(dietplanner, protein, casein_protein).
+attribute_value(dietplanner, casein_protein, name, "Casein Protein").
+attribute_value(dietplanner, casein_protein, description, "Slow-digesting protein found in milk products and supplements.").
 
-instance(dietplanner, protein).
-attribute_value(dietplanner, protein, name, "Soy Protein").
-attribute_value(dietplanner, protein, description, "Plant-based protein derived from soybeans, suitable for vegetarians and vegans.").
+protein_instance(dietplanner, protein, soy_protein).
+attribute_value(dietplanner, soy_protein, name, "Soy Protein").
+attribute_value(dietplanner, soy_protein, description, "Plant-based protein derived from soybeans, suitable for vegetarians and vegans.").
 
-instance(dietplanner, protein).
-attribute_value(dietplanner, protein, name, "Egg White Protein").
-attribute_value(dietplanner, protein, description, "Protein sourced from egg whites, low in fat and carbohydrates.").
+protein_instance(dietplanner, protein, egg_white_protein).
+attribute_value(dietplanner, egg_white_protein, name, "Egg White Protein").
+attribute_value(dietplanner, egg_white_protein, description, "Protein sourced from egg whites, low in fat and carbohydrates.").
 
-instance(dietplanner, protein).
-attribute_value(dietplanner, protein, name, "Pea Protein").
-attribute_value(dietplanner, protein, description, "Plant-based protein extracted from yellow peas, suitable for various diets.").
+protein_instance(dietplanner, protein, pea_protein).
+attribute_value(dietplanner, pea_protein, name, "Pea Protein").
+attribute_value(dietplanner, pea_protein, description, "Plant-based protein extracted from yellow peas, suitable for various diets.").
 
 % Subclass: vitamin
-instance(dietplanner, vitamin).
-attribute_value(dietplanner, vitamin, name, "Vitamin C").
-attribute_value(dietplanner, vitamin, description, "An antioxidant vitamin that supports immune health.").
+vitamin_instance(dietplanner, vitamin, vitamin_c).
+attribute_value(dietplanner, vitamin_c, name, "Vitamin C").
+attribute_value(dietplanner, vitamin_c, description, "An antioxidant vitamin that supports immune health.").
 
-instance(dietplanner, vitamin).
-attribute_value(dietplanner, vitamin, name, "Vitamin D").
-attribute_value(dietplanner, vitamin, description, "Crucial vitamin for bone health and calcium absorption.").
+vitamin_instance(dietplanner, vitamin, vitamin_d).
+attribute_value(dietplanner, vitamin_d, name, "Vitamin D").
+attribute_value(dietplanner, vitamin_d, description, "Crucial vitamin for bone health and calcium absorption.").
 
-instance(dietplanner, vitamin).
-attribute_value(dietplanner, vitamin, name, "Vitamin A").
-attribute_value(dietplanner, vitamin, description, "Essential for vision, immune function, and cell growth.").
+vitamin_instance(dietplanner, vitamin, vitamin_a).
+attribute_value(dietplanner, vitamin_a, name, "Vitamin A").
+attribute_value(dietplanner, vitamin_a, description, "Essential for vision, immune function, and cell growth.").
 
-instance(dietplanner, vitamin).
-attribute_value(dietplanner, vitamin, name, "Vitamin K").
-attribute_value(dietplanner, vitamin, description, "Vitamin necessary for blood clotting and bone health.").
+vitamin_instance(dietplanner, vitamin, vitamin_k).
+attribute_value(dietplanner, vitamin_k, name, "Vitamin K").
+attribute_value(dietplanner, vitamin_k, description, "Vitamin necessary for blood clotting and bone health.").
 
-instance(dietplanner, vitamin).
-attribute_value(dietplanner, vitamin, name, "Vitamin E").
-attribute_value(dietplanner, vitamin, description, "Antioxidant vitamin protecting cells from damage.").
+vitamin_instance(dietplanner, vitamin, vitamin_e).
+attribute_value(dietplanner, vitamin_e, name, "Vitamin E").
+attribute_value(dietplanner, vitamin_e, description, "Antioxidant vitamin protecting cells from damage.").
 
 
 % ---------
 % Class: allergen
-instance(dietplanner, allergen).
-attribute_value(dietplanner, allergen, name, "Gluten").
-attribute_value(dietplanner, allergen, description, "A protein found in wheat, barley, and rye.").
+allergen_instance(dietplanner, allergen, gluten).
+attribute_value(dietplanner, gluten, name, "Gluten").
+attribute_value(dietplanner, gluten, description, "A protein found in wheat, barley, and rye.").
 
-instance(dietplanner, allergen).
-attribute_value(dietplanner, allergen, name, "Dairy").
-attribute_value(dietplanner, allergen, description, "Products containing milk or milk-derived ingredients.").
+allergen_instance(dietplanner, allergen, dairy).
+attribute_value(dietplanner, dairy, name, "Dairy").
+attribute_value(dietplanner, dairy, description, "Products containing milk or milk-derived ingredients.").
 
-instance(dietplanner, allergen).
-attribute_value(dietplanner, allergen, name, "Peanuts").
-attribute_value(dietplanner, allergen, description, "Tree nuts that can cause severe allergies.").
+allergen_instance(dietplanner, allergen, peanuts).
+attribute_value(dietplanner, peanuts, name, "Peanuts").
+attribute_value(dietplanner, peanuts, description, "Tree nuts that can cause severe allergies.").
 
-instance(dietplanner, allergen).
-attribute_value(dietplanner, allergen, name, "Soy").
-attribute_value(dietplanner, allergen, description, "Products made from soybeans.").
+allergen_instance(dietplanner, allergen, soy).
+attribute_value(dietplanner, soy, name, "Soy").
+attribute_value(dietplanner, soy, description, "Products made from soybeans.").
 
-instance(dietplanner, allergen).
-attribute_value(dietplanner, allergen, name, "Shellfish").
-attribute_value(dietplanner, allergen, description, "Seafood like shrimp, crab, and lobster.").
+allergen_instance(dietplanner, allergen, shellfish).
+attribute_value(dietplanner, shellfish, name, "Shellfish").
+attribute_value(dietplanner, shellfish, description, "Seafood like shrimp, crab, and lobster.").
+
 
 
 % ---------
 % Class: person
-instance(dietplanner, person).
-attribute_value(dietplanner, person, name, "Alice").
-attribute_value(dietplanner, person, surname, "Johnson").
-attribute_value(dietplanner, person, age, 30).
-attribute_value(dietplanner, person, gender, "Female").
-attribute_value(dietplanner, person, height, 165).
-attribute_value(dietplanner, person, weight, 60.5).
+person_instance(dietplanner, person, alice_johnson).
+attribute_value(dietplanner, alice_johnson, name, "Alice").
+attribute_value(dietplanner, alice_johnson, surname, "Johnson").
+attribute_value(dietplanner, alice_johnson, age, 30).
+attribute_value(dietplanner, alice_johnson, gender, "Female").
+attribute_value(dietplanner, alice_johnson, height, 165).
+attribute_value(dietplanner, alice_johnson, weight, 60.5).
 
-instance(dietplanner, person).
-attribute_value(dietplanner, person, name, "Bob").
-attribute_value(dietplanner, person, surname, "Smith").
-attribute_value(dietplanner, person, age, 28).
-attribute_value(dietplanner, person, gender, "Male").
-attribute_value(dietplanner, person, height, 180).
-attribute_value(dietplanner, person, weight, 75.2).
+person_instance(dietplanner, person, bob_smith).
+attribute_value(dietplanner, bob_smith, name, "Bob").
+attribute_value(dietplanner, bob_smith, surname, "Smith").
+attribute_value(dietplanner, bob_smith, age, 28).
+attribute_value(dietplanner, bob_smith, gender, "Male").
+attribute_value(dietplanner, bob_smith, height, 180).
+attribute_value(dietplanner, bob_smith, weight, 75.2).
 
-instance(dietplanner, person).
-attribute_value(dietplanner, person, name, "Emma").
-attribute_value(dietplanner, person, surname, "Davis").
-attribute_value(dietplanner, person, age, 22).
-attribute_value(dietplanner, person, gender, "Female").
-attribute_value(dietplanner, person, height, 158).
-attribute_value(dietplanner, person, weight, 55.0).
+person_instance(dietplanner, person, emma_davis).
+attribute_value(dietplanner, emma_davis, name, "Emma").
+attribute_value(dietplanner, emma_davis, surname, "Davis").
+attribute_value(dietplanner, emma_davis, age, 22).
+attribute_value(dietplanner, emma_davis, gender, "Female").
+attribute_value(dietplanner, emma_davis, height, 158).
+attribute_value(dietplanner, emma_davis, weight, 55.0).
 
-instance(dietplanner, person).
-attribute_value(dietplanner, person, name, "Michael").
-attribute_value(dietplanner, person, surname, "Brown").
-attribute_value(dietplanner, person, age, 35).
-attribute_value(dietplanner, person, gender, "Male").
-attribute_value(dietplanner, person, height, 175).
-attribute_value(dietplanner, person, weight, 80.7).
+person_instance(dietplanner, person, michael_brown).
+attribute_value(dietplanner, michael_brown, name, "Michael").
+attribute_value(dietplanner, michael_brown, surname, "Brown").
+attribute_value(dietplanner, michael_brown, age, 35).
+attribute_value(dietplanner, michael_brown, gender, "Male").
+attribute_value(dietplanner, michael_brown, height, 175).
+attribute_value(dietplanner, michael_brown, weight, 80.7).
 
-instance(dietplanner, person).
-attribute_value(dietplanner, person, name, "Sophia").
-attribute_value(dietplanner, person, surname, "Miller").
-attribute_value(dietplanner, person, age, 29).
-attribute_value(dietplanner, person, gender, "Female").
-attribute_value(dietplanner, person, height, 170).
-attribute_value(dietplanner, person, weight, 63.8).
+person_instance(dietplanner, person, sophia_miller).
+attribute_value(dietplanner, sophia_miller, name, "Sophia").
+attribute_value(dietplanner, sophia_miller, surname, "Miller").
+attribute_value(dietplanner, sophia_miller, age, 29).
+attribute_value(dietplanner, sophia_miller, gender, "Female").
+attribute_value(dietplanner, sophia_miller, height, 170).
+attribute_value(dietplanner, sophia_miller, weight, 63.8).
 
 % ---------
 % Class: activity
-instance(dietplanner, activity).
-attribute_value(dietplanner, activity, name, "Running").
-attribute_value(dietplanner, activity, description, "Go for a run to boost your cardiovascular health.").
-attribute_value(dietplanner, activity, calory_effort, 600).
+activity_instance(dietplanner, activity, running).
+attribute_value(dietplanner, running, name, "Running").
+attribute_value(dietplanner, running, description, "Go for a run to boost your cardiovascular health.").
+attribute_value(dietplanner, running, calory_effort, 600).
 
-instance(dietplanner, activity).
-attribute_value(dietplanner, activity, name, "Swimming").
-attribute_value(dietplanner, activity, description, "Hit the pool for a full-body workout.").
-attribute_value(dietplanner, activity, calory_effort, 700).
+activity_instance(dietplanner, activity, swimming).
+attribute_value(dietplanner, swimming, name, "Swimming").
+attribute_value(dietplanner, swimming, description, "Hit the pool for a full-body workout.").
+attribute_value(dietplanner, swimming, calory_effort, 700).
 
-instance(dietplanner, activity).
-attribute_value(dietplanner, activity, name, "Yoga").
-attribute_value(dietplanner, activity, description, "Relax and stretch with a calming yoga session.").
-attribute_value(dietplanner, activity, calory_effort, 300).
+activity_instance(dietplanner, activity, yoga).
+attribute_value(dietplanner, yoga, name, "Yoga").
+attribute_value(dietplanner, yoga, description, "Relax and stretch with a calming yoga session.").
+attribute_value(dietplanner, yoga, calory_effort, 300).
 
-instance(dietplanner, activity).
-attribute_value(dietplanner, activity, name, "Weightlifting").
-attribute_value(dietplanner, activity, description, "Build strength and muscle with weightlifting.").
-attribute_value(dietplanner, activity, calory_effort, 400).
+activity_instance(dietplanner, activity, weightlifting).
+attribute_value(dietplanner, weightlifting, name, "Weightlifting").
+attribute_value(dietplanner, weightlifting, description, "Build strength and muscle with weightlifting.").
+attribute_value(dietplanner, weightlifting, calory_effort, 400).
 
-instance(dietplanner, activity).
-attribute_value(dietplanner, activity, name, "Cycling").
-attribute_value(dietplanner, activity, description, "Take a bike ride for a fun and effective workout.").
-attribute_value(dietplanner, activity, calory_effort, 500).
+activity_instance(dietplanner, activity, cycling).
+attribute_value(dietplanner, cycling, name, "Cycling").
+attribute_value(dietplanner, cycling, description, "Take a bike ride for a fun and effective workout.").
+attribute_value(dietplanner, cycling, calory_effort, 500).
+
 
 % Subclass: sports
-instance(dietplanner, sports).
-attribute_value(dietplanner, sports, name, "Soccer").
-attribute_value(dietplanner, sports, description, "Play soccer for a team-based cardio workout.").
-attribute_value(dietplanner, sports, calory_effort, 800).
+sports_instance(dietplanner, sports, soccer).
+attribute_value(dietplanner, soccer, name, "Soccer").
+attribute_value(dietplanner, soccer, description, "Play soccer for a team-based cardio workout.").
+attribute_value(dietplanner, soccer, calory_effort, 800).
 
-instance(dietplanner, sports).
-attribute_value(dietplanner, sports, name, "Basketball").
-attribute_value(dietplanner, sports, description, "Shoot hoops and run on the court for fitness.").
-attribute_value(dietplanner, sports, calory_effort, 700).
+sports_instance(dietplanner, sports, basketball).
+attribute_value(dietplanner, basketball, name, "Basketball").
+attribute_value(dietplanner, basketball, description, "Shoot hoops and run on the court for fitness.").
+attribute_value(dietplanner, basketball, calory_effort, 700).
 
-instance(dietplanner, sports).
-attribute_value(dietplanner, sports, name, "Tennis").
-attribute_value(dietplanner, sports, description, "Enjoy a game of tennis to improve agility.").
-attribute_value(dietplanner, sports, calory_effort, 600).
+sports_instance(dietplanner, sports, tennis).
+attribute_value(dietplanner, tennis, name, "Tennis").
+attribute_value(dietplanner, tennis, description, "Enjoy a game of tennis to improve agility.").
+attribute_value(dietplanner, tennis, calory_effort, 600).
 
-instance(dietplanner, sports).
-attribute_value(dietplanner, sports, name, "Volleyball").
-attribute_value(dietplanner, sports, description, "Bump, set, and spike in a game of volleyball.").
-attribute_value(dietplanner, sports, calory_effort, 500).
+sports_instance(dietplanner, sports, volleyball).
+attribute_value(dietplanner, volleyball, name, "Volleyball").
+attribute_value(dietplanner, volleyball, description, "Bump, set, and spike in a game of volleyball.").
+attribute_value(dietplanner, volleyball, calory_effort, 500).
 
-instance(dietplanner, sports).
-attribute_value(dietplanner, sports, name, "Cycling Race").
-attribute_value(dietplanner, sports, description, "Participate in a cycling race for a challenging workout.").
-attribute_value(dietplanner, sports, calory_effort, 1000).
+sports_instance(dietplanner, sports, cycling_race).
+attribute_value(dietplanner, cycling_race, name, "Cycling Race").
+attribute_value(dietplanner, cycling_race, description, "Participate in a cycling race for a challenging workout.").
+attribute_value(dietplanner, cycling_race, calory_effort, 1000).
 
 % Subclass: inactivity
-instance(dietplanner, inactivity).
-attribute_value(dietplanner, inactivity, name, "Sitting").
-attribute_value(dietplanner, inactivity, description, "Sitting for extended periods can be detrimental to health.").
-attribute_value(dietplanner, inactivity, calory_effort, 100).
+inactivity_instance(dietplanner, inactivity, sitting).
+attribute_value(dietplanner, sitting, name, "Sitting").
+attribute_value(dietplanner, sitting, description, "Sitting for extended periods can be detrimental to health.").
+attribute_value(dietplanner, sitting, calory_effort, 100).
 
-instance(dietplanner, inactivity).
-attribute_value(dietplanner, inactivity, name, "TV Watching").
-attribute_value(dietplanner, inactivity, description, "Watching TV for hours can lead to a sedentary lifestyle.").
-attribute_value(dietplanner, inactivity, calory_effort, 50).
+inactivity_instance(dietplanner, inactivity, tv_watching).
+attribute_value(dietplanner, tv_watching, name, "TV Watching").
+attribute_value(dietplanner, tv_watching, description, "Watching TV for hours can lead to a sedentary lifestyle.").
+attribute_value(dietplanner, tv_watching, calory_effort, 50).
 
-instance(dietplanner, inactivity).
-attribute_value(dietplanner, inactivity, name, "Desk Work").
-attribute_value(dietplanner, inactivity, description, "Sitting at a desk for work without breaks can impact well-being.").
-attribute_value(dietplanner, inactivity, calory_effort, 70).
+inactivity_instance(dietplanner, inactivity, desk_work).
+attribute_value(dietplanner, desk_work, name, "Desk Work").
+attribute_value(dietplanner, desk_work, description, "Sitting at a desk for work without breaks can impact well-being.").
+attribute_value(dietplanner, desk_work, calory_effort, 70).
 
-instance(dietplanner, inactivity).
-attribute_value(dietplanner, inactivity, name, "Reading").
-attribute_value(dietplanner, inactivity, description, "Reading for long periods can lead to reduced physical activity.").
-attribute_value(dietplanner, inactivity, calory_effort, 60).
+inactivity_instance(dietplanner, inactivity, reading).
+attribute_value(dietplanner, reading, name, "Reading").
+attribute_value(dietplanner, reading, description, "Reading for long periods can lead to reduced physical activity.").
+attribute_value(dietplanner, reading, calory_effort, 60).
 
-instance(dietplanner, inactivity).
-attribute_value(dietplanner, inactivity, name, "Computer Use").
-attribute_value(dietplanner, inactivity, description, "Using a computer for extended periods can contribute to inactivity.").
-attribute_value(dietplanner, inactivity, calory_effort, 80).
+inactivity_instance(dietplanner, inactivity, computer_use).
+attribute_value(dietplanner, computer_use, name, "Computer Use").
+attribute_value(dietplanner, computer_use, description, "Using a computer for extended periods can contribute to inactivity.").
+attribute_value(dietplanner, computer_use, calory_effort, 80).
 
 % Subclass: walking
-instance(dietplanner, walking).
-attribute_value(dietplanner, walking, name, "Brisk Walking").
-attribute_value(dietplanner, walking, description, "Take a brisk walk to improve cardiovascular health.").
-attribute_value(dietplanner, walking, calory_effort, 300).
+walking_instance(dietplanner, walking, brisk_walking).
+attribute_value(dietplanner, brisk_walking, name, "Brisk Walking").
+attribute_value(dietplanner, brisk_walking, description, "Take a brisk walk to improve cardiovascular health.").
+attribute_value(dietplanner, brisk_walking, calory_effort, 300).
 
-instance(dietplanner, walking).
-attribute_value(dietplanner, walking, name, "Nature Walk").
-attribute_value(dietplanner, walking, description, "Enjoy a leisurely walk in nature for mental and physical well-being.").
-attribute_value(dietplanner, walking, calory_effort, 200).
+walking_instance(dietplanner, walking, nature_walk).
+attribute_value(dietplanner, nature_walk, name, "Nature Walk").
+attribute_value(dietplanner, nature_walk, description, "Enjoy a leisurely walk in nature for mental and physical well-being.").
+attribute_value(dietplanner, nature_walk, calory_effort, 200).
 
-instance(dietplanner, walking).
-attribute_value(dietplanner, walking, name, "Power Walking").
-attribute_value(dietplanner, walking, description, "Engage in power walking for an effective workout.").
-attribute_value(dietplanner, walking, calory_effort, 400).
+walking_instance(dietplanner, walking, power_walking).
+attribute_value(dietplanner, power_walking, name, "Power Walking").
+attribute_value(dietplanner, power_walking, description, "Engage in power walking for an effective workout.").
+attribute_value(dietplanner, power_walking, calory_effort, 400).
 
-instance(dietplanner, walking).
-attribute_value(dietplanner, walking, name, "Evening Stroll").
-attribute_value(dietplanner, walking, description, "Take a relaxing evening stroll to unwind.").
-attribute_value(dietplanner, walking, calory_effort, 150).
+walking_instance(dietplanner, walking, evening_stroll).
+attribute_value(dietplanner, evening_stroll, name, "Evening Stroll").
+attribute_value(dietplanner, evening_stroll, description, "Take a relaxing evening stroll to unwind.").
+attribute_value(dietplanner, evening_stroll, calory_effort, 150).
 
-instance(dietplanner, walking).
-attribute_value(dietplanner, walking, name, "Urban Walking").
-attribute_value(dietplanner, walking, description, "Explore the city on foot with urban walking.").
-attribute_value(dietplanner, walking, calory_effort, 250).
+walking_instance(dietplanner, walking, urban_walking).
+attribute_value(dietplanner, urban_walking, name, "Urban Walking").
+attribute_value(dietplanner, urban_walking, description, "Explore the city on foot with urban walking.").
+attribute_value(dietplanner, urban_walking, calory_effort, 250).
 
 % ---------
 % Class: meal

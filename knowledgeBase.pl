@@ -1108,3 +1108,10 @@ fact(241, attribute_value(dietplanner, snacks, description, "Light rice cakes sp
 fact(242, instance(dietplanner, snacks), 1).
 fact(243, attribute_value(dietplanner, snacks, name, "Apple Slices with Almond Butter"), 1).
 fact(244, attribute_value(dietplanner, snacks, description, "Fresh apple slices served with almond butter."), 1).
+
+% Function to compute the total calories about a list of foods 
+compute_calories_amount([], 0).
+compute_calories_amount([Food|Rest], TotalCalories) :-
+    attribute_value(dietplanner, Food, calories, CaloriesFood)
+    compute_calories_amount(Rest, RestCalories),
+    TotalCalories is RestCalories + CaloriesFood.

@@ -161,37 +161,45 @@ fact(105, mandatory(dietplanner, dish, name), 1).
 fact(116, attribute(dietplanner, dish, description, string), 1).
 fact(107, mandatory(dietplanner, dish, description), 1).
 fact(108, attribute(dietplanner, dish, type, select), 1).
-fact(109, values(dietplanner, dish, type, [main_meal, snak]), 1).
+fact(109, values(dietplanner, dish, type, [breakfast, lunch, dinner, snack]), 1).
+fact(110, mandatory(dietplanner, dish, type), 1).
+
+% ---------
+% Diet
+% ---------
+% Classes
+fact(111, entity(dietplanner, diet), 1).
+
+% Attributes 
+fact(112, attribute(dietplanner, diet, type, select), 1).
+fact(113, values(dietplanner, diet, type, [normocaloric]), 1).      % Add more diet types in future enhancements
+
+% TODO: find the proper way to specify that an attribute is a list and what is its structure
+% For example breakfasts -> list of pairs Dish-grams, where each Dish's type is equal to breakfast
+% This could be done using rules (so is done here) -> Anyway check this.
+fact(114, mandatory(dietplanner, dish, type), 1).
+fact(115, attribute(dietplanner, diet, breakfasts, list), 1).
+fact(116, mandatory(dietplanner, dish, breakfasts), 1).
+fact(117, attribute(dietplanner, diet, lunches, list), 1).
+fact(118, mandatory(dietplanner, dish, lunches), 1).
+fact(119, attribute(dietplanner, diet, dinners, list), 1).
+fact(120, mandatory(dietplanner, dish, dinners), 1).
+fact(121, attribute(dietplanner, diet, snacks, list), 1).
+fact(122, mandatory(dietplanner, dish, snacks), 1).
 
 
-
-%------------------------------------------------------------------------------------------------------------------
-% TODO
-
+% ---------
 % Relationships
-has(food_beverage, nutrient).
-part_of(nutrient, food_beverage).
-carry_out(person, activity).
-is_allergic(person, allergen).
-is_a(food_beverage, meal).
-
-% Predicates
-compute_needed_calories(Person, Calories) :- ... % Placeholder for the actual computation.
-compute_calory_effort(Activity, Time, Calories) :- ... % Placeholder for the actual computation.
-
-% Add attribute predicate
-has_attribute(food_beverage, color).
-
-% Attribute values
-attribute_value(apple, color, red).
-attribute_value(banana, color, yellow).
-attribute_value(carrot, color, orange).
-% ... and so on for other entities
-
-% Predicate to check attribute value
-has_color(Entity, Color) :- attribute_value(Entity, color, Color).
-%------------------------------------------------------------------------------------------------------------------
-
+% ---------
+% TODO: find (or ask) a way to define relationships 
+% in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)
+rule(1, has(FoodBeverage, Nutrient), and([entity(dietplanner, FoodBeverage, _), entity(dietplanner, Nutrient, _)]), 1).
+rule(1, part_of(Nutrient, FoodBeverage), and([entity(dietplanner, Nutrient, _), entity(dietplanner, FoodBeverage, _)]), 1).
+rule(1, carry_out(Person, Activity), and([entity(dietplanner, Person, _), entity(dietplanner, Activity, _)]), 1).
+rule(1, is_allergic(Person, Allergen), and([entity(dietplanner, Person, _), entity(dietplanner, Allergen, _)]), 1).
+rule(1, contains_allergen(FoodBeverage, Allergen), and([entity(dietplanner, FoodBeverage, _), entity(dietplanner, Allergen, _)]), 1).
+rule(1, made_of(Dish, FoodBeverage), and([entity(dietplanner, Dish, _), entity(dietplanner, FoodBeverage, _)]), 1).
+rule(1, suggested_diet(Diet, Person), and([entity(dietplanner, Diet, _), entity(dietplanner, Person, _)]), 1).
 
 
 % ---------

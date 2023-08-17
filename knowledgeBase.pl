@@ -1,5 +1,12 @@
 :- dynamic(fact/3).
-%Domain
+
+% ---------------------------------------------------------------------------------------------------------------------------------------
+% FACTS
+% ---------------------------------------------------------------------------------------------------------------------------------------
+
+% ---------
+% Domain
+% ---------
 fact(0, domain(dietplanner), 1).
 
 
@@ -125,8 +132,6 @@ fact(87, mandatory(dietplanner, person, height), 1).
 fact(88, attribute(dietplanner, person, weight, real), 1).
 fact(89, mandatory(dietplanner, person, weight), 1).
 
-
-
 % ---------
 % Activity
 % ---------
@@ -188,27 +193,32 @@ fact(121, attribute(dietplanner, diet, snacks, list), 1).
 fact(122, mandatory(dietplanner, dish, snacks), 1).
 
 
+
+% ---------------------------------------------------------------------------------------------------------------------------------------
+% RULES
+% ---------------------------------------------------------------------------------------------------------------------------------------
+
 % ---------
 % Relationships
 % ---------
 % TODO: find (or ask) a way to define relationships 
 % in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)
 rule(1, has(FoodBeverage, Nutrient), and([entity(dietplanner, FoodBeverage, _), entity(dietplanner, Nutrient, _)]), 1).
-rule(1, part_of(Nutrient, FoodBeverage), and([entity(dietplanner, Nutrient, _), entity(dietplanner, FoodBeverage, _)]), 1).
-rule(1, carry_out(Person, Activity), and([entity(dietplanner, Person, _), entity(dietplanner, Activity, _)]), 1).
-rule(1, is_allergic(Person, Allergen), and([entity(dietplanner, Person, _), entity(dietplanner, Allergen, _)]), 1).
-rule(1, contains_allergen(FoodBeverage, Allergen), and([entity(dietplanner, FoodBeverage, _), entity(dietplanner, Allergen, _)]), 1).
-rule(1, made_of(Dish, FoodBeverage), and([entity(dietplanner, Dish, _), entity(dietplanner, FoodBeverage, _)]), 1).
-rule(1, suggested_diet(Diet, Person), and([entity(dietplanner, Diet, _), entity(dietplanner, Person, _)]), 1).
+rule(2, part_of(Nutrient, FoodBeverage), and([entity(dietplanner, Nutrient, _), entity(dietplanner, FoodBeverage, _)]), 1).
+rule(3, carry_out(Person, Activity-Hours), and([entity(dietplanner, Person, _), entity(dietplanner, Activity, _)]), 1).
+rule(4, is_allergic(Person, Allergen), and([entity(dietplanner, Person, _), entity(dietplanner, Allergen, _)]), 1).
+rule(5, contains_allergen(FoodBeverage, Allergen), and([entity(dietplanner, FoodBeverage, _), entity(dietplanner, Allergen, _)]), 1).
+rule(6, made_of(Dish, FoodBeverage), and([entity(dietplanner, Dish, _), entity(dietplanner, FoodBeverage, _)]), 1).
+rule(7, suggested_diet(Diet, Person), and([entity(dietplanner, Diet, _), entity(dietplanner, Person, _)]), 1).
 
 
-% ---------
-% Instances
-% ---------
+% ---------------------------------------------------------------------------------------------------------------------------------------
+% INSTANCES
+% ---------------------------------------------------------------------------------------------------------------------------------------
 
 % ---------
 % Class: food_beverage
-
+% ---------
 % Subclass: food
 % Subclass: cereal
 cereal_istance(dietplanner, cereal, oatmeal).
@@ -717,7 +727,7 @@ attribute_value(dietplanner, cucumber_mint_infused_water, calories, 0).
 
 % ---------
 % Class: nutrient
-
+% ---------
 % Subclass: alcoholic
 alcoholic_instance(dietplanner, alcoholic, ethanol).
 attribute_value(dietplanner, ethanol, name, "Ethanol").
@@ -881,6 +891,7 @@ attribute_value(dietplanner, vitamin_e, description, "Antioxidant vitamin protec
 
 % ---------
 % Class: allergen
+% ---------
 allergen_instance(dietplanner, allergen, gluten).
 attribute_value(dietplanner, gluten, name, "Gluten").
 attribute_value(dietplanner, gluten, description, "A protein found in wheat, barley, and rye.").
@@ -905,6 +916,7 @@ attribute_value(dietplanner, shellfish, description, "Seafood like shrimp, crab,
 
 % ---------
 % Class: person
+% ---------
 person_instance(dietplanner, person, alice_johnson).
 attribute_value(dietplanner, alice_johnson, name, "Alice").
 attribute_value(dietplanner, alice_johnson, surname, "Johnson").
@@ -947,6 +959,7 @@ attribute_value(dietplanner, sophia_miller, weight, 63.8).
 
 % ---------
 % Class: activity
+% ---------
 activity_instance(dietplanner, activity, running).
 attribute_value(dietplanner, running, name, "Running").
 attribute_value(dietplanner, running, description, "Go for a run to boost your cardiovascular health.").
@@ -971,7 +984,6 @@ activity_instance(dietplanner, activity, cycling).
 attribute_value(dietplanner, cycling, name, "Cycling").
 attribute_value(dietplanner, cycling, description, "Take a bike ride for a fun and effective workout.").
 attribute_value(dietplanner, cycling, calory_effort, 500).
-
 
 % Subclass: sports
 sports_instance(dietplanner, sports, soccer).
@@ -1053,6 +1065,7 @@ attribute_value(dietplanner, urban_walking, calory_effort, 250).
 
 % ---------
 % Class: meal
+% ---------
 % Instances of Dish
 dish_instance(dietplanner, dish, grilled_chicken_salad).
 attribute_value(dietplanner, grilled_chicken_salad, name, "Grilled Chicken Salad").
@@ -1130,10 +1143,124 @@ attribute_value(dietplanner, chicken_stir_fry, description, "Quick and healthy c
 attribute_value(dietplanner, chicken_stir_fry, type, main_meal).
 
 
+% ---------
+% Relationships
+% ---------
+has(dietplanner, red_wine, ethanol).
+has(dietplanner, red_wine, resveratrol).
+has(dietplanner, red_wine, antioxidants).
+has(dietplanner, chicken_breast, protein).
+has(dietplanner, chicken_breast, vitamin_b6).
+has(dietplanner, chicken_breast, phosphorus).
+has(dietplanner, spinach, iron).
+has(dietplanner, spinach, vitamin_k).
+has(dietplanner, spinach, vitamin_a).
+has(dietplanner, oatmeal, complex_carbohydrates).
+has(dietplanner, oatmeal, dietary_fiber).
+has(dietplanner, oatmeal, manganese).
+has(dietplanner, salmon, omega_3_fatty_acids).
+has(dietplanner, salmon, vitamin_d).
+has(dietplanner, salmon, vitamin_b12).
+has(dietplanner, almonds, monounsaturated_fat).
+has(dietplanner, almonds, vitamin_e).
+has(dietplanner, almonds, magnesium).
+has(dietplanner, greek_yogurt, protein).
+has(dietplanner, greek_yogurt, calcium).
+has(dietplanner, greek_yogurt, probiotics).
+has(dietplanner, blueberries, antioxidants).
+has(dietplanner, blueberries, vitamin_c).
+has(dietplanner, blueberries, dietary_fiber).
 
-% ---------
-% Functions
-% ---------
+part_of(dietplanner, ethanol, red_wine).
+part_of(dietplanner, resveratrol, red_wine).
+part_of(dietplanner, antioxidants, red_wine).
+part_of(dietplanner, protein, chicken_breast).
+part_of(dietplanner, vitamin_b6, chicken_breast).
+part_of(dietplanner, phosphorus, chicken_breast).
+part_of(dietplanner, iron, spinach).
+part_of(dietplanner, vitamin_k, spinach).
+part_of(dietplanner, vitamin_a, spinach).
+part_of(dietplanner, complex_carbohydrates, oatmeal).
+part_of(dietplanner, dietary_fiber, oatmeal).
+part_of(dietplanner, manganese, oatmeal).
+part_of(dietplanner, omega_3_fatty_acids, salmon).
+part_of(dietplanner, vitamin_d, salmon).
+part_of(dietplanner, vitamin_b12, salmon).
+part_of(dietplanner, monounsaturated_fat, almonds).
+part_of(dietplanner, vitamin_e, almonds).
+part_of(dietplanner, magnesium, almonds).
+part_of(dietplanner, protein, greek_yogurt).
+part_of(dietplanner, calcium, greek_yogurt).
+part_of(dietplanner, probiotics, greek_yogurt).
+part_of(dietplanner, antioxidants, blueberries).
+part_of(dietplanner, vitamin_c, blueberries).
+part_of(dietplanner, dietary_fiber, blueberries).
+
+carry_out(alice_johnson, running-1).
+carry_out(bob_smith, swimming-2).
+carry_out(emma_davis, yoga-1.5).
+carry_out(michael_brown, weightlifting-1.5).
+carry_out(sophia_miller, cycling-2.5).
+carry_out(alice_johnson, yoga-1).
+carry_out(alice_johnson, swimming-1.5).
+carry_out(bob_smith, running-1).
+carry_out(bob_smith, weightlifting-2).
+carry_out(emma_davis, brisk_walking-1).
+carry_out(emma_davis, swimming-1).
+carry_out(michael_brown, soccer-2).
+carry_out(michael_brown, basketball-1.5).
+carry_out(sophia_miller, cycling_race-3).
+carry_out(sophia_miller, nature_walk-1).
+
+is_allergic(alice_johnson, dairy).
+is_allergic(bob_smith, peanuts).
+is_allergic(emma_davis, soy).
+is_allergic(michael_brown, shellfish).
+is_allergic(sophia_miller, gluten).
+is_allergic(alice_johnson, shellfish).
+is_allergic(bob_smith, dairy).
+is_allergic(emma_davis, gluten).
+is_allergic(michael_brown, peanuts).
+is_allergic(sophia_miller, soy).
+
+contains_allergen(dietplanner, almond_milk_latte, nuts).
+contains_allergen(dietplanner, peanut_butter, nuts).
+contains_allergen(dietplanner, shrimp_salad, shellfish).
+contains_allergen(dietplanner, crab_cakes, shellfish).
+contains_allergen(dietplanner, wheat_bread, gluten).
+contains_allergen(dietplanner, pasta, gluten).
+contains_allergen(dietplanner, egg_salad, eggs).
+contains_allergen(dietplanner, omelette, eggs).
+contains_allergen(dietplanner, milkshake, dairy).
+contains_allergen(dietplanner, cheese_pizza, dairy).
+contains_allergen(dietplanner, soy_sauce, soy).
+contains_allergen(dietplanner, tofu_stir_fry, soy).
+contains_allergen(dietplanner, strawberry_yogurt, dairy).
+contains_allergen(dietplanner, walnut_salad, nuts).
+contains_allergen(dietplanner, lobster_bisque, shellfish).
+
+made_of(dietplanner, spaghetti_bolognese, pasta).
+made_of(dietplanner, pasta_primavera, pasta).
+made_of(dietplanner, caprese_salad, tomatoes).
+made_of(dietplanner, tomato_soup, tomatoes).
+made_of(dietplanner, chicken_caesar_salad, chicken).
+made_of(dietplanner, grilled_chicken_burger, chicken).
+made_of(dietplanner, fruit_salad, fruits).
+made_of(dietplanner, mixed_berry_smoothie, fruits).
+made_of(dietplanner, chocolate_mousse, chocolate).
+made_of(dietplanner, chocolate_chip_cookies, chocolate).
+made_of(dietplanner, veggie_pizza, vegetables).
+made_of(dietplanner, garden_salad, vegetables).
+made_of(dietplanner, tuna_sandwich, tuna).
+made_of(dietplanner, sushi_roll, tuna).
+made_of(dietplanner, beef_stew, beef).
+made_of(dietplanner, beef_tacos, beef).
+
+
+
+% ---------------------------------------------------------------------------------------------------------------------------------------
+% FUNCTIONS
+% ---------------------------------------------------------------------------------------------------------------------------------------
 % Compute the total calories about a list of foods 
 compute_calories_amount([], 0).
 compute_calories_amount([Food|Rest], TotalCalories) :-

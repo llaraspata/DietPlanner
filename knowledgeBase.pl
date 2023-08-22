@@ -187,37 +187,23 @@ fact(115, parent(dietplanner, diet, daily_diet), 1).
 fact(116, attribute(dietplanner, daily_diet, day, select), 1).
 fact(117, values(dietplanner, daily_diet, day, [monday, tuesday, wednesday, thurday, friday, saturday, sunday]), 1).
 fact(118, mandatory(dietplanner, daily_diet, day), 1).
-fact(119, attribute(dietplanner, daily_diet, breakfast, dish), 1).
-fact(120, mandatory(dietplanner, daily_diet, breakfast), 1).
-fact(121, attribute(dietplanner, daily_diet, lunch, dish), 1).
-fact(122, mandatory(dietplanner, daily_diet, lunch), 1).
-fact(123, attribute(dietplanner, daily_diet, dinner, dish), 1).
-fact(124, mandatory(dietplanner, daily_diet, dinner), 1).
-fact(125, attribute(dietplanner, daily_diet, snack_morning, dish), 1).
-fact(126, mandatory(dietplanner, daily_diet, snack_morning), 1).
-fact(127, attribute(dietplanner, daily_diet, snack_evening, dish), 1).
-fact(128, mandatory(dietplanner, daily_diet, snack_evening), 1).
 fact(129, distinguishing(dietplanner, daily_diet, day), 1).
-
-
-% ---------------------------------------------------------------------------------------------------------------------------------------
-% RULES
-% ---------------------------------------------------------------------------------------------------------------------------------------
 
 % ---------
 % Relationships
 % ---------
 % TODO: find (or ask) a way to define relationships 
 % in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)
-rule(1, has(foodbeverage, nutrient), and([entity(dietplanner, foodbeverage, _), entity(dietplanner, nutrient, _)]), 1).
-rule(2, part_of(nutrient, foodbeverage), and([entity(dietplanner, nutrient, _), entity(dietplanner, foodbeverage, _)]), 1).
-rule(3, carry_out(person, activity-Hours), and([entity(dietplanner, person, _), entity(dietplanner, activity, _)]), 1).
-rule(4, is_allergic(person, allergen), and([entity(dietplanner, person, _), entity(dietplanner, allergen, _)]), 1).
-rule(5, contains_allergen(foodbeverage, allergen), and([entity(dietplanner, foodbeverage, _), entity(dietplanner, allergen, _)]), 1).
-rule(6, made_of(dish, foodbeverage), and([entity(dietplanner, dish, _), entity(dietplanner, foodbeverage, _)]), 1).
-rule(7, suggested_diet(diet, person), and([entity(dietplanner, diet, _), entity(dietplanner, person, _)]), 1).
-rule(8, composed_of(diet, daily_diet), and([entity(dietplanner, diet, _), entity(dietplanner, daily_diet, _)]), 1).
-
+relationships(1, has_nutrient(foodbeverage, nutrient), 1, 100).
+relationships(2, part_of(nutrient, foodbeverage), 1, 100000).
+relationships(3, carry_out(person, activity-hours), 0, 100).
+relationships(4, is_allergic(person, allergen), 0, 100).
+relationships(5, is_contained(allergen, foodbeverage), 0, 100).
+relationships(6, made_for(diet, person), 1, 1).
+relationships(7, suggested_diet(person, diet), 0, 100).
+relationships(8, composed_of(diet, daily_diet), 7, 7).
+relationships(9, has(daily_diet, dish), 5, 5).
+relationships(10, made_of(dish, foodbeverage), 1, 100).
 
 % ---------------------------------------------------------------------------------------------------------------------------------------
 % INSTANCES
@@ -1153,30 +1139,30 @@ attribute_value(dietplanner, chicken_stir_fry, type, main_meal).
 % ---------
 % Relationships
 % ---------
-has(dietplanner, red_wine, ethanol).
-has(dietplanner, red_wine, resveratrol).
-has(dietplanner, red_wine, antioxidants).
-has(dietplanner, chicken_breast, protein).
-has(dietplanner, chicken_breast, vitamin_b6).
-has(dietplanner, chicken_breast, phosphorus).
-has(dietplanner, spinach, iron).
-has(dietplanner, spinach, vitamin_k).
-has(dietplanner, spinach, vitamin_a).
-has(dietplanner, oatmeal, complex_carbohydrates).
-has(dietplanner, oatmeal, dietary_fiber).
-has(dietplanner, oatmeal, manganese).
-has(dietplanner, salmon, omega_3_fatty_acids).
-has(dietplanner, salmon, vitamin_d).
-has(dietplanner, salmon, vitamin_b12).
-has(dietplanner, almonds, monounsaturated_fat).
-has(dietplanner, almonds, vitamin_e).
-has(dietplanner, almonds, magnesium).
-has(dietplanner, greek_yogurt, protein).
-has(dietplanner, greek_yogurt, calcium).
-has(dietplanner, greek_yogurt, probiotics).
-has(dietplanner, blueberries, antioxidants).
-has(dietplanner, blueberries, vitamin_c).
-has(dietplanner, blueberries, dietary_fiber).
+has_nutrient(dietplanner, red_wine, ethanol).
+has_nutrient(dietplanner, red_wine, resveratrol).
+has_nutrient(dietplanner, red_wine, antioxidants).
+has_nutrient(dietplanner, chicken_breast, protein).
+has_nutrient(dietplanner, chicken_breast, vitamin_b6).
+has_nutrient(dietplanner, chicken_breast, phosphorus).
+has_nutrient(dietplanner, spinach, iron).
+has_nutrient(dietplanner, spinach, vitamin_k).
+has_nutrient(dietplanner, spinach, vitamin_a).
+has_nutrient(dietplanner, oatmeal, complex_carbohydrates).
+has_nutrient(dietplanner, oatmeal, dietary_fiber).
+has_nutrient(dietplanner, oatmeal, manganese).
+has_nutrient(dietplanner, salmon, omega_3_fatty_acids).
+has_nutrient(dietplanner, salmon, vitamin_d).
+has_nutrient(dietplanner, salmon, vitamin_b12).
+has_nutrient(dietplanner, almonds, monounsaturated_fat).
+has_nutrient(dietplanner, almonds, vitamin_e).
+has_nutrient(dietplanner, almonds, magnesium).
+has_nutrient(dietplanner, greek_yogurt, protein).
+has_nutrient(dietplanner, greek_yogurt, calcium).
+has_nutrient(dietplanner, greek_yogurt, probiotics).
+has_nutrient(dietplanner, blueberries, antioxidants).
+has_nutrient(dietplanner, blueberries, vitamin_c).
+has_nutrient(dietplanner, blueberries, dietary_fiber).
 
 part_of(dietplanner, ethanol, red_wine).
 part_of(dietplanner, resveratrol, red_wine).
@@ -1230,21 +1216,21 @@ is_allergic(emma_davis, gluten).
 is_allergic(michael_brown, peanuts).
 is_allergic(sophia_miller, soy).
 
-contains_allergen(dietplanner, almond_milk_latte, nuts).
-contains_allergen(dietplanner, peanut_butter, nuts).
-contains_allergen(dietplanner, shrimp_salad, shellfish).
-contains_allergen(dietplanner, crab_cakes, shellfish).
-contains_allergen(dietplanner, wheat_bread, gluten).
-contains_allergen(dietplanner, pasta, gluten).
-contains_allergen(dietplanner, egg_salad, eggs).
-contains_allergen(dietplanner, omelette, eggs).
-contains_allergen(dietplanner, milkshake, dairy).
-contains_allergen(dietplanner, cheese_pizza, dairy).
-contains_allergen(dietplanner, soy_sauce, soy).
-contains_allergen(dietplanner, tofu_stir_fry, soy).
-contains_allergen(dietplanner, strawberry_yogurt, dairy).
-contains_allergen(dietplanner, walnut_salad, nuts).
-contains_allergen(dietplanner, lobster_bisque, shellfish).
+is_contained(dietplanner, nuts, almond_milk_latte).
+is_contained(dietplanner, nuts, peanut_butter).
+is_contained(dietplanner, shellfish, shrimp_salad).
+is_contained(dietplanner, shellfish, crab_cakes).
+is_contained(dietplanner, gluten, wheat_bread).
+is_contained(dietplanner, gluten, pasta).
+is_contained(dietplanner, eggs, egg_salad).
+is_contained(dietplanner, eggs, omelette).
+is_contained(dietplanner, dairy, milkshake).
+is_contained(dietplanner, dairy, cheese_pizza).
+is_contained(dietplanner, soy, soy_sauce).
+is_contained(dietplanner, soy, tofu_stir_fry).
+is_contained(dietplanner, dairy, strawberry_yogurt).
+is_contained(dietplanner, nuts, walnut_salad).
+is_contained(dietplanner, shellfish, lobster_bisque).
 
 made_of(dietplanner, spaghetti_bolognese, pasta).
 made_of(dietplanner, pasta_primavera, pasta).
@@ -1263,7 +1249,7 @@ made_of(dietplanner, sushi_roll, tuna).
 made_of(dietplanner, beef_stew, beef).
 made_of(dietplanner, beef_tacos, beef).
 
-
+%Bisogna aggiungere le istanze per le nuove relazioni
 
 % ---------------------------------------------------------------------------------------------------------------------------------------
 % FUNCTIONS

@@ -182,16 +182,22 @@ fact(113, values(dietplanner, diet, type, [normocaloric]), 1).      % Add more d
 % TODO: find the proper way to specify that an attribute is a list and what is its structure
 % For example breakfasts -> list of pairs Dish-grams, where each Dish's type is equal to breakfast
 % This could be done using rules (so is done here) -> Anyway check this.
-fact(114, mandatory(dietplanner, dish, type), 1).
-fact(115, attribute(dietplanner, diet, breakfasts, list), 1).
-fact(116, mandatory(dietplanner, dish, breakfasts), 1).
-fact(117, attribute(dietplanner, diet, lunches, list), 1).
-fact(118, mandatory(dietplanner, dish, lunches), 1).
-fact(119, attribute(dietplanner, diet, dinners, list), 1).
-fact(120, mandatory(dietplanner, dish, dinners), 1).
-fact(121, attribute(dietplanner, diet, snacks, list), 1).
-fact(122, mandatory(dietplanner, dish, snacks), 1).
-
+fact(114, entity(dietplanner, daily_diet), 1).
+fact(115, parent(dietplanner, diet, daily_diet), 1).
+fact(116, attribute(dietplanner, daily_diet, day, select), 1).
+fact(117, values(dietplanner, daily_diet, day, [monday, tuesday, wednesday, thurday, friday, saturday, sunday]), 1).
+fact(118, mandatory(dietplanner, daily_diet, day), 1).
+fact(119, attribute(dietplanner, daily_diet, breakfast, dish), 1).
+fact(120, mandatory(dietplanner, daily_diet, breakfast), 1).
+fact(121, attribute(dietplanner, daily_diet, lunch, dish), 1).
+fact(122, mandatory(dietplanner, daily_diet, lunch), 1).
+fact(123, attribute(dietplanner, daily_diet, dinner, dish), 1).
+fact(124, mandatory(dietplanner, daily_diet, dinner), 1).
+fact(125, attribute(dietplanner, daily_diet, snack_morning, dish), 1).
+fact(126, mandatory(dietplanner, daily_diet, snack_morning), 1).
+fact(127, attribute(dietplanner, daily_diet, snack_evening, dish), 1).
+fact(128, mandatory(dietplanner, daily_diet, snack_evening), 1).
+fact(129, distinguishing(dietplanner, daily_diet, day), 1).
 
 
 % ---------------------------------------------------------------------------------------------------------------------------------------
@@ -203,13 +209,14 @@ fact(122, mandatory(dietplanner, dish, snacks), 1).
 % ---------
 % TODO: find (or ask) a way to define relationships 
 % in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)
-rule(1, has(FoodBeverage, Nutrient), and([entity(dietplanner, FoodBeverage, _), entity(dietplanner, Nutrient, _)]), 1).
-rule(2, part_of(Nutrient, FoodBeverage), and([entity(dietplanner, Nutrient, _), entity(dietplanner, FoodBeverage, _)]), 1).
-rule(3, carry_out(Person, Activity-Hours), and([entity(dietplanner, Person, _), entity(dietplanner, Activity, _)]), 1).
-rule(4, is_allergic(Person, Allergen), and([entity(dietplanner, Person, _), entity(dietplanner, Allergen, _)]), 1).
-rule(5, contains_allergen(FoodBeverage, Allergen), and([entity(dietplanner, FoodBeverage, _), entity(dietplanner, Allergen, _)]), 1).
-rule(6, made_of(Dish, FoodBeverage), and([entity(dietplanner, Dish, _), entity(dietplanner, FoodBeverage, _)]), 1).
-rule(7, suggested_diet(Diet, Person), and([entity(dietplanner, Diet, _), entity(dietplanner, Person, _)]), 1).
+rule(1, has(foodbeverage, nutrient), and([entity(dietplanner, foodbeverage, _), entity(dietplanner, nutrient, _)]), 1).
+rule(2, part_of(nutrient, foodbeverage), and([entity(dietplanner, nutrient, _), entity(dietplanner, foodbeverage, _)]), 1).
+rule(3, carry_out(person, activity-Hours), and([entity(dietplanner, person, _), entity(dietplanner, activity, _)]), 1).
+rule(4, is_allergic(person, allergen), and([entity(dietplanner, person, _), entity(dietplanner, allergen, _)]), 1).
+rule(5, contains_allergen(foodbeverage, allergen), and([entity(dietplanner, foodbeverage, _), entity(dietplanner, allergen, _)]), 1).
+rule(6, made_of(dish, foodbeverage), and([entity(dietplanner, dish, _), entity(dietplanner, foodbeverage, _)]), 1).
+rule(7, suggested_diet(diet, person), and([entity(dietplanner, diet, _), entity(dietplanner, person, _)]), 1).
+rule(8, composed_of(diet, daily_diet), and([entity(dietplanner, diet, _), entity(dietplanner, daily_diet, _)]), 1).
 
 
 % ---------------------------------------------------------------------------------------------------------------------------------------

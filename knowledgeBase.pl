@@ -1304,3 +1304,7 @@ compute_needed_calories(Person, NeededCalories) :-
 
     BMR is Constant + (WeightFactor * Weight) + (HeightFactor * Height) - (AgeFactor * Age),
     NeededCalories is BMR.
+
+name_allergen(Name) :- 
+    allergen_instance(dietplanner, allergen, X),
+    attribute_value(dietplanner, X, name, Name).

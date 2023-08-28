@@ -116,6 +116,11 @@ attribute_value(dietplanner, crab, name, "Crab").
 attribute_value(dietplanner, crab, description, "Delicate-flavored shellfish enjoyed in various culinary styles.").
 attribute_value(dietplanner, crab, calories, 83).
 
+fish_seafood_instance(dietplanner, fish_seafood, lobster).
+attribute_value(dietplanner, lobster, name, "Lobster").
+attribute_value(dietplanner, lobster, description, "Succulent shellfish known for its sweet and tender meat.").
+attribute_value(dietplanner, lobster, calories, 89).
+
 % Subclass: fruits_olives
 fruits_olives_instance(dietplanner, fruits_olives, apple).
 attribute_value(dietplanner, apple, name, "Apple").
@@ -141,6 +146,11 @@ fruits_olives_instance(dietplanner, fruits_olives, orange).
 attribute_value(dietplanner, orange, name, "Orange").
 attribute_value(dietplanner, orange, description, "Citrus fruit known for its vitamin C content and refreshing flavor.").
 attribute_value(dietplanner, orange, calories, 43).
+
+fruits_olives_instance(dietplanner, fruits_olives, blueberries).
+attribute_value(dietplanner, blueberries, name, "Orange").
+attribute_value(dietplanner, blueberries, description, "Antioxidant-rich, nutrient-dense fruits known for their vibrant color and potential health benefits.").
+attribute_value(dietplanner, blueberries, calories, 57).
 
 % Subclass: meats
 meats_instance(dietplanner, meats, grilled_chicken_breast).
@@ -355,6 +365,32 @@ attribute_value(dietplanner, donut, name, "Donut").
 attribute_value(dietplanner, donut, description, "Deep-fried sweet pastry often coated with icing or powdered sugar.").
 attribute_value(dietplanner, donut, calories, 452).
 
+% Subclass: vegetables
+vegetable_instance(dietplanner, vegetables, carrot).
+attribute_value(dietplanner, carrot, name, "Carrot").
+attribute_value(dietplanner, carrot, description, "Root vegetable rich in vitamins and minerals.").
+attribute_value(dietplanner, carrot, calories, 41).
+
+vegetable_instance(dietplanner, vegetables, spinach).
+attribute_value(dietplanner, spinach, name, "Spinach").
+attribute_value(dietplanner, spinach, description, "Leafy green vegetable packed with nutrients.").
+attribute_value(dietplanner, spinach, calories, 23).
+
+vegetable_instance(dietplanner, vegetables, broccoli).
+attribute_value(dietplanner, broccoli, name, "Broccoli").
+attribute_value(dietplanner, broccoli, description, "Nutrient-dense green vegetable with edible florets.").
+attribute_value(dietplanner, broccoli, calories, 55).
+
+vegetable_instance(dietplanner, vegetables, bell_pepper).
+attribute_value(dietplanner, bell_pepper, name, "Bell Pepper").
+attribute_value(dietplanner, bell_pepper, description, "Colorful vegetable high in antioxidants.").
+attribute_value(dietplanner, bell_pepper, calories, 29).
+
+vegetable_instance(dietplanner, vegetables, tomato).
+attribute_value(dietplanner, tomato, name, "Tomato").
+attribute_value(dietplanner, tomato, description, "Edible red fruit commonly used as a vegetable.").
+attribute_value(dietplanner, tomato, calories, 74).
+
 % Subclass: beverage
 % Subclass: coffee_energydrinks
 coffee_energydrinks_instance(dietplanner, coffee_energydrinks, espresso).
@@ -565,6 +601,14 @@ minerals_instance(dietplanner, minerals, zinc).
 attribute_value(dietplanner, zinc, name, "Zinc").
 attribute_value(dietplanner, zinc, description, "Essential trace mineral supporting immune function and more.").
 
+minerals_instance(dietplanner, minerals, phosphorus).
+attribute_value(dietplanner, phosphorus, name, "Phosphorus").
+attribute_value(dietplanner, phosphorus, description, "Vital mineral supporting bone health, energy transfer, and various cellular processes in the body.").
+
+minerals_instance(dietplanner, minerals, manganese).
+attribute_value(dietplanner, manganese, name, "Manganese").
+attribute_value(dietplanner, manganese, description, "Trace mineral essential for metabolism, bone health, and antioxidant defense in the body.").
+
 % Subclass: protein
 protein_instance(dietplanner, protein, whey_protein).
 attribute_value(dietplanner, whey_protein, name, "Whey Protein").
@@ -585,6 +629,10 @@ attribute_value(dietplanner, egg_white_protein, description, "Protein sourced fr
 protein_instance(dietplanner, protein, pea_protein).
 attribute_value(dietplanner, pea_protein, name, "Pea Protein").
 attribute_value(dietplanner, pea_protein, description, "Plant-based protein extracted from yellow peas, suitable for various diets.").
+
+protein_instance(dietplanner, protein, lean_protein).
+attribute_value(dietplanner, lean_protein, name, "Lean Protein").
+attribute_value(dietplanner, lean_protein, description, "Lean protein is low in fat and rich in essential amino acids, promoting muscle health and overall well-being.").
 
 % Subclass: vitamin
 vitamin_instance(dietplanner, vitamin, vitamin_c).
@@ -607,6 +655,13 @@ vitamin_instance(dietplanner, vitamin, vitamin_e).
 attribute_value(dietplanner, vitamin_e, name, "Vitamin E").
 attribute_value(dietplanner, vitamin_e, description, "Antioxidant vitamin protecting cells from damage.").
 
+vitamin_instance(dietplanner, vitamin, vitamin_b6).
+attribute_value(dietplanner, vitamin_b6, name, "Vitamin B6").
+attribute_value(dietplanner, vitamin_b6, description, "Vitamin B6 is vital for metabolism, neurotransmitters, and immunity.").
+
+vitamin_instance(dietplanner, vitamin, vitamin_b12).
+attribute_value(dietplanner, vitamin_b12, name, "Vitamin B12").
+attribute_value(dietplanner, vitamin_b12, description, "Water-soluble vitamin necessary for nerve function, DNA synthesis, and red blood cell formation.").
 
 % ---------
 % Class: allergen
@@ -631,7 +686,13 @@ allergen_instance(dietplanner, allergen, shellfish).
 attribute_value(dietplanner, shellfish, name, "Shellfish").
 attribute_value(dietplanner, shellfish, description, "Seafood like shrimp, crab, and lobster.").
 
+allergen_instance(dietplanner, allergens, nuts).
+attribute_value(dietplanner, nuts, name, "Nuts").
+attribute_value(dietplanner, nuts, description, "Common allergen, various types of nuts can trigger allergic reactions.").
 
+allergen_instance(dietplanner, allergens, eggs).
+attribute_value(dietplanner, eggs, name, "Eggs").
+attribute_value(dietplanner, eggs, description, "Common allergen, egg allergies are especially common in children.").
 
 % ---------
 % Class: person
@@ -757,7 +818,7 @@ attribute_value(dietplanner, urban_walking, description, "Explore the city on fo
 attribute_value(dietplanner, urban_walking, calory_effort, 250).
 
 % ---------
-% Class: meal
+% Class: dish
 % ---------
 % Instances of Dish
 dish_instance(dietplanner, dish, grilled_chicken_salad).
@@ -835,18 +896,89 @@ attribute_value(dietplanner, chicken_stir_fry, name, "Chicken Stir-Fry").
 attribute_value(dietplanner, chicken_stir_fry, description, "Quick and healthy chicken stir-fry with colorful vegetables.").
 attribute_value(dietplanner, chicken_stir_fry, type, main_meal).
 
+dish_instance(dietplanner, dish, pasta_primavera).
+attribute_value(dietplanner, pasta_primavera, name, "Pasta Primavera").
+attribute_value(dietplanner, pasta_primavera, description, "Vegetable-loaded pasta dish with a light and fresh flavor.").
+attribute_value(dietplanner, pasta_primavera, type, main_meal).
+
+dish_instance(dietplanner, dish, caprese_salad).
+attribute_value(dietplanner, caprese_salad, name, "Caprese Salad").
+attribute_value(dietplanner, caprese_salad, description, "Classic Italian salad made with fresh tomatoes, mozzarella, and basil.").
+attribute_value(dietplanner, caprese_salad, type, appetizer).
+
+dish_instance(dietplanner, dish, tomato_soup).
+attribute_value(dietplanner, tomato_soup, name, "Tomato Soup").
+attribute_value(dietplanner, tomato_soup, description, "Hearty and comforting tomato-based soup, perfect for any season.").
+attribute_value(dietplanner, tomato_soup, type, soup).
+
+dish_instance(dietplanner, dish, chicken_caesar_salad).
+attribute_value(dietplanner, chicken_caesar_salad, name, "Chicken Caesar Salad").
+attribute_value(dietplanner, chicken_caesar_salad, description, "Classic salad with romaine lettuce, grilled chicken, croutons, and Caesar dressing.").
+attribute_value(dietplanner, chicken_caesar_salad, type, main_meal).
+
+dish_instance(dietplanner, dish, grilled_chicken_burger).
+attribute_value(dietplanner, grilled_chicken_burger, name, "Grilled Chicken Burger").
+attribute_value(dietplanner, grilled_chicken_burger, description, "Burger with a grilled chicken patty, served with fresh toppings.").
+attribute_value(dietplanner, grilled_chicken_burger, type, main_meal).
+
+dish_instance(dietplanner, dish, mixed_berry_smoothie).
+attribute_value(dietplanner, mixed_berry_smoothie, name, "Mixed Berry Smoothie").
+attribute_value(dietplanner, mixed_berry_smoothie, description, "Refreshing smoothie made with a blend of mixed berries and yogurt.").
+attribute_value(dietplanner, mixed_berry_smoothie, type, beverage).
+
+dish_instance(dietplanner, dish, chocolate_mousse).
+attribute_value(dietplanner, chocolate_mousse, name, "Chocolate Mousse").
+attribute_value(dietplanner, chocolate_mousse, description, "Decadent dessert made with whipped chocolate and cream.").
+attribute_value(dietplanner, chocolate_mousse, type, dessert).
+
+dish_instance(dietplanner, dish, chocolate_chip_cookies).
+attribute_value(dietplanner, chocolate_chip_cookies, name, "Chocolate Chip Cookies").
+attribute_value(dietplanner, chocolate_chip_cookies, description, "Classic cookies with chocolate chips, perfect for a sweet treat.").
+attribute_value(dietplanner, chocolate_chip_cookies, type, dessert).
+
+dish_instance(dietplanner, dish, veggie_pizza).
+attribute_value(dietplanner, veggie_pizza, name, "Veggie Pizza").
+attribute_value(dietplanner, veggie_pizza, description, "Pizza topped with a variety of fresh vegetables and cheese.").
+attribute_value(dietplanner, veggie_pizza, type, main_meal).
+
+dish_instance(dietplanner, dish, garden_salad).
+attribute_value(dietplanner, garden_salad, name, "Garden Salad").
+attribute_value(dietplanner, garden_salad, description, "Healthy salad with a mix of garden-fresh vegetables and greens.").
+attribute_value(dietplanner, garden_salad, type, appetizer).
+
+dish_instance(dietplanner, dish, tuna_sandwich).
+attribute_value(dietplanner, tuna_sandwich, name, "Tuna Sandwich").
+attribute_value(dietplanner, tuna_sandwich, description, "Sandwich filled with tuna salad, lettuce, and other toppings.").
+attribute_value(dietplanner, tuna_sandwich, type, main_meal).
+
+dish_instance(dietplanner, dish, sushi_roll).
+attribute_value(dietplanner, sushi_roll, name, "Sushi Roll").
+attribute_value(dietplanner, sushi_roll, description, "Japanese dish with rice, seafood, and vegetables wrapped in seaweed.").
+attribute_value(dietplanner, sushi_roll, type, main_meal).
+
+dish_instance(dietplanner, dish, beef_stew).
+attribute_value(dietplanner, beef_stew, name, "Beef Stew").
+attribute_value(dietplanner, beef_stew, description, "Hearty stew with tender beef, vegetables, and flavorful broth.").
+attribute_value(dietplanner, beef_stew, type, main_meal).
+
+dish_instance(dietplanner, dish, beef_tacos).
+attribute_value(dietplanner, beef_tacos, name, "Beef Tacos").
+attribute_value(dietplanner, beef_tacos, description, "Tacos filled with seasoned ground beef and various toppings.").
+attribute_value(dietplanner, beef_tacos, type, main_meal).
+
+
 
 % ---------
 % Relationships
 % ---------
-has_nutrient(dietplanner, chicken_breast, protein).
+has_nutrient(dietplanner, chicken_breast, lean_protein).
 has_nutrient(dietplanner, chicken_breast, vitamin_b6).
 has_nutrient(dietplanner, chicken_breast, phosphorus).
 has_nutrient(dietplanner, spinach, iron).
 has_nutrient(dietplanner, spinach, vitamin_k).
 has_nutrient(dietplanner, spinach, vitamin_a).
 has_nutrient(dietplanner, oatmeal, complex_carbohydrates).
-has_nutrient(dietplanner, oatmeal, dietary_fiber).
+has_nutrient(dietplanner, oatmeal, soluble_fiber).
 has_nutrient(dietplanner, oatmeal, manganese).
 has_nutrient(dietplanner, salmon, omega_3_fatty_acids).
 has_nutrient(dietplanner, salmon, vitamin_d).
@@ -854,21 +986,19 @@ has_nutrient(dietplanner, salmon, vitamin_b12).
 has_nutrient(dietplanner, almonds, monounsaturated_fat).
 has_nutrient(dietplanner, almonds, vitamin_e).
 has_nutrient(dietplanner, almonds, magnesium).
-has_nutrient(dietplanner, greek_yogurt, protein).
-has_nutrient(dietplanner, greek_yogurt, calcium).
-has_nutrient(dietplanner, greek_yogurt, probiotics).
-has_nutrient(dietplanner, blueberries, antioxidants).
+has_nutrient(dietplanner, greek_yogurt_parfait, casein_protein).
+has_nutrient(dietplanner, greek_yogurt_parfait, calcium).
 has_nutrient(dietplanner, blueberries, vitamin_c).
-has_nutrient(dietplanner, blueberries, dietary_fiber).
+has_nutrient(dietplanner, blueberries, insoluble_fiber).
 
-part_of(dietplanner, protein, chicken_breast).
+part_of(dietplanner, lean_protein, chicken_breast).
 part_of(dietplanner, vitamin_b6, chicken_breast).
 part_of(dietplanner, phosphorus, chicken_breast).
 part_of(dietplanner, iron, spinach).
 part_of(dietplanner, vitamin_k, spinach).
 part_of(dietplanner, vitamin_a, spinach).
 part_of(dietplanner, complex_carbohydrates, oatmeal).
-part_of(dietplanner, dietary_fiber, oatmeal).
+part_of(dietplanner, soluble_fiber, oatmeal).
 part_of(dietplanner, manganese, oatmeal).
 part_of(dietplanner, omega_3_fatty_acids, salmon).
 part_of(dietplanner, vitamin_d, salmon).
@@ -876,12 +1006,10 @@ part_of(dietplanner, vitamin_b12, salmon).
 part_of(dietplanner, monounsaturated_fat, almonds).
 part_of(dietplanner, vitamin_e, almonds).
 part_of(dietplanner, magnesium, almonds).
-part_of(dietplanner, protein, greek_yogurt).
-part_of(dietplanner, calcium, greek_yogurt).
-part_of(dietplanner, probiotics, greek_yogurt).
-part_of(dietplanner, antioxidants, blueberries).
+part_of(dietplanner, casein_protein, greek_yogurt_parfait).
+part_of(dietplanner, calcium, greek_yogurt_parfait).
 part_of(dietplanner, vitamin_c, blueberries).
-part_of(dietplanner, dietary_fiber, blueberries).
+part_of(dietplanner, insoluble_fiber, blueberries).
 
 carry_out(alice_johnson, running-1).
 carry_out(bob_smith, swimming-2).
@@ -910,21 +1038,22 @@ is_allergic(emma_davis, gluten).
 is_allergic(michael_brown, peanuts).
 is_allergic(sophia_miller, soy).
 
-is_contained(dietplanner, nuts, almond_milk_latte).
-is_contained(dietplanner, nuts, peanut_butter).
-is_contained(dietplanner, shellfish, shrimp_salad).
-is_contained(dietplanner, shellfish, crab_cakes).
-is_contained(dietplanner, gluten, wheat_bread).
-is_contained(dietplanner, gluten, pasta).
-is_contained(dietplanner, eggs, egg_salad).
-is_contained(dietplanner, eggs, omelette).
-is_contained(dietplanner, dairy, milkshake).
-is_contained(dietplanner, dairy, cheese_pizza).
-is_contained(dietplanner, soy, soy_sauce).
-is_contained(dietplanner, soy, tofu_stir_fry).
-is_contained(dietplanner, dairy, strawberry_yogurt).
-is_contained(dietplanner, nuts, walnut_salad).
-is_contained(dietplanner, shellfish, lobster_bisque).
+is_contained(dietplanner, nuts, almond_milk).
+is_contained(dietplanner, shellfish, shrimp).
+is_contained(dietplanner, shellfish, crab).
+%is_contained(dietplanner, gluten, wheat_bread).
+%is_contained(dietplanner, gluten, pasta).
+is_contained(dietplanner, eggs, scrambled_eggs).
+is_contained(dietplanner, eggs, chicken_eggs).
+is_contained(dietplanner, eggs, quail_eggs).
+is_contained(dietplanner, eggs, duck_eggs).
+is_contained(dietplanner, eggs, goose_eggs).
+is_contained(dietplanner, eggs, egg_whites).
+is_contained(dietplanner, dairy, whole_milk).
+%is_contained(dietplanner, dairy, cheese_pizza).   % TODO da modificare col tipo di formaggio
+%is_contained(dietplanner, soy, soy_sauce).
+%is_contained(dietplanner, dairy, strawberry_yogurt).
+is_contained(dietplanner, shellfish, lobster).
 
 made_of(dietplanner, spaghetti_bolognese, pasta).
 made_of(dietplanner, pasta_primavera, pasta).
@@ -932,8 +1061,8 @@ made_of(dietplanner, caprese_salad, tomatoes).
 made_of(dietplanner, tomato_soup, tomatoes).
 made_of(dietplanner, chicken_caesar_salad, chicken).
 made_of(dietplanner, grilled_chicken_burger, chicken).
-made_of(dietplanner, fruit_salad, fruits).
-made_of(dietplanner, mixed_berry_smoothie, fruits).
+made_of(dietplanner, fruit_salad, apple).
+made_of(dietplanner, mixed_berry_smoothie, blueberries).
 made_of(dietplanner, chocolate_mousse, chocolate).
 made_of(dietplanner, chocolate_chip_cookies, chocolate).
 made_of(dietplanner, veggie_pizza, vegetables).
@@ -942,5 +1071,3 @@ made_of(dietplanner, tuna_sandwich, tuna).
 made_of(dietplanner, sushi_roll, tuna).
 made_of(dietplanner, beef_stew, beef).
 made_of(dietplanner, beef_tacos, beef).
-
-%Bisogna aggiungere le istanze per le nuove relazioni

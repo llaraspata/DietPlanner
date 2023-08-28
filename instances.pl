@@ -356,37 +356,6 @@ attribute_value(dietplanner, donut, description, "Deep-fried sweet pastry often 
 attribute_value(dietplanner, donut, calories, 452).
 
 % Subclass: beverage
-% Subclass: alcoholic_beverages
-alcoholic_beverages_instance(dietplanner, alcoholic_beverages, red_wine).
-attribute_value(dietplanner, red_wine, name, "Red Wine").
-attribute_value(dietplanner, red_wine, description, "Classic red wine for a delightful evening.").
-attribute_value(dietplanner, red_wine, calories, 85).
-
-alcoholic_beverages_instance(dietplanner, alcoholic_beverages, beer).
-attribute_value(dietplanner, beer, name, "Beer").
-attribute_value(dietplanner, beer, description, "Classic beer for a casual drink.").
-attribute_value(dietplanner, beer, calories, 43).
-
-alcoholic_beverages_instance(dietplanner, alcoholic_beverages, vodka).
-attribute_value(dietplanner, vodka, name, "Vodka").
-attribute_value(dietplanner, vodka, description, "Clear and versatile vodka for mixing or sipping.").
-attribute_value(dietplanner, vodka, calories, 96).
-
-alcoholic_beverages_instance(dietplanner, alcoholic_beverages, rum).
-attribute_value(dietplanner, rum, name, "Rum").
-attribute_value(dietplanner, rum, description, "Smooth and flavorful rum for cocktails.").
-attribute_value(dietplanner, rum, calories, 231).
-
-alcoholic_beverages_instance(dietplanner, alcoholic_beverages, gin).
-attribute_value(dietplanner, gin, name, "Gin").
-attribute_value(dietplanner, gin, description, "Juniper-infused gin for classic cocktails.").
-attribute_value(dietplanner, gin, calories, 263).
-
-alcoholic_beverages_instance(dietplanner, alcoholic_beverages, tequila).
-attribute_value(dietplanner, tequila, name, "Tequila").
-attribute_value(dietplanner, tequila, description, "Agave-based tequila for margaritas and more.").
-attribute_value(dietplanner, tequila, calories, 96).
-
 % Subclass: coffee_energydrinks
 coffee_energydrinks_instance(dietplanner, coffee_energydrinks, espresso).
 attribute_value(dietplanner, espresso, name, "Espresso").
@@ -417,37 +386,6 @@ coffee_energydrinks_instance(dietplanner, coffee_energydrinks, mocha_frappuccino
 attribute_value(dietplanner, mocha_frappuccino, name, "Mocha Frappuccino").
 attribute_value(dietplanner, mocha_frappuccino, description, "Creamy and chocolaty mocha frappuccino for a delightful treat.").
 attribute_value(dietplanner, mocha_frappuccino, calories, 54).
-
-% Subclass: soda
-soda_instance(dietplanner, soda, cola).
-attribute_value(dietplanner, cola, name, "Cola").
-attribute_value(dietplanner, cola, description, "Classic cola soda for a refreshing taste.").
-attribute_value(dietplanner, cola, calories, 42).
-
-soda_instance(dietplanner, soda, lemon_lime).
-attribute_value(dietplanner, lemon_lime, name, "Lemon Lime Soda").
-attribute_value(dietplanner, lemon_lime, description, "Citrusy lemon-lime soda for a zesty flavor.").
-attribute_value(dietplanner, lemon_lime, calories, 41).
-
-soda_instance(dietplanner, soda, cola_light).
-attribute_value(dietplanner, cola_light, name, "Cola Light").
-attribute_value(dietplanner, cola_light, description, "Light version of classic cola for reduced calories.").
-attribute_value(dietplanner, cola_light, calories, 0).
-
-soda_instance(dietplanner, soda, ginger_ale).
-attribute_value(dietplanner, ginger_ale, name, "Ginger Ale").
-attribute_value(dietplanner, ginger_ale, description, "Bubbly ginger ale with a hint of spice.").
-attribute_value(dietplanner, ginger_ale, calories, 37).
-
-soda_instance(dietplanner, soda, orange_soda).
-attribute_value(dietplanner, orange_soda, name, "Orange Soda").
-attribute_value(dietplanner, orange_soda, description, "Fizzy orange soda for a burst of citrus.").
-attribute_value(dietplanner, orange_soda, calories, 42).
-
-soda_instance(dietplanner, soda, root_beer).
-attribute_value(dietplanner, root_beer, name, "Root Beer").
-attribute_value(dietplanner, root_beer, description, "Classic root beer with a rich and creamy taste.").
-attribute_value(dietplanner, root_beer, calories, 46).
 
 % Subclass: juice
 juice_instance(dietplanner, juice, orange_juice).
@@ -514,11 +452,6 @@ attribute_value(dietplanner, cucumber_mint_infused_water, calories, 0).
 % ---------
 % Class: nutrient
 % ---------
-% Subclass: alcoholic
-alcoholic_instance(dietplanner, alcoholic, ethanol).
-attribute_value(dietplanner, ethanol, name, "Ethanol").
-attribute_value(dietplanner, ethanol, description, "The psychoactive ingredient in alcoholic beverages.").
-
 % Subclass: amino_acidic
 amino_acidic_instance(dietplanner, amino_acidic, tryptophan).
 attribute_value(dietplanner, tryptophan, name, "Tryptophan").
@@ -797,32 +730,6 @@ attribute_value(dietplanner, cycling_race, name, "Cycling Race").
 attribute_value(dietplanner, cycling_race, description, "Participate in a cycling race for a challenging workout.").
 attribute_value(dietplanner, cycling_race, calory_effort, 1000).
 
-% Subclass: inactivity
-inactivity_instance(dietplanner, inactivity, sitting).
-attribute_value(dietplanner, sitting, name, "Sitting").
-attribute_value(dietplanner, sitting, description, "Sitting for extended periods can be detrimental to health.").
-attribute_value(dietplanner, sitting, calory_effort, 100).
-
-inactivity_instance(dietplanner, inactivity, tv_watching).
-attribute_value(dietplanner, tv_watching, name, "TV Watching").
-attribute_value(dietplanner, tv_watching, description, "Watching TV for hours can lead to a sedentary lifestyle.").
-attribute_value(dietplanner, tv_watching, calory_effort, 50).
-
-inactivity_instance(dietplanner, inactivity, desk_work).
-attribute_value(dietplanner, desk_work, name, "Desk Work").
-attribute_value(dietplanner, desk_work, description, "Sitting at a desk for work without breaks can impact well-being.").
-attribute_value(dietplanner, desk_work, calory_effort, 70).
-
-inactivity_instance(dietplanner, inactivity, reading).
-attribute_value(dietplanner, reading, name, "Reading").
-attribute_value(dietplanner, reading, description, "Reading for long periods can lead to reduced physical activity.").
-attribute_value(dietplanner, reading, calory_effort, 60).
-
-inactivity_instance(dietplanner, inactivity, computer_use).
-attribute_value(dietplanner, computer_use, name, "Computer Use").
-attribute_value(dietplanner, computer_use, description, "Using a computer for extended periods can contribute to inactivity.").
-attribute_value(dietplanner, computer_use, calory_effort, 80).
-
 % Subclass: walking
 walking_instance(dietplanner, walking, brisk_walking).
 attribute_value(dietplanner, brisk_walking, name, "Brisk Walking").
@@ -932,9 +839,6 @@ attribute_value(dietplanner, chicken_stir_fry, type, main_meal).
 % ---------
 % Relationships
 % ---------
-has_nutrient(dietplanner, red_wine, ethanol).
-has_nutrient(dietplanner, red_wine, resveratrol).
-has_nutrient(dietplanner, red_wine, antioxidants).
 has_nutrient(dietplanner, chicken_breast, protein).
 has_nutrient(dietplanner, chicken_breast, vitamin_b6).
 has_nutrient(dietplanner, chicken_breast, phosphorus).
@@ -957,9 +861,6 @@ has_nutrient(dietplanner, blueberries, antioxidants).
 has_nutrient(dietplanner, blueberries, vitamin_c).
 has_nutrient(dietplanner, blueberries, dietary_fiber).
 
-part_of(dietplanner, ethanol, red_wine).
-part_of(dietplanner, resveratrol, red_wine).
-part_of(dietplanner, antioxidants, red_wine).
 part_of(dietplanner, protein, chicken_breast).
 part_of(dietplanner, vitamin_b6, chicken_breast).
 part_of(dietplanner, phosphorus, chicken_breast).

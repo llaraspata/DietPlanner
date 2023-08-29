@@ -121,56 +121,60 @@ fact(86, attribute(dietplanner, person, height, integer), 1).
 fact(87, mandatory(dietplanner, person, height), 1).
 fact(88, attribute(dietplanner, person, weight, real), 1).
 fact(89, mandatory(dietplanner, person, weight), 1).
+fact(90, attribute(dietplanner, person, bmi, real), 1).
+fact(91, mandatory(dietplanner, person, bmi), 1).
+fact(92, attribute(dietplanner, person, energy_demand, integer), 1).
+fact(93, mandatory(dietplanner, person, energy_demand), 1).
 
 % ---------
 % Activity
 % ---------
 % Classes
-fact(90, entity(dietplanner, activity), 1).
-fact(91, entity(dietplanner, sports), 1).
-fact(93, entity(dietplanner, walking), 1).
+fact(94, entity(dietplanner, activity), 1).
+fact(95, entity(dietplanner, sports), 1).
+fact(96, entity(dietplanner, walking), 1).
 
 % Subclasses
-fact(94, parent(dietplanner, activity, sports), 1).
-fact(96, parent(dietplanner, activity, walking), 1).
+fact(97, parent(dietplanner, activity, sports), 1).
+fact(98, parent(dietplanner, activity, walking), 1).
 
 % Attributes 
-fact(97, attribute(dietplanner, activity, name, string), 1).
-fact(98, mandatory(dietplanner, activity, name), 1).
-fact(99, attribute(dietplanner, activity, description, string), 1).
-fact(100, mandatory(dietplanner, activity, description), 1).
-fact(101, attribute(dietplanner, activity, calory_effort, integer), 1).
-fact(102, mandatory(dietplanner, activity, calory_effort), 1).
+fact(99, attribute(dietplanner, activity, name, string), 1).
+fact(100, mandatory(dietplanner, activity, name), 1).
+fact(101, attribute(dietplanner, activity, description, string), 1).
+fact(102, mandatory(dietplanner, activity, description), 1).
+fact(103, attribute(dietplanner, activity, calory_effort, integer), 1).
+fact(104, mandatory(dietplanner, activity, calory_effort), 1).
 
 % ---------
 % Dish
 % ---------
 % Classes
-fact(103, entity(dietplanner, dish), 1).
+fact(105, entity(dietplanner, dish), 1).
 
 % Attributes 
-fact(104, attribute(dietplanner, dish, name, string), 1).
-fact(105, mandatory(dietplanner, dish, name), 1).
-fact(116, attribute(dietplanner, dish, description, string), 1).
-fact(107, mandatory(dietplanner, dish, description), 1).
-fact(108, attribute(dietplanner, dish, type, select), 1).
-fact(109, values(dietplanner, dish, type, [breakfast, lunch, dinner, snack]), 1).
-fact(110, mandatory(dietplanner, dish, type), 1).
-fact(108, attribute(dietplanner, dish, healthy_degree, select), 1).
-fact(109, values(dietplanner, dish, healthy_degree, [high, medium, low]), 1).
-fact(110, mandatory(dietplanner, dish, healthy_degree), 1).
+fact(106, attribute(dietplanner, dish, name, string), 1).
+fact(107, mandatory(dietplanner, dish, name), 1).
+fact(108, attribute(dietplanner, dish, description, string), 1).
+fact(109, mandatory(dietplanner, dish, description), 1).
+fact(110, attribute(dietplanner, dish, type, select), 1).
+fact(111, values(dietplanner, dish, type, [breakfast, lunch, dinner, snack]), 1).
+fact(112, mandatory(dietplanner, dish, type), 1).
+fact(113, attribute(dietplanner, dish, healthy_degree, select), 1).
+fact(114, values(dietplanner, dish, healthy_degree, [high, medium, low]), 1).
+fact(115, mandatory(dietplanner, dish, healthy_degree), 1).
 
 % ---------
 % Diet
 % ---------
 % Classes
-fact(111, entity(dietplanner, diet), 1).
+fact(116, entity(dietplanner, diet), 1).
 
 % Attributes 
-fact(112, attribute(dietplanner, diet, name, string), 1).
-fact(113, mandatory(dietplanner, diet, name), 1).
-fact(114, attribute(dietplanner, diet, type, select), 1).
-fact(115, values(dietplanner, diet, type, [normocaloric]), 1).      % Add more diet types in future enhancements
+fact(117, attribute(dietplanner, diet, name, string), 1).
+fact(118, mandatory(dietplanner, diet, name), 1).
+fact(119, attribute(dietplanner, diet, type, select), 1).
+fact(120, values(dietplanner, diet, type, [normocaloric]), 1).    % Add more diet types in future enhancements
 
 % TODO: find the proper way to specify that an attribute is a list and what is its structure
 % For example breakfasts -> list of pairs Dish-grams, where each Dish's type is equal to breakfast
@@ -179,14 +183,14 @@ fact(115, values(dietplanner, diet, type, [normocaloric]), 1).      % Add more d
 % ---------
 % DailyDiet
 % ---------
-fact(116, entity(dietplanner, daily_diet), 1).
-fact(117, parent(dietplanner, diet, daily_diet), 1).
+fact(121, entity(dietplanner, daily_diet), 1).
+fact(122, parent(dietplanner, diet, daily_diet), 1).
 
-fact(118, attribute(dietplanner, daily_diet, name, string), 1).
-fact(119, mandatory(dietplanner, daily_diet, name), 1).
-fact(120, attribute(dietplanner, daily_diet, day_type, select), 1).
-fact(121, values(dietplanner, daily_diet, day_type, [on, off]), 1).
-fact(122, mandatory(dietplanner, daily_diet, day), 1).
+fact(123, attribute(dietplanner, daily_diet, name, string), 1).
+fact(124, mandatory(dietplanner, daily_diet, name), 1).
+fact(125, attribute(dietplanner, daily_diet, day_type, select), 1).
+fact(126, values(dietplanner, daily_diet, day_type, [on, off]), 1).
+fact(127, mandatory(dietplanner, daily_diet, day), 1).
 
 % ---------
 % Relationships

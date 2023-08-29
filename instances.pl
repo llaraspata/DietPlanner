@@ -1,6 +1,4 @@
-:- reconsult('knowledgeBase.pl').
-:- reconsult('functions.pl').
-:- reconsult('rules.pl').
+:- consult('knowledgeBase.pl').
 
 % ---------
 % Class: food_beverage
@@ -725,6 +723,8 @@ attribute_value(dietplanner, alice_johnson, age, 30).
 attribute_value(dietplanner, alice_johnson, gender, "Female").
 attribute_value(dietplanner, alice_johnson, height, 165).
 attribute_value(dietplanner, alice_johnson, weight, 60.5).
+attribute_value(dietplanner, alice_johnson, bmi, 22.22).
+attribute_value(dietplanner, alice_johnson, energy_demand, 1710).
 
 person_instance(dietplanner, person, bob_smith).
 attribute_value(dietplanner, bob_smith, name, "Bob").
@@ -733,6 +733,18 @@ attribute_value(dietplanner, bob_smith, age, 28).
 attribute_value(dietplanner, bob_smith, gender, "Male").
 attribute_value(dietplanner, bob_smith, height, 180).
 attribute_value(dietplanner, bob_smith, weight, 75.2).
+attribute_value(dietplanner, bob_smith, bmi, 23.21).
+attribute_value(dietplanner, bob_smith, energy_demand, 2080).
+
+person_instance(dietplanner, person, emma_finner).
+attribute_value(dietplanner, emma_finner, name, "Emma").
+attribute_value(dietplanner, emma_finner, surname, "Finner").
+attribute_value(dietplanner, emma_finner, age, 40).
+attribute_value(dietplanner, emma_finner, gender, "Female").
+attribute_value(dietplanner, emma_finner, height, 172).
+attribute_value(dietplanner, emma_finner, weight, 53.0).
+attribute_value(dietplanner, emma_finner, bmi, 17.92).
+attribute_value(dietplanner, emma_finner, energy_demand, 1550).
 
 person_instance(dietplanner, person, emma_davis).
 attribute_value(dietplanner, emma_davis, name, "Emma").
@@ -741,6 +753,8 @@ attribute_value(dietplanner, emma_davis, age, 22).
 attribute_value(dietplanner, emma_davis, gender, "Female").
 attribute_value(dietplanner, emma_davis, height, 158).
 attribute_value(dietplanner, emma_davis, weight, 55.0).
+attribute_value(dietplanner, emma_davis, bmi, 22.03).
+attribute_value(dietplanner, emma_davis, energy_demand, 1600).
 
 person_instance(dietplanner, person, michael_brown).
 attribute_value(dietplanner, michael_brown, name, "Michael").
@@ -748,7 +762,9 @@ attribute_value(dietplanner, michael_brown, surname, "Brown").
 attribute_value(dietplanner, michael_brown, age, 35).
 attribute_value(dietplanner, michael_brown, gender, "Male").
 attribute_value(dietplanner, michael_brown, height, 175).
-attribute_value(dietplanner, michael_brown, weight, 80.7).
+attribute_value(dietplanner, michael_brown, weight, 83.2).
+attribute_value(dietplanner, michael_brown, bmi, 27.17).
+attribute_value(dietplanner, michael_brown, energy_demand, 2150).
 
 person_instance(dietplanner, person, sophia_miller).
 attribute_value(dietplanner, sophia_miller, name, "Sophia").
@@ -756,7 +772,9 @@ attribute_value(dietplanner, sophia_miller, surname, "Miller").
 attribute_value(dietplanner, sophia_miller, age, 29).
 attribute_value(dietplanner, sophia_miller, gender, "Female").
 attribute_value(dietplanner, sophia_miller, height, 170).
-attribute_value(dietplanner, sophia_miller, weight, 63.8).
+attribute_value(dietplanner, sophia_miller, weight, 51.8).
+attribute_value(dietplanner, sophia_miller, bmi, 17.92).
+attribute_value(dietplanner, sophia_miller, energy_demand, 1530).
 
 % ---------
 % Class: activity

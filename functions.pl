@@ -1,6 +1,4 @@
-:- reconsult('knowledgeBase.pl').
-:- reconsult('rules.pl').
-:- reconsult('instances.pl').
+:- consult('instances.pl').
 
 
 % Compute the total calories about a list of foods 

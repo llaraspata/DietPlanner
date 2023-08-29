@@ -725,6 +725,8 @@ attribute_value(dietplanner, alice_johnson, height, 165).
 attribute_value(dietplanner, alice_johnson, weight, 60.5).
 attribute_value(dietplanner, alice_johnson, bmi, 22.22).
 attribute_value(dietplanner, alice_johnson, energy_demand, 1710).
+attribute_value(dietplanner, alice_johnson, number_day_on, 7).
+attribute_value(dietplanner, alice_johnson, number_day_off, 0).
 
 person_instance(dietplanner, person, bob_smith).
 attribute_value(dietplanner, bob_smith, name, "Bob").
@@ -735,6 +737,8 @@ attribute_value(dietplanner, bob_smith, height, 180).
 attribute_value(dietplanner, bob_smith, weight, 75.2).
 attribute_value(dietplanner, bob_smith, bmi, 23.21).
 attribute_value(dietplanner, bob_smith, energy_demand, 2080).
+attribute_value(dietplanner, bob_smith, number_day_on, 4).
+attribute_value(dietplanner, bob_smith, number_day_off, 3).
 
 person_instance(dietplanner, person, emma_finner).
 attribute_value(dietplanner, emma_finner, name, "Emma").
@@ -745,6 +749,8 @@ attribute_value(dietplanner, emma_finner, height, 172).
 attribute_value(dietplanner, emma_finner, weight, 53.0).
 attribute_value(dietplanner, emma_finner, bmi, 17.92).
 attribute_value(dietplanner, emma_finner, energy_demand, 1550).
+attribute_value(dietplanner, emma_finner, number_day_on, 0).
+attribute_value(dietplanner, emma_finner, number_day_off, 7).
 
 person_instance(dietplanner, person, emma_davis).
 attribute_value(dietplanner, emma_davis, name, "Emma").
@@ -755,6 +761,8 @@ attribute_value(dietplanner, emma_davis, height, 158).
 attribute_value(dietplanner, emma_davis, weight, 55.0).
 attribute_value(dietplanner, emma_davis, bmi, 22.03).
 attribute_value(dietplanner, emma_davis, energy_demand, 1600).
+attribute_value(dietplanner, emma_davis, number_day_on, 5).
+attribute_value(dietplanner, emma_davis, number_day_off, 2).
 
 person_instance(dietplanner, person, michael_brown).
 attribute_value(dietplanner, michael_brown, name, "Michael").
@@ -765,6 +773,8 @@ attribute_value(dietplanner, michael_brown, height, 175).
 attribute_value(dietplanner, michael_brown, weight, 83.2).
 attribute_value(dietplanner, michael_brown, bmi, 27.17).
 attribute_value(dietplanner, michael_brown, energy_demand, 2150).
+attribute_value(dietplanner, michael_brown, number_day_on, 3).
+attribute_value(dietplanner, michael_brown, number_day_off, 4).
 
 person_instance(dietplanner, person, sophia_miller).
 attribute_value(dietplanner, sophia_miller, name, "Sophia").
@@ -775,6 +785,8 @@ attribute_value(dietplanner, sophia_miller, height, 170).
 attribute_value(dietplanner, sophia_miller, weight, 51.8).
 attribute_value(dietplanner, sophia_miller, bmi, 17.92).
 attribute_value(dietplanner, sophia_miller, energy_demand, 1530).
+attribute_value(dietplanner, sophia_miller, number_day_on, 6).
+attribute_value(dietplanner, sophia_miller, number_day_off, 1).
 
 % ---------
 % Class: activity
@@ -1060,21 +1072,21 @@ part_of(dietplanner, calcium, greek_yogurt).
 part_of(dietplanner, vitamin_c, blueberries).
 part_of(dietplanner, insoluble_fiber, blueberries).
 
-carry_out(alice_johnson, running-1).
-carry_out(bob_smith, swimming-2).
-carry_out(emma_davis, yoga-1.5).
-carry_out(michael_brown, weightlifting-1.5).
-carry_out(sophia_miller, cycling-2.5).
-carry_out(alice_johnson, yoga-1).
-carry_out(alice_johnson, swimming-1.5).
-carry_out(bob_smith, running-1).
-carry_out(bob_smith, weightlifting-2).
-carry_out(emma_davis, brisk_walking-1).
-carry_out(emma_davis, swimming-1).
-carry_out(michael_brown, soccer-2).
-carry_out(michael_brown, basketball-1.5).
-carry_out(sophia_miller, cycling_race-3).
-carry_out(sophia_miller, nature_walk-1).
+carry_out(alice_johnson, running-1, 4).
+carry_out(bob_smith, swimming-2, 1).
+carry_out(emma_davis, yoga-1.5, 3).
+carry_out(michael_brown, weightlifting-1.5, 3).
+carry_out(sophia_miller, cycling-2.5, 2).
+carry_out(alice_johnson, yoga-1 , 7).
+carry_out(alice_johnson, swimming-1.5, 5).
+carry_out(bob_smith, running-1, 1).
+carry_out(bob_smith, weightlifting-2, 4).
+carry_out(emma_davis, brisk_walking-1, 5).
+carry_out(emma_davis, swimming-1, 2).
+carry_out(michael_brown, soccer-2, 1).
+carry_out(michael_brown, basketball-1.5, 3).
+carry_out(sophia_miller, cycling_race-3, 6).
+carry_out(sophia_miller, nature_walk-1, 1).
 
 is_allergic(alice_johnson, dairy).
 is_allergic(bob_smith, peanuts).

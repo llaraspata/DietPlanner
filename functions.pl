@@ -55,3 +55,28 @@ compute_needed_calories(Person, NeededCalories) :-
 name_allergen(Name) :- 
     allergen_instance(dietplanner, allergen, X),
     attribute_value(dietplanner, X, name, Name).
+
+find_person_id(Name, Surname, PersonID) :-
+    person_instance(dietplanner, person, PersonID),
+    attribute_value(dietplanner, PersonID, name, Name),
+    attribute_value(dietplanner, PersonID, surname, Surname),
+    !.
+
+find_person_id(_, _, null).
+
+find_bmi_energy_effort(PersonID, BMI, EnergyValue) :-
+    attribute_value(dietplanner, PersonID, bmi, BMIValue),
+    attribute_value(dietplanner, PersonID, energy_effort, EnergyValue).
+
+set_right_number_calories(BMI, EnergyValue, TotalCalories) :-
+    (BMI < 18.49 ->
+        TotalCalories is EnergyValue + 400;
+    (BMI >= 18.50, BMI =< 24.99) ->
+        TotalCalories is EnergyValue;
+    BMI > 25.00 ->
+        TotalCalories is EnergyValue - 300).
+
+get_activities(PersonID, ActivityList) :-
+    setof([Activity-Hours, Frequency],
+            carry_out(PersonID, Activity-Hours, Frequency),
+            ActivityList).

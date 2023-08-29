@@ -32,13 +32,18 @@ attribute_value(dietplanner, granola, name, "Granola").
 attribute_value(dietplanner, granola, description, "Cereal made from rolled oats, nuts, and sweeteners.").
 attribute_value(dietplanner, granola, calories, 400).
 
+cereal_instance(dietplanner, cereal, pasta).
+attribute_value(dietplanner, granola, name, "Pasta").
+attribute_value(dietplanner, durum_wheat_pasta, description, "Pasta made from semolina, known for its high protein content and gluten strength.").
+attribute_value(dietplanner, durum_wheat_pasta, calories, 250).
+
+cereal_instance(dietplanner, cereal, white_bread).
+attribute_value(dietplanner, white_bread, name, "White Bread").
+attribute_value(dietplanner, white_bread, description, "White bread, a type of bread made from refined wheat flour, commonly used for sandwiches.").
+attribute_value(dietplanner, white_bread, calories, 80).
+
 
 % Subclass: eggs
-eggs_instance(dietplanner, eggs, scrambled_eggs).
-attribute_value(dietplanner, scrambled_eggs, name, "Scrambled Eggs").
-attribute_value(dietplanner, scrambled_eggs, description, "Fluffy scrambled eggs cooked to perfection.").
-attribute_value(dietplanner, scrambled_eggs, calories, 154).
-
 eggs_instance(dietplanner, eggs, chicken_eggs).
 attribute_value(dietplanner, chicken_eggs, name, "Chicken Eggs").
 attribute_value(dietplanner, chicken_eggs, description, "Fresh eggs from chickens, a versatile source of protein.").
@@ -64,28 +69,28 @@ attribute_value(dietplanner, egg_whites, name, "Egg Whites").
 attribute_value(dietplanner, egg_whites, description, "The protein-rich portion of the egg, often used separately.").
 attribute_value(dietplanner, egg_whites, calories, 16).
 
-% Subclass: oils
-oils_instance(dietplanner, oils, olive_oil).
+% Subclass: fat_oils
+fat_oils_instance(dietplanner, fat_oils, olive_oil).
 attribute_value(dietplanner, olive_oil, name, "Olive Oil").
 attribute_value(dietplanner, olive_oil, description, "Extra virgin olive oil for cooking and dressing.").
 attribute_value(dietplanner, olive_oil, calories, 884).
 
-oils_instance(dietplanner, oils, coconut_oil).
+fat_oils_instance(dietplanner, fat_oils, coconut_oil).
 attribute_value(dietplanner, coconut_oil, name, "Coconut Oil").
 attribute_value(dietplanner, coconut_oil, description, "Oil derived from coconuts, used in cooking and skincare.").
 attribute_value(dietplanner, coconut_oil, calories, 862).
 
-oils_instance(dietplanner, oils, avocado_oil).
+fat_oils_instance(dietplanner, fat_oils, avocado_oil).
 attribute_value(dietplanner, avocado_oil, name, "Avocado Oil").
 attribute_value(dietplanner, avocado_oil, description, "Oil made from avocados, known for its rich, buttery flavor.").
 attribute_value(dietplanner, avocado_oil, calories, 124).
 
-oils_instance(dietplanner, oils, canola_oil).
+fat_oils_instance(dietplanner, fat_oils, canola_oil).
 attribute_value(dietplanner, canola_oil, name, "Canola Oil").
 attribute_value(dietplanner, canola_oil, description, "Neutral-flavored oil often used for cooking and frying.").
 attribute_value(dietplanner, canola_oil, calories, 884).
 
-oils_instance(dietplanner, oils, sesame_oil).
+fat_oils_instance(dietplanner, fat_oils, sesame_oil).
 attribute_value(dietplanner, sesame_oil, name, "Sesame Oil").
 attribute_value(dietplanner, sesame_oil, description, "Flavorful oil made from sesame seeds, common in Asian cuisines.").
 attribute_value(dietplanner, sesame_oil, calories, 884).
@@ -153,61 +158,72 @@ attribute_value(dietplanner, blueberries, description, "Antioxidant-rich, nutrie
 attribute_value(dietplanner, blueberries, calories, 57).
 
 % Subclass: meats
-meats_instance(dietplanner, meats, grilled_chicken_breast).
-attribute_value(dietplanner, grilled_chicken_breast, name, "Grilled Chicken Breast").
-attribute_value(dietplanner, grilled_chicken_breast, description, "Lean grilled chicken breast for protein intake.").
-attribute_value(dietplanner, grilled_chicken_breast, calories, 165).
+meats_instance(dietplanner, meats, chicken).
+attribute_value(dietplanner, chicken, name, "Chicken").
+attribute_value(dietplanner, chicken, description, "Chicken breast lean and tender, cooked in a pan or on grid.").
+attribute_value(dietplanner, chicken, calories, 165).
 
-meats_instance(dietplanner, meats, beef_steak).
-attribute_value(dietplanner, beef_steak, name, "Beef Steak").
-attribute_value(dietplanner, beef_steak, description, "Tender cut of beef, often grilled or pan-seared.").
-attribute_value(dietplanner, beef_steak, calories, 250).
+meats_instance(dietplanner, meats, beef).
+attribute_value(dietplanner, beef, name, "Beef").
+attribute_value(dietplanner, beef, description, "Beef, a red meat, rich in flavor, often used for steaks and roasts.").
+attribute_value(dietplanner, beef, calories, 250).
 
-meats_instance(dietplanner, meats, pork_chop).
-attribute_value(dietplanner, pork_chop, name, "Pork Chop").
-attribute_value(dietplanner, pork_chop, description, "Succulent cut of pork, cooked in various ways.").
-attribute_value(dietplanner, pork_chop, calories, 180).
+meats_instance(dietplanner, meats, pork).
+attribute_value(dietplanner, pork, name, "Pork").
+attribute_value(dietplanner, pork, description, "Pork, a meat vailable in various cuts, commonly used in sausages, bacon, and chops.").
+attribute_value(dietplanner, pork, calories, 300).
 
-meats_instance(dietplanner, meats, lamb_shank).
-attribute_value(dietplanner, lamb_shank, name, "Lamb Shank").
-attribute_value(dietplanner, lamb_shank, description, "Flavorful cut of lamb, often slow-cooked for tenderness.").
-attribute_value(dietplanner, lamb_shank, calories, 260).
+meats_instance(dietplanner, meats, lamb).
+attribute_value(dietplanner, lamb, name, "Lamb").
+attribute_value(dietplanner, lamb, description, "Lamb, tender and flavorful meat, often used in stews, kebabs, and roasts.").
+attribute_value(dietplanner, lamb, calories, 220).
 
-meats_instance(dietplanner, meats, turkey_breast).
-attribute_value(dietplanner, turkey_breast, name, "Turkey Breast").
-attribute_value(dietplanner, turkey_breast, description, "Lean meat from turkey, a popular option for sandwiches.").
-attribute_value(dietplanner, turkey_breast, calories, 135).
+meats_instance(dietplanner, meats, horse).
+attribute_value(dietplanner, horse, name, "Horse").
+attribute_value(dietplanner, horse, description, "Horse meat, consumed in some cultures, typically lean and slightly gamey.").
+attribute_value(dietplanner, horse, calories, 180).
 
 % Subclass: milk
-milk_instance(dietplanner, milk, skim_milk).
+milk_cheese_instance(dietplanner, milk_cheese, skim_milk).
 attribute_value(dietplanner, skim_milk, name, "Skim Milk").
 attribute_value(dietplanner, skim_milk, description, "Low-fat skim milk for a calcium boost.").
 attribute_value(dietplanner, skim_milk, calories, 34).
 
-milk_instance(dietplanner, milk, whole_milk).
+milk_cheese_instance(dietplanner, milk_cheese, whole_milk).
 attribute_value(dietplanner, whole_milk, name, "Whole Milk").
 attribute_value(dietplanner, whole_milk, description, "Dairy milk with full-fat content, often used for drinking and cooking.").
 attribute_value(dietplanner, whole_milk, calories, 61).
 
-milk_instance(dietplanner, milk, reduced_fat_milk).
+milk_cheese_instance(dietplanner, milk_cheese, reduced_fat_milk).
 attribute_value(dietplanner, reduced_fat_milk, name, "Reduced-Fat Milk").
 attribute_value(dietplanner, reduced_fat_milk, description, "Dairy milk with reduced fat content, commonly used as a lighter option.").
 attribute_value(dietplanner, reduced_fat_milk, calories, 34).
 
-milk_instance(dietplanner, milk, soy_milk).
+milk_cheese_instance(dietplanner, milk_cheese, soy_milk).
 attribute_value(dietplanner, soy_milk, name, "Soy Milk").
 attribute_value(dietplanner, soy_milk, description, "Plant-based milk made from soybeans, suitable for vegans and lactose-intolerant individuals.").
 attribute_value(dietplanner, soy_milk, calories, 33).
 
-milk_instance(dietplanner, milk, almond_milk).
+milk_cheese_instance(dietplanner, milk_cheese, almond_milk).
 attribute_value(dietplanner, almond_milk, name, "Almond Milk").
 attribute_value(dietplanner, almond_milk, description, "Nut milk made from almonds, often used as a dairy-free alternative.").
 attribute_value(dietplanner, almond_milk, calories, 13).
 
-milk_instance(dietplanner, milk, coconut_milk).
+milk_cheese_instance(dietplanner, milk, coconut_milk).
 attribute_value(dietplanner, coconut_milk, name, "Coconut Milk").
 attribute_value(dietplanner, coconut_milk, description, "Creamy milk derived from coconuts, used in cooking and beverages.").
 attribute_value(dietplanner, coconut_milk, calories, 230).
+
+milk_cheese_instance(dietplanner, milk, cheese).
+attribute_value(dietplanner, cheese, name, "Cheese").
+attribute_value(dietplanner, cheese, description, "A dairy product made from curdled milk, with a wide range of flavors, textures, and uses.").
+attribute_value(dietplanner, cheese, calories, 300).
+
+milk_cheese_instance(dietplanner, milk, gorgonzola_cheese).
+attribute_value(dietplanner, gorgonzola_cheese, name, "Gorgonzola Cheese").
+attribute_value(dietplanner, gorgonzola_cheese, description, "A type of blue cheese known for its characteristic veining and strong, tangy flavor.").
+attribute_value(dietplanner, gorgonzola_cheese, calories, 350).
+
 
 % Subclass: mushrooms
 mushrooms_instance(dietplanner, mushrooms, button_mushroom).
@@ -344,6 +360,11 @@ sweets_instance(dietplanner, sweets, dark_chocolate).
 attribute_value(dietplanner, dark_chocolate, name, "Dark Chocolate").
 attribute_value(dietplanner, dark_chocolate, description, "Rich and indulgent dark chocolate.").
 attribute_value(dietplanner, dark_chocolate, calories, 546).
+
+sweets_instance(dietplanner, sweets, milk_chocolate).
+attribute_value(dietplanner, milk_chocolate, name, "Milk Chocolate").
+attribute_value(dietplanner, milk_chocolate, description, "Smooth and creamy milk chocolate, a delightful treat.").
+attribute_value(dietplanner, milk_chocolate, calories, 598).
 
 sweets_instance(dietplanner, sweets, gummy_bears).
 attribute_value(dietplanner, gummy_bears, name, "Gummy Bears").
@@ -821,150 +842,160 @@ attribute_value(dietplanner, urban_walking, calory_effort, 250).
 % Class: dish
 % ---------
 % Instances of Dish
+dish_instance(dietplanner, dish, scrambled_eggs).
+attribute_value(dietplanner, scrambled_eggs, name, "Scrambled Eggs").
+attribute_value(dietplanner, scrambled_eggs, description, "Fluffy scrambled eggs cooked to perfection.").
+attribute_value(dietplanner, scrambled_eggs, type, breakfast).
+
 dish_instance(dietplanner, dish, grilled_chicken_salad).
 attribute_value(dietplanner, grilled_chicken_salad, name, "Grilled Chicken Salad").
 attribute_value(dietplanner, grilled_chicken_salad, description, "Healthy salad with grilled chicken, mixed greens, and veggies.").
-attribute_value(dietplanner, grilled_chicken_salad, type, main_meal).
+attribute_value(dietplanner, grilled_chicken_salad, type, lunch).
 
 dish_instance(dietplanner, dish, hummus_and_veggie_platter).
 attribute_value(dietplanner, hummus_and_veggie_platter, name, "Hummus and Veggie Platter").
 attribute_value(dietplanner, hummus_and_veggie_platter, description, "Appetizer platter with hummus, carrot sticks, cucumber slices, and pita bread.").
-attribute_value(dietplanner, hummus_and_veggie_platter, type, snak).
+attribute_value(dietplanner, hummus_and_veggie_platter, type, snack).
 
 dish_instance(dietplanner, dish, spaghetti_bolognese).
 attribute_value(dietplanner, spaghetti_bolognese, name, "Spaghetti Bolognese").
 attribute_value(dietplanner, spaghetti_bolognese, description, "Classic Italian dish with spaghetti pasta and savory Bolognese sauce.").
-attribute_value(dietplanner, spaghetti_bolognese, type, main_meal).
+attribute_value(dietplanner, spaghetti_bolognese, type, lunch).
 
 dish_instance(dietplanner, dish, fruit_salad).
 attribute_value(dietplanner, fruit_salad, name, "Fruit Salad").
 attribute_value(dietplanner, fruit_salad, description, "Refreshing salad with a mix of fresh seasonal fruits.").
-attribute_value(dietplanner, fruit_salad, type, snak).
+attribute_value(dietplanner, fruit_salad, type, snack).
 
 dish_instance(dietplanner, dish, grilled_salmon_with_quinoa).
 attribute_value(dietplanner, grilled_salmon_with_quinoa, name, "Grilled Salmon with Quinoa").
 attribute_value(dietplanner, grilled_salmon_with_quinoa, description, "Grilled salmon fillet served with quinoa and steamed vegetables.").
-attribute_value(dietplanner, grilled_salmon_with_quinoa, type, main_meal).
+attribute_value(dietplanner, grilled_salmon_with_quinoa, type, lunch).
 
-dish_instance(dietplanner, dish, greek_yogurt_parfait).
-attribute_value(dietplanner, greek_yogurt_parfait, name, "Greek Yogurt Parfait").
-attribute_value(dietplanner, greek_yogurt_parfait, description, "Healthy dessert parfait with Greek yogurt, berries, and granola.").
-attribute_value(dietplanner, greek_yogurt_parfait, type, snak).
+dish_instance(dietplanner, dish, greek_yogurt).
+attribute_value(dietplanner, greek_yogurt, name, "Greek Yogur").
+attribute_value(dietplanner, greek_yogurt, description, "Healthy dessert parfait with Greek yogurt, berries, and granola.").
+attribute_value(dietplanner, greek_yogurt, type, breakfast).
 
 dish_instance(dietplanner, dish, vegan_lentil_curry).
 attribute_value(dietplanner, vegan_lentil_curry, name, "Vegan Lentil Curry").
 attribute_value(dietplanner, vegan_lentil_curry, description, "Flavorful curry made with lentils, vegetables, and aromatic spices.").
-attribute_value(dietplanner, vegan_lentil_curry, type, main_meal).
+attribute_value(dietplanner, vegan_lentil_curry, type, lunch).
 
 dish_instance(dietplanner, dish, trail_mix).
 attribute_value(dietplanner, trail_mix, name, "Trail Mix").
 attribute_value(dietplanner, trail_mix, description, "Energy-boosting snack mix with nuts, dried fruits, and seeds.").
-attribute_value(dietplanner, trail_mix, type, snak).
+attribute_value(dietplanner, trail_mix, type, snack).
 
 dish_instance(dietplanner, dish, caesar_salad).
 attribute_value(dietplanner, caesar_salad, name, "Caesar Salad").
 attribute_value(dietplanner, caesar_salad, description, "Classic salad with Romaine lettuce, croutons, Parmesan cheese, and Caesar dressing.").
-attribute_value(dietplanner, caesar_salad, type, main_meal).
+attribute_value(dietplanner, caesar_salad, type, lunch).
 
 dish_instance(dietplanner, dish, veggie_spring_rolls).
 attribute_value(dietplanner, veggie_spring_rolls, name, "Veggie Spring Rolls").
 attribute_value(dietplanner, veggie_spring_rolls, description, "Light and crunchy spring rolls filled with fresh vegetables.").
-attribute_value(dietplanner, veggie_spring_rolls, type, snak).
+attribute_value(dietplanner, veggie_spring_rolls, type, snack).
 
 dish_instance(dietplanner, dish, grilled_steak_with_roasted_potatoes).
 attribute_value(dietplanner, grilled_steak_with_roasted_potatoes, name, "Grilled Steak with Roasted Potatoes").
 attribute_value(dietplanner, grilled_steak_with_roasted_potatoes, description, "Juicy grilled steak served with roasted potatoes and a side salad.").
-attribute_value(dietplanner, grilled_steak_with_roasted_potatoes, type, main_meal).
+attribute_value(dietplanner, grilled_steak_with_roasted_potatoes, type, dinner).
 
 dish_instance(dietplanner, dish, smoothie_bowl).
 attribute_value(dietplanner, smoothie_bowl, name, "Smoothie Bowl").
 attribute_value(dietplanner, smoothie_bowl, description, "Thick and creamy smoothie bowl topped with fresh fruits, nuts, and seeds.").
-attribute_value(dietplanner, smoothie_bowl, type, snak).
+attribute_value(dietplanner, smoothie_bowl, type, snack).
 
 dish_instance(dietplanner, dish, mushroom_risotto).
 attribute_value(dietplanner, mushroom_risotto, name, "Mushroom Risotto").
 attribute_value(dietplanner, mushroom_risotto, description, "Creamy risotto made with Arborio rice and sautéed mushrooms.").
-attribute_value(dietplanner, mushroom_risotto, type, main_meal).
+attribute_value(dietplanner, mushroom_risotto, type, lunch).
 
 dish_instance(dietplanner, dish, popcorn).
 attribute_value(dietplanner, popcorn, name, "Popcorn").
 attribute_value(dietplanner, popcorn, description, "Light and crunchy popcorn, a great movie-time snack.").
-attribute_value(dietplanner, popcorn, type, snak).
+attribute_value(dietplanner, popcorn, type, snack).
 
 dish_instance(dietplanner, dish, chicken_stir_fry).
 attribute_value(dietplanner, chicken_stir_fry, name, "Chicken Stir-Fry").
 attribute_value(dietplanner, chicken_stir_fry, description, "Quick and healthy chicken stir-fry with colorful vegetables.").
-attribute_value(dietplanner, chicken_stir_fry, type, main_meal).
+attribute_value(dietplanner, chicken_stir_fry, type, dinner).
 
 dish_instance(dietplanner, dish, pasta_primavera).
 attribute_value(dietplanner, pasta_primavera, name, "Pasta Primavera").
 attribute_value(dietplanner, pasta_primavera, description, "Vegetable-loaded pasta dish with a light and fresh flavor.").
-attribute_value(dietplanner, pasta_primavera, type, main_meal).
+attribute_value(dietplanner, pasta_primavera, type, lunch).
+
+dish_instance(dietplanner, dish, margherita_pizza).
+attribute_value(dietplanner, margherita_pizza, name, "Pizza Margherita").
+attribute_value(dietplanner, margherita_pizza, description, "Classic Italian pizza with simple toppings including tomato sauce, fresh mozzarella cheese, basil leaves, and olive oil.").
+attribute_value(dietplanner, margherita_pizza, type, dinner).
 
 dish_instance(dietplanner, dish, caprese_salad).
 attribute_value(dietplanner, caprese_salad, name, "Caprese Salad").
 attribute_value(dietplanner, caprese_salad, description, "Classic Italian salad made with fresh tomatoes, mozzarella, and basil.").
-attribute_value(dietplanner, caprese_salad, type, appetizer).
+attribute_value(dietplanner, caprese_salad, type, dinner).
 
 dish_instance(dietplanner, dish, tomato_soup).
 attribute_value(dietplanner, tomato_soup, name, "Tomato Soup").
 attribute_value(dietplanner, tomato_soup, description, "Hearty and comforting tomato-based soup, perfect for any season.").
-attribute_value(dietplanner, tomato_soup, type, soup).
+attribute_value(dietplanner, tomato_soup, type, lunch).
 
 dish_instance(dietplanner, dish, chicken_caesar_salad).
 attribute_value(dietplanner, chicken_caesar_salad, name, "Chicken Caesar Salad").
 attribute_value(dietplanner, chicken_caesar_salad, description, "Classic salad with romaine lettuce, grilled chicken, croutons, and Caesar dressing.").
-attribute_value(dietplanner, chicken_caesar_salad, type, main_meal).
+attribute_value(dietplanner, chicken_caesar_salad, type, lunch).
 
 dish_instance(dietplanner, dish, grilled_chicken_burger).
 attribute_value(dietplanner, grilled_chicken_burger, name, "Grilled Chicken Burger").
 attribute_value(dietplanner, grilled_chicken_burger, description, "Burger with a grilled chicken patty, served with fresh toppings.").
-attribute_value(dietplanner, grilled_chicken_burger, type, main_meal).
+attribute_value(dietplanner, grilled_chicken_burger, type, dinner).
 
 dish_instance(dietplanner, dish, mixed_berry_smoothie).
 attribute_value(dietplanner, mixed_berry_smoothie, name, "Mixed Berry Smoothie").
 attribute_value(dietplanner, mixed_berry_smoothie, description, "Refreshing smoothie made with a blend of mixed berries and yogurt.").
-attribute_value(dietplanner, mixed_berry_smoothie, type, beverage).
+attribute_value(dietplanner, mixed_berry_smoothie, type, breakfast).
 
 dish_instance(dietplanner, dish, chocolate_mousse).
 attribute_value(dietplanner, chocolate_mousse, name, "Chocolate Mousse").
 attribute_value(dietplanner, chocolate_mousse, description, "Decadent dessert made with whipped chocolate and cream.").
-attribute_value(dietplanner, chocolate_mousse, type, dessert).
+attribute_value(dietplanner, chocolate_mousse, type, snack).
 
 dish_instance(dietplanner, dish, chocolate_chip_cookies).
 attribute_value(dietplanner, chocolate_chip_cookies, name, "Chocolate Chip Cookies").
 attribute_value(dietplanner, chocolate_chip_cookies, description, "Classic cookies with chocolate chips, perfect for a sweet treat.").
-attribute_value(dietplanner, chocolate_chip_cookies, type, dessert).
+attribute_value(dietplanner, chocolate_chip_cookies, type, snack).
 
 dish_instance(dietplanner, dish, veggie_pizza).
 attribute_value(dietplanner, veggie_pizza, name, "Veggie Pizza").
 attribute_value(dietplanner, veggie_pizza, description, "Pizza topped with a variety of fresh vegetables and cheese.").
-attribute_value(dietplanner, veggie_pizza, type, main_meal).
+attribute_value(dietplanner, veggie_pizza, type, dinner).
 
 dish_instance(dietplanner, dish, garden_salad).
 attribute_value(dietplanner, garden_salad, name, "Garden Salad").
 attribute_value(dietplanner, garden_salad, description, "Healthy salad with a mix of garden-fresh vegetables and greens.").
-attribute_value(dietplanner, garden_salad, type, appetizer).
+attribute_value(dietplanner, garden_salad, type, snack).
 
 dish_instance(dietplanner, dish, tuna_sandwich).
 attribute_value(dietplanner, tuna_sandwich, name, "Tuna Sandwich").
 attribute_value(dietplanner, tuna_sandwich, description, "Sandwich filled with tuna salad, lettuce, and other toppings.").
-attribute_value(dietplanner, tuna_sandwich, type, main_meal).
+attribute_value(dietplanner, tuna_sandwich, type, dinner).
 
 dish_instance(dietplanner, dish, sushi_roll).
 attribute_value(dietplanner, sushi_roll, name, "Sushi Roll").
 attribute_value(dietplanner, sushi_roll, description, "Japanese dish with rice, seafood, and vegetables wrapped in seaweed.").
-attribute_value(dietplanner, sushi_roll, type, main_meal).
+attribute_value(dietplanner, sushi_roll, type, dinner).
 
 dish_instance(dietplanner, dish, beef_stew).
 attribute_value(dietplanner, beef_stew, name, "Beef Stew").
 attribute_value(dietplanner, beef_stew, description, "Hearty stew with tender beef, vegetables, and flavorful broth.").
-attribute_value(dietplanner, beef_stew, type, main_meal).
+attribute_value(dietplanner, beef_stew, type, dinner).
 
 dish_instance(dietplanner, dish, beef_tacos).
 attribute_value(dietplanner, beef_tacos, name, "Beef Tacos").
 attribute_value(dietplanner, beef_tacos, description, "Tacos filled with seasoned ground beef and various toppings.").
-attribute_value(dietplanner, beef_tacos, type, main_meal).
+attribute_value(dietplanner, beef_tacos, type, dinner).
 
 
 
@@ -986,8 +1017,8 @@ has_nutrient(dietplanner, salmon, vitamin_b12).
 has_nutrient(dietplanner, almonds, monounsaturated_fat).
 has_nutrient(dietplanner, almonds, vitamin_e).
 has_nutrient(dietplanner, almonds, magnesium).
-has_nutrient(dietplanner, greek_yogurt_parfait, casein_protein).
-has_nutrient(dietplanner, greek_yogurt_parfait, calcium).
+has_nutrient(dietplanner, greek_yogurt, casein_protein).
+has_nutrient(dietplanner, greek_yogurt, calcium).
 has_nutrient(dietplanner, blueberries, vitamin_c).
 has_nutrient(dietplanner, blueberries, insoluble_fiber).
 
@@ -1006,8 +1037,8 @@ part_of(dietplanner, vitamin_b12, salmon).
 part_of(dietplanner, monounsaturated_fat, almonds).
 part_of(dietplanner, vitamin_e, almonds).
 part_of(dietplanner, magnesium, almonds).
-part_of(dietplanner, casein_protein, greek_yogurt_parfait).
-part_of(dietplanner, calcium, greek_yogurt_parfait).
+part_of(dietplanner, casein_protein, greek_yogurt).
+part_of(dietplanner, calcium, greek_yogurt).
 part_of(dietplanner, vitamin_c, blueberries).
 part_of(dietplanner, insoluble_fiber, blueberries).
 
@@ -1041,32 +1072,31 @@ is_allergic(sophia_miller, soy).
 is_contained(dietplanner, nuts, almond_milk).
 is_contained(dietplanner, shellfish, shrimp).
 is_contained(dietplanner, shellfish, crab).
-%is_contained(dietplanner, gluten, wheat_bread).
-%is_contained(dietplanner, gluten, pasta).
-is_contained(dietplanner, eggs, scrambled_eggs).
+is_contained(dietplanner, gluten, wheat_bread).
+is_contained(dietplanner, gluten, pasta).
 is_contained(dietplanner, eggs, chicken_eggs).
 is_contained(dietplanner, eggs, quail_eggs).
 is_contained(dietplanner, eggs, duck_eggs).
 is_contained(dietplanner, eggs, goose_eggs).
 is_contained(dietplanner, eggs, egg_whites).
 is_contained(dietplanner, dairy, whole_milk).
-%is_contained(dietplanner, dairy, cheese_pizza).   % TODO da modificare col tipo di formaggio
-%is_contained(dietplanner, soy, soy_sauce).
-%is_contained(dietplanner, dairy, strawberry_yogurt).
 is_contained(dietplanner, shellfish, lobster).
+is_contained(dietplanner, dairy, cheese).
 
+made_of(dietplanner, margherita_pizza, cheese).
+made_of(dietplanner, scrambled_eggs, chicken_eggs).
 made_of(dietplanner, spaghetti_bolognese, pasta).
 made_of(dietplanner, pasta_primavera, pasta).
-made_of(dietplanner, caprese_salad, tomatoes).
-made_of(dietplanner, tomato_soup, tomatoes).
+made_of(dietplanner, caprese_salad, tomato).
+made_of(dietplanner, tomato_soup, tomato).
 made_of(dietplanner, chicken_caesar_salad, chicken).
 made_of(dietplanner, grilled_chicken_burger, chicken).
 made_of(dietplanner, fruit_salad, apple).
 made_of(dietplanner, mixed_berry_smoothie, blueberries).
-made_of(dietplanner, chocolate_mousse, chocolate).
-made_of(dietplanner, chocolate_chip_cookies, chocolate).
-made_of(dietplanner, veggie_pizza, vegetables).
-made_of(dietplanner, garden_salad, vegetables).
+made_of(dietplanner, chocolate_mousse, milk_chocolate).
+made_of(dietplanner, chocolate_chip_cookies, dark_chocolate).
+made_of(dietplanner, veggie_pizza, tomato).
+made_of(dietplanner, garden_salad, carrot).
 made_of(dietplanner, tuna_sandwich, tuna).
 made_of(dietplanner, sushi_roll, tuna).
 made_of(dietplanner, beef_stew, beef).

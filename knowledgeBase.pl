@@ -18,16 +18,16 @@ fact(4, parent(dietplanner, food, cereal), 1).
 fact(5, entity(dietplanner, cereal), 1).
 fact(6, parent(dietplanner, food, eggs), 1).
 fact(7, entity(dietplanner, eggs), 1).
-fact(8, parent(dietplanner, food, oils), 1).
-fact(9, entity(dietplanner, oils), 1).
+fact(8, parent(dietplanner, food, fat_oils), 1).
+fact(9, entity(dietplanner, fat_oils), 1).
 fact(10, parent(dietplanner, food, fish_seafood), 1).
 fact(11, entity(dietplanner, fish_seafood), 1).
 fact(12, parent(dietplanner, food, fruits_olives), 1).
 fact(13, entity(dietplanner, fruits_olives), 1).
 fact(14, parent(dietplanner, food, meats), 1).
 fact(15, entity(dietplanner, meats), 1).
-fact(16, parent(dietplanner, food, milk), 1).
-fact(17, entity(dietplanner, milk), 1).
+fact(16, parent(dietplanner, food, milk_cheese), 1).
+fact(17, entity(dietplanner, milk_cheese), 1).
 fact(18, parent(dietplanner, food, mushrooms), 1).
 fact(19, entity(dietplanner, mushrooms), 1).
 fact(20, parent(dietplanner, food, nuts), 1).

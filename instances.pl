@@ -207,17 +207,17 @@ attribute_value(dietplanner, almond_milk, name, "Almond Milk").
 attribute_value(dietplanner, almond_milk, description, "Nut milk made from almonds, often used as a dairy-free alternative.").
 attribute_value(dietplanner, almond_milk, calories, 13).
 
-milk_cheese_instance(dietplanner, milk, coconut_milk).
+milk_cheese_instance(dietplanner, milk_cheese, coconut_milk).
 attribute_value(dietplanner, coconut_milk, name, "Coconut Milk").
 attribute_value(dietplanner, coconut_milk, description, "Creamy milk derived from coconuts, used in cooking and beverages.").
 attribute_value(dietplanner, coconut_milk, calories, 230).
 
-milk_cheese_instance(dietplanner, milk, cheese).
-attribute_value(dietplanner, cheese, name, "Cheese").
+milk_cheese_instance(dietplanner, milk_cheese, grana_cheese).
+attribute_value(dietplanner, cheese, name, "Grana Cheese").
 attribute_value(dietplanner, cheese, description, "A dairy product made from curdled milk, with a wide range of flavors, textures, and uses.").
 attribute_value(dietplanner, cheese, calories, 300).
 
-milk_cheese_instance(dietplanner, milk, gorgonzola_cheese).
+milk_cheese_instance(dietplanner, milk_cheese, gorgonzola_cheese).
 attribute_value(dietplanner, gorgonzola_cheese, name, "Gorgonzola Cheese").
 attribute_value(dietplanner, gorgonzola_cheese, description, "A type of blue cheese known for its characteristic veining and strong, tangy flavor.").
 attribute_value(dietplanner, gorgonzola_cheese, calories, 350).
@@ -1227,6 +1227,52 @@ has_nutrient(dietplanner, whole_milk, vitamin_e).
 has_nutrient(dietplanner, whole_milk, vitamin_b6).
 has_nutrient(dietplanner, whole_milk, vitamin_b12).
 
+has_nutrient(dietplanner, reduced_fat_milk, calcium).
+has_nutrient(dietplanner, reduced_fat_milk, vitamin_d).
+has_nutrient(dietplanner, reduced_fat_milk, vitamin_a).
+has_nutrient(dietplanner, reduced_fat_milk, vitamin_b12).
+has_nutrient(dietplanner, reduced_fat_milk, whey_protein).
+has_nutrient(dietplanner, reduced_fat_milk, casein_protein).
+
+has_nutrient(dietplanner, soy_milk, calcium).
+has_nutrient(dietplanner, soy_milk, vitamin_d).
+has_nutrient(dietplanner, soy_milk, vitamin_a).
+has_nutrient(dietplanner, soy_milk, vitamin_b12).
+has_nutrient(dietplanner, soy_milk, soy_protein).
+
+has_nutrient(dietplanner, almond_milk, calcium).
+has_nutrient(dietplanner, almond_milk, vitamin_d).
+has_nutrient(dietplanner, almond_milk, vitamin_e).
+has_nutrient(dietplanner, almond_milk, vitamin_b12).
+has_nutrient(dietplanner, almond_milk, monounsaturated_fat).
+has_nutrient(dietplanner, almond_milk, polyunsaturated_fat).
+
+has_nutrient(dietplanner, coconut_milk, calcium).
+has_nutrient(dietplanner, coconut_milk, iron).
+has_nutrient(dietplanner, coconut_milk, vitamin_d).
+has_nutrient(dietplanner, coconut_milk, vitamin_a).
+has_nutrient(dietplanner, coconut_milk, saturated_fats).
+
+has_nutrient(dietplanner, grana_cheese, calcium).
+has_nutrient(dietplanner, grana_cheese, protein).
+has_nutrient(dietplanner, grana_cheese, phosphorus).
+has_nutrient(dietplanner, grana_cheese, vitamin_a).
+has_nutrient(dietplanner, grana_cheese, vitamin_k).
+
+has_nutrient(dietplanner, gorgonzola_cheese, calcium).
+has_nutrient(dietplanner, gorgonzola_cheese, protein).
+has_nutrient(dietplanner, gorgonzola_cheese, phosphorus).
+has_nutrient(dietplanner, gorgonzola_cheese, vitamin_a).
+has_nutrient(dietplanner, gorgonzola_cheese, vitamin_k).
+
+% Mushrooms
+has_nutrient(dietplanner, button_mushroom, protein).
+has_nutrient(dietplanner, button_mushroom, phosphorus).
+has_nutrient(dietplanner, button_mushroom, potassium).
+has_nutrient(dietplanner, button_mushroom, magnesium).
+has_nutrient(dietplanner, button_mushroom, zinc).
+
+
 
 
 
@@ -1314,9 +1360,9 @@ is_contained(dietplanner, eggs, goose_eggs).
 is_contained(dietplanner, eggs, egg_whites).
 is_contained(dietplanner, dairy, whole_milk).
 is_contained(dietplanner, shellfish, lobster).
-is_contained(dietplanner, dairy, cheese).
+is_contained(dietplanner, dairy, grana_cheese).
 
-made_of(dietplanner, margherita_pizza, cheese).
+made_of(dietplanner, margherita_pizza, grana_cheese).
 made_of(dietplanner, scrambled_eggs, chicken_eggs).
 made_of(dietplanner, spaghetti_bolognese, pasta).
 made_of(dietplanner, pasta_primavera, pasta).

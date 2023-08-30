@@ -200,17 +200,22 @@ fact(131, mandatory(dietplanner, daily_diet, day), 1).
 % ---------
 % Relationships
 % ---------
-% TODO: find (or ask) a way to define relationships 
-% in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)
+% The predicate "relationships" has the following parameters:
+%   1. id of the relationship (used for thei enumeration, too)
+%   2. predicate defining the relationship between entities
+%   3. min number of instances
+%   4. max number of instances
 relationships(1, has_nutrient(FoodBeverage, Nutrient, Quantity), 1, 100).
-relationships(2, part_of(Nutrient, FoodBeverage), 1, 100000).
+relationships(2, part_of(Nutrient, FoodBeverage, Quantity), 1, 100000).
 relationships(3, carry_out(Person, Activity-Hours, FrequencyWeek), 0, 100).
 relationships(4, is_allergic(Person, Allergen), 0, 100).
 relationships(5, is_contained(Allergen, FoodBeverage), 0, 100).
 relationships(6, made_for(Diet, Person), 1, 1).
 relationships(7, suggested_diet(Person, Diet), 0, 100).
 relationships(8, composed_of(Diet, DailyDiet), 7, 7).
-relationships(9, has(DailyDiet, Dish), 5, 5).
+relationships(9, has(DailyDiet, Dish, Ingredients), 5, 5).  % TotalQuantities is a list of pairs (FoodBeverage-TotalGrams)
 relationships(10, made_of(Dish, FoodBeverage), 1, 100).
 
 
+% TODO: find (or ask) a way to define relationships 
+% in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)

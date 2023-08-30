@@ -98,9 +98,9 @@ get_dishes_from_daily_diet(DailyDiet, Dishes) :-
     findall(Dish, has(DailyDiet, Dish, _), Dishes).
 
 % Get the list of ingredients in a dish of a daily diet
-get_ingredients_in_dish(DailyDiet, Dish, Ingredients) :-
-    has(DailyDiet, Dish, Ingredients).
+get_ingredients_in_daily_diet(DailyDiet, Ingredients) :-
+    findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients).
 
 % Get the list of ingredients in a dish of a daily diet
-get_ingredients_in_daily_diet(DailyDiet, Ingredients) :-
-    has(DailyDiet, _, Ingredients).
+get_ingredients_in_dish(DailyDiet, Dish, Ingredients) :-
+    findall(Ingredient, has(DailyDiet, Dish, Ingredient), Ingredients).

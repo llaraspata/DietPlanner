@@ -1266,7 +1266,6 @@ has_nutrient(dietplanner, gorgonzola_cheese, vitamin_a).
 has_nutrient(dietplanner, gorgonzola_cheese, vitamin_k).
 
 % Mushrooms
-has_nutrient(dietplanner, button_mushroom, protein).
 has_nutrient(dietplanner, button_mushroom, phosphorus).
 has_nutrient(dietplanner, button_mushroom, potassium).
 has_nutrient(dietplanner, button_mushroom, magnesium).

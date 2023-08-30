@@ -1,5 +1,9 @@
 :- consult('instances.pl').
 
+% Basic and general functions
+append([], L, L).
+append([H|T], L, [H|Result]) :- 
+    append(T, L, Result).
 
 % Compute the total calories about a list of foods 
 compute_calories_amount([], 0).
@@ -80,3 +84,25 @@ get_activities(PersonID, ActivityList) :-
     setof([Activity-Hours, Frequency],
             carry_out(PersonID, Activity-Hours, Frequency),
             ActivityList).
+
+
+% Query to find the nutrient content per 100g or 100ml portion
+standard_nutrient_content(FoodBeverage, Nutrient, Quantity) :-
+    has_nutrient(FoodBeverage, Nutrient, Quantity).
+
+% Convert the nutrient content to the actual quantity in the given portion size
+actual_nutrient_quantity(FoodBeverage, Nutrient, PortionSizeGrams, ActualQuantity) :-
+    standard_nutrient_content(FoodBeverage, Nutrient, NutrientContentPer100),
+    ActualQuantity is (PortionSizeGrams / 100) * NutrientContentPer100.
+
+% Get the list of dishes from a daily diet
+get_dishes_from_daily_diet(DailyDiet, Dishes) :-
+    findall(Dish, has(DailyDiet, Dish, _), Dishes).
+
+% Get the list of ingredients in a dish of a daily diet
+get_ingredients_in_dish(DailyDiet, Dish, Ingredients) :-
+    has(DailyDiet, Dish, Ingredients).
+
+% Get the list of ingredients in a dish of a daily diet
+get_ingredients_in_daily_diet(DailyDiet, Ingredients) :-
+    has(DailyDiet, _, Ingredients).

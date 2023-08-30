@@ -104,3 +104,15 @@ get_ingredients_in_daily_diet(DailyDiet, Ingredients) :-
 % Get the list of ingredients in a dish of a daily diet
 get_ingredients_in_dish(DailyDiet, Dish, Ingredients) :-
     findall(Ingredient, has(DailyDiet, Dish, Ingredient), Ingredients).
+
+% % Get the unique list of ingredients for each dish in a daily diet
+% unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredientsList) :-
+%     get_dishes_from_daily_diet(DailyDiet, Dishes),
+%     unique_ingredients_list(DailyDiet, Dishes, [], UniqueIngredientsList).
+% 
+% % Helper predicate for building the list of unique ingredients for each dish
+% unique_ingredients_list(_, [], Acc, Acc).
+% unique_ingredients_list(DailyDiet, [Dish | RestDishes], Acc, UniqueIngredientsList) :-
+%     get_ingredients_in_dish(DailyDiet, Dish, Ingredients),
+%     append(Acc, [Ingredients], NewAcc),
+%     unique_ingredients_list(DailyDiet, RestDishes, NewAcc, UniqueIngredientsList).

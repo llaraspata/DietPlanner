@@ -178,7 +178,7 @@ fact(120, entity(dietplanner, diet), 1).
 fact(121, attribute(dietplanner, diet, name, string), 1).
 fact(122, mandatory(dietplanner, diet, name), 1).
 fact(123, attribute(dietplanner, diet, type, select), 1).
-fact(124, values(dietplanner, diet, type, [normocaloric]), 1).    % Add more diet types in future enhancements
+fact(124, values(dietplanner, diet, type, [healthy_weight]), 1).    % Add more diet types in future enhancements
 
 % TODO: find the proper way to specify that an attribute is a list and what is its structure
 % For example breakfasts -> list of pairs Dish-grams, where each Dish's type is equal to breakfast

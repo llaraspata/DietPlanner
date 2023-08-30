@@ -1,9 +1,7 @@
+use_module(library(lists)).
+
 :- consult('instances.pl').
 
-% Basic and general functions
-append([], L, L).
-append([H|T], L, [H|Result]) :- 
-    append(T, L, Result).
 
 % Compute the total calories about a list of foods 
 compute_calories_amount([], 0).

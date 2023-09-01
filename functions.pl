@@ -1,7 +1,6 @@
-use_module(library(lists)).
+:- reconsult('instances').
 
-:- consult('instances.pl').
-
+:- use_module(library(lists)).
 
 % Compute the total calories about a list of foods 
 compute_calories_amount([], 0).
@@ -83,6 +82,8 @@ get_activities(PersonID, ActivityList) :-
             carry_out(PersonID, Activity-Hours, Frequency),
             ActivityList).
 
+collect_allergen_names(Names) :-
+    findall(Name, allergen_instance(_, _, Name), Names).
 
 % Query to find the nutrient content per 100g or 100ml portion
 standard_nutrient_content(FoodBeverage, Nutrient, Quantity) :-

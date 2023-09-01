@@ -726,7 +726,6 @@ attribute_value(dietplanner, alice_johnson, weight, 60.5).
 attribute_value(dietplanner, alice_johnson, bmi, 22.22).
 attribute_value(dietplanner, alice_johnson, energy_demand, 1710).
 attribute_value(dietplanner, alice_johnson, number_day_on, 7).
-attribute_value(dietplanner, alice_johnson, number_day_off, 0).
 
 person_instance(dietplanner, person, bob_smith).
 attribute_value(dietplanner, bob_smith, name, "Bob").
@@ -738,7 +737,6 @@ attribute_value(dietplanner, bob_smith, weight, 75.2).
 attribute_value(dietplanner, bob_smith, bmi, 23.21).
 attribute_value(dietplanner, bob_smith, energy_demand, 2080).
 attribute_value(dietplanner, bob_smith, number_day_on, 4).
-attribute_value(dietplanner, bob_smith, number_day_off, 3).
 
 person_instance(dietplanner, person, emma_finner).
 attribute_value(dietplanner, emma_finner, name, "Emma").
@@ -750,7 +748,6 @@ attribute_value(dietplanner, emma_finner, weight, 53.0).
 attribute_value(dietplanner, emma_finner, bmi, 17.92).
 attribute_value(dietplanner, emma_finner, energy_demand, 1550).
 attribute_value(dietplanner, emma_finner, number_day_on, 0).
-attribute_value(dietplanner, emma_finner, number_day_off, 7).
 
 person_instance(dietplanner, person, emma_davis).
 attribute_value(dietplanner, emma_davis, name, "Emma").
@@ -762,7 +759,6 @@ attribute_value(dietplanner, emma_davis, weight, 55.0).
 attribute_value(dietplanner, emma_davis, bmi, 22.03).
 attribute_value(dietplanner, emma_davis, energy_demand, 1600).
 attribute_value(dietplanner, emma_davis, number_day_on, 5).
-attribute_value(dietplanner, emma_davis, number_day_off, 2).
 
 person_instance(dietplanner, person, michael_brown).
 attribute_value(dietplanner, michael_brown, name, "Michael").
@@ -774,7 +770,6 @@ attribute_value(dietplanner, michael_brown, weight, 83.2).
 attribute_value(dietplanner, michael_brown, bmi, 27.17).
 attribute_value(dietplanner, michael_brown, energy_demand, 2150).
 attribute_value(dietplanner, michael_brown, number_day_on, 3).
-attribute_value(dietplanner, michael_brown, number_day_off, 4).
 
 person_instance(dietplanner, person, sophia_miller).
 attribute_value(dietplanner, sophia_miller, name, "Sophia").
@@ -786,7 +781,6 @@ attribute_value(dietplanner, sophia_miller, weight, 51.8).
 attribute_value(dietplanner, sophia_miller, bmi, 17.92).
 attribute_value(dietplanner, sophia_miller, energy_demand, 1530).
 attribute_value(dietplanner, sophia_miller, number_day_on, 6).
-attribute_value(dietplanner, sophia_miller, number_day_off, 1).
 
 % ---------
 % Class: activity

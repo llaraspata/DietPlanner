@@ -110,7 +110,8 @@ get_ingredients_in_dish(DailyDiet, Dish, Ingredients) :-
 % Predicate to get unique ingredients and cumulative quantities for a daily diet
 unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients) :-
     get_dishes_from_daily_diet(DailyDiet, Dishes), % Get the list of dishes
-    accumulate_ingredients(Dishes, [], UniqueIngredients).
+    remove_duplicates(Dishes, FinalDishes),
+    accumulate_ingredients(FinalDishes, [], UniqueIngredients).
 
 % Helper predicate to accumulate ingredients from a list of dishes
 accumulate_ingredients([], Acc, Acc).

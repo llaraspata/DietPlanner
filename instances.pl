@@ -508,177 +508,177 @@ attribute_value(dietplanner, cucumber_mint_infused_water, calories, 0).
 % Class: nutrient
 % ---------
 % Subclass: amino_acidic
-amino_acidic_instance(dietplanner, amino_acidic, tryptophan).
+nutrient_instance(dietplanner, amino_acidic, tryptophan).
 attribute_value(dietplanner, tryptophan, name, 'Tryptophan').
 attribute_value(dietplanner, tryptophan, description, 'Essential amino acid important for mood regulation and serotonin production.').
 
-amino_acidic_instance(dietplanner, amino_acidic, leucine).
+nutrient_instance(dietplanner, amino_acidic, leucine).
 attribute_value(dietplanner, leucine, name, 'Leucine').
 attribute_value(dietplanner, leucine, description, 'Essential amino acid vital for muscle growth and repair.').
 
-amino_acidic_instance(dietplanner, amino_acidic, valine).
+nutrient_instance(dietplanner, amino_acidic, valine).
 attribute_value(dietplanner, valine, name, 'Valine').
 attribute_value(dietplanner, valine, description, 'Essential amino acid involved in energy production and tissue repair.').
 
-amino_acidic_instance(dietplanner, amino_acidic, methionine).
+nutrient_instance(dietplanner, amino_acidic, methionine).
 attribute_value(dietplanner, methionine, name, 'Methionine').
 attribute_value(dietplanner, methionine, description, 'Essential amino acid important for metabolism and detoxification.').
 
-amino_acidic_instance(dietplanner, amino_acidic, phenylalanine).
+nutrient_instance(dietplanner, amino_acidic, phenylalanine).
 attribute_value(dietplanner, phenylalanine, name, 'Phenylalanine').
 attribute_value(dietplanner, phenylalanine, description, 'Essential amino acid precursor to various neurotransmitters and hormones.').
 
 % Subclass: dietary_fiber
-dietary_fiber_instance(dietplanner, dietary_fiber, soluble_fiber).
+nutrient_instance(dietplanner, dietary_fiber, soluble_fiber).
 attribute_value(dietplanner, soluble_fiber, name, 'Soluble Fiber').
 attribute_value(dietplanner, soluble_fiber, description, 'Fiber that dissolves in water and forms a gel-like substance.').
 
-dietary_fiber_instance(dietplanner, dietary_fiber, insoluble_fiber).
+nutrient_instance(dietplanner, dietary_fiber, insoluble_fiber).
 attribute_value(dietplanner, insoluble_fiber, name, 'Insoluble Fiber').
 attribute_value(dietplanner, insoluble_fiber, description, 'Fiber that does not dissolve in water and promotes regular bowel movements.').
 
-dietary_fiber_instance(dietplanner, dietary_fiber, pectin).
+nutrient_instance(dietplanner, dietary_fiber, pectin).
 attribute_value(dietplanner, pectin, name, 'Pectin').
 attribute_value(dietplanner, pectin, description, 'Soluble fiber found in fruits and used for making jams and jellies.').
 
-dietary_fiber_instance(dietplanner, dietary_fiber, cellulose).
+nutrient_instance(dietplanner, dietary_fiber, cellulose).
 attribute_value(dietplanner, cellulose, name, 'Cellulose').
 attribute_value(dietplanner, cellulose, description, 'Plant-based fiber that provides structure to plant cell walls.').
 
-dietary_fiber_instance(dietplanner, dietary_fiber, oligosaccharides).
+nutrient_instance(dietplanner, dietary_fiber, oligosaccharides).
 attribute_value(dietplanner, oligosaccharides, name, 'Oligosaccharides').
 attribute_value(dietplanner, oligosaccharides, description, 'Short-chain carbohydrates with potential prebiotic effects.').
 
-dietary_fiber_instance(dietplanner, dietary_fiber, resistant_starch).
+nutrient_instance(dietplanner, dietary_fiber, resistant_starch).
 attribute_value(dietplanner, resistant_starch, name, 'Resistant Starch').
 attribute_value(dietplanner, resistant_starch, description, 'Starch that escapes digestion in the small intestine and provides benefits to the large intestine.').
 
 % Subclass: carbs
-carbs_instance(dietplanner, carbs, complex_carbohydrates).
+nutrient_instance(dietplanner, carbs, complex_carbohydrates).
 attribute_value(dietplanner, complex_carbohydrates, name, 'Complex Carbohydrates').
 attribute_value(dietplanner, complex_carbohydrates, description, 'Carbohydrates with longer chains of sugar molecules.').
 
-carbs_instance(dietplanner, carbs, glucose).
+nutrient_instance(dietplanner, carbs, glucose).
 attribute_value(dietplanner, glucose, name, 'Glucose').
 attribute_value(dietplanner, glucose, description, 'Simple sugar and primary source of energy for the body.').
 
-carbs_instance(dietplanner, carbs, fructose).
+nutrient_instance(dietplanner, carbs, fructose).
 attribute_value(dietplanner, fructose, name, 'Fructose').
 attribute_value(dietplanner, fructose, description, 'Naturally occurring sugar found in fruits and honey.').
 
-carbs_instance(dietplanner, carbs, starch).
+nutrient_instance(dietplanner, carbs, starch).
 attribute_value(dietplanner, starch, name, 'Starch').
 attribute_value(dietplanner, starch, description, 'Complex carbohydrate providing sustained energy.').
 
-carbs_instance(dietplanner, carbs, lactose).
+nutrient_instance(dietplanner, carbs, lactose).
 attribute_value(dietplanner, lactose, name, 'Lactose').
 attribute_value(dietplanner, lactose, description, 'Sugar found in milk and dairy products.').
 
-carbs_instance(dietplanner, carbs, galactose).
+nutrient_instance(dietplanner, carbs, galactose).
 attribute_value(dietplanner, galactose, name, 'Galactose').
 attribute_value(dietplanner, galactose, description, 'Simple sugar found in milk and as part of lactose.').
 
 % Subclass: lipids
-lipids_instance(dietplanner, lipids, saturated_fats).
+nutrient_instance(dietplanner, lipids, saturated_fats).
 attribute_value(dietplanner, saturated_fats, name, 'Saturated Fats').
 attribute_value(dietplanner, saturated_fats, description, 'Fats with no double bonds between carbon molecules.').
 
-lipids_instance(dietplanner, lipids, monounsaturated_fat).
+nutrient_instance(dietplanner, lipids, monounsaturated_fat).
 attribute_value(dietplanner, monounsaturated_fat, name, 'Monounsaturated Fat').
 attribute_value(dietplanner, monounsaturated_fat, description, 'Healthy fat with one double bond in its structure.').
 
-lipids_instance(dietplanner, lipids, polyunsaturated_fat).
+nutrient_instance(dietplanner, lipids, polyunsaturated_fat).
 attribute_value(dietplanner, polyunsaturated_fat, name, 'Polyunsaturated Fat').
 attribute_value(dietplanner, polyunsaturated_fat, description, 'Healthy fat with multiple double bonds in its structure.').
 
-lipids_instance(dietplanner, lipids, trans_fat).
+nutrient_instance(dietplanner, lipids, trans_fat).
 attribute_value(dietplanner, trans_fat, name, 'Trans Fat').
 attribute_value(dietplanner, trans_fat, description, 'Unhealthy fat created through hydrogenation, found in some processed foods.').
 
-lipids_instance(dietplanner, lipids, omega_3_fatty_acids).
+nutrient_instance(dietplanner, lipids, omega_3_fatty_acids).
 attribute_value(dietplanner, omega_3_fatty_acids, name, 'Omega-3 Fatty Acids').
 attribute_value(dietplanner, omega_3_fatty_acids, description, 'Essential fatty acids with anti-inflammatory benefits.').
 
 % Subclass: minerals
-minerals_instance(dietplanner, minerals, calcium).
+nutrient_instance(dietplanner, minerals, calcium).
 attribute_value(dietplanner, calcium, name, 'Calcium').
 attribute_value(dietplanner, calcium, description, 'Mineral important for bone health and muscle function.').
 
-minerals_instance(dietplanner, minerals, iron).
+nutrient_instance(dietplanner, minerals, iron).
 attribute_value(dietplanner, iron, name, 'Iron').
 attribute_value(dietplanner, iron, description, 'Critical mineral for oxygen transport and energy production.').
 
-minerals_instance(dietplanner, minerals, potassium).
+nutrient_instance(dietplanner, minerals, potassium).
 attribute_value(dietplanner, potassium, name, 'Potassium').
 attribute_value(dietplanner, potassium, description, 'Electrolyte crucial for fluid balance and nerve function.').
 
-minerals_instance(dietplanner, minerals, magnesium).
+nutrient_instance(dietplanner, minerals, magnesium).
 attribute_value(dietplanner, magnesium, name, 'Magnesium').
 attribute_value(dietplanner, magnesium, description, 'Involved in hundreds of biochemical reactions in the body.').
 
-minerals_instance(dietplanner, minerals, zinc).
+nutrient_instance(dietplanner, minerals, zinc).
 attribute_value(dietplanner, zinc, name, 'Zinc').
 attribute_value(dietplanner, zinc, description, 'Essential trace mineral supporting immune function and more.').
 
-minerals_instance(dietplanner, minerals, phosphorus).
+nutrient_instance(dietplanner, minerals, phosphorus).
 attribute_value(dietplanner, phosphorus, name, 'Phosphorus').
 attribute_value(dietplanner, phosphorus, description, 'Vital mineral supporting bone health, energy transfer, and various cellular processes in the body.').
 
-minerals_instance(dietplanner, minerals, manganese).
+nutrient_instance(dietplanner, minerals, manganese).
 attribute_value(dietplanner, manganese, name, 'Manganese').
 attribute_value(dietplanner, manganese, description, 'Trace mineral essential for metabolism, bone health, and antioxidant defense in the body.').
 
 % Subclass: protein
-protein_instance(dietplanner, protein, whey_protein).
+nutrient_instance(dietplanner, protein, whey_protein).
 attribute_value(dietplanner, whey_protein, name, 'Whey Protein').
 attribute_value(dietplanner, whey_protein, description, 'High-quality protein derived from milk.').
 
-protein_instance(dietplanner, protein, casein_protein).
+nutrient_instance(dietplanner, protein, casein_protein).
 attribute_value(dietplanner, casein_protein, name, 'Casein Protein').
 attribute_value(dietplanner, casein_protein, description, 'Slow-digesting protein found in milk products and supplements.').
 
-protein_instance(dietplanner, protein, soy_protein).
+nutrient_instance(dietplanner, protein, soy_protein).
 attribute_value(dietplanner, soy_protein, name, 'Soy Protein').
 attribute_value(dietplanner, soy_protein, description, 'Plant-based protein derived from soybeans, suitable for vegetarians and vegans.').
 
-protein_instance(dietplanner, protein, egg_white_protein).
+nutrient_instance(dietplanner, protein, egg_white_protein).
 attribute_value(dietplanner, egg_white_protein, name, 'Egg White Protein').
 attribute_value(dietplanner, egg_white_protein, description, 'Protein sourced from egg whites, low in fat and carbohydrates.').
 
-protein_instance(dietplanner, protein, pea_protein).
+nutrient_instance(dietplanner, protein, pea_protein).
 attribute_value(dietplanner, pea_protein, name, 'Pea Protein').
 attribute_value(dietplanner, pea_protein, description, 'Plant-based protein extracted from yellow peas, suitable for various diets.').
 
-protein_instance(dietplanner, protein, lean_protein).
+nutrient_instance(dietplanner, protein, lean_protein).
 attribute_value(dietplanner, lean_protein, name, 'Lean Protein').
 attribute_value(dietplanner, lean_protein, description, 'Lean protein is low in fat and rich in essential amino acids, promoting muscle health and overall well-being.').
 
 % Subclass: vitamin
-vitamin_instance(dietplanner, vitamin, vitamin_c).
+nutrient_instance(dietplanner, vitamin, vitamin_c).
 attribute_value(dietplanner, vitamin_c, name, 'Vitamin C').
 attribute_value(dietplanner, vitamin_c, description, 'An antioxidant vitamin that supports immune health.').
 
-vitamin_instance(dietplanner, vitamin, vitamin_d).
+nutrient_instance(dietplanner, vitamin, vitamin_d).
 attribute_value(dietplanner, vitamin_d, name, 'Vitamin D').
 attribute_value(dietplanner, vitamin_d, description, 'Crucial vitamin for bone health and calcium absorption.').
 
-vitamin_instance(dietplanner, vitamin, vitamin_a).
+nutrient_instance(dietplanner, vitamin, vitamin_a).
 attribute_value(dietplanner, vitamin_a, name, 'Vitamin A').
 attribute_value(dietplanner, vitamin_a, description, 'Essential for vision, immune function, and cell growth.').
 
-vitamin_instance(dietplanner, vitamin, vitamin_k).
+nutrient_instance(dietplanner, vitamin, vitamin_k).
 attribute_value(dietplanner, vitamin_k, name, 'Vitamin K').
 attribute_value(dietplanner, vitamin_k, description, 'Vitamin necessary for blood clotting and bone health.').
 
-vitamin_instance(dietplanner, vitamin, vitamin_e).
+nutrient_instance(dietplanner, vitamin, vitamin_e).
 attribute_value(dietplanner, vitamin_e, name, 'Vitamin E').
 attribute_value(dietplanner, vitamin_e, description, 'Antioxidant vitamin protecting cells from damage.').
 
-vitamin_instance(dietplanner, vitamin, vitamin_b6).
+nutrient_instance(dietplanner, vitamin, vitamin_b6).
 attribute_value(dietplanner, vitamin_b6, name, 'Vitamin B6').
 attribute_value(dietplanner, vitamin_b6, description, 'Vitamin B6 is vital for metabolism, neurotransmitters, and immunity.').
 
-vitamin_instance(dietplanner, vitamin, vitamin_b12).
+nutrient_instance(dietplanner, vitamin, vitamin_b12).
 attribute_value(dietplanner, vitamin_b12, name, 'Vitamin B12').
 attribute_value(dietplanner, vitamin_b12, description, 'Water-soluble vitamin necessary for nerve function, DNA synthesis, and red blood cell formation.').
 

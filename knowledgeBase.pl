@@ -213,7 +213,7 @@ relationships(5, is_contained(Allergen, FoodBeverage), 0, 100).
 relationships(6, made_for(Diet, Person), 1, 1).
 relationships(7, suggested_diet(Person, Diet), 0, 100).
 relationships(8, composed_of(Diet, DailyDiet), 7, 7).
-relationships(9, has(DailyDiet, Dish, Ingredients), 5, 5).  % TotalQuantities is a list of pairs (FoodBeverage-TotalGrams)
+relationships(9, has(DailyDiet, Dish, Ingredients), 5, 5).  % TotalQuantities is a list of pairs FoodBeverage-TotalGrams
 relationships(10, made_of(Dish, FoodBeverage), 1, 100).
 
 

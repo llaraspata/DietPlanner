@@ -102,18 +102,33 @@ get_dishes_from_daily_diet(DailyDiet, Dishes) :-
 get_ingredients_in_daily_diet(DailyDiet, Ingredients) :-
     findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients).
 
-% Get the list of ingredients in a dish of a daily diet
+% Get the list of ingredients in a dish of a daily diet as a flat list
 get_ingredients_in_dish(DailyDiet, Dish, Ingredients) :-
-    findall(Ingredient, has(DailyDiet, Dish, Ingredient), Ingredients).
+    findall(Ingredient, has(DailyDiet, Dish, Ingredient), IngredientLists),
+    flatten(IngredientLists, Ingredients).
 
-% % Get the unique list of ingredients for each dish in a daily diet
-% unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredientsList) :-
-%     get_dishes_from_daily_diet(DailyDiet, Dishes),
-%     unique_ingredients_list(DailyDiet, Dishes, [], UniqueIngredientsList).
-% 
-% % Helper predicate for building the list of unique ingredients for each dish
-% unique_ingredients_list(_, [], Acc, Acc).
-% unique_ingredients_list(DailyDiet, [Dish | RestDishes], Acc, UniqueIngredientsList) :-
-%     get_ingredients_in_dish(DailyDiet, Dish, Ingredients),
-%     append(Acc, [Ingredients], NewAcc),
-%     unique_ingredients_list(DailyDiet, RestDishes, NewAcc, UniqueIngredientsList).
+% Predicate to get unique ingredients and cumulative quantities for a daily diet
+unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients) :-
+    get_dishes_from_daily_diet(DailyDiet, Dishes), % Get the list of dishes
+    accumulate_ingredients(Dishes, [], UniqueIngredients).
+
+% Helper predicate to accumulate ingredients from a list of dishes
+accumulate_ingredients([], Acc, Acc).
+accumulate_ingredients([Dish|Rest], Acc, UniqueIngredients) :-
+    get_ingredients_in_dish(DailyDiet, Dish, Ingredients), % Get ingredients in the dish
+    accumulate_ingredients(Rest, Acc, UpdatedAcc),
+    accumulate_ingredients_from_list(Ingredients, UpdatedAcc, UniqueIngredients).
+
+% Helper predicate to accumulate ingredients from a list
+accumulate_ingredients_from_list([], Acc, Acc).
+accumulate_ingredients_from_list([Ingredient-Quantity|Rest], Acc, UniqueIngredients) :-
+    % Check if the ingredient is already in the accumulated list
+    (member(Ingredient-ExistingQuantity, Acc) ->
+        NewQuantity is ExistingQuantity + Quantity,
+        select(Ingredient-ExistingQuantity, Acc, TempAcc), % Remove the old entry
+        append(TempAcc, [Ingredient-NewQuantity], UpdatedAcc)
+    ;
+        append(Acc, [Ingredient-Quantity], UpdatedAcc)
+    ),
+    accumulate_ingredients_from_list(Rest, UpdatedAcc, UniqueIngredients).
+ 

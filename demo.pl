@@ -136,9 +136,35 @@ cumulative_nutrient_quantity([FoodBeverage-Grams|Rest], Nutrient, PartialCumulat
     % Recursively process the rest of the list.
     cumulative_nutrient_quantity(Rest, Nutrient, NewPartialCumulativeQuantity, CumulativeQuantity).
 
+% Predicate to calculate the total grams in a list of food-grams pairs
+total_grams(FoodGramsList, Total) :-
+    total_grams(FoodGramsList, 0, Total).
+
+% Base case: When the list is empty, the total grams is 0.
+total_grams([], Total, Total).
+
+% Recursive case: Calculate the total grams for the first pair in the list.
+total_grams([_Food-Grams|Rest], PartialTotal, Total) :-
+    NewPartialTotal is PartialTotal + Grams,
+    % Recursively process the rest of the list.
+    total_grams(Rest, NewPartialTotal, Total).
+
+% Define a predicate to calculate the cumulative macro nutrient quantity as a percentage
+cumulative_macro_nutrient_percentage(FoodGramsList, MacroNutrient, Percentage) :-
+    % Calculate the cumulative macro nutrient quantity using the previous predicate
+    cumulative_macro_nutrient_quantity(FoodGramsList, MacroNutrient, MacroNutrientQuantity),
+    total_grams(FoodGramsList, TotalQuantity),
+    % Calculate the percentage
+    Percentage is (100 * MacroNutrientQuantity) / TotalQuantity.
+
 
 % Get total nutrient quantity in a daily diet
 daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams) :-
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
     cumulative_macro_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalGrams).
+
+% Get total nutrient quantity in a daily diet
+daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage) :-
+    unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
+    cumulative_macro_nutrient_percentage(UniqueIngredients, MacroNutrient, TotalPercentage).
  

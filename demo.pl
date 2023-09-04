@@ -196,6 +196,6 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
     (foodbeverage_instance(dietplanner, ItemToCount, FoodBeverage) ->
         NewPartialCount is PartialCount + 1
         ;
-        NewPartialCount is PartialCount + 0
+        NewPartialCount is PartialCount
     ),
     count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).

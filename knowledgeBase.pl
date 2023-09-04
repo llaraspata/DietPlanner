@@ -178,7 +178,7 @@ fact(120, entity(dietplanner, diet), 1).
 fact(121, attribute(dietplanner, diet, name, string), 1).
 fact(122, mandatory(dietplanner, diet, name), 1).
 fact(123, attribute(dietplanner, diet, type, select), 1).
-fact(124, values(dietplanner, diet, type, [normocaloric]), 1).    % Add more diet types in future enhancements
+fact(124, values(dietplanner, diet, type, [healthy_weight]), 1).    % Add more diet types in future enhancements
 
 % TODO: find the proper way to specify that an attribute is a list and what is its structure
 % For example breakfasts -> list of pairs Dish-grams, where each Dish's type is equal to breakfast
@@ -200,17 +200,22 @@ fact(131, mandatory(dietplanner, daily_diet, day), 1).
 % ---------
 % Relationships
 % ---------
+% The predicate "relationships" has the following parameters:
+%   1. id of the relationship (used for thei enumeration, too)
+%   2. predicate defining the relationship between entities
+%   3. min number of instances
+%   4. max number of instances
+relationships(1, has_nutrient(FoodBeverage, Nutrient, Quantity), 1, 100).
+relationships(2, part_of(Nutrient, FoodBeverage, Quantity), 1, 100000).
+relationships(3, carry_out(Person, Activity-Hours, FrequencyWeek), 0, 100).
+relationships(4, is_allergic(Person, Allergen), 0, 100).
+relationships(5, is_contained(Allergen, FoodBeverage), 0, 100).
+relationships(6, made_for(Diet, Person), 1, 1).
+relationships(7, suggested_diet(Person, Diet), 0, 100).
+relationships(8, composed_of(Diet, DailyDiet), 7, 7).
+relationships(9, has(DailyDiet, Dish, Ingredients), 5, 5).  % TotalQuantities is a list of pairs FoodBeverage-TotalGrams
+relationships(10, made_of(Dish, FoodBeverage), 1, 100).
+
+
 % TODO: find (or ask) a way to define relationships 
 % in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)
-relationships(1, has_nutrient(foodbeverage, nutrient), 1, 100).
-relationships(2, part_of(nutrient, foodbeverage), 1, 100000).
-relationships(3, carry_out(person, activity-hours, frequencyweek), 0, 100).
-relationships(4, is_allergic(person, allergen), 0, 100).
-relationships(5, is_contained(allergen, foodbeverage), 0, 100).
-relationships(6, made_for(diet, person), 1, 1).
-relationships(7, suggested_diet(person, diet), 0, 100).
-relationships(8, composed_of(diet, daily_diet), 7, 7).
-relationships(9, has(daily_diet, dish), 5, 5).
-relationships(10, made_of(dish, foodbeverage), 1, 100).
-
-

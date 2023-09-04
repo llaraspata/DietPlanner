@@ -21,8 +21,8 @@ rule(3, daily_diet_total_nutrient_percentage(DailyDiet, lipids, TotalPercentage)
 rule(4, daily_diet_total_nutrient_grams(DailyDiet, dietary_fiber, TotalGrams), and([TotalGrams > 24, TotalGrams < 31])).
 
 % 5-6. Sufficient quantity of Vitamins and Minerals is ensured by the presence of fruits and vegetables.
-rule(5, count_foodbeverage_in_daily_diet(DailyDiet, TotalFruit), and([TotalFruit > 1])).
-rule(6, count_foodbeverage_in_daily_diet(DailyDiet, TotalVegetables), and([TotalVegetables > 2])).
+rule(5, count_foodbeverage_in_daily_diet(DailyDiet, fruits_olives, TotalFruit), and([TotalFruit > 1])).
+rule(6, count_foodbeverage_in_daily_diet(DailyDiet, vegetables, TotalVegetables), and([TotalVegetables > 2])).
 
 
 

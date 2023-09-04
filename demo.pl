@@ -175,7 +175,6 @@ daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage) 
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
     cumulative_macro_nutrient_percentage(UniqueIngredients, MacroNutrient, TotalPercentage).
 
-
 % Get the list of food and beverages in a dish of a daily diet
 get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList) :-
     findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients),
@@ -187,8 +186,16 @@ get_only_foodbeverages([FoodBeverage-_Grams | Rest], Acc, FoodBeverageList) :-
     append(Acc, [FoodBeverage], UpdatedAcc),
     get_only_foodbeverages(Rest, UpdatedAcc, FoodBeverageList).
 
+% Count how many instances of a class of FoodBeverage there are in a daily diet
+count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
+    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
+    count_foodbeverage_in_list(ItemToCount, FoodBeverageList, 0, Total).
 
-%count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
-%    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
-
- 
+count_foodbeverage_in_list(_, [], Count, Count).
+count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Total) :-
+    (foodbeverage_instance(dietplanner, ItemToCount, FoodBeverage) ->
+        NewPartialCount is PartialCount + 1
+        ;
+        NewPartialCount is PartialCount + 0
+    ),
+    count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).

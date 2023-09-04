@@ -25,15 +25,8 @@ rule(5, count_foodbeverage_in_daily_diet(DailyDiet, fruits_olives, TotalFruit), 
 rule(6, count_foodbeverage_in_daily_diet(DailyDiet, vegetables, TotalVegetables), and([TotalVegetables > 2])).
 
 
+% ---------
+% Allergies
+% ---------
+% 7. Food and Beverages containing allergens at which the person is allergic cannot be included in a daily diet
 
-
-
-
-
-
-
-
-
-
-%Diet = [Meal1, Meal2],
-        

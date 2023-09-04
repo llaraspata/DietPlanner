@@ -343,3 +343,7 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
         NewPartialCount is PartialCount
     ),
     count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
+
+% Get person's allergies
+get_person_allergies(Person, Allergies) :-
+    findall(Allergen, is_allergic(Person, Allergen), Allergies).

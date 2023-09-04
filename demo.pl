@@ -1,12 +1,23 @@
 :- use_module(library(lists)).
 
 
+foodbeverage_instance(dietplanner, vegetables, carrot).
+foodbeverage_instance(dietplanner, vegetables, spinach).
+foodbeverage_instance(dietplanner, vegetables, broccoli).
+foodbeverage_instance(dietplanner, vegetables, bell_pepper).
+foodbeverage_instance(dietplanner, vegetables, tomato).
+foodbeverage_instance(dietplanner, fruits_olives, apple).
+foodbeverage_instance(dietplanner, fruits_olives, banana).
+foodbeverage_instance(dietplanner, fruits_olives, grapes).
+foodbeverage_instance(dietplanner, fruits_olives, olive).
+foodbeverage_instance(dietplanner, fruits_olives, orange).
+foodbeverage_instance(dietplanner, fruits_olives, blueberries).
+
 nutrient_instance(dietplanner, minerals, potassium).
 nutrient_instance(dietplanner, vitamin, vitamin_c).
 nutrient_instance(dietplanner, protein, whey_protein).
 nutrient_instance(dietplanner, lipids, omega_3_fatty_acids).
 
-% [turkey-200,lettuce-200,banana-20,quinoa-70,salmon-150,tomato-100,egg-20,bread-120]
 
 % Define has_nutrient relationship
 has_nutrient(apple, vitamin_c, 0.5).
@@ -25,7 +36,7 @@ has(daily_diet1, english_breakfast, [egg-20, bread-50]).
 has(daily_diet1, poke, [quinoa-70, salmon-150, tomato-100]).
 has(daily_diet1, yogurt_banana, [banana-10]).
 has(daily_diet1, yogurt_banana, [banana-10]).
-has(daily_diet1, turkey_sandwich, [turkey-200, bread-70, lettuce-200]).
+has(daily_diet1, turkey_sandwich, [turkey-200, bread-70, spinach-200]).
 
 % Define made_of relationship
 made_of(english_breakfast, egg).
@@ -44,7 +55,7 @@ made_of(poke, potato).
 made_of(poke, tomato).
 made_of(turkey_sandwich, turkey).
 made_of(turkey_sandwich, bread).
-made_of(turkey_sandwich, lettuce).
+made_of(turkey_sandwich, spinach).
 made_of(turkey_sandwich, tomato).
 
 
@@ -61,10 +72,6 @@ actual_nutrient_quantity(FoodBeverage, Nutrient, PortionSizeGrams, ActualQuantit
 % Get the list of dishes from a daily diet
 get_dishes_from_daily_diet(DailyDiet, Dishes) :-
     findall(Dish, has(DailyDiet, Dish, _), Dishes).
-
-% Get the list of ingredients in a dish of a daily diet
-get_ingredients_in_daily_diet(DailyDiet, Ingredients) :-
-    findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients).
 
 % Get the list of ingredients in a dish of a daily diet as a flat list
 get_ingredients_in_dish(DailyDiet, Dish, Ingredients) :-
@@ -167,4 +174,21 @@ daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams) :-
 daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage) :-
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
     cumulative_macro_nutrient_percentage(UniqueIngredients, MacroNutrient, TotalPercentage).
+
+
+% Get the list of food and beverages in a dish of a daily diet
+get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList) :-
+    findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients),
+    flatten(Ingredients, IngredientLists),
+    get_only_foodbeverages(IngredientLists, [], FoodBeverageList).
+
+get_only_foodbeverages([], Acc, Acc). 
+get_only_foodbeverages([FoodBeverage-_Grams | Rest], Acc, FoodBeverageList) :-
+    append(Acc, [FoodBeverage], UpdatedAcc),
+    get_only_foodbeverages(Rest, UpdatedAcc, FoodBeverageList).
+
+
+%count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
+%    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
+
  

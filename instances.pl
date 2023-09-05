@@ -788,12 +788,12 @@ attribute_value(dietplanner, sophia_miller, number_day_on, 6).
 activity_instance(dietplanner, activity, running).
 attribute_value(dietplanner, running, name, 'Running').
 attribute_value(dietplanner, running, description, 'Go for a run to boost your cardiovascular health.').
-attribute_value(dietplanner, running, calory_effort, 600).
+attribute_value(dietplanner, running, calory_effort, 400).
 
 activity_instance(dietplanner, activity, swimming).
 attribute_value(dietplanner, swimming, name, 'Swimming').
 attribute_value(dietplanner, swimming, description, 'Hit the pool for a full-body workout.').
-attribute_value(dietplanner, swimming, calory_effort, 700).
+attribute_value(dietplanner, swimming, calory_effort, 500).
 
 activity_instance(dietplanner, activity, yoga).
 attribute_value(dietplanner, yoga, name, 'Yoga').
@@ -814,43 +814,43 @@ attribute_value(dietplanner, cycling, calory_effort, 500).
 sports_instance(dietplanner, sports, soccer).
 attribute_value(dietplanner, soccer, name, 'Soccer').
 attribute_value(dietplanner, soccer, description, 'Play soccer for a team-based cardio workout.').
-attribute_value(dietplanner, soccer, calory_effort, 800).
+attribute_value(dietplanner, soccer, calory_effort, 400).
 
 sports_instance(dietplanner, sports, basketball).
 attribute_value(dietplanner, basketball, name, 'Basketball').
 attribute_value(dietplanner, basketball, description, 'Shoot hoops and run on the court for fitness.').
-attribute_value(dietplanner, basketball, calory_effort, 700).
+attribute_value(dietplanner, basketball, calory_effort, 500).
 
 sports_instance(dietplanner, sports, tennis).
 attribute_value(dietplanner, tennis, name, 'Tennis').
 attribute_value(dietplanner, tennis, description, 'Enjoy a game of tennis to improve agility.').
-attribute_value(dietplanner, tennis, calory_effort, 600).
+attribute_value(dietplanner, tennis, calory_effort, 400).
 
 sports_instance(dietplanner, sports, volleyball).
 attribute_value(dietplanner, volleyball, name, 'Volleyball').
 attribute_value(dietplanner, volleyball, description, 'Bump, set, and spike in a game of volleyball.').
-attribute_value(dietplanner, volleyball, calory_effort, 500).
+attribute_value(dietplanner, volleyball, calory_effort, 300).
 
 sports_instance(dietplanner, sports, cycling_race).
 attribute_value(dietplanner, cycling_race, name, 'Cycling Race').
 attribute_value(dietplanner, cycling_race, description, 'Participate in a cycling race for a challenging workout.').
-attribute_value(dietplanner, cycling_race, calory_effort, 1000).
+attribute_value(dietplanner, cycling_race, calory_effort, 500).
 
 % Subclass: walking
 walking_instance(dietplanner, walking, brisk_walking).
 attribute_value(dietplanner, brisk_walking, name, 'Brisk Walking').
 attribute_value(dietplanner, brisk_walking, description, 'Take a brisk walk to improve cardiovascular health.').
-attribute_value(dietplanner, brisk_walking, calory_effort, 300).
+attribute_value(dietplanner, brisk_walking, calory_effort, 200).
 
 walking_instance(dietplanner, walking, nature_walk).
 attribute_value(dietplanner, nature_walk, name, 'Nature Walk').
 attribute_value(dietplanner, nature_walk, description, 'Enjoy a leisurely walk in nature for mental and physical well-being.').
-attribute_value(dietplanner, nature_walk, calory_effort, 200).
+attribute_value(dietplanner, nature_walk, calory_effort, 100).
 
 walking_instance(dietplanner, walking, power_walking).
 attribute_value(dietplanner, power_walking, name, 'Power Walking').
 attribute_value(dietplanner, power_walking, description, 'Engage in power walking for an effective workout.').
-attribute_value(dietplanner, power_walking, calory_effort, 400).
+attribute_value(dietplanner, power_walking, calory_effort, 200).
 
 walking_instance(dietplanner, walking, evening_stroll).
 attribute_value(dietplanner, evening_stroll, name, 'Evening Stroll').

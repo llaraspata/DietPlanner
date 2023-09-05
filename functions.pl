@@ -58,9 +58,10 @@ find_person_id(Name, Surname, PersonID) :-
 find_person_id(_, _, false).
 
 
-find_bmi_energy_effort(PersonID, BMIValue, EnergyValue) :-
+find_bmi_energyeffort_dayon(PersonID, BMIValue, EnergyValue, NumberDayOn) :-
     attribute_value(dietplanner, PersonID, bmi, BMIValue),
     attribute_value(dietplanner, PersonID, energy_demand, EnergyValue),
+    attribute_value(dietplanner, PersonID, number_day_on, NumberDayOn),
     !.
 
 % Ordinamento decrescente in base al secondo parametro
@@ -79,12 +80,27 @@ create_week(PersonID, Week) :-
     ordered_list(ActivityList, OrderedList),
     distribute_sorted_activities(OrderedList, EmptyDay, NumeberDayOn, Week).
 
-compute_activity_effort([], 0).
-compute_activity_effort([Activity-Duration|Rest], TotalEffort) :-
+set_calories_week([], _, _, []).
+set_calories_week([Day|Rest], BMI, EnergyValue, [TotalCalories|Tail]) :-
+    set_right_number_calories(BMI, EnergyValue, ActivityDurationList, BaseCalories),
+    set_calories_day(Day, BMI, TotalEffort),
+    TotalCalories is TotalEffort + BaseCalories,
+    set_calories_week(Rest, BMI, EnergyValue, Tail).
+
+set_calories_day([], _, 0).
+set_calories_day([Activity-Duration|Rest], BMI, TotalEffort) :-
     attribute_value(dietplanner, Activity, calory_effort, EffortOneHour),
-    ActivityEffort is EffortOneHour * Duration,
-    compute_activity_effort(Rest, RestEffort),
+    (   BMI < 18.49 ->
+        Param is 90
+    ;   (BMI >= 18.50, BMI =< 24.99) ->
+        Param is 80
+    ;   BMI > 25.00 ->
+        Param is 70
+    ),
+    ActivityEffort is (EffortOneHour * Duration * Param) / 100,
+    set_calories_day(Rest, BMI, RestEffort),
     TotalEffort is ActivityEffort + RestEffort.
+
 
 % Compute the total calories effort for a single day
 set_right_number_calories(BMI, EnergyValue, [], TotalCalories) :-
@@ -114,13 +130,15 @@ flatten_pairs([[X-Y|RestPairs]|RestLists], [X-Y|FlattenedRest]) :-
 
 compute_diet(Name, Surname, Diet) :-
     find_person_id(Name, Surname, PersonID),
-    find_bmi_energy_effort(PersonID, BMI, EnergyValue),
+    find_bmi_energyeffort_dayon(PersonID, BMI, EnergyValue, NumberDayOn),
     get_activities(PersonID, ActivityList),
-    set_week(PersonID, ActivityList, Week),
     length(ActivityList, Length),
-    (Length =\= 0 -> flatten_pairs(ActivityList, ActivityDurationList); true),
-    set_right_number_calories(BMI, EnergyValue, ActivityDurationList, TotalCalories),
-    writeln(TotalCalories).
+    (Length =\= 0 -> 
+        distribute_activities(NumberDayOn, ActivityList, DistributedList)
+    ; 
+        create_days_list(7, DistributedList)),
+    set_calories_week(DistributedList, BMI, EnergyValue, TotalCaloriesList),
+    writeln(TotalCaloriesList).
 
 % Predicato per distribuire le attività equamente su 7 giorni
 distribute_activities(DaysPerWeek, ActivityList, DistributedList) :-

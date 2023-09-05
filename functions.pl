@@ -347,3 +347,45 @@ get_only_foodbeverages([], Acc, Acc).
 get_only_foodbeverages([FoodBeverage-_Grams | Rest], Acc, FoodBeverageList) :-
     append(Acc, [FoodBeverage], UpdatedAcc),
     get_only_foodbeverages(Rest, UpdatedAcc, FoodBeverageList).
+
+% Count how many instances of a class of FoodBeverage there are in a daily diet
+count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
+    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
+    count_foodbeverage_in_list(ItemToCount, FoodBeverageList, 0, Total).
+
+count_foodbeverage_in_list(_, [], Count, Count).
+count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Total) :-
+    (foodbeverage_instance(dietplanner, ItemToCount, FoodBeverage) ->
+        NewPartialCount is PartialCount + 1
+        ;
+        NewPartialCount is PartialCount
+    ),
+    count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
+
+% Get person's allergies
+get_person_allergies(Person, Allergies) :-
+    findall(Allergen, is_allergic(Person, Allergen), Allergies).
+
+% Define a predicate to get dishes whose ingredients do not contain a list of allergens
+get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens) :-
+    findall(Dish, (
+        dish_instance(dietplanner, dish, Dish),  % Get all dishes
+        \+ dish_contains_allergens(Dish, Allergens),  % Check if dish contains allergens
+        attribute_value(dietplanner, Dish, type, DishType)
+    ), DishesWithoutAllergens).
+
+% Define a predicate to check if a dish contains allergens
+dish_contains_allergens(Dish, Allergens) :-
+    get_foodbeverages_in_dish(Dish, FoodBeverageList),
+    member(FoodBeverage, FoodBeverageList),
+    is_contained(dietplanner, Allergen, FoodBeverage),
+    member(Allergen, Allergens).
+
+% Get the list of ingredients in a dish of a daily diet as a flat list
+get_foodbeverages_in_dish(Dish, FoodBeverageList) :-
+    findall(FoodBeverage, made_of(Dish, FoodBeverage), FoodBeverageList).
+
+% Get dishes whose ingredients don't contain allergens a specific person is allergic to
+get_dishes_without_allergens_for_person(Person, DishType, DishesWithoutAllergens) :-
+    get_person_allergies(Person, Allergies),
+    get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens).

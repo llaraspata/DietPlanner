@@ -1,6 +1,6 @@
 :- use_module(library(lists)).
 
-
+% Food and Beverage
 foodbeverage_instance(dietplanner, vegetables, carrot).
 foodbeverage_instance(dietplanner, vegetables, spinach).
 foodbeverage_instance(dietplanner, vegetables, broccoli).
@@ -13,11 +13,49 @@ foodbeverage_instance(dietplanner, fruits_olives, olive).
 foodbeverage_instance(dietplanner, fruits_olives, orange).
 foodbeverage_instance(dietplanner, fruits_olives, blueberries).
 
+% Nutrient
 nutrient_instance(dietplanner, minerals, potassium).
 nutrient_instance(dietplanner, vitamin, vitamin_c).
 nutrient_instance(dietplanner, protein, whey_protein).
 nutrient_instance(dietplanner, lipids, omega_3_fatty_acids).
 
+% Person
+person_instance(dietplanner, person, alice_johnson).
+person_instance(dietplanner, person, bob_smith).
+
+% Dish
+dish_instance(dietplanner, dish, english_breakfast).
+attribute_value(dietplanner, english_breakfast, type, breakfast).
+dish_instance(dietplanner, dish, poke).
+attribute_value(dietplanner, poke, type, lunch).
+attribute_value(dietplanner, poke, type, dinner).
+dish_instance(dietplanner, dish, yogurt_banana).
+attribute_value(dietplanner, yogurt_banana, type, breakfast).
+attribute_value(dietplanner, yogurt_banana, type, snack).
+dish_instance(dietplanner, dish, turkey_sandwich).
+attribute_value(dietplanner, english_breakfast, type, dinner).
+
+% Define is_allergic relationship
+is_allergic(alice_johnson, dairy).
+is_allergic(bob_smith, peanuts).
+is_allergic(alice_johnson, shellfish).
+is_allergic(bob_smith, dairy).
+
+% Define is_contained relationship
+is_contained(dietplanner, nuts, almond_milk).
+is_contained(dietplanner, shellfish, shrimp).
+is_contained(dietplanner, shellfish, crab).
+is_contained(dietplanner, shellfish, salmon).
+is_contained(dietplanner, gluten, wheat_bread).
+is_contained(dietplanner, gluten, pasta).
+is_contained(dietplanner, eggs, chicken_eggs).
+is_contained(dietplanner, eggs, quail_eggs).
+is_contained(dietplanner, eggs, duck_eggs).
+is_contained(dietplanner, eggs, goose_eggs).
+is_contained(dietplanner, eggs, egg_whites).
+is_contained(dietplanner, dairy, whole_milk).
+is_contained(dietplanner, shellfish, lobster).
+is_contained(dietplanner, dairy, cheese).
 
 % Define has_nutrient relationship
 has_nutrient(apple, vitamin_c, 0.5).
@@ -57,7 +95,6 @@ made_of(turkey_sandwich, turkey).
 made_of(turkey_sandwich, bread).
 made_of(turkey_sandwich, spinach).
 made_of(turkey_sandwich, tomato).
-
 
 
 % Query to find the nutrient content per 100g or 100ml portion
@@ -175,7 +212,6 @@ daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage) 
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
     cumulative_macro_nutrient_percentage(UniqueIngredients, MacroNutrient, TotalPercentage).
 
-
 % Get the list of food and beverages in a dish of a daily diet
 get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList) :-
     findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients),
@@ -187,8 +223,46 @@ get_only_foodbeverages([FoodBeverage-_Grams | Rest], Acc, FoodBeverageList) :-
     append(Acc, [FoodBeverage], UpdatedAcc),
     get_only_foodbeverages(Rest, UpdatedAcc, FoodBeverageList).
 
+% Count how many instances of a class of FoodBeverage there are in a daily diet
+count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
+    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
+    count_foodbeverage_in_list(ItemToCount, FoodBeverageList, 0, Total).
 
-%count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
-%    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
+count_foodbeverage_in_list(_, [], Count, Count).
+count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Total) :-
+    (foodbeverage_instance(dietplanner, ItemToCount, FoodBeverage) ->
+        NewPartialCount is PartialCount + 1
+        ;
+        NewPartialCount is PartialCount
+    ),
+    count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
 
- 
+
+% Get person's allergies
+get_person_allergies(Person, Allergies) :-
+    findall(Allergen, is_allergic(Person, Allergen), Allergies).
+
+% Define a predicate to get dishes whose ingredients do not contain a list of allergens
+get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens) :-
+    findall(Dish, (
+        dish_instance(dietplanner, dish, Dish),  % Get all dishes
+        \+ dish_contains_allergens(Dish, Allergens),  % Check if dish contains allergens
+        attribute_value(dietplanner, Dish, type, DishType)
+    ), DishesWithoutAllergens).
+
+% Define a predicate to check if a dish contains allergens
+dish_contains_allergens(Dish, Allergens) :-
+    get_foodbeverages_in_dish(Dish, FoodBeverageList),
+    member(FoodBeverage, FoodBeverageList),
+    is_contained(dietplanner, Allergen, FoodBeverage),
+    member(Allergen, Allergens).
+
+
+% Get the list of ingredients in a dish of a daily diet as a flat list
+get_foodbeverages_in_dish(Dish, FoodBeverageList) :-
+    findall(FoodBeverage, made_of(Dish, FoodBeverage), FoodBeverageList).
+
+% Get dishes whose ingredients don't contain allergens a specific person is allergic to
+get_dishes_without_allergens_for_person(Person, DishType, DishesWithoutAllergens) :-
+    get_person_allergies(Person, Allergies),
+    get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens).

@@ -414,3 +414,4 @@ get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDiet) :-
 generate_daily_diet(Person, DailyDiet) :-
     dish_types(DishTypes),
     get_daily_diet_dishes(Person, DishTypes, [], DailyDiet).
+    

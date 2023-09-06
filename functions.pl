@@ -415,3 +415,15 @@ generate_daily_diet(Person, DailyDiet) :-
     dish_types(DishTypes),
     get_daily_diet_dishes(Person, DishTypes, [], DailyDiet).
     
+
+
+
+check_macronutrient_percentage(DailyDiet, MacroNutrient, LowerBound, UpperBound) :-
+    daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage),
+    TotalPercentage >= LowerBound,
+    TotalPercentage =< UpperBound.
+
+check_macronutrient_grams(DailyDiet, MacroNutrient, LowerBound, UpperBound) :-
+    daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams),
+    TotalGrams >= LowerBound,
+    TotalGrams =< UpperBound.

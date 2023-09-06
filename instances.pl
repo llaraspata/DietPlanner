@@ -1125,3 +1125,9 @@ made_of(dietplanner, tuna_sandwich, tuna).
 made_of(dietplanner, sushi_roll, tuna).
 made_of(dietplanner, beef_stew, beef).
 made_of(dietplanner, beef_tacos, beef).
+
+
+
+% ---------
+% Computed Diet and Daily Diets
+% ---------

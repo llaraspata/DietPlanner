@@ -14,6 +14,17 @@ foodbeverage_instance(dietplanner, fruits_olives, grapes).
 foodbeverage_instance(dietplanner, fruits_olives, olive).
 foodbeverage_instance(dietplanner, fruits_olives, orange).
 foodbeverage_instance(dietplanner, fruits_olives, blueberries).
+attribute_value(dietplanner, spinach, calories, 71).
+attribute_value(dietplanner, tomato, calories, 20).
+attribute_value(dietplanner, egg, calories, 40).
+attribute_value(dietplanner, bread, calories, 100).
+attribute_value(dietplanner, quinoa, calories, 46).
+attribute_value(dietplanner, salmon, calories, 55).
+attribute_value(dietplanner, shrimp, calories, 120).
+attribute_value(dietplanner, potato, calories, 230).
+attribute_value(dietplanner, banana, calories, 90).
+attribute_value(dietplanner, turkey, calories, 160).
+
 
 % Nutrient
 nutrient_instance(dietplanner, minerals, potassium).
@@ -23,7 +34,38 @@ nutrient_instance(dietplanner, lipids, omega_3_fatty_acids).
 
 % Person
 person_instance(dietplanner, person, alice_johnson).
+attribute_value(dietplanner, alice_johnson, name, 'Alice').
+attribute_value(dietplanner, alice_johnson, surname, 'Johnson').
+attribute_value(dietplanner, alice_johnson, age, 30).
+attribute_value(dietplanner, alice_johnson, gender, 'Female').
+attribute_value(dietplanner, alice_johnson, height, 165).
+attribute_value(dietplanner, alice_johnson, weight, 60.5).
+attribute_value(dietplanner, alice_johnson, bmi, 22.22).
+attribute_value(dietplanner, alice_johnson, energy_demand, 1710).
+attribute_value(dietplanner, alice_johnson, number_day_on, 2).
+
 person_instance(dietplanner, person, bob_smith).
+attribute_value(dietplanner, bob_smith, name, 'Bob').
+attribute_value(dietplanner, bob_smith, surname, 'Smith').
+attribute_value(dietplanner, bob_smith, age, 28).
+attribute_value(dietplanner, bob_smith, gender, 'Male').
+attribute_value(dietplanner, bob_smith, height, 180).
+attribute_value(dietplanner, bob_smith, weight, 75.2).
+attribute_value(dietplanner, bob_smith, bmi, 23.21).
+attribute_value(dietplanner, bob_smith, energy_demand, 2080).
+attribute_value(dietplanner, bob_smith, number_day_on, 4).
+
+
+activity_instance(dietplanner, activity, running).
+attribute_value(dietplanner, running, name, 'Running').
+attribute_value(dietplanner, running, description, 'Go for a run to boost your cardiovascular health.').
+attribute_value(dietplanner, running, calory_effort, 400).
+
+activity_instance(dietplanner, activity, swimming).
+attribute_value(dietplanner, swimming, name, 'Swimming').
+attribute_value(dietplanner, swimming, description, 'Hit the pool for a full-body workout.').
+attribute_value(dietplanner, swimming, calory_effort, 500).
+
 
 % Dish
 dish_instance(dietplanner, dish, english_breakfast).
@@ -70,13 +112,13 @@ has_nutrient(turkey, whey_protein, 50).
 has_nutrient(egg, whey_protein, 35).
 
 % Define composed_of relationship
-composed_of(diet1, daily_diet1).
+composed_of(diet1, daily_diet10).
 
 % Define has relationship
-has(daily_diet1, english_breakfast, [egg-20, bread-50]).
-has(daily_diet1, poke, [quinoa-70, salmon-150, tomato-100]).
-has(daily_diet1, yogurt_banana, [banana-10]).
-has(daily_diet1, turkey_sandwich, [turkey-200, bread-70, spinach-200]).
+has(daily_diet10, english_breakfast, [egg-20, bread-50]).
+has(daily_diet10, poke, [quinoa-70, salmon-150, tomato-100]).
+has(daily_diet10, yogurt_banana, [banana-10]).
+has(daily_diet10, turkey_sandwich, [turkey-200, bread-70, spinach-200]).
 
 % Define made_of relationship
 made_of(english_breakfast, egg).
@@ -97,6 +139,14 @@ made_of(turkey_sandwich, turkey).
 made_of(turkey_sandwich, bread).
 made_of(turkey_sandwich, spinach).
 made_of(turkey_sandwich, tomato).
+
+
+carry_out(alice_johnson, running-1, 2).
+carry_out(alice_johnson, swimming-1.5, 1).
+
+carry_out(bob_smith, swimming-2, 1).
+carry_out(bob_smith, running-1, 1).
+carry_out(bob_smith, weightlifting-2, 4).
 
 
 % Compute the total calories about a list of foods 
@@ -483,13 +533,12 @@ get_random_dish_in_list(DishList, Dish) :-
 
 dish_types([breakfast, snack, lunch, snack, dinner]).
 
-get_daily_diet_dishes(_, [], DailyDiet, DailyDiet).
-
-get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDiet) :-
+get_daily_diet_dishes(_, [], DailyDietDishes, DailyDietDishes).
+get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDietDishes) :-
     get_dishes_without_allergens_for_person(Person, DishType, DishList),
     get_random_dish_in_list(DishList, Dish),
     append(Acc, [Dish], NewAcc ),
-    get_daily_diet_dishes(Person, Rest, NewAcc, DailyDiet).
+    get_daily_diet_dishes(Person, Rest, NewAcc, DailyDietDishes).
 
 had_new_fact(NewIdFact, Obiettivo, Probability) :-
 	retract(max_id(Max)),
@@ -506,11 +555,10 @@ had_new_fact(NewIdFact, Obiettivo, Probability) :-
 	close(Stream).
 
 add_new_relationship(NewRelationship) :-
-    
 	assertz(NewRelationship),
-	open('knowledgeBase.pl',append,Stream),
-	write(Stream,NewRelationship),
-    writeln('Write Success').
+	open('instances.pl',append,Stream),
+    format(Stream, '~w.~n', [NewRelationship]),
+    writeln('Write Success'),
 	close(Stream).
 
 % Estrai il numero massimo dalla lista Keys
@@ -535,7 +583,7 @@ generate_list_calories_week(PersonID, TotalCaloriesList) :-
         distribute_activities(NumberDayOn, ActivityList, DistributedList)
     ; 
         create_days_list(7, DistributedList)),
-    set_calories_week(DistributedList, BMI, EnergyValue, TotalCaloriesList),
+    set_calories_week(DistributedList, BMI, EnergyValue, TotalCaloriesList).
     
 get_daily_diet_calories(TotalDayCalories, DailyCalories) :-
     Percentage1 is TotalDayCalories * 0.20,
@@ -546,12 +594,41 @@ get_daily_diet_calories(TotalDayCalories, DailyCalories) :-
     DailyCalories = [Percentage1, Percentage2, Percentage3, Percentage4, Percentage5].
 
 % Define a predicate to generate a daily diet for a person
-generate_daily_diet(Person, TotalDayCalories, DailyDiet) :-
+generate_daily_diet(Person, []).
+generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
     dish_types(DishTypes),
-    get_daily_diet_dishes(Person, DishTypes, [], DailyDiet),
+    generate_new_id_daily_diet(NewId),
+    get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
-    set_grams_for_dish(DailyDiet, DailyCalories, NewRelationship).
+    set_grams_for_dish(NewId, DailyDietDishes, DailyCalories),
+    generate_daily_diet(Person, Rest).
 
+set_grams_for_dish(_, [], []).
+set_grams_for_dish(NewId, [Dish | RestDish], [Calories | RestCalories]) :-
+    get_foodbeverages_in_dish(Dish, FoodBeverageList),
+    compute_ingredients_grams(FoodBeverageList, Calories, IngredientLists),
+    NewRelationship = has(NewId, Dish, IngredientLists),
+    add_new_relationship(NewRelationship),
+    set_grams_for_dish(NewId, RestDish, RestCalories).
+
+
+compute_ingredients_grams(FoodBeverageList, Calories, IngredientLists) :-
+    length(FoodBeverageList, NumberIngredients),
+    CaloriesPerIngredient is Calories / NumberIngredients,
+    actual_foodbeverage_grams(FoodBeverageList, CaloriesPerIngredient, [], IngredientLists).
+
+% Convert the nutrient content to the actual quantity in the given portion size
+actual_foodbeverage_grams([], _, IngredientLists, IngredientLists).
+actual_foodbeverage_grams([FoodBeverage | Rest], Calories, Acc, IngredientLists) :-
+    attribute_value(dietplanner, FoodBeverage, calories, CaloriesPer100g),
+    PortionSizeGrams is round((Calories * 100) / CaloriesPer100g),
+    append(Acc, [FoodBeverage-PortionSizeGrams], NewAcc),
+    actual_foodbeverage_grams(Rest, Calories, NewAcc, IngredientLists).
+
+compute_diet(Name, Surname, Diet) :-
+    find_person_id(Name, Surname, Person),
+    generate_list_calories_week(Person, TotalWeekCaloriesList),
+    generate_daily_diet(Person, TotalWeekCaloriesList).
 
 
 check_macronutrient_percentage(DailyDiet, MacroNutrient, LowerBound, UpperBound) :-
@@ -563,16 +640,3 @@ check_macronutrient_grams(DailyDiet, MacroNutrient, LowerBound, UpperBound) :-
     daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams),
     TotalGrams >= LowerBound,
     TotalGrams =< UpperBound.
-
-
-set_grams_for_dish([Dish | RestDish], [Calories | RestCalories], NewRelationship) :-
-    %generate_new_id_daily_diet(NewId),
-    get_foodbeverages_in_dish(Dish, FoodBeverageList),
-    %TODO fare la proporzione per calcolare le grammature anche in base alle regole di come deve essere composta una dieta a livello di carbo, pro e fat
-	% NewRelationship = has(NewId, Dish, Probability),
-    set_grams_for_dish(RestDish, RestCalories, NewRelationship) :-
-
-compute_diet(Name, Surname, Diet) : -
-    find_person_id(Name, Surname, Person),
-    generate_list_calories_week(Person, TotalCaloriesList),
-

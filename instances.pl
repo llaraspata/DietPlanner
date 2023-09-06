@@ -38,14 +38,14 @@ attribute_value(dietplanner, durum_wheat_pasta, calories, 250).
 foodbeverage_instance(dietplanner, cereal, white_bread).
 attribute_value(dietplanner, white_bread, name, 'White Bread').
 attribute_value(dietplanner, white_bread, description, 'White bread, a type of bread made from refined wheat flour, commonly used for sandwiches.').
-attribute_value(dietplanner, white_bread, calories, 80).
+attribute_value(dietplanner, white_bread, calories, 290).
 
 
 % Subclass: eggs
 foodbeverage_instance(dietplanner, eggs, chicken_eggs).
 attribute_value(dietplanner, chicken_eggs, name, 'Chicken Eggs').
 attribute_value(dietplanner, chicken_eggs, description, 'Fresh eggs from chickens, a versatile source of protein.').
-attribute_value(dietplanner, chicken_eggs, calories, 68).
+attribute_value(dietplanner, chicken_eggs, calories, 128).
 
 foodbeverage_instance(dietplanner, eggs, quail_eggs).
 attribute_value(dietplanner, quail_eggs, name, 'Quail Eggs').

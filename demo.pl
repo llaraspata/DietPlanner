@@ -1,4 +1,5 @@
 :- use_module(library(lists)).
+:- use_module(library(random)).  
 
 % Food and Beverage
 foodbeverage_instance(dietplanner, vegetables, carrot).
@@ -33,7 +34,8 @@ dish_instance(dietplanner, dish, yogurt_banana).
 attribute_value(dietplanner, yogurt_banana, type, breakfast).
 attribute_value(dietplanner, yogurt_banana, type, snack).
 dish_instance(dietplanner, dish, turkey_sandwich).
-attribute_value(dietplanner, english_breakfast, type, dinner).
+attribute_value(dietplanner, turkey_sandwich, type, dinner).
+attribute_value(dietplanner, turkey_sandwich, type, lunch).
 
 % Define is_allergic relationship
 is_allergic(alice_johnson, dairy).
@@ -266,3 +268,26 @@ get_foodbeverages_in_dish(Dish, FoodBeverageList) :-
 get_dishes_without_allergens_for_person(Person, DishType, DishesWithoutAllergens) :-
     get_person_allergies(Person, Allergies),
     get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens).
+
+% Get a random dish from a list of candidate dishes
+get_random_dish_in_list(DishList, Dish) :-
+    length(DishList, Length),
+    random(1, Length, Index),
+    nth(Index, DishList, Dish).
+
+
+dish_types([breakfast, snack, lunch, snack, dinner]).
+
+get_daily_diet_dishes(_, [], DailyDiet, DailyDiet).
+
+get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDiet) :-
+    get_dishes_without_allergens_for_person(Person, DishType, DishList),
+    get_random_dish_in_list(DishList, Dish),
+    append(Acc, [Dish], NewAcc ),
+    get_daily_diet_dishes(Person, Rest, NewAcc, DailyDiet).
+
+
+% Define a predicate to generate a daily diet for a person
+generate_daily_diet(Person, DailyDiet) :-
+    dish_types(DishTypes),
+    get_daily_diet_dishes(Person, DishTypes, [], DailyDiet).

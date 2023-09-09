@@ -115,10 +115,11 @@ has_nutrient(egg, whey_protein, 35).
 composed_of(diet1, daily_diet10).
 
 % Define has relationship
-has(daily_diet10, english_breakfast, [egg-20, bread-50]).
-has(daily_diet10, poke, [quinoa-70, salmon-150, tomato-100]).
-has(daily_diet10, yogurt_banana, [banana-10]).
-has(daily_diet10, turkey_sandwich, [turkey-200, bread-70, spinach-200]).
+has(daily_diet1, english_breakfast, [egg-20, bread-50]).
+has(daily_diet1, yogurt_banana, [banana-10]).
+has(daily_diet1, poke, [quinoa-70, salmon-150, tomato-100]).
+has(daily_diet1, yogurt_banana, [banana-10]).
+has(daily_diet1, turkey_sandwich, [turkey-200, bread-70, spinach-200]).
 
 % Define made_of relationship
 made_of(english_breakfast, egg).
@@ -371,6 +372,15 @@ replace_list_helper([X|Rest], Index, NewList, CurrIndex, [X|RestResult]) :-
 collect_allergen_names(Names) :-
     findall(Name, allergen_instance(_, _, Name), Names).
 
+
+standard_calories_quantity(FoodBeverage, Quantity) :-
+    attribute_value(dietplanner, FoodBeverage, calories, Quantity).
+
+% Convert the nutrient content to the actual quantity in the given portion size
+actual_calories_quantity(FoodBeverage, PortionSizeGrams, ActualQuantity) :-
+    standard_calories_quantity(FoodBeverage, QuantityPer100),
+    ActualQuantity is (PortionSizeGrams / 100) * QuantityPer100.
+
 % Query to find the nutrient content per 100g or 100ml portion
 standard_nutrient_content(FoodBeverage, Nutrient, Quantity) :-
     has_nutrient(FoodBeverage, Nutrient, Quantity).
@@ -554,12 +564,20 @@ had_new_fact(NewIdFact, Obiettivo, Probability) :-
 	write(Stream,NewFact), nl(Stream),
 	close(Stream).
 
-add_new_relationship(NewRelationship) :-
+add_new_relationship(NewRelationship, FileName) :-
 	assertz(NewRelationship),
-	open('instances.pl',append,Stream),
+	open(FileName, append,Stream),
     format(Stream, '~w.~n', [NewRelationship]),
     writeln('Write Success'),
 	close(Stream).
+
+delete_file_content(FileName) :-
+    open(FileName, write, Stream),
+    close(Stream),
+    open(FileName, write, Stream2),
+    close(Stream2),
+    writeln('File content deleted successfully').
+
 
 % Estrai il numero massimo dalla lista Keys
 get_unique_keys(Keys) :-
@@ -586,21 +604,47 @@ generate_list_calories_week(PersonID, TotalCaloriesList) :-
     set_calories_week(DistributedList, BMI, EnergyValue, TotalCaloriesList).
     
 get_daily_diet_calories(TotalDayCalories, DailyCalories) :-
-    Percentage1 is TotalDayCalories * 0.20,
-    Percentage2 is TotalDayCalories * 0.08,
-    Percentage3 is TotalDayCalories * 0.40,
-    Percentage4 is TotalDayCalories * 0.08,
-    Percentage5 is TotalDayCalories * 0.24,
-    DailyCalories = [Percentage1, Percentage2, Percentage3, Percentage4, Percentage5].
+    BreakfastCalories is TotalDayCalories * 0.20,
+    MorningSnackCalories is TotalDayCalories * 0.08,
+    LunchCalories is TotalDayCalories * 0.40,
+    AfternoonSnackCalories is TotalDayCalories * 0.08,
+    DinnerCalories is TotalDayCalories * 0.24,
+    DailyCalories = [BreakfastCalories, MorningSnackCalories, LunchCalories, AfternoonSnackCalories, DinnerCalories].
 
 % Define a predicate to generate a daily diet for a person
 generate_daily_diet(Person, []).
 generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
     dish_types(DishTypes),
+    healthy_weight_nutrient_grams(MacronutrientGramLimits),
+    healthy_weight_nutrient_percentages(MacronutrientPercentageLimits),
+
     generate_new_id_daily_diet(NewId),
+
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
+
+    %set_grams_for_dish(NewId, DailyDietDishes, DailyCalories, 0, DailyDiet),
     set_grams_for_dish(NewId, DailyDietDishes, DailyCalories),
+
+    repeat,
+        (
+            check_daily_calories(DailyDiet, DailyCalories, CaloriesResult),
+            check_macronitrient_grams(DailyDiet, MacronutrientGramLimits, MacronutrientGramResult),
+            check_macronitrient_percentage(DailyDiet, MacronutrientPercentageLimits, MacronutrientPercResult) 
+        ->
+            !,
+            write('Diet generated successfully'),
+            delete_file_content('temp_computed_diet.pl')
+        ;
+            write('Diet does not meet constraints, regenerating...'), nl,
+            % TODO: regeneration
+            
+            fail  % Fail to repeat and re-generate the diet
+        ),
+
+    % TODO: Write final relationship
+
+    % Generate the DailyDiet for the next days
     generate_daily_diet(Person, Rest).
 
 set_grams_for_dish(_, [], []).
@@ -608,7 +652,7 @@ set_grams_for_dish(NewId, [Dish | RestDish], [Calories | RestCalories]) :-
     get_foodbeverages_in_dish(Dish, FoodBeverageList),
     compute_ingredients_grams(FoodBeverageList, Calories, IngredientLists),
     NewRelationship = has(NewId, Dish, IngredientLists),
-    add_new_relationship(NewRelationship),
+    add_new_relationship(NewRelationship, 'temp_computed_diet.pl'),
     set_grams_for_dish(NewId, RestDish, RestCalories).
 
 
@@ -625,18 +669,83 @@ actual_foodbeverage_grams([FoodBeverage | Rest], Calories, Acc, IngredientLists)
     append(Acc, [FoodBeverage-PortionSizeGrams], NewAcc),
     actual_foodbeverage_grams(Rest, Calories, NewAcc, IngredientLists).
 
+check_macronutrient_percentage(DailyDiet, MacroNutrient, LowerBound, UpperBound) :-
+    daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage),
+    TotalPercentage >= LowerBound,
+    TotalPercentage =< UpperBound.
+
+check_macronutrient_grams(DailyDiet, MacroNutrient, LowerBound, UpperBound, Result) :-
+    daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams),
+    (
+        TotalGrams =< LowerBound
+    ->
+        Result is -1
+    ;
+        Result is 0
+    ),
+    (
+        TotalGrams >= UpperBound
+    ->
+        Result is 1
+    ;
+        Result is 0
+    ).
+
+
+healthy_weight_nutrient_grams([dietary_fiber-25-30]).
+healthy_weight_nutrient_percentages([carbs-45-65, protein-15-20, lipids-20-35]).
+
+check_macronitrient_grams(DailyDiet, [], 0).
+check_macronitrient_grams(DailyDiet, [MacroNutrient-LowerBound-UpperBound | Rest], Result) :-
+    check_macronutrient_grams(DailyDiet, MacroNutrient, LowerBound, UpperBound, Result),
+    Result = 0,  % Stop backtracking when Result is different from 0
+    check_macronitrient_grams(DailyDiet, Rest, Result).
+check_macronitrient_grams(_, _, Result) :- 
+    Result \= 0, 
+    !.
+
+
+check_macronitrient_percentage(DailyDiet, []).
+check_macronitrient_percentage(DailyDiet, [MacroNutrient-LowerBound-UpperBound | Rest]) :-
+    check_macronutrient_percentage(DailyDiet, MacroNutrient, LowerBound, UpperBound),
+    check_macronitrient_percentage(DailyDiet, Rest).
+
+check_daily_calories(DailyDiet, DailyCalories, Result) :-
+    findall(Ingredients, has(DailyDiet, _, Ingredients), IngredientsList),
+    check_dish_calories(IngredientsList, DailyCalories, Result).
+
+check_dish_calories([], [], Result).
+check_dish_calories([Ingredients | RestIngredients], [DishCalories | RestCalories], Result) :-
+    compute_actual_dish_calories(Ingredients, 0, ActualCalories),
+    (
+        ActualCalories =< DishCalories - 40
+    ->
+        Result is -1
+    ;
+        Result is 0
+    ),
+    (
+        ActualCalories >= DishCalories
+    -> 
+        Result is 1
+    ;
+        Result is 0
+    ).
+
+compute_actual_dish_calories([], ActualCalories, ActualCalories).
+compute_actual_dish_calories([FoodBeverage-Grams | Rest], PartialCalories, ActualCalories) :-
+    actual_calories_quantity(FoodBeverage, Grams, Calories),
+    NewPartialCalories is PartialCalories + Calories,
+    compute_actual_dish_calories(Rest, NewPartialCalories, ActualCalories).
+
+
+
 compute_diet(Name, Surname, Diet) :-
     find_person_id(Name, Surname, Person),
     generate_list_calories_week(Person, TotalWeekCaloriesList),
     generate_daily_diet(Person, TotalWeekCaloriesList).
 
 
-check_macronutrient_percentage(DailyDiet, MacroNutrient, LowerBound, UpperBound) :-
-    daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage),
-    TotalPercentage >= LowerBound,
-    TotalPercentage =< UpperBound.
 
-check_macronutrient_grams(DailyDiet, MacroNutrient, LowerBound, UpperBound) :-
-    daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams),
-    TotalGrams >= LowerBound,
-    TotalGrams =< UpperBound.
+
+

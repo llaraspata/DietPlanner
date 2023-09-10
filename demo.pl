@@ -751,7 +751,7 @@ set_grams_for_dish(NewId, [Dish | RestDish], [Calories | RestCalories]) :-
     get_foodbeverages_in_dish(Dish, FoodBeverageList),
     compute_ingredients_grams(FoodBeverageList, Calories, IngredientLists),
     NewRelationship = has(NewId, Dish, IngredientLists),
-    add_new_relationship(NewRelationship, 'demo.pl'),
+    add_new_relationship(NewRelationship, 'temp_computed_diet.pl'),
     set_grams_for_dish(NewId, RestDish, RestCalories).
 
 

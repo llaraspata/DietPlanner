@@ -329,6 +329,20 @@ cumulative_macro_nutrient_percentage(FoodGramsList, MacroNutrient, Percentage) :
     % Calculate the percentage
     Percentage is (100 * MacroNutrientQuantity) / TotalQuantity.
 
+% Predicate to calculate the total grams in a list of food-grams pairs
+total_grams(FoodGramsList, Total) :-
+    total_grams(FoodGramsList, 0, Total).
+
+% Base case: When the list is empty, the total grams is 0.
+total_grams([], Total, Total).
+
+% Recursive case: Calculate the total grams for the first pair in the list.
+total_grams([_Food-Grams|Rest], PartialTotal, Total) :-
+    NewPartialTotal is PartialTotal + Grams,
+    % Recursively process the rest of the list.
+    total_grams(Rest, NewPartialTotal, Total).
+
+
 % Get total nutrient quantity in a daily diet
 daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams) :-
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 

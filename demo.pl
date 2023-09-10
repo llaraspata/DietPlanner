@@ -662,6 +662,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     write('Diet does not meet Macronutrients constraints, regenerating...'), nl,
                     % TODO: Regenerate daily diet
                     % 1. Select the dish with the highest content of MacroNutrient
+                    get_dish_with_highest_nutrient_amount_in_daily_diet(NewId, MacroNutrient, Dish),
                     % 2. Increase its grams in DailyDiet
                     fail
                 ;
@@ -669,6 +670,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     write('Diet does not meet Macronutrients constraints, regenerating...'), nl,
                     % TODO: Regenerate daily diet
                     % 1. Select the dish with the highest content of MacroNutrient
+                    get_dish_with_highest_nutrient_amount_in_daily_diet(NewId, MacroNutrient, Dish),
                     % 2. Decrease its grams in DailyDiet
                     fail
                 ;
@@ -677,6 +679,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     write('Diet does not meet Calories constraints, regenerating...'), nl,
                     % TODO: Regenerate daily diet
                     % 1. Select the dish with the highest calories content
+                    get_most_caloric_dish_in_daily_diet(NewId, Dish),
                     % 2. Increase its grams in DailyDiet
                     fail
                 ;
@@ -684,6 +687,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     write('Diet does not meet Calories constraints, regenerating...'), nl,
                     % TODO: Regenerate daily diet
                     % 1. Select the dish with the highest calories content
+                    get_most_caloric_dish_in_daily_diet(NewId, Dish),
                     % 2. Decrease its grams in DailyDiet
                     fail
             )
@@ -693,6 +697,34 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
     generate_daily_diet(Person, Rest).
 
 
+get_most_caloric_dish_in_daily_diet(DailyDiet, Dish) :-
+    findall(Ingredients, has(DailyDiet, _, Ingredients), IngredientLists),
+    findall(Dish, has(DailyDiet, Dish, Ingredients), DishList),
+    get_dish_calories_lists(IngredientLists, [], CaloriesList),
+    max_list(CaloriesList, Max),
+    nth(Index, CaloriesList, Max),
+    nth(Index, DishList, Dish).
+
+
+get_dish_calories_lists([], Acc, Acc).
+get_dish_calories_lists([Ingredients | Rest], Acc, CaloriesList) :-
+    compute_actual_dish_calories(Ingredients, 0, ActualCalories),
+    append(Acc, [ActualCalories], NewAcc),
+    get_dish_calories_lists(Rest, NewAcc, CaloriesList).
+
+get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, MacroNutrient, Dish) :-
+    findall(Ingredients, has(DailyDiet, _, Ingredients), IngredientLists),
+    findall(Dish, has(DailyDiet, Dish, Ingredients), DishList),
+    get_dish_macronutrient_amount_lists(IngredientLists, MacroNutrient, [], MacroNutrientQuantityList),
+    max_list(MacroNutrientQuantityList, Max),
+    nth(Index, MacroNutrientQuantityList, Max),
+    nth(Index, DishList, Dish).
+
+get_dish_macronutrient_amount_lists([], _, Acc, Acc).
+get_dish_macronutrient_amount_lists([Ingredients | Rest], MacroNutrient, Acc, CaloriesList) :-
+    cumulative_macro_nutrient_percentage(Ingredients, MacroNutrient, Percentage),
+    append(Acc, [Percentage], NewAcc),
+    get_dish_macronutrient_amount_lists(Rest, MacroNutrient, NewAcc, CaloriesList).
 
 write_daily_diet(DailyDiet) :-
     open('temp_computed_diet.pl', read, ReadStream), % Open the input file in read mode
@@ -807,12 +839,3 @@ compute_diet(Name, Surname) :-
     generate_list_calories_week(Person, TotalWeekCaloriesList),
     generate_daily_diet(Person, TotalWeekCaloriesList).
 
-
-
-
-
-has(daily_diet2,english_breakfast,[egg-658,bread-263]).
-has(daily_diet2,yogurt_banana,[banana-234]).
-has(daily_diet2,turkey_sandwich,[turkey-164,bread-263,spinach-370,tomato-1315]).
-has(daily_diet2,yogurt_banana,[banana-234]).
-has(daily_diet2,turkey_sandwich,[turkey-99,bread-158,spinach-222,tomato-789]).

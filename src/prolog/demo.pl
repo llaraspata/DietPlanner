@@ -594,8 +594,6 @@ add_new_relationship(NewRelationship, FileName) :-
 delete_file_content(FileName) :-
     open(FileName, write, Stream),
     close(Stream),
-    open(FileName, write, Stream2),
-    close(Stream2),
     writeln('File content deleted successfully').
 
 
@@ -654,7 +652,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
         ->
             !,
             write('Diet generated successfully'),
-            write_daily_diet(NewId),
+            write_daily_diet('temp_computed_diet.pl', 'instances.pl'),
             delete_file_content('temp_computed_diet.pl')
         ;
             (
@@ -664,6 +662,9 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest content of MacroNutrient
                     get_dish_with_highest_nutrient_amount_in_daily_diet(NewId, MacroNutrient, Dish),
                     % 2. Increase its grams in DailyDiet
+                    fix_dish_grams(DailyDiet, Dish, MacronutrientResult, FinalRelationships),
+                    delete_file_content(FileName),
+                    write_relationships(FinalRelationships, FileName),
                     fail
                 ;
                 MacronutrientResult = 1     ->
@@ -672,6 +673,9 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest content of MacroNutrient
                     get_dish_with_highest_nutrient_amount_in_daily_diet(NewId, MacroNutrient, Dish),
                     % 2. Decrease its grams in DailyDiet
+                    fix_dish_grams(DailyDiet, FileName, Dish, MacronutrientResult, FinalRelationships),
+                    delete_file_content(FileName),
+                    write_relationships(FinalRelationships, FileName),
                     fail
                 ;
 
@@ -681,6 +685,9 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest calories content
                     get_most_caloric_dish_in_daily_diet(NewId, Dish),
                     % 2. Increase its grams in DailyDiet
+                    fix_dish_grams(DailyDiet, FileName, Dish, CaloryResult, FinalRelationships),
+                    delete_file_content(FileName),
+                    write_relationships(FinalRelationships, FileName),
                     fail
                 ;
                 CaloryResult = 1     ->
@@ -689,6 +696,9 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest calories content
                     get_most_caloric_dish_in_daily_diet(NewId, Dish),
                     % 2. Decrease its grams in DailyDiet
+                    fix_dish_grams(DailyDiet, FileName, Dish, CaloryResult, FinalRelationships),
+                    delete_file_content(FileName),
+                    write_relationships(FinalRelationships, FileName),
                     fail
             )
         ),
@@ -696,6 +706,60 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
     % Generate the DailyDiet for the next days
     generate_daily_diet(Person, Rest).
 
+
+fix_dish_grams(DailyDiet, FileName, Dish, Fix, FinalRelationships) :-
+    has(DailyDiet, Dish, IngredientsList),
+    OldRelationship = has(DailyDiet, Dish, IngredientsList),
+    change_ingredient_grams(IngredientList, Fix, [], NewIngredientList),
+    NewRelationship = has(DailyDiet, Dish, NewIngredientList),
+    get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships).
+
+change_ingredient_grams([], _, Acc, Acc).
+change_ingredient_grams([FoodBeverage-Gram | Rest], Fix, Acc, NewIngredientList) :-
+    (
+        Fix = 1 
+    ->
+        % Decrease by 5% 
+        NewGrams is (Grams * 95) / 100
+    ;
+        Fix = -1
+    ->
+        % Increase by 5%
+        NewGrams is (Grams * 105) / 100
+    ),
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
+    change_ingredient_grams(Rest, Fix, NewAcc, NewIngredientList).
+
+
+% Define a predicate to update relationships in a file
+get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships) :-
+    open(FileName, read, ReadStream),
+    get_correct_relationships(ReadStream, DailyDiet, OldRelationship, [], Relationships),
+    close(ReadStream),
+    !,
+    append(Relationships, [NewRelationship], FinalRelationships).
+    
+
+write_relationship([], _).
+write_relationship([Relationships | Rest], FileName) :-
+    add_new_relationship(Relationships, FileName),
+    write_relationship(Rest, FileName).
+
+% Define a predicate to get correct relationships from a stream
+get_correct_relationships(Stream, DailyDiet, OldRelationship, Acc, Relationships) :-
+    \+ at_end_of_stream(Stream),
+    read(Stream, Term),
+    (
+        Term \= OldRelationship,
+        Term \= end_of_file
+    ->
+        append(Acc, [Term], NewAcc)
+    ;
+        NewAcc = Acc
+    ),
+    get_correct_relationships(Stream, DailyDiet, OldRelationship, NewAcc, Relationships).
+get_correct_relationships(_, _, _, Relationships, Relationships) :-
+    !.
 
 get_most_caloric_dish_in_daily_diet(DailyDiet, Dish) :-
     findall(Ingredients, has(DailyDiet, _, Ingredients), IngredientLists),
@@ -726,22 +790,21 @@ get_dish_macronutrient_amount_lists([Ingredients | Rest], MacroNutrient, Acc, Ca
     append(Acc, [Percentage], NewAcc),
     get_dish_macronutrient_amount_lists(Rest, MacroNutrient, NewAcc, CaloriesList).
 
-write_daily_diet(DailyDiet) :-
-    open('temp_computed_diet.pl', read, ReadStream), % Open the input file in read mode
-    write_daily_diet(ReadStream, DailyDiet),  % Call the helper predicate
+write_daily_diet(FileToRead, FileToWrite) :-
+    open(FileToRead, read, ReadStream), 
+    write_daily_diet_helper(ReadStream, FileToWrite),  % Call the helper predicate
     close(ReadStream).                        % Close the input file
 
-write_daily_diet(Stream, DailyDiet) :-
+write_daily_diet_helper(Stream, FileToWrite) :-
     \+ at_end_of_stream(Stream),  % Check if we're not at the end of the file
     read(Stream, Term),           % Read the next term from the input file
-    process_term(Stream, Term, DailyDiet),  % Process the term
-    write_daily_diet(Stream, DailyDiet).  % Continue processing
+    process_term(Stream, Term, FileToWrite),  % Process the term
+    write_daily_diet_helper(Stream, FileToWrite).  % Continue processing
 
 process_term(_, end_of_file, _) :- !.  % Stop when the end of the file is reached
-process_term(ReadStream, Term, DailyDiet) :-
-    Term = has(DailyDiet, Dish, IngredientLists),
-    add_new_relationship(Term, 'instances.pl'),
-    process_term(ReadStream, _, DailyDiet).
+process_term(ReadStream, Term, FileToWrite) :-
+    add_new_relationship(Term, FileToWrite),
+    process_term(ReadStream, _, FileToWrite).
 
 
 

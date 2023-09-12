@@ -126,6 +126,9 @@ get_activities(PersonID, ActivityList) :-
         ActivityList = []
     ).
 
+collect_activities_names(Names) :-
+    findall(Name, activity_instance(_, _, Name), Names).
+
 flatten_pairs([], []).
 flatten_pairs([[X-Y|RestPairs]|RestLists], [X-Y|FlattenedRest]) :-
     flatten_pairs(RestLists, FlattenedRest).
@@ -352,31 +355,6 @@ daily_diet_total_nutrient_grams(DailyDiet, MacroNutrient, TotalGrams) :-
 daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage) :-
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
     cumulative_macro_nutrient_percentage(UniqueIngredients, MacroNutrient, TotalPercentage).
-
-% Get the list of food and beverages in a dish of a daily diet
-get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList) :-
-    findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients),
-    flatten(Ingredients, IngredientLists),
-    get_only_foodbeverages(IngredientLists, [], FoodBeverageList).
-
-get_only_foodbeverages([], Acc, Acc). 
-get_only_foodbeverages([FoodBeverage-_Grams | Rest], Acc, FoodBeverageList) :-
-    append(Acc, [FoodBeverage], UpdatedAcc),
-    get_only_foodbeverages(Rest, UpdatedAcc, FoodBeverageList).
-
-% Count how many instances of a class of FoodBeverage there are in a daily diet
-count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
-    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
-    count_foodbeverage_in_list(ItemToCount, FoodBeverageList, 0, Total).
-
-count_foodbeverage_in_list(_, [], Count, Count).
-count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Total) :-
-    (foodbeverage_instance(dietplanner, ItemToCount, FoodBeverage) ->
-        NewPartialCount is PartialCount + 1
-        ;
-        NewPartialCount is PartialCount
-    ),
-    count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
 
 % Get person's allergies
 get_person_allergies(Person, Allergies) :-

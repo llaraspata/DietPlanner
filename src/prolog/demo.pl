@@ -398,7 +398,7 @@ actual_nutrient_quantity(FoodBeverage, Nutrient, PortionSizeGrams, ActualQuantit
     ActualQuantity is (PortionSizeGrams / 100) * NutrientContentPer100.
 
 % Get the list of ingredients in a dish of a daily diet as a flat list
-get_ingredients_in_dish(FileName, DailyDiet, Dish, Ingredients) :-
+get_ingredients_in_dish(FileName, DailyDiet, Ingredients) :-
     open(FileName, read, Stream),
     get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
     extract_ingredients_and_dishes(ListRelationships, [], _, IngredientLists, _), % Get the list of dishes
@@ -417,7 +417,7 @@ unique_ingredients_in_daily_diet(FileName, DailyDiet, UniqueIngredients) :-
 % Helper predicate to accumulate ingredients from a list of dishes
 accumulate_ingredients(_, [], Acc, Acc).
 accumulate_ingredients(FileName, [Dish|Rest], Acc, UniqueIngredients) :-
-    get_ingredients_in_dish(FileName, DailyDiet, Dish, Ingredients), % Get ingredients in the dish
+    get_ingredients_in_dish(FileName, DailyDiet, Ingredients), % Get ingredients in the dish
     accumulate_ingredients(FileName, Rest, Acc, UpdatedAcc),
     accumulate_ingredients_from_list(Ingredients, UpdatedAcc, UniqueIngredients).
 
@@ -623,7 +623,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
 
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
-
+    
     set_grams_for_dish(NewId, DailyDietDishes, DailyCalories),
     FileName = 'temp_computed_diet.pl',
 
@@ -779,8 +779,7 @@ get_list_relationships_in_file(Stream, DailyDiet,  Acc, ListRelationships) :-
 get_list_relationships_in_file(_, _, ListRelationships, ListRelationships) :-
     !.
 
-extract_ingredients_and_dishes([], AllIngredients, AllDishes, AllIngredients, AllDishes) :-
-    !.
+extract_ingredients_and_dishes([], AllIngredients, AllDishes, AllIngredients, AllDishes).
 extract_ingredients_and_dishes([Term | Rest], AccIngredients, AccDishes, AllIngredients, AllDishes) :-
     Term = has(_, Dish, Ingredients),
     append(AccIngredients, [Ingredients], NewIngredient),
@@ -808,9 +807,11 @@ read_file_and_find_dish_with_highest_nutrient(FileName, DailyDiet, MacroNutrient
     open(FileName, read, Stream),
     % Call a predicate to read and process the file's content
     get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
-    get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, ListRelationships, MacroNutrient, Dish),
     % Close the file
-    close(Stream).
+    close(Stream),
+    get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, ListRelationships, MacroNutrient, Dish),
+    !.
+    
 
 get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, ListRelationships, MacroNutrient, Dish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
@@ -895,9 +896,10 @@ check_macronutrient_percentage(_, _, _, Result, _) :-
 check_daily_calories(FileName, DailyDiet, DailyCalories, Result) :-
     open(FileName, read, Stream),
     get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
-    extract_ingredients_and_dishes(ListRelationships, [], _, IngredientLists, _), % Get the list of dishes
     close(Stream),
-    check_dish_calories(IngredientsList, DailyCalories, Result).
+    extract_ingredients_and_dishes(ListRelationships, [], _, IngredientLists, _), % Get the list of dishes
+    check_dish_calories(IngredientsList, DailyCalories, Result),
+    !.
 
 check_dish_calories([], _, 0).
 check_dish_calories([Ingredients | RestIngredients], [DishCalories | RestCalories], Result) :-

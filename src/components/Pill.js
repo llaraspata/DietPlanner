@@ -12,13 +12,13 @@ const CustomAccordion = styled(Accordion)(({ theme }) => ({
 
 export default function Pill ({id, title, children}) {
 
-    let [expanded,setExpanded] = useState(false);
+    let [expanded,setExpanded] = useState(true);
 
     return (
         <Grid item lg={12} xs={12} key={id}>
             <CustomAccordion
                 TransitionProps={{unmountOnExit : true}}
-                square
+                square expanded={expanded}
                 onChange={(e,expanded) => setExpanded(expanded)}
             >
                 <AccordionSummary

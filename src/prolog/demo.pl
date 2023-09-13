@@ -647,7 +647,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest content of MacroNutrient
                     read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
                     % 2. Increase its grams in DailyDiet
-                    fix_dish_grams(DailyDiet, Dish, MacronutrientResult, FinalRelationships),
+                    fix_dish_grams(NewId, FileName, Dish, MacronutrientResult, FinalRelationships),
                     delete_file_content(FileName),
                     write_relationships(FinalRelationships, FileName),
                     fail
@@ -658,7 +658,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest content of MacroNutrient
                     read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
                     % 2. Decrease its grams in DailyDiet
-                    fix_dish_grams(DailyDiet, FileName, Dish, MacronutrientResult, FinalRelationships),
+                    fix_dish_grams(NewId, FileName, Dish, MacronutrientResult, FinalRelationships),
                     delete_file_content(FileName),
                     write_relationships(FinalRelationships, FileName),
                     fail
@@ -670,7 +670,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest calories content
                     read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
                     % 2. Increase its grams in DailyDiet
-                    fix_dish_grams(DailyDiet, FileName, Dish, CaloryResult, FinalRelationships),
+                    fix_dish_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
                     delete_file_content(FileName),
                     write_relationships(FinalRelationships, FileName),
                     fail
@@ -681,7 +681,7 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
                     % 1. Select the dish with the highest calories content
                     read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
                     % 2. Decrease its grams in DailyDiet
-                    fix_dish_grams(DailyDiet, FileName, Dish, CaloryResult, FinalRelationships),
+                    fix_dish_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
                     delete_file_content(FileName),
                     write_relationships(FinalRelationships, FileName),
                     fail
@@ -701,15 +701,15 @@ fix_dish_grams(DailyDiet, FileName, Dish, Fix, FinalRelationships) :-
     open(FileName, read, Stream),
     % Call a predicate to read and process the file's content
     get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
+    close(Stream),
     get_old_ingredient_list(DailyDiet, Dish, ListRelationships, IngredientsList),
-    OldRelationship = has(DailyDiet, Dish, IngredientsList),
-    change_ingredient_grams(IngredientList, Fix, [], NewIngredientList),
+    change_ingredient_grams(IngredientsList, Fix, [], NewIngredientList),
     NewRelationship = has(DailyDiet, Dish, NewIngredientList),
-    get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships),
-    close(Stream).
+    get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships).
+    
 
-change_ingredient_grams([], _, Acc, Acc).
-change_ingredient_grams([FoodBeverage-Gram | Rest], Fix, Acc, NewIngredientList) :-
+change_ingredient_grams([], _, NewIngredientList, NewIngredientList).
+change_ingredient_grams([FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
     (
         Fix = 1 
     ->
@@ -779,13 +779,6 @@ get_list_relationships_in_file(Stream, DailyDiet,  Acc, ListRelationships) :-
 get_list_relationships_in_file(_, _, ListRelationships, ListRelationships) :-
     !.
 
-extract_ingredients_and_dishes([], AllIngredients, AllDishes, AllIngredients, AllDishes).
-extract_ingredients_and_dishes([Term | Rest], AccIngredients, AccDishes, AllIngredients, AllDishes) :-
-    Term = has(_, Dish, Ingredients),
-    append(AccIngredients, [Ingredients], NewIngredient),
-    append(AccDishes, [Dish], NewDish),
-    extract_ingredients_and_dishes(Rest, NewIngredient, NewDish, AllIngredients, AllDishes).
-
 
 get_most_caloric_dish_in_daily_diet(DailyDiet, ListRelationships, Dish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
@@ -812,6 +805,13 @@ read_file_and_find_dish_with_highest_nutrient(FileName, DailyDiet, MacroNutrient
     get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, ListRelationships, MacroNutrient, Dish),
     !.
     
+extract_ingredients_and_dishes([], AllIngredients, AllDishes, AllIngredients, AllDishes) :- 
+    !.
+extract_ingredients_and_dishes([Term | Rest], AccIngredients, AccDishes, AllIngredients, AllDishes) :-
+    Term = has(_, Dish, Ingredients),
+    append(AccIngredients, [Ingredients], NewIngredient),
+    append(AccDishes, [Dish], NewDish),
+    extract_ingredients_and_dishes(Rest, NewIngredient, NewDish, AllIngredients, AllDishes).
 
 get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, ListRelationships, MacroNutrient, Dish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),

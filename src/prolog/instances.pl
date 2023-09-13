@@ -1,5 +1,3 @@
-:- consult('knowledgeBase.pl').
-
 % ---------
 % Class: food_beverage
 % ---------

@@ -3,7 +3,8 @@
 :- use_module(library(random)).  
 
 % Constants
-healthy_weight_nutrient_percentages([carbs-45-65, protein-15-20, lipids-20-35, dietary_fiber-1-5]).
+%healthy_weight_nutrient_percentages([carbs-45-65, protein-15-20, lipids-20-35, dietary_fiber-1-5]).
+healthy_weight_nutrient_percentages([protein-15-20]).
 
 
 % Food and Beverage
@@ -642,48 +643,20 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
         ;
             (
                 MacronutrientResult = -1    ->
-                    write('Diet does not meet Macronutrients constraints, regenerating...'), nl,
-                    % TODO: Regenerate daily diet
-                    % 1. Select the dish with the highest content of MacroNutrient
-                    read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
-                    % 2. Increase its grams in DailyDiet
-                    fix_dish_grams(NewId, FileName, Dish, MacronutrientResult, FinalRelationships),
-                    delete_file_content(FileName),
-                    write_relationships(FinalRelationships, FileName),
+                    fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult),
                     fail
                 ;
                 MacronutrientResult = 1     ->
-                    write('Diet does not meet Macronutrients constraints, regenerating...'), nl,
-                    % TODO: Regenerate daily diet
-                    % 1. Select the dish with the highest content of MacroNutrient
-                    read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
-                    % 2. Decrease its grams in DailyDiet
-                    fix_dish_grams(NewId, FileName, Dish, MacronutrientResult, FinalRelationships),
-                    delete_file_content(FileName),
-                    write_relationships(FinalRelationships, FileName),
+                    fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult),
                     fail
                 ;
 
                 CaloryResult = -1    ->
-                    write('Diet does not meet Calories constraints, regenerating...'), nl,
-                    % TODO: Regenerate daily diet
-                    % 1. Select the dish with the highest calories content
-                    read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
-                    % 2. Increase its grams in DailyDiet
-                    fix_dish_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
-                    delete_file_content(FileName),
-                    write_relationships(FinalRelationships, FileName),
+                    fix_calories(FileName, NewId, CaloriesResult),
                     fail
                 ;
                 CaloryResult = 1     ->
-                    write('Diet does not meet Calories constraints, regenerating...'), nl,
-                    % TODO: Regenerate daily diet
-                    % 1. Select the dish with the highest calories content
-                    read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
-                    % 2. Decrease its grams in DailyDiet
-                    fix_dish_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
-                    delete_file_content(FileName),
-                    write_relationships(FinalRelationships, FileName),
+                    fix_calories(FileName, NewId, CaloriesResult),
                     fail
             )
         ),
@@ -691,24 +664,49 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
     % Generate the DailyDiet for the next days
     generate_daily_diet(Person, Rest).
 
+
+
+fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult) :-
+    write('Diet does not meet Macronutrients constraints, regenerating...'), nl,
+    % 1. Select the dish with the highest content of MacroNutrient
+    read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
+    % 2. Increase its grams in DailyDiet
+    fix_dish_grams(NewId, FileName, Dish, MacronutrientResult, FinalRelationships),
+    !,
+    delete_file_content(FileName),
+    !,
+    write_relationship(FinalRelationships, FileName).
+
+fix_calories(FileName, NewId, CaloriesResult) :-
+    write('Diet does not meet Calories constraints, regenerating...'), nl,
+    % 1. Select the dish with the highest calories content
+    read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
+    % 2. Increase its grams in DailyDiet
+    fix_dish_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
+    !,
+    delete_file_content(FileName),
+    !,
+    write_relationship(FinalRelationships, FileName).
+
 get_old_ingredient_list(DailyDiet, Dish, ListRelationships, IngredientsList) :-
     member(Relation, ListRelationships),
     Relation = has(DailyDiet, Dish, IngredientsList),
     !.
 
-fix_dish_grams(DailyDiet, FileName, Dish, Fix, FinalRelationships) :-
+fix_dish_grams(NewId, FileName, Dish, Fix, FinalRelationships) :-
     % Open the file in read mode
     open(FileName, read, Stream),
     % Call a predicate to read and process the file's content
-    get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
+    get_list_relationships_in_file(Stream, NewId, [], ListRelationships),
+    !,
     close(Stream),
-    get_old_ingredient_list(DailyDiet, Dish, ListRelationships, IngredientsList),
+    get_old_ingredient_list(NewId, Dish, ListRelationships, IngredientsList),
+    OldRelationship = has(NewId, Dish, IngredientsList),
     change_ingredient_grams(IngredientsList, Fix, [], NewIngredientList),
-    NewRelationship = has(DailyDiet, Dish, NewIngredientList),
-    get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships).
-    
+    NewRelationship = has(NewId, Dish, NewIngredientList),
+    get_final_relationships(NewId, FileName, OldRelationship, NewRelationship, FinalRelationships).
 
-change_ingredient_grams([], _, NewIngredientList, NewIngredientList).
+change_ingredient_grams([], _, Acc, Acc).
 change_ingredient_grams([FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
     (
         Fix = 1 
@@ -779,6 +777,13 @@ get_list_relationships_in_file(Stream, DailyDiet,  Acc, ListRelationships) :-
 get_list_relationships_in_file(_, _, ListRelationships, ListRelationships) :-
     !.
 
+extract_ingredients_and_dishes([], AllIngredients, AllDishes, AllIngredients, AllDishes).
+extract_ingredients_and_dishes([Term | Rest], AccIngredients, AccDishes, AllIngredients, AllDishes) :-
+    Term = has(_, Dish, Ingredients),
+    append(AccIngredients, [Ingredients], NewIngredient),
+    append(AccDishes, [Dish], NewDish),
+    extract_ingredients_and_dishes(Rest, NewIngredient, NewDish, AllIngredients, AllDishes).
+
 
 get_most_caloric_dish_in_daily_diet(DailyDiet, ListRelationships, Dish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
@@ -800,25 +805,19 @@ read_file_and_find_dish_with_highest_nutrient(FileName, DailyDiet, MacroNutrient
     open(FileName, read, Stream),
     % Call a predicate to read and process the file's content
     get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
-    % Close the file
     close(Stream),
-    get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, ListRelationships, MacroNutrient, Dish),
-    !.
+    !,
+    get_dish_with_highest_nutrient_amount_in_daily_diet(ListRelationships, MacroNutrient, Dish).
     
-extract_ingredients_and_dishes([], AllIngredients, AllDishes, AllIngredients, AllDishes) :- 
-    !.
-extract_ingredients_and_dishes([Term | Rest], AccIngredients, AccDishes, AllIngredients, AllDishes) :-
-    Term = has(_, Dish, Ingredients),
-    append(AccIngredients, [Ingredients], NewIngredient),
-    append(AccDishes, [Dish], NewDish),
-    extract_ingredients_and_dishes(Rest, NewIngredient, NewDish, AllIngredients, AllDishes).
 
-get_dish_with_highest_nutrient_amount_in_daily_diet(DailyDiet, ListRelationships, MacroNutrient, Dish) :-
+get_dish_with_highest_nutrient_amount_in_daily_diet(ListRelationships, MacroNutrient, Dish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
     get_dish_macronutrient_amount_lists(IngredientLists, MacroNutrient, [], MacroNutrientQuantityList),
     max_list(MacroNutrientQuantityList, Max),
     nth(Index, MacroNutrientQuantityList, Max),
-    nth(Index, DishList, Dish).
+    !,
+    nth(Index, DishList, Dish),
+    !.
 
 get_dish_macronutrient_amount_lists([], _, Acc, Acc).
 get_dish_macronutrient_amount_lists([Ingredients | Rest], MacroNutrient, Acc, CaloriesList) :-

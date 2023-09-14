@@ -1377,3 +1377,9 @@ made_of(dietplanner, beef_tacos, beef).
 % ---------
 % Computed Diet and Daily Diets
 % ---------
+
+has(daily_diet2,yogurt_banana,[banana-234]).
+has(daily_diet2,turkey_sandwich,[turkey-164,bread-263,spinach-370,tomato-1315]).
+has(daily_diet2,yogurt_banana,[banana-234]).
+has(daily_diet2,turkey_sandwich,[turkey-99,bread-158,spinach-222,tomato-789]).
+has(daily_diet2,english_breakfast,[egg-2498.75390497773,bread-263]).

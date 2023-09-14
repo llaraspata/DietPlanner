@@ -614,8 +614,9 @@ get_daily_diet_calories(TotalDayCalories, DailyCalories) :-
     DailyCalories = [BreakfastCalories, MorningSnackCalories, LunchCalories, AfternoonSnackCalories, DinnerCalories].
 
 % Define a predicate to generate a daily diet for a person
-generate_daily_diet(Person, []).
+generate_daily_diet(_, []).
 generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
+    writeln(Rest),
     dish_types(DishTypes),
     healthy_weight_nutrient_percentages(MacronutrientLimits),
 
@@ -627,46 +628,38 @@ generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
     set_grams_for_dish(NewId, DailyDietDishes, DailyCalories),
     FileName = 'temp_computed_diet.pl',
 
+    compute_daily_diet(FileName, NewId, MacronutrientLimits, DailyCalories),
+    % Generate the DailyDiet for the next days
+    generate_daily_diet(Person, Rest).
+
+compute_daily_diet(FileName, NewId, MacronutrientLimits, DailyCalories) :-
     repeat,
         (
             check_macronutrient_percentage(FileName, NewId, MacronutrientLimits, MacronutrientResult, MacroNutrient),
             check_daily_calories(FileName, NewId, DailyCalories, CaloryResult),
-
-            MacronutrientResult = 0,
-            CaloryResult = 0 
-        ->
-            !,
-            write('Diet generated successfully'),
-            write_daily_diet(FileName, 'instances.pl'),
-            delete_file_content(FileName)
-        ;
             (
+                MacronutrientResult = 0, CaloryResult = 0 ->
+                    !,
+                    writeln('Diet generated successfully'),
+                    write_daily_diet(FileName, 'instances.pl'),
+                    delete_file_content(FileName)
+                ;
                 MacronutrientResult = -1    ->
-                    fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult),
-                    fail
+                    fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult)
                 ;
                 MacronutrientResult = 1     ->
-                    fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult),
-                    fail
+                    fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult)
                 ;
-
                 CaloryResult = -1    ->
-                    fix_calories(FileName, NewId, CaloriesResult),
-                    fail
+                    fix_calories(FileName, NewId, CaloriesResult)
                 ;
                 CaloryResult = 1     ->
-                    fix_calories(FileName, NewId, CaloriesResult),
-                    fail
+                    fix_calories(FileName, NewId, CaloriesResult)
             )
-        ),
-
-    % Generate the DailyDiet for the next days
-    generate_daily_diet(Person, Rest).
-
-
+        ).
 
 fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult) :-
-    write('Diet does not meet Macronutrients constraints, regenerating...'), nl,
+    writeln('Diet does not meet Macronutrients constraints, regenerating...'),
     % 1. Select the dish with the highest content of MacroNutrient
     read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
     % 2. Increase its grams in DailyDiet
@@ -676,7 +669,7 @@ fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult) :-
     write_relationship(FinalRelationships, FileName).
 
 fix_calories(FileName, NewId, CaloriesResult) :-
-    write('Diet does not meet Calories constraints, regenerating...'), nl,
+    writeln('Diet does not meet Calories constraints, regenerating...'),
     % 1. Select the dish with the highest calories content
     read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
     % 2. Increase its grams in DailyDiet
@@ -699,7 +692,8 @@ fix_macronutrients_grams(NewId, FileName, Dish, MacroNutrient, Fix, FinalRelatio
     close(Stream),
     get_old_ingredient_list(NewId, Dish, ListRelationships, IngredientsList),
     OldRelationship = has(NewId, Dish, IngredientsList),
-    change_ingredient_nutrient_grams(IngredientsList, MacroNutrient, Fix, [], NewIngredientList),
+    find_ingredient_with_highest_nutrient(IngredientsList, MacroNutrient, FoodWithMoreNutrient),
+    change_ingredient_nutrient_grams(IngredientsList, MacroNutrient, Fix, FoodWithMoreNutrient, [], NewIngredientList),
     NewRelationship = has(NewId, Dish, NewIngredientList),
     get_final_relationships(NewId, FileName, OldRelationship, NewRelationship, FinalRelationships).
 
@@ -709,15 +703,14 @@ find_ingredient_with_highest_nutrient(Aliments, MacroNutrient, FoodWithMore) :-
     keysort(NutrientContentPairs, SortedPairs),
     reverse(SortedPairs, [Content-FoodWithMore | _]).
 
-change_ingredient_nutrient_grams([], _, _, NewIngredientList, NewIngredientList).
-change_ingredient_nutrient_grams([FoodBeverage-Grams | Rest], MacroNutrient, Fix, Acc, NewIngredientList) :-
-    find_ingredient_with_highest_nutrient([FoodBeverage-Grams | Rest], MacroNutrient, FoodWithMore),
+change_ingredient_nutrient_grams([], _, _, _, NewIngredientList, NewIngredientList).
+change_ingredient_nutrient_grams([FoodBeverage-Grams | Rest], MacroNutrient, Fix, FoodWithMoreNutrient, Acc, NewIngredientList) :-
     (
-        (FoodBeverage = FoodWithMore, Fix = 1) ->
+        (FoodBeverage = FoodWithMoreNutrient, Fix = 1) ->
         % Decrease by 5% 
         NewGrams is (Grams * 90) / 100
         ;
-        (FoodBeverage = FoodWithMore, Fix = -1) ->
+        (FoodBeverage = FoodWithMoreNutrient, Fix = -1) ->
         % Increase by 5%
         NewGrams is (Grams * 110) / 100
         ;
@@ -725,25 +718,7 @@ change_ingredient_nutrient_grams([FoodBeverage-Grams | Rest], MacroNutrient, Fix
         NewGrams is Grams
     ),
     append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_nutrient_grams(Rest, MacroNutrient, Fix, NewAcc, NewIngredientList).
-
-change_ingredient_nutrient_grams([], _, _, NewIngredientList, NewIngredientList).
-change_ingredient_nutrient_grams([FoodBeverage-Grams | Rest], MacroNutrient, Fix, Acc, NewIngredientList) :-
-    find_ingredient_with_highest_nutrient([FoodBeverage-Grams | Rest], MacroNutrient, FoodWithMore),
-    (
-        (FoodBeverage = FoodWithMore, Fix = 1) ->
-        % Decrease by 5% 
-        NewGrams is (Grams * 90) / 100
-        ;
-        (FoodBeverage = FoodWithMore, Fix = -1) ->
-        % Increase by 5%
-        NewGrams is (Grams * 110) / 100
-        ;
-        % Else (FoodBeverage è diverso da FoodWithMore o Fix non è 1 o -1)
-        NewGrams is Grams
-    ),
-    append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_nutrient_grams(Rest, MacroNutrient, Fix, NewAcc, NewIngredientList).
+    change_ingredient_nutrient_grams(Rest, MacroNutrient, Fix, FoodWithMoreNutrient, NewAcc, NewIngredientList).
 
 fix_calories_grams(NewId, FileName, Dish, Fix, FinalRelationships) :-
     % Open the file in read mode
@@ -839,6 +814,7 @@ get_most_caloric_dish_in_daily_diet(DailyDiet, ListRelationships, Dish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
     get_dish_calories_lists(IngredientLists, [], CaloriesList),
     max_list(CaloriesList, Max),
+    !,
     nth(Index, CaloriesList, Max),
     nth(Index, DishList, Dish).
 
@@ -924,9 +900,6 @@ check_macronutrient_helper(FileName, DailyDiet, MacroNutrient, LowerBound, Upper
         TempResult is 0 
     ),
     writeln('ciao'),
-    writeln(MacroNutrient),
-    writeln(LowerBound),
-    writeln(UpperBound),
     writeln(Percentage),
     Result = TempResult.
 
@@ -935,7 +908,7 @@ check_macronutrient_percentage(_, _, [], 0, _).
 check_macronutrient_percentage(FileName, DailyDiet, [MacroNutrient-LowerBound-UpperBound | Rest], Result, MacroNutrient) :-
     check_macronutrient_helper(FileName, DailyDiet, MacroNutrient, LowerBound, UpperBound, InnerResult),
     (InnerResult = 0 ->
-        check_macronutrient_percentage(DailyDiet, Rest, Result, MacroNutrient)
+        check_macronutrient_percentage(FileName, DailyDiet, Rest, Result, MacroNutrient)
         ;
         Result = InnerResult % Pass along the non-zero result
     ).
@@ -988,5 +961,8 @@ compute_actual_dish_calories([FoodBeverage-Grams | Rest], PartialCalories, Actua
 compute_diet(Name, Surname) :-
     find_person_id(Name, Surname, Person),
     generate_list_calories_week(Person, TotalWeekCaloriesList),
+    !,
     generate_daily_diet(Person, TotalWeekCaloriesList).
+
+
 

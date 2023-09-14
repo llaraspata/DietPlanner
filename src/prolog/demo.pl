@@ -114,7 +114,7 @@ has_nutrient(salmon, omega_3_fatty_acids, 2).
 has_nutrient(salmon, whey_protein, 20).
 has_nutrient(turkey, whey_protein, 50).
 has_nutrient(egg, whey_protein, 35).
-has_nutrient(dietplanner, bread, complex_carbohydrates, 70).
+has_nutrient(bread, complex_carbohydrates, 70).
 
 % Define composed_of relationship
 composed_of(diet1, daily_diet10).
@@ -573,7 +573,6 @@ add_new_relationship(NewRelationship, FileName) :-
 	assertz(NewRelationship),
 	open(FileName, append,Stream),
     format(Stream, '~w.~n', [NewRelationship]),
-    writeln('Write Success'),
 	close(Stream).
 
 delete_file_content(FileName) :-
@@ -671,10 +670,9 @@ fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult) :-
     % 1. Select the dish with the highest content of MacroNutrient
     read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
     % 2. Increase its grams in DailyDiet
-    fix_dish_grams(NewId, FileName, Dish, MacronutrientResult, FinalRelationships),
+    fix_macronutrients_grams(NewId, FileName, Dish, MacroNutrient, MacronutrientResult, FinalRelationships),
     !,
     delete_file_content(FileName),
-    !,
     write_relationship(FinalRelationships, FileName).
 
 fix_calories(FileName, NewId, CaloriesResult) :-
@@ -682,10 +680,9 @@ fix_calories(FileName, NewId, CaloriesResult) :-
     % 1. Select the dish with the highest calories content
     read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
     % 2. Increase its grams in DailyDiet
-    fix_dish_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
+    fix_calories_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
     !,
     delete_file_content(FileName),
-    !,
     write_relationship(FinalRelationships, FileName).
 
 get_old_ingredient_list(DailyDiet, Dish, ListRelationships, IngredientsList) :-
@@ -693,7 +690,7 @@ get_old_ingredient_list(DailyDiet, Dish, ListRelationships, IngredientsList) :-
     Relation = has(DailyDiet, Dish, IngredientsList),
     !.
 
-fix_dish_grams(NewId, FileName, Dish, Fix, FinalRelationships) :-
+fix_macronutrients_grams(NewId, FileName, Dish, MacroNutrient, Fix, FinalRelationships) :-
     % Open the file in read mode
     open(FileName, read, Stream),
     % Call a predicate to read and process the file's content
@@ -702,12 +699,67 @@ fix_dish_grams(NewId, FileName, Dish, Fix, FinalRelationships) :-
     close(Stream),
     get_old_ingredient_list(NewId, Dish, ListRelationships, IngredientsList),
     OldRelationship = has(NewId, Dish, IngredientsList),
-    change_ingredient_grams(IngredientsList, Fix, [], NewIngredientList),
+    change_ingredient_nutrient_grams(IngredientsList, MacroNutrient, Fix, [], NewIngredientList),
     NewRelationship = has(NewId, Dish, NewIngredientList),
     get_final_relationships(NewId, FileName, OldRelationship, NewRelationship, FinalRelationships).
 
-change_ingredient_grams([], _, Acc, Acc).
-change_ingredient_grams([FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+find_ingredient_with_highest_nutrient(Aliments, MacroNutrient, FoodWithMore) :- 
+    findall(Nutrient, nutrient_instance(_, MacroNutrient, Nutrient), Nutrients),
+    findall(Content-Food, (member(Food-Gram, Aliments), member(Nutrient, Nutrients), has_nutrient(Food, Nutrient, Content)), NutrientContentPairs),
+    keysort(NutrientContentPairs, SortedPairs),
+    reverse(SortedPairs, [Content-FoodWithMore | _]).
+
+change_ingredient_nutrient_grams([], _, _, NewIngredientList, NewIngredientList).
+change_ingredient_nutrient_grams([FoodBeverage-Grams | Rest], MacroNutrient, Fix, Acc, NewIngredientList) :-
+    find_ingredient_with_highest_nutrient([FoodBeverage-Grams | Rest], MacroNutrient, FoodWithMore),
+    (
+        (FoodBeverage = FoodWithMore, Fix = 1) ->
+        % Decrease by 5% 
+        NewGrams is (Grams * 90) / 100
+        ;
+        (FoodBeverage = FoodWithMore, Fix = -1) ->
+        % Increase by 5%
+        NewGrams is (Grams * 110) / 100
+        ;
+        % Else (FoodBeverage è diverso da FoodWithMore o Fix non è 1 o -1)
+        NewGrams is Grams
+    ),
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
+    change_ingredient_nutrient_grams(Rest, MacroNutrient, Fix, NewAcc, NewIngredientList).
+
+change_ingredient_nutrient_grams([], _, _, NewIngredientList, NewIngredientList).
+change_ingredient_nutrient_grams([FoodBeverage-Grams | Rest], MacroNutrient, Fix, Acc, NewIngredientList) :-
+    find_ingredient_with_highest_nutrient([FoodBeverage-Grams | Rest], MacroNutrient, FoodWithMore),
+    (
+        (FoodBeverage = FoodWithMore, Fix = 1) ->
+        % Decrease by 5% 
+        NewGrams is (Grams * 90) / 100
+        ;
+        (FoodBeverage = FoodWithMore, Fix = -1) ->
+        % Increase by 5%
+        NewGrams is (Grams * 110) / 100
+        ;
+        % Else (FoodBeverage è diverso da FoodWithMore o Fix non è 1 o -1)
+        NewGrams is Grams
+    ),
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
+    change_ingredient_nutrient_grams(Rest, MacroNutrient, Fix, NewAcc, NewIngredientList).
+
+fix_calories_grams(NewId, FileName, Dish, Fix, FinalRelationships) :-
+    % Open the file in read mode
+    open(FileName, read, Stream),
+    % Call a predicate to read and process the file's content
+    get_list_relationships_in_file(Stream, NewId, [], ListRelationships),
+    !,
+    close(Stream),
+    get_old_ingredient_list(NewId, Dish, ListRelationships, IngredientsList),
+    OldRelationship = has(NewId, Dish, IngredientsList),
+    change_ingredient_calories_grams(IngredientsList, Fix, [], NewIngredientList),
+    NewRelationship = has(NewId, Dish, NewIngredientList),
+    get_final_relationships(NewId, FileName, OldRelationship, NewRelationship, FinalRelationships).
+
+change_ingredient_calories_grams([], _, NewIngredientList, NewIngredientList).
+change_ingredient_calories_grams([FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
     (
         Fix = 1 
     ->
@@ -720,15 +772,13 @@ change_ingredient_grams([FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList
         NewGrams is (Grams * 105) / 100
     ),
     append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_grams(Rest, Fix, NewAcc, NewIngredientList).
-
+    change_ingredient_calories_grams(Rest, Fix, NewAcc, NewIngredientList).
 
 % Define a predicate to update relationships in a file
 get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships) :-
     open(FileName, read, ReadStream),
     get_correct_relationships(ReadStream, DailyDiet, OldRelationship, [], Relationships),
     close(ReadStream),
-    !,
     append(Relationships, [NewRelationship], FinalRelationships).
     
 
@@ -806,7 +856,6 @@ read_file_and_find_dish_with_highest_nutrient(FileName, DailyDiet, MacroNutrient
     % Call a predicate to read and process the file's content
     get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
     close(Stream),
-    !,
     get_dish_with_highest_nutrient_amount_in_daily_diet(ListRelationships, MacroNutrient, Dish).
     
 
@@ -814,12 +863,11 @@ get_dish_with_highest_nutrient_amount_in_daily_diet(ListRelationships, MacroNutr
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
     get_dish_macronutrient_amount_lists(IngredientLists, MacroNutrient, [], MacroNutrientQuantityList),
     max_list(MacroNutrientQuantityList, Max),
-    nth(Index, MacroNutrientQuantityList, Max),
     !,
-    nth(Index, DishList, Dish),
-    !.
+    nth(Index, MacroNutrientQuantityList, Max),
+    nth(Index, DishList, Dish).
 
-get_dish_macronutrient_amount_lists([], _, Acc, Acc).
+get_dish_macronutrient_amount_lists([], _, CaloriesList, CaloriesList).
 get_dish_macronutrient_amount_lists([Ingredients | Rest], MacroNutrient, Acc, CaloriesList) :-
     cumulative_macro_nutrient_percentage(Ingredients, MacroNutrient, Percentage),
     append(Acc, [Percentage], NewAcc),
@@ -875,6 +923,11 @@ check_macronutrient_helper(FileName, DailyDiet, MacroNutrient, LowerBound, Upper
         Percentage >= LowerBound, Percentage =< UpperBound ->
         TempResult is 0 
     ),
+    writeln('ciao'),
+    writeln(MacroNutrient),
+    writeln(LowerBound),
+    writeln(UpperBound),
+    writeln(Percentage),
     Result = TempResult.
 
 

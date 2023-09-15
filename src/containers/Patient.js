@@ -1,9 +1,11 @@
 import {makeStyles,styled} from "@mui/styles";
-import {Autocomplete,Grid,MenuItem} from "@mui/material";
+import {Autocomplete,Button,Grid,IconButton,MenuItem} from "@mui/material";
 import {useState} from "react";
 import TextInput from "../components/TextInput";
 import Pill from "../components/Pill";
 import {useGetActivityAllergenNames} from "../services/interface";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -35,6 +37,7 @@ export default function Patient() {
     let classes = useStyles();
     let {allergens, activities} = useGetActivityAllergenNames();
     const [patient, setPatient] = useState({});
+    const [patientActivities, setPatientActivities] = useState([]);
 
     const onChange = (newValue, field) => {
 
@@ -43,7 +46,14 @@ export default function Patient() {
         if(field === "age") newPatient[field] = Math.min(MAX_AGE, Math.max(MIN_AGE, parseInt(newValue)))
         else if(field === "height") newPatient[field] = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, parseInt(newValue)))
         else if(field === "weight") newPatient[field] = Math.min(MAX_WEIGHT, Math.max(MIN_WEIGHT, newValue))
-        else if(field === "numberDayOn") newPatient[field] = Math.min(MAX_NUMBER_DAYS_ON, Math.max(MIN_NUMBER_DAYS_ON, parseInt(newValue)))
+        else if(field === "numberDayOn") {
+            newPatient[ field ] = Math.min(MAX_NUMBER_DAYS_ON,Math.max(MIN_NUMBER_DAYS_ON,parseInt(newValue)))
+            if(newPatient[field] > 0 && patientActivities.length === 0) setPatientActivities([{
+                activity: activities[0], numberDayOn: 1, avgHours: 1
+            }])
+            else if(newPatient[field] === 0 || newPatient[field] === null || newPatient[field] === undefined)
+                setPatientActivities([])
+        }
         else newPatient[field] = newValue
 
         if(newPatient.height && newPatient.weight) {
@@ -54,10 +64,25 @@ export default function Patient() {
         setPatient(newPatient);
     }
 
-    console.log(patient)
-    console.log(allergens, activities)
-    //todo selezione attività fisiche che fa, per ogni attività fisica quante volte alla settimana la fa
-    //e ogni volta che la fa per quanto tempo
+    const onChangePatientActivity = (newValue, field, index) => {
+        let newPatientActivities = structuredClone(patientActivities);
+        newPatientActivities[index][field] = newValue
+        setPatientActivities(structuredClone(newPatientActivities))
+    }
+
+    const addActivity = () => {
+        let newPatientActivities = structuredClone(patientActivities);
+        newPatientActivities.push({activity: activities[0], numberDayOn: 1, avgHours: 1})
+        setPatientActivities(structuredClone(newPatientActivities))
+    }
+
+    const deletePatientActivity = (index) => {
+        let newPatientActivities = structuredClone(patientActivities);
+        newPatientActivities.splice(index, 1)
+        setPatientActivities(structuredClone(newPatientActivities))
+    }
+
+    console.log(patient, patientActivities)
 
     return <Grid container justifyContent="space-between" spacing={2}>
         <PillsGridContainer container xs={12} spacing={1}>
@@ -143,6 +168,57 @@ export default function Patient() {
                         />
                     </Grid>
                 </Grid>
+
+                {
+                    patientActivities.map((pa, index) =>
+                        <Grid container alignItems={"center"} className={classes.form} spacing={3}>
+                            <Grid item xs={4} alignItems={"flex-end"} style={{display: "flex"}}>
+                                <Autocomplete
+                                    fullWidth value={pa.activity}
+                                    onChange={(evt, newValue) =>
+                                        onChangePatientActivity(newValue, "activity", index)
+                                    }
+                                    id={`activity-${index}`} options={activities.map(a => a)}
+                                    getOptionLabel={(option) => option}
+                                    renderInput={(params) => (
+                                        <TextInput {...params} label="Activity"/>
+                                    )}
+                                />
+                            </Grid>
+                            <Grid item xs={3.5} alignItems={"flex-end"} style={{display: "flex"}}>
+                                <TextInput
+                                    value={pa.numberDayOn} required type="number"
+                                    label="Days a week this activity" id={`numberDayOn-${index}`}
+                                    step={1} min={1} max={patient.numberDayOn}
+                                    onTextChange={(value) => onChangePatientActivity(value, "numberDayOn", index)}
+                                />
+                            </Grid>
+                            <Grid item xs={3.5} alignItems={"flex-end"} style={{display: "flex"}}>
+                                <TextInput
+                                    value={pa.avgHours} required type="number"
+                                    label="Minutes for a session" id={`avgHours-${index}`}
+                                    step={1} min={1} max={24*60}
+                                    onTextChange={(value) => onChangePatientActivity(value, "avgHours", index)}
+                                />
+                            </Grid>
+                            <Grid item xs={1} spacing={0}>
+                                <IconButton aria-label="delete" onClick={() => deletePatientActivity(index)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    )
+                }
+                {patient.numberDayOn > 0 &&
+                    <Grid container alignItems={"flex-end"} className={classes.form}>
+                        <Grid item xs={12} alignItems={"flex-end"} style={{display : "flex"}}>
+                            <Button variant="outlined" fullWidth startIcon={<AddIcon/>} onClick={addActivity}>
+                                Add Activity
+                            </Button>
+                        </Grid>
+                    </Grid>
+                }
+
             </Pill>
         </PillsGridContainer>
     </Grid>

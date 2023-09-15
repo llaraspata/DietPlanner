@@ -14,7 +14,7 @@ export default function App() {
         }
     ]
       
-    return <div style={{position: "fixed", left: "50%", marginLeft: "-25em", width: "50em"}}>
+    return <div style={{position: "absolute", left: "50%", marginLeft: "-25em", width: "50em"}}>
         <FilterBarAsCard
             filters={filters}
             onFilter={(filterId) => setFilter(filterId)}

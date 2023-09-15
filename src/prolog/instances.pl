@@ -299,6 +299,11 @@ attribute_value(dietplanner, yogurt, name, 'Yogurt').
 attribute_value(dietplanner, yogurt, description, 'Yogurt, a dairy product made from fermented milk, available in various flavors and styles.').
 attribute_value(dietplanner, yogurt, calories, 61).
 
+foodbeverage_instance(dietplanner, milk_cheese, greek_yogurt).
+attribute_value(dietplanner, greek_yogurt, name, 'Greek Yogur').
+attribute_value(dietplanner, greek_yogurt, description, 'Healthy dessert parfait with Greek yogurt, berries, and granola.').
+attribute_value(dietplanner, yogurt, calories, 45).
+
 foodbeverage_instance(dietplanner, milk_cheese, grana_cheese).
 attribute_value(dietplanner, cheese, name, 'Grana Cheese').
 attribute_value(dietplanner, cheese, description, 'A dairy product made from curdled milk, with a wide range of flavors, textures, and uses.').
@@ -1102,6 +1107,111 @@ attribute_value(dietplanner, crossfit, calory_effort, 500).
 % Class: dish
 % ---------
 % Instances of Dish
+dish_instance(dietplanner, dish, pancakes_and_maple_syrup).
+attribute_value(dietplanner, pancakes_and_maple_syrup, name, 'Pancakes and Maple Syrup').
+attribute_value(dietplanner, pancakes_and_maple_syrup, description, 'Delicious pancakes with maple syrup.').
+attribute_value(dietplanner, pancakes_and_maple_syrup, type, breakfast).
+
+dish_instance(dietplanner, dish, avocado_toast).
+attribute_value(dietplanner, avocado_toast, name, 'Avocado Toast').
+attribute_value(dietplanner, avocado_toast, description, 'Toast with avocado, tomato, and egg.').
+attribute_value(dietplanner, avocado_toast, type, breakfast).
+
+dish_instance(dietplanner, dish, oatmeal_with_berries).
+attribute_value(dietplanner, oatmeal_with_berries, name, 'Oatmeal with Berries').
+attribute_value(dietplanner, oatmeal_with_berries, description, 'Oatmeal with berries and honey.').
+attribute_value(dietplanner, oatmeal_with_berries, type, breakfast).
+
+dish_instance(dietplanner, dish, fruit_smoothie).
+attribute_value(dietplanner, fruit_smoothie, name, 'Fruit Smoothie').
+attribute_value(dietplanner, fruit_smoothie, description, 'Fresh fruit smoothie with yogurt.').
+attribute_value(dietplanner, fruit_smoothie, type, breakfast).
+
+dish_instance(dietplanner, dish, scrambled_eggs_and_toast).
+attribute_value(dietplanner, scrambled_eggs_and_toast, name, 'Scrambled Eggs and Toast').
+attribute_value(dietplanner, scrambled_eggs_and_toast, description, 'Scrambled eggs with toast.').
+attribute_value(dietplanner, scrambled_eggs_and_toast, type, breakfast).
+
+dish_instance(dietplanner, dish, greek_yogurt_parfait).
+attribute_value(dietplanner, greek_yogurt_parfait, name, 'Greek Yogurt Parfait').
+attribute_value(dietplanner, greek_yogurt_parfait, description, 'Parfait with Greek yogurt, berries, and granola.').
+attribute_value(dietplanner, greek_yogurt_parfait, type, breakfast).
+
+dish_instance(dietplanner, dish, breakfast_burrito).
+attribute_value(dietplanner, breakfast_burrito, name, 'Breakfast Burrito').
+attribute_value(dietplanner, breakfast_burrito, description, 'Breakfast burrito with eggs, cheese, and salsa.').
+attribute_value(dietplanner, breakfast_burrito, type, breakfast).
+
+dish_instance(dietplanner, dish, chicken_caesar_salad).
+attribute_value(dietplanner, chicken_caesar_salad, name, 'Chicken Caesar Salad').
+attribute_value(dietplanner, chicken_caesar_salad, description, 'Caesar salad with grilled chicken.').
+attribute_value(dietplanner, chicken_caesar_salad, type, lunch).
+
+dish_instance(dietplanner, dish, quinoa_and_vegetable_stir_fry).
+attribute_value(dietplanner, quinoa_and_vegetable_stir_fry, name, 'Quinoa and Vegetable Stir-Fry').
+attribute_value(dietplanner, quinoa_and_vegetable_stir_fry, description, 'Quinoa and vegetable stir-fry.').
+attribute_value(dietplanner, quinoa_and_vegetable_stir_fry, type, lunch).
+
+dish_instance(dietplanner, dish, turkey_and_avocado_wrap).
+attribute_value(dietplanner, turkey_and_avocado_wrap, name, 'Turkey and Avocado Wrap').
+attribute_value(dietplanner, turkey_and_avocado_wrap, description, 'Turkey and avocado wrap.').
+attribute_value(dietplanner, turkey_and_avocado_wrap, type, lunch).
+
+dish_instance(dietplanner, dish, caprese_salad).
+attribute_value(dietplanner, caprese_salad, name, 'Caprese Salad').
+attribute_value(dietplanner, caprese_salad, description, 'Caprese salad with tomato, mozzarella, and basil.').
+attribute_value(dietplanner, caprese_salad, type, lunch).
+
+dish_instance(dietplanner, dish, grilled_salmon_with_asparagus).
+attribute_value(dietplanner, grilled_salmon_with_asparagus, name, 'Grilled Salmon with Asparagus').
+attribute_value(dietplanner, grilled_salmon_with_asparagus, description, 'Grilled salmon with asparagus.').
+attribute_value(dietplanner, grilled_salmon_with_asparagus, type, dinner).
+
+dish_instance(dietplanner, dish, vegetarian_pasta_primavera).
+attribute_value(dietplanner, vegetarian_pasta_primavera, name, 'Vegetarian Pasta Primavera').
+attribute_value(dietplanner, vegetarian_pasta_primavera, description, 'Vegetarian pasta primavera.').
+attribute_value(dietplanner, vegetarian_pasta_primavera, type, lunch).
+
+dish_instance(dietplanner, dish, beef_and_broccoli_stir_fry).
+attribute_value(dietplanner, beef_and_broccoli_stir_fry, name, 'Beef and Broccoli Stir-Fry').
+attribute_value(dietplanner, beef_and_broccoli_stir_fry, description, 'Beef and broccoli stir-fry.').
+attribute_value(dietplanner, beef_and_broccoli_stir_fry, type, lunch).
+
+dish_instance(dietplanner, dish, baked_chicken_breast_with_sweet_potato).
+attribute_value(dietplanner, baked_chicken_breast_with_sweet_potato, name, 'Baked Chicken Breast with Sweet Potato').
+attribute_value(dietplanner, baked_chicken_breast_with_sweet_potato, description, 'Baked chicken breast with sweet potato.').
+attribute_value(dietplanner, baked_chicken_breast_with_sweet_potato, type, dinner).
+
+dish_instance(dietplanner, dish, spinach_and_feta_stuffed_mushrooms).
+attribute_value(dietplanner, spinach_and_feta_stuffed_mushrooms, name, 'Spinach and Feta Stuffed Mushrooms').
+attribute_value(dietplanner, spinach_and_feta_stuffed_mushrooms, description, 'Spinach and feta stuffed mushrooms.').
+attribute_value(dietplanner, spinach_and_feta_stuffed_mushrooms, type, dinner).
+
+dish_instance(dietplanner, dish, grilled_vegetable_platter).
+attribute_value(dietplanner, grilled_vegetable_platter, name, 'Grilled Vegetable Platter').
+attribute_value(dietplanner, grilled_vegetable_platter, description, 'Grilled vegetable platter.').
+attribute_value(dietplanner, grilled_vegetable_platter, type, dinner).
+
+dish_instance(dietplanner, dish, shrimp_scampi).
+attribute_value(dietplanner, shrimp_scampi, name, 'Shrimp Scampi').
+attribute_value(dietplanner, shrimp_scampi, description, 'Shrimp scampi.').
+attribute_value(dietplanner, shrimp_scampi, type, dinner).
+
+dish_instance(dietplanner, dish, tofu_and_broccoli_stir_fry).
+attribute_value(dietplanner, tofu_and_broccoli_stir_fry, name, 'Tofu and Broccoli Stir-Fry').
+attribute_value(dietplanner, tofu_and_broccoli_stir_fry, description, 'Tofu and broccoli stir-fry.').
+attribute_value(dietplanner, tofu_and_broccoli_stir_fry, type, dinner).
+
+dish_instance(dietplanner, dish, roasted_pork_tenderloin_with_vegetables).
+attribute_value(dietplanner, roasted_pork_tenderloin_with_vegetables, name, 'Roasted Pork Tenderloin with Vegetables').
+attribute_value(dietplanner, roasted_pork_tenderloin_with_vegetables, description, 'Roasted pork tenderloin with vegetables.').
+attribute_value(dietplanner, roasted_pork_tenderloin_with_vegetables, type, dinner).
+
+dish_instance(dietplanner, dish, spaghetti_aglio_e_olio).
+attribute_value(dietplanner, spaghetti_aglio_e_olio, name, 'Spaghetti Aglio e Olio').
+attribute_value(dietplanner, spaghetti_aglio_e_olio, description, 'Spaghetti with garlic and oil.').
+attribute_value(dietplanner, spaghetti_aglio_e_olio, type, lunch).
+
 
 dish_instance(dietplanner, dish, grilled_chicken_salad).
 attribute_value(dietplanner, grilled_chicken_salad, name, 'Grilled Chicken Salad').
@@ -1127,11 +1237,6 @@ dish_instance(dietplanner, dish, grilled_salmon_with_quinoa).
 attribute_value(dietplanner, grilled_salmon_with_quinoa, name, 'Grilled Salmon with Quinoa').
 attribute_value(dietplanner, grilled_salmon_with_quinoa, description, 'Grilled salmon fillet served with quinoa and steamed vegetables.').
 attribute_value(dietplanner, grilled_salmon_with_quinoa, type, lunch).
-
-dish_instance(dietplanner, dish, greek_yogurt).
-attribute_value(dietplanner, greek_yogurt, name, 'Greek Yogur').
-attribute_value(dietplanner, greek_yogurt, description, 'Healthy dessert parfait with Greek yogurt, berries, and granola.').
-attribute_value(dietplanner, greek_yogurt, type, breakfast).
 
 dish_instance(dietplanner, dish, vegan_lentil_curry).
 attribute_value(dietplanner, vegan_lentil_curry, name, 'Vegan Lentil Curry').
@@ -1168,10 +1273,40 @@ attribute_value(dietplanner, mushroom_risotto, name, 'Mushroom Risotto').
 attribute_value(dietplanner, mushroom_risotto, description, 'Creamy risotto made with Arborio rice and sautéed mushrooms.').
 attribute_value(dietplanner, mushroom_risotto, type, lunch).
 
+dish_instance(dietplanner, dish, fruit_salad).
+attribute_value(dietplanner, fruit_salad, name, 'Fruit Salad').
+attribute_value(dietplanner, fruit_salad, description, 'Fresh fruit salad.').
+attribute_value(dietplanner, fruit_salad, type, snack).
+
+dish_instance(dietplanner, dish, mixed_nuts).
+attribute_value(dietplanner, mixed_nuts, name, 'Mixed Nuts').
+attribute_value(dietplanner, mixed_nuts, description, 'Assorted mixed nuts.').
+attribute_value(dietplanner, mixed_nuts, type, snack).
+
+dish_instance(dietplanner, dish, greek_yogurt_with_honey).
+attribute_value(dietplanner, greek_yogurt_with_honey, name, 'Greek Yogurt with Honey').
+attribute_value(dietplanner, greek_yogurt_with_honey, description, 'Greek yogurt drizzled with honey.').
+attribute_value(dietplanner, greek_yogurt_with_honey, type, snack).
+
+dish_instance(dietplanner, dish, vegetable_sticks_with_hummus).
+attribute_value(dietplanner, vegetable_sticks_with_hummus, name, 'Vegetable Sticks with Hummus').
+attribute_value(dietplanner, vegetable_sticks_with_hummus, description, 'Assorted vegetable sticks with hummus.').
+attribute_value(dietplanner, vegetable_sticks_with_hummus, type, snack).
+
+dish_instance(dietplanner, dish, cheese_and_crackers).
+attribute_value(dietplanner, cheese_and_crackers, name, 'Cheese and Crackers').
+attribute_value(dietplanner, cheese_and_crackers, description, 'Cheese and crackers platter.').
+attribute_value(dietplanner, cheese_and_crackers, type, snack).
+
 dish_instance(dietplanner, dish, popcorn).
 attribute_value(dietplanner, popcorn, name, 'Popcorn').
-attribute_value(dietplanner, popcorn, description, 'Light and crunchy popcorn, a great movie-time snack.').
+attribute_value(dietplanner, popcorn, description, 'Buttered popcorn for a tasty snack.').
 attribute_value(dietplanner, popcorn, type, snack).
+
+dish_instance(dietplanner, dish, protein_bar).
+attribute_value(dietplanner, protein_bar, name, 'Protein Bar').
+attribute_value(dietplanner, protein_bar, description, 'High-protein energy bar.').
+attribute_value(dietplanner, protein_bar, type, snack).
 
 dish_instance(dietplanner, dish, chicken_stir_fry).
 attribute_value(dietplanner, chicken_stir_fry, name, 'Chicken Stir-Fry').
@@ -1217,6 +1352,21 @@ dish_instance(dietplanner, dish, chocolate_mousse).
 attribute_value(dietplanner, chocolate_mousse, name, 'Chocolate Mousse').
 attribute_value(dietplanner, chocolate_mousse, description, 'Decadent dessert made with whipped chocolate and cream.').
 attribute_value(dietplanner, chocolate_mousse, type, snack).
+
+dish_instance(dietplanner, dish, almond_butter_on_whole_wheat_crackers).
+attribute_value(dietplanner, almond_butter_on_whole_wheat_crackers, name, 'Almond Butter on Whole Wheat Crackers').
+attribute_value(dietplanner, almond_butter_on_whole_wheat_crackers, description, 'Whole wheat crackers served with creamy almond butter.').
+attribute_value(dietplanner, almond_butter_on_whole_wheat_crackers, type, snack).
+
+dish_instance(dietplanner, dish, yogurt_and_granola).
+attribute_value(dietplanner, yogurt_and_granola, name, 'Yogurt and Granola').
+attribute_value(dietplanner, yogurt_and_granola, description, 'Creamy yogurt topped with crunchy granola.').
+attribute_value(dietplanner, yogurt_and_granola, type, snack).
+
+dish_instance(dietplanner, dish, sliced_apples_with_peanut_butter).
+attribute_value(dietplanner, sliced_apples_with_peanut_butter, name, 'Sliced Apples with Peanut Butter').
+attribute_value(dietplanner, sliced_apples_with_peanut_butter, description, 'Sliced apples served with creamy peanut butter for dipping.').
+attribute_value(dietplanner, sliced_apples_with_peanut_butter, type, snack).
 
 dish_instance(dietplanner, dish, chocolate_chip_cookies).
 attribute_value(dietplanner, chocolate_chip_cookies, name, 'Chocolate Chip Cookies').

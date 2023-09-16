@@ -16,6 +16,13 @@ function fromList(xs) {
     return null;
 }
 
+export async function consultFunctionsInstances(session){
+    const functionsCode = await fetch(functions).then((res) => res.text()).then((program) => program)
+    const instancesCode = await fetch(instances).then((res) => res.text()).then((program) => program)
+    session.consult(functionsCode);
+    session.consult(instancesCode);
+}
+
 export function useGetActivityAllergenNames() {
 
     let session = pl.create();
@@ -23,50 +30,47 @@ export function useGetActivityAllergenNames() {
     let [activities, setActivities] = useState([])
 
     useEffect(() => {
-        fetch(functions)
-            .then((res) => res.text())
-            .then((program) => {
-                session.consult(program, {
-                    success: () => {
-                        fetch(instances)
-                            .then((res) => res.text())
-                            .then((program) => {
-                                session.consult(program,{
-                                    success : () => {
-                                        session.query("collect_allergen_names(Names).");
-                                        session.answer(a => {
-                                            setAllergens(fromList(a.lookup("Names")).map(t => t.id))
-                                            console.log("allergeni presi")
-                                        })
-                                        session.query("collect_activities_names(Names).");
-                                        session.answer(a => {
-                                            setActivities(fromList(a.lookup("Names")).map(t => t.id))
-                                            console.log("attività prese")
-                                        })
-                                    },
-                                    error: (err) => console.error("error consulting instances", err)
-                                })
-                            })
-                            .catch((e) => console.error("error fetching instances", e));
-                    },
-                    error: (err) => console.error("error consulting functions", err)
-                })
+        consultFunctionsInstances(session).then(() => {
+            session.query("collect_allergen_names(Names).");
+            session.answer(a => {
+                setAllergens(fromList(a.lookup("Names")).map(t => t.id))
             })
-            .catch((e) => console.error("error fetching functions", e));
-    }, []);
+            session.query("collect_activities_names(Names).");
+            session.answer(a => {
+                setActivities(fromList(a.lookup("Names")).map(t => t.id))
+            })
+        })
+    }, [])
 
     return {allergens, activities}
 }
 
-//todo per calcolare il fabbisogno calorico usa compute_needed_calories
-//crea una cosa come questa
-// person_instance(dietplanner, person, nome.toLower_congome.toLower).
-// attribute_value(dietplanner, nome.toLower_congome.toLower, name, dato_corretto).
-// attribute_value(dietplanner, nome.toLower_congome.toLower, surname, 'Johnson').
-// attribute_value(dietplanner, nome.toLower_congome.toLower, age, 30).
-// attribute_value(dietplanner, nome.toLower_congome.toLower, gender, 'Female').
-// attribute_value(dietplanner, nome.toLower_congome.toLower, height, 165).
-// attribute_value(dietplanner, nome.toLower_congome.toLower, weight, 60.5).
+export function useGetComputedCalories(patient){
 
-//chiama compute_needed_calories(nome.toLower_congome.toLower, NeededCalories).
-//NeededCalories sarà popolato con il dato che serve
+    let session = pl.create();
+    let [energyDemand, setEnergyDemand] = useState()
+
+    useEffect(() => {
+        if(patient && patient.name && patient.surname && patient.age &&
+            patient.gender && patient.height && patient.weight) {
+            consultFunctionsInstances(session).then(() => {
+                let patientCode = `${patient.name.toLowerCase()}_${patient.surname.toLowerCase()}`
+                session.consult(`
+                    person_instance(dietplanner, person, ${patientCode}).
+                    attribute_value(dietplanner, ${patientCode}, name, ${patient.name}).
+                    attribute_value(dietplanner, ${patientCode}, surname, ${patient.surname}).
+                    attribute_value(dietplanner, ${patientCode}, age, ${patient.age}).
+                    attribute_value(dietplanner, ${patientCode}, gender, ${patient.gender}).
+                    attribute_value(dietplanner, ${patientCode}, height, ${patient.height}).
+                    attribute_value(dietplanner, ${patientCode}, weight, ${patient.weight}).
+                `)
+                session.query(`compute_needed_calories(${patientCode}, NeededCalories).`);
+                session.answer(a => {
+                    setEnergyDemand(parseInt(a.lookup("NeededCalories").value))
+                })
+            })
+        }
+    }, [patient])
+
+    return energyDemand
+}

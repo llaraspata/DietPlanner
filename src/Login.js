@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,6 +10,9 @@ import Container from '@mui/material/Container';
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import {Visibility,VisibilityOff} from "@mui/icons-material";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {useNavigate} from "react-router-dom";
+import {auth, logInWithEmailAndPassword} from "./firebase";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -47,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login({setUser}){
+export default function Login(){
 
     //dietologo@studenti.uniba.it
     //Password00!
@@ -57,6 +60,16 @@ export default function Login({setUser}){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     let [showPassword, setShowPassword] = useState(false);
+    const [user, loading, error] = useAuthState(auth);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (loading) {
+            // maybe trigger a loading screen
+            return;
+        }
+        if (user) navigate("/");
+    }, [user, loading]);
 
     const preventLoseFocus = (event) => {
         event.preventDefault()
@@ -64,14 +77,9 @@ export default function Login({setUser}){
 
     const onKeyPress = (ev) => {
         if (ev.key === 'Enter') {
-            onSubmit(username, password);
+            logInWithEmailAndPassword(username, password);
             ev.preventDefault();
         }
-    }
-
-    const onSubmit = (username, password) => {
-        //fai cose
-        setUser({loggedIn: true, username: username})
     }
 
     return <Container component="main" maxWidth="xs">
@@ -135,7 +143,7 @@ export default function Login({setUser}){
                 color="secondary"
                 className={classes.submit}
                 onClick={() => {
-                    onSubmit(username, password);
+                    logInWithEmailAndPassword(username, password);
                 }}
             >
                 Login

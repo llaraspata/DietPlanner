@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Suspense} from 'react';
 import ReactDOM from 'react-dom/client';
 import {createTheme} from "@mui/material";
 import {StyledEngineProvider,ThemeProvider} from "@mui/material/styles";
@@ -27,7 +27,9 @@ root.render(
   <React.StrictMode>
       <StyledEngineProvider injectFirst>
           <ThemeProvider theme={defaultTheme}>
-             <App />
+              <Suspense fallback="Loading...">
+                  <App />
+              </Suspense>
           </ThemeProvider>
       </StyledEngineProvider>
   </React.StrictMode>

@@ -1,26 +1,59 @@
 import {useState} from "react";
-import FilterBarAsCard from "./components/FilterBarAsCard";
-import Patient from "./containers/Patient";
+import {Redirect,Route,Switch} from "react-router-dom";
+import Login from "./Login";
+import Main from "./Main";
 
 export default function App() {
 
-    const [filter, setFilter] = useState(0);
+    let [user, setUser] = useState({loggedIn: false})
 
-    const filters = [
-        {
-            id: 0,
-            name: "PATIENCE PROFILE",
-            component: <Patient/>
-        }
-    ]
-      
-    return <div style={{position: "absolute", left: "50%", marginLeft: "-25em", width: "50em"}}>
-        <FilterBarAsCard
-            filters={filters}
-            onFilter={(filterId) => setFilter(filterId)}
-            selected={filter}
-        >
-            {filters.find(f => f.id === filter)?.component ?? <></>}
-        </FilterBarAsCard>
-    </div>
+    return <Switch>
+            <UnloggedRoute user={user} path="/login">
+                <Login setUser={setUser}/>
+            </UnloggedRoute>
+            <PrivateRoute user={user} path="/">
+                <div>SEI DENTRO</div>
+            </PrivateRoute>
+        </Switch>
+}
+
+// A wrapper for <Route> that redirects to the login
+// screen if you're not yet authenticated.
+function PrivateRoute({ user, children, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                user.loggedIn ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
+}
+
+function UnloggedRoute({ user, children, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={() =>
+                user.loggedIn ? (
+                    <Redirect
+                        to={{
+                            pathname: "/"
+                        }}
+                    />
+                ) : (
+                    children
+                )
+            }
+        />
+    );
 }

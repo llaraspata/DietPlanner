@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import {createTheme} from "@mui/material";
 import {StyledEngineProvider,ThemeProvider} from "@mui/material/styles";
+import App from "./App";
 
 const defaultTheme = createTheme({
     palette : {

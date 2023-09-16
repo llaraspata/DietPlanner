@@ -57,3 +57,16 @@ export function useGetActivityAllergenNames() {
 
     return {allergens, activities}
 }
+
+//todo per calcolare il fabbisogno calorico usa compute_needed_calories
+//crea una cosa come questa
+// person_instance(dietplanner, person, nome.toLower_congome.toLower).
+// attribute_value(dietplanner, nome.toLower_congome.toLower, name, dato_corretto).
+// attribute_value(dietplanner, nome.toLower_congome.toLower, surname, 'Johnson').
+// attribute_value(dietplanner, nome.toLower_congome.toLower, age, 30).
+// attribute_value(dietplanner, nome.toLower_congome.toLower, gender, 'Female').
+// attribute_value(dietplanner, nome.toLower_congome.toLower, height, 165).
+// attribute_value(dietplanner, nome.toLower_congome.toLower, weight, 60.5).
+
+//chiama compute_needed_calories(nome.toLower_congome.toLower, NeededCalories).
+//NeededCalories sarà popolato con il dato che serve

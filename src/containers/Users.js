@@ -1,13 +1,17 @@
 import { DataGrid } from '@mui/x-data-grid';
-import {Button,Grid} from "@mui/material";
+import {Button,Grid,IconButton} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React,{useEffect, useState} from 'react';
 import AddIcon from "@mui/icons-material/Add";
 import PatientModal from "../components/PatientModal";
-import {collection,addDoc,getDocs} from "firebase/firestore";
+import {collection,addDoc,getDocs,doc, deleteDoc} from "firebase/firestore";
 import {auth,db} from '../firebase';
 import {useAuthState} from "react-firebase-hooks/auth";
 import {makeStyles} from "@mui/styles";
+import {useSnackbar} from "notistack";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import EditIcon from '@mui/icons-material/Edit';
+import ConfirmDeleteIconButton from "../components/ConfirmDeleteIconButton";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -23,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Users(){
 
     const classes = useStyles();
+    const {enqueueSnackbar} = useSnackbar();
     const [modalOpen, setModalOpen] = useState(false);
     const [patients, setPatients] = useState([])
     const [user, loading, error] = useAuthState(auth);
@@ -32,7 +37,29 @@ export default function Users(){
         { field: 'surname', headerName: 'Surname', flex: 2 },
         { field: 'bmi', headerName: 'BMI', flex: 2, renderCell: (params) => params.value?.toFixed(2) },
         { field: 'energyDemand', headerName: 'Energy Demand (kcal)', flex: 2},
-        { field: 'actions', headerName: '', flex: 1} //modifica, cancella e mostra dieta
+        {
+            field: 'Actions',
+            type: 'actions',
+            width: 150,
+            renderCell: (params) => <Grid container direction={"row"} justifyContent="flex-end">
+                <Grid item>
+                    <IconButton>
+                        <CalendarMonthIcon fontSize="medium"/>
+                    </IconButton>
+                </Grid>
+                <Grid item>
+                    <IconButton>
+                        <EditIcon fontSize="medium"/>
+                    </IconButton>
+                </Grid>
+                <Grid item>
+                    <ConfirmDeleteIconButton
+                        title="Delete patient?" onDelete={() => onDelete(params.row.id)}
+                        description={`Are you sure you want to delete the patient ${params.row.name} ${params.row.surname}`}
+                    />
+                </Grid>
+            </Grid>
+        }
     ]
 
     useEffect(() => {
@@ -40,7 +67,7 @@ export default function Users(){
     }, [])
 
     const onSave = async (patient, patientActivities) => {
-        console.log("SAVING")
+        enqueueSnackbar("Saving...", {variant: "info"});
         try {
             await addDoc(collection(db, `patients-${user.uid}`), {
                 patient: patient,
@@ -48,9 +75,20 @@ export default function Users(){
             });
             setModalOpen(false)
             await fetchPatients()
+            enqueueSnackbar("Saved", {variant: "success"})
         } catch (e) {
-            console.error("Error adding document: ", e);
+            enqueueSnackbar(e, {variant: "error"})
         }
+    }
+
+    const onDelete = async (pid) => {
+        enqueueSnackbar("Deleting...", {variant: "info"});
+        deleteDoc(doc(db, `patients-${user.uid}`, pid))
+            .then(() => {
+                fetchPatients()
+                enqueueSnackbar("Deleted",{variant : "success"})
+            })
+            .catch(e => enqueueSnackbar(e, {variant: "error"}))
     }
 
     const fetchPatients = async () => {

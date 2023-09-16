@@ -1,7 +1,8 @@
 import React,{Suspense} from 'react';
 import ReactDOM from 'react-dom/client';
-import {createTheme} from "@mui/material";
+import {Button,createTheme} from "@mui/material";
 import {StyledEngineProvider,ThemeProvider} from "@mui/material/styles";
+import {SnackbarProvider} from "notistack";
 import App from "./App";
 
 const defaultTheme = createTheme({
@@ -22,14 +23,28 @@ const defaultTheme = createTheme({
     }
 });
 
+const notistackRef = React.createRef();
+const onClickDismiss = key => () => {
+    notistackRef.current.closeSnackbar(key);
+};
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <StyledEngineProvider injectFirst>
           <ThemeProvider theme={defaultTheme}>
-              <Suspense fallback="Loading...">
-                  <App />
-              </Suspense>
+              <SnackbarProvider
+                  ref={notistackRef}
+                  action={(key) => (
+                      <Button onClick={onClickDismiss(key)}>
+                          'Close'
+                      </Button>
+                  )}
+                  autoHideDuration={3000}>
+                  <Suspense fallback="Loading...">
+                      <App />
+                  </Suspense>
+              </SnackbarProvider>
           </ThemeProvider>
       </StyledEngineProvider>
   </React.StrictMode>

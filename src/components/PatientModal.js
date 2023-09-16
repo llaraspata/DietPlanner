@@ -52,13 +52,24 @@ const PillsGridContainer = styled(Grid)(({ theme }) => ({
     backgroundColor : theme.palette.primary.light,
 }));
 
-export default function PatientModal({open, onClose, onSave}) {
+export default function PatientModal({open, onClose, onSave, defaultPatient}) {
 
     const classes = useStyles();
     let {allergens, activities} = useGetActivityAllergenNames();
     const [patient, setPatient] = useState({});
     const [patientActivities, setPatientActivities] = useState([]);
     let energyDemand = useGetComputedCalories(patient);
+
+    useEffect(() => {
+        if(open && Object.keys(defaultPatient).length !== 0) {
+            let def = structuredClone(defaultPatient)
+            setPatientActivities(def.activities)
+            delete def.activities
+            setPatient(structuredClone(def))
+        }
+    }, [open])
+
+    console.log(patient)
 
     useEffect(() => {
         let newPatient = {...patient}
@@ -166,12 +177,12 @@ export default function PatientModal({open, onClose, onSave}) {
                                 <Grid item xs={12} alignItems={"flex-end"} style={{display: "flex"}}>
                                     <Autocomplete
                                         multiple fullWidth filterSelectedOptions disableCloseOnSelect
-                                        value={patient.allergies}
+                                        value={patient.allergies || []}
                                         onChange={(evt, newValue) =>
-                                            onChange(newValue.map(n => n.toLowerCase()), "allergies")
+                                            onChange(newValue, "allergies")
                                         }
                                         id="allergies"
-                                        options={allergens.map(a => a.charAt(0).toUpperCase() + a.slice(1))}
+                                        options={allergens}
                                         getOptionLabel={(option) => option}
                                         renderInput={(params) => (
                                             <TextInput {...params} label="Allergies"/>

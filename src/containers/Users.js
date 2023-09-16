@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import React,{useEffect, useState} from 'react';
 import AddIcon from "@mui/icons-material/Add";
 import PatientModal from "../components/PatientModal";
-import {collection,addDoc,getDocs,doc, deleteDoc} from "firebase/firestore";
+import {collection,addDoc,getDocs,doc,deleteDoc,updateDoc} from "firebase/firestore";
 import {auth,db} from '../firebase';
 import {useAuthState} from "react-firebase-hooks/auth";
 import {makeStyles} from "@mui/styles";
@@ -29,6 +29,7 @@ export default function Users(){
     const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
     const [modalOpen, setModalOpen] = useState(false);
+
     const [patients, setPatients] = useState([])
     const [user, loading, error] = useAuthState(auth);
 
@@ -48,14 +49,14 @@ export default function Users(){
                     </IconButton>
                 </Grid>
                 <Grid item>
-                    <IconButton>
+                    <IconButton onClick={() => setModalOpen(params.row)}>
                         <EditIcon fontSize="medium"/>
                     </IconButton>
                 </Grid>
                 <Grid item>
                     <ConfirmDeleteIconButton
-                        title="Delete patient?" onDelete={() => onDelete(params.row.id)}
-                        description={`Are you sure you want to delete the patient ${params.row.name} ${params.row.surname}`}
+                        title={`Delete ${params.row.name} ${params.row.surname}?`} onDelete={() => onDelete(params.row.id)}
+                        description="Are you sure you want to delete the patient?"
                     />
                 </Grid>
             </Grid>
@@ -68,16 +69,31 @@ export default function Users(){
 
     const onSave = async (patient, patientActivities) => {
         enqueueSnackbar("Saving...", {variant: "info"});
-        try {
-            await addDoc(collection(db, `patients-${user.uid}`), {
+        if(patient.id) {
+            //save existing patient
+            let pid = patient.id
+            delete patient.id
+            updateDoc(doc(db, `patients-${user.uid}`, pid), {
                 patient: patient,
                 patientActivities: patientActivities
-            });
-            setModalOpen(false)
-            await fetchPatients()
-            enqueueSnackbar("Saved", {variant: "success"})
-        } catch (e) {
-            enqueueSnackbar(e, {variant: "error"})
+            }).then(() => {
+                setModalOpen(false)
+                fetchPatients()
+                enqueueSnackbar("Saved", {variant: "success"})
+            }).catch((e) => enqueueSnackbar(e, {variant: "error"}))
+        } else {
+            //save new patient
+            try {
+                await addDoc(collection(db, `patients-${user.uid}`), {
+                    patient: patient,
+                    patientActivities: patientActivities
+                });
+                setModalOpen(false)
+                await fetchPatients()
+                enqueueSnackbar("Saved", {variant: "success"})
+            } catch (e) {
+                enqueueSnackbar(e, {variant: "error"})
+            }
         }
     }
 
@@ -113,7 +129,7 @@ export default function Users(){
                 </Typography>
             </Grid>
             <Grid item>
-                <Button variant="outlined" fullWidth startIcon={<AddIcon/>} onClick={() => setModalOpen(true)}>
+                <Button variant="outlined" fullWidth startIcon={<AddIcon/>} onClick={() => setModalOpen({})}>
                     Add Patient
                 </Button>
             </Grid>
@@ -123,6 +139,7 @@ export default function Users(){
             rows={patients}
             columns={columns}
         />
-        <PatientModal open={modalOpen} onClose={() => setModalOpen(false)} onSave={onSave}/>
+        <PatientModal open={!!modalOpen} onClose={() => setModalOpen(false)}
+                      onSave={onSave} defaultPatient={modalOpen}/>
     </div>
 }

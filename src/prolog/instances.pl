@@ -81,8 +81,6 @@ attribute_value(dietplanner, fried_eggs, description, 'Fried eggs, cooked sunny-
 attribute_value(dietplanner, fried_eggs, calories, 196).
 
 
-
-
 % Subclass: fat_oils
 foodbeverage_instance(dietplanner, fat_oils, olive_oil).
 attribute_value(dietplanner, olive_oil, name, 'Olive Oil').
@@ -274,11 +272,6 @@ attribute_value(dietplanner, whole_milk, name, 'Whole Milk').
 attribute_value(dietplanner, whole_milk, description, 'Dairy milk with full-fat content, often used for drinking and cooking.').
 attribute_value(dietplanner, whole_milk, calories, 61).
 
-foodbeverage_instance(dietplanner, milk_cheese, reduced_fat_milk).
-attribute_value(dietplanner, reduced_fat_milk, name, 'Reduced-Fat Milk').
-attribute_value(dietplanner, reduced_fat_milk, description, 'Dairy milk with reduced fat content, commonly used as a lighter option.').
-attribute_value(dietplanner, reduced_fat_milk, calories, 34).
-
 foodbeverage_instance(dietplanner, milk_cheese, soy_milk).
 attribute_value(dietplanner, soy_milk, name, 'Soy Milk').
 attribute_value(dietplanner, soy_milk, description, 'Plant-based milk made from soybeans, suitable for vegans and lactose-intolerant individuals.').
@@ -339,43 +332,6 @@ attribute_value(dietplanner, feta_cheese, name, 'Feta Cheese').
 attribute_value(dietplanner, feta_cheese, description, 'Feta cheese, crumbly and tangy, often used in Mediterranean dishes.').
 attribute_value(dietplanner, feta_cheese, calories, 264).
 
-
-% Subclass: mushrooms
-foodbeverage_instance(dietplanner, mushrooms, button_mushroom).
-attribute_value(dietplanner, button_mushroom, name, 'Button Mushroom').
-attribute_value(dietplanner, button_mushroom, description, 'Common edible mushroom with a mild flavor, versatile in cooking.').
-attribute_value(dietplanner, button_mushroom, calories, 22).
-
-foodbeverage_instance(dietplanner, mushrooms, portobello_mushroom).
-attribute_value(dietplanner, portobello_mushroom, name, 'Portobello Mushroom').
-attribute_value(dietplanner, portobello_mushroom, description, 'Large and meaty mushroom, often used as a meat substitute.').
-attribute_value(dietplanner, portobello_mushroom, calories, 22).
-
-foodbeverage_instance(dietplanner, mushrooms, shiitake_mushroom).
-attribute_value(dietplanner, shiitake_mushroom, name, 'Shiitake Mushroom').
-attribute_value(dietplanner, shiitake_mushroom, description, 'Flavorful and aromatic mushroom commonly used in Asian cuisine.').
-attribute_value(dietplanner, shiitake_mushroom, calories, 34).
-
-foodbeverage_instance(dietplanner, mushrooms, oyster_mushroom).
-attribute_value(dietplanner, oyster_mushroom, name, 'Oyster Mushroom').
-attribute_value(dietplanner, oyster_mushroom, description, 'Delicate and tender mushroom with a mild flavor and oyster-like appearance.').
-attribute_value(dietplanner, oyster_mushroom, calories, 33).
-
-foodbeverage_instance(dietplanner, mushrooms, chanterelle_mushroom).
-attribute_value(dietplanner, chanterelle_mushroom, name, 'Chanterelle Mushroom').
-attribute_value(dietplanner, chanterelle_mushroom, description, 'Wild mushroom with a fruity aroma and delicate taste.').
-attribute_value(dietplanner, chanterelle_mushroom, calories, 38).
-
-foodbeverage_instance(dietplanner, mushrooms, white_mushroom).
-attribute_value(dietplanner, white_mushroom, name, 'White Mushroom').
-attribute_value(dietplanner, white_mushroom, description, 'White mushroom, mild and common mushroom variety used in various dishes.').
-attribute_value(dietplanner, white_mushroom, calories, 22).
-
-foodbeverage_instance(dietplanner, mushrooms, porcini_mushroom).
-attribute_value(dietplanner, porcini_mushroom, name, 'Porcini Mushroom').
-attribute_value(dietplanner, porcini_mushroom, description, 'Porcini mushroom, prized for its rich and earthy flavor, often used in Italian cuisine.').
-attribute_value(dietplanner, porcini_mushroom, calories, 26).
-
 % Subclass: nuts
 foodbeverage_instance(dietplanner, nuts, almonds).
 attribute_value(dietplanner, almonds, name, 'Almonds').
@@ -407,10 +363,6 @@ attribute_value(dietplanner, pecans, name, 'Pecans').
 attribute_value(dietplanner, pecans, description, 'Pecans, sweet and rich nuts often used in pies and other desserts.').
 attribute_value(dietplanner, pecans, calories, 691).
 
-foodbeverage_instance(dietplanner, nuts, macadamia_nuts).
-attribute_value(dietplanner, macadamia_nuts, name, 'Macadamia Nuts').
-attribute_value(dietplanner, macadamia_nuts, description, 'Macadamia nuts, creamy and buttery nuts often used in desserts and baking.').
-attribute_value(dietplanner, macadamia_nuts, calories, 718).
 
 % Subclass: seeds
 foodbeverage_instance(dietplanner, seeds, chia_seeds).
@@ -438,32 +390,6 @@ attribute_value(dietplanner, sesame_seeds, name, 'Sesame Seeds').
 attribute_value(dietplanner, sesame_seeds, description, 'Tiny seeds with a nutty flavor, used as a topping and ingredient in various cuisines.').
 attribute_value(dietplanner, sesame_seeds, calories, 573).
 
-% Subclass: salts
-foodbeverage_instance(dietplanner, salts, sea_salt).
-attribute_value(dietplanner, sea_salt, name, 'Sea Salt').
-attribute_value(dietplanner, sea_salt, description, 'Natural sea salt to enhance the flavor of dishes.').
-attribute_value(dietplanner, sea_salt, calories, 0).
-
-foodbeverage_instance(dietplanner, salts, himalayan_pink_salt).
-attribute_value(dietplanner, himalayan_pink_salt, name, 'Himalayan Pink Salt').
-attribute_value(dietplanner, himalayan_pink_salt, description, 'Pink-colored salt mined from the Himalayan mountains, known for its trace minerals.').
-attribute_value(dietplanner, himalayan_pink_salt, calories, 0).
-
-foodbeverage_instance(dietplanner, salts, kosher_salt).
-attribute_value(dietplanner, kosher_salt, name, 'Kosher Salt').
-attribute_value(dietplanner, kosher_salt, description, 'Coarse-grained salt used in koshering meat and general cooking.').
-attribute_value(dietplanner, kosher_salt, calories, 0).
-
-foodbeverage_instance(dietplanner, salts, table_salt).
-attribute_value(dietplanner, table_salt, name, 'Table Salt').
-attribute_value(dietplanner, table_salt, description, 'Commonly used fine-grained salt, often fortified with iodine.').
-attribute_value(dietplanner, table_salt, calories, 0).
-
-foodbeverage_instance(dietplanner, salts, black_salt).
-attribute_value(dietplanner, black_salt, name, 'Black Salt').
-attribute_value(dietplanner, black_salt, description, 'Condiment salt with a distinctive sulfurous flavor, used in Indian cuisine.').
-attribute_value(dietplanner, black_salt, calories, 0).
-
 % Subclass: spices
 foodbeverage_instance(dietplanner, spices, cinnamon).
 attribute_value(dietplanner, cinnamon, name, 'Cinnamon').
@@ -489,11 +415,6 @@ foodbeverage_instance(dietplanner, spices, black_pepper).
 attribute_value(dietplanner, black_pepper, name, 'Black Pepper').
 attribute_value(dietplanner, black_pepper, description, 'Commonly used spice with a pungent and peppery flavor.').
 attribute_value(dietplanner, black_pepper, calories, 251).
-
-foodbeverage_instance(dietplanner, spices, cardamom).
-attribute_value(dietplanner, cardamom, name, 'Cardamom').
-attribute_value(dietplanner, cardamom, description, 'Cardamom, a spice with a strong, sweet flavor, commonly used in Indian and Middle Eastern cuisine.').
-attribute_value(dietplanner, cardamom, calories, 311).
 
 foodbeverage_instance(dietplanner, spices, chili_pepper).
 attribute_value(dietplanner, chili_pepper, name, 'Chili Pepper').
@@ -521,40 +442,25 @@ attribute_value(dietplanner, dark_chocolate, name, 'Dark Chocolate').
 attribute_value(dietplanner, dark_chocolate, description, 'Rich and indulgent dark chocolate.').
 attribute_value(dietplanner, dark_chocolate, calories, 546).
 
-foodbeverage_instance(dietplanner, sweets, milk_chocolate).
-attribute_value(dietplanner, milk_chocolate, name, 'Milk Chocolate').
-attribute_value(dietplanner, milk_chocolate, description, 'Smooth and creamy milk chocolate, a delightful treat.').
-attribute_value(dietplanner, milk_chocolate, calories, 598).
+foodbeverage_instance(dietplanner, sweets, peanut_butter).
+attribute_value(dietplanner, peanut_butter, name, 'Peanut Butter').
+attribute_value(dietplanner, peanut_butter, description, 'Creamy or crunchy peanut butter made from roasted peanuts.').
+attribute_value(dietplanner, peanut_butter, calories, 588).
 
-foodbeverage_instance(dietplanner, sweets, gummy_bears).
-attribute_value(dietplanner, gummy_bears, name, 'Gummy Bears').
-attribute_value(dietplanner, gummy_bears, description, 'Chewy and colorful gelatin-based candy in the shape of bears.').
-attribute_value(dietplanner, gummy_bears, calories, 325).
+foodbeverage_instance(dietplanner, sweets, cookies).
+attribute_value(dietplanner, cookies, name, 'Cookies').
+attribute_value(dietplanner, cookies, description, 'Delicious baked treats available in various flavors and types.').
+attribute_value(dietplanner, cookies, calories, 353).
+
+foodbeverage_instance(dietplanner, sweets, light_cake).
+attribute_value(dietplanner, light_cake, name, 'Light Cake').
+attribute_value(dietplanner, light_cake, description, 'A reduced-calorie cake option, perfect for those watching their intake.').
+attribute_value(dietplanner, light_cake, calories, 150). % Valore calorico indicativo, poiché il tipo specifico di torta leggera può variare.
 
 foodbeverage_instance(dietplanner, sweet, honey).
 attribute_value(dietplanner, honey, name, 'Honey').
 attribute_value(dietplanner, honey, description, 'Pure honey, a natural sweetener with various health benefits.').
 attribute_value(dietplanner, honey, calories, 304).
-
-foodbeverage_instance(dietplanner, sweets, cotton_candy).
-attribute_value(dietplanner, cotton_candy, name, 'Cotton Candy').
-attribute_value(dietplanner, cotton_candy, description, 'Light and fluffy spun sugar treat, often found at fairs and events.').
-attribute_value(dietplanner, cotton_candy, calories, 398).
-
-foodbeverage_instance(dietplanner, sweets, ice_cream).
-attribute_value(dietplanner, ice_cream, name, 'Ice Cream').
-attribute_value(dietplanner, ice_cream, description, 'Frozen dessert made from dairy or non-dairy ingredients, available in numerous flavors.').
-attribute_value(dietplanner, ice_cream, calories, 207).
-
-foodbeverage_instance(dietplanner, sweets, donut).
-attribute_value(dietplanner, donut, name, 'Donut').
-attribute_value(dietplanner, donut, description, 'Deep-fried sweet pastry often coated with icing or powdered sugar.').
-attribute_value(dietplanner, donut, calories, 452).
-
-foodbeverage_instance(dietplanner, sweets, brownie).
-attribute_value(dietplanner, brownie, name, 'Brownie').
-attribute_value(dietplanner, brownie, description, 'Brownie, a dense and fudgy dessert bar often made with chocolate and nuts.').
-attribute_value(dietplanner, brownie, calories, 466).
 
 foodbeverage_instance(dietplanner, sweets, fruitcake).
 attribute_value(dietplanner, fruitcake, name, 'Fruitcake').
@@ -566,11 +472,6 @@ foodbeverage_instance(dietplanner, vegetables, carrot).
 attribute_value(dietplanner, carrot, name, 'Carrot').
 attribute_value(dietplanner, carrot, description, 'Root vegetable rich in vitamins and minerals.').
 attribute_value(dietplanner, carrot, calories, 41).
-
-foodbeverage_instance(dietplanner, vegetable, cauliflower).
-attribute_value(dietplanner, cauliflower, name, 'Cauliflower').
-attribute_value(dietplanner, cauliflower, description, 'Roasted cauliflower, a low-calorie vegetable side dish.').
-attribute_value(dietplanner, cauliflower, calories, 25).
 
 foodbeverage_instance(dietplanner, vegetables, spinach).
 attribute_value(dietplanner, spinach, name, 'Spinach').
@@ -607,6 +508,16 @@ attribute_value(dietplanner, fennel, name, 'Fennel').
 attribute_value(dietplanner, fennel, description, 'Fennel (Finocchi), a crisp and aromatic vegetable with a mild anise-like flavor, used in salads and cooking.').
 attribute_value(dietplanner, fennel, calories, 31).
 
+foodbeverage_instance(dietplanner, vegetables, button_mushroom).
+attribute_value(dietplanner, button_mushroom, name, 'Button Mushroom').
+attribute_value(dietplanner, button_mushroom, description, 'Common edible mushroom with a mild flavor, versatile in cooking.').
+attribute_value(dietplanner, button_mushroom, calories, 22).
+
+foodbeverage_instance(dietplanner, vegetables, porcini_mushroom).
+attribute_value(dietplanner, porcini_mushroom, name, 'Porcini Mushroom').
+attribute_value(dietplanner, porcini_mushroom, description, 'Porcini mushroom, prized for its rich and earthy flavor, often used in Italian cuisine.').
+attribute_value(dietplanner, porcini_mushroom, calories, 26).
+
 % Subclass: beverage
 % Subclass: coffee_energydrinks
 foodbeverage_instance(dietplanner, coffee_energydrinks, espresso).
@@ -614,30 +525,20 @@ attribute_value(dietplanner, espresso, name, 'Espresso').
 attribute_value(dietplanner, espresso, description, 'Strong and invigorating espresso shot.').
 attribute_value(dietplanner, espresso, calories, 2).
 
-foodbeverage_instance(dietplanner, coffee_energydrinks, cold_brew_coffee).
-attribute_value(dietplanner, cold_brew_coffee, name, 'Cold Brew Coffee').
-attribute_value(dietplanner, cold_brew_coffee, description, 'Smooth and cold brewed coffee for a refreshing kick.').
-attribute_value(dietplanner, cold_brew_coffee, calories, 3).
+foodbeverage_instance(dietplanner, coffee_energydrinks, american_coffee).
+attribute_value(dietplanner, american_coffee, name, 'Caffè Americano').
+attribute_value(dietplanner, american_coffee, description, 'A classic American-style coffee made by diluting espresso with hot water.').
+attribute_value(dietplanner, american_coffee, calories, 2). % Valore calorico indicativo per una porzione standard.
+
+foodbeverage_instance(dietplanner, coffee_energydrinks, cappuccino).
+attribute_value(dietplanner, cappuccino, name, 'Cappuccino').
+attribute_value(dietplanner, cappuccino, description, 'Espresso combined with steamed milk and topped with frothy milk foam.').
+attribute_value(dietplanner, cappuccino, calories, 120). % Valore calorico indicativo per una porzione standard.
 
 foodbeverage_instance(dietplanner, coffee_energydrinks, energy_drink).
 attribute_value(dietplanner, energy_drink, name, 'Energy Drink').
 attribute_value(dietplanner, energy_drink, description, 'High-energy drink with caffeine for an energy boost.').
 attribute_value(dietplanner, energy_drink, calories, 45).
-
-foodbeverage_instance(dietplanner, coffee_energydrinks, iced_latte).
-attribute_value(dietplanner, iced_latte, name, 'Iced Latte').
-attribute_value(dietplanner, iced_latte, description, 'Chilled latte with espresso and milk for a creamy taste.').
-attribute_value(dietplanner, iced_latte, calories, 29).
-
-foodbeverage_instance(dietplanner, coffee_energydrinks, black_coffee).
-attribute_value(dietplanner, black_coffee, name, 'Black Coffee').
-attribute_value(dietplanner, black_coffee, description, 'Strong and bold black coffee for a wake-up call.').
-attribute_value(dietplanner, black_coffee, calories, 2).
-
-foodbeverage_instance(dietplanner, coffee_energydrinks, mocha_frappuccino).
-attribute_value(dietplanner, mocha_frappuccino, name, 'Mocha Frappuccino').
-attribute_value(dietplanner, mocha_frappuccino, description, 'Creamy and chocolaty mocha frappuccino for a delightful treat.').
-attribute_value(dietplanner, mocha_frappuccino, calories, 54).
 
 % Subclass: juice
 foodbeverage_instance(dietplanner, juice, orange_juice).
@@ -680,11 +581,6 @@ foodbeverage_instance(dietplanner, water, sparkling_water).
 attribute_value(dietplanner, sparkling_water, name, 'Sparkling Water').
 attribute_value(dietplanner, sparkling_water, description, 'Bubbly sparkling water for a refreshing effervescence.').
 attribute_value(dietplanner, sparkling_water, calories, 0).
-
-foodbeverage_instance(dietplanner, water, spring_water).
-attribute_value(dietplanner, spring_water, name, 'Spring Water').
-attribute_value(dietplanner, spring_water, description, 'Fresh and pure spring water sourced from natural springs.').
-attribute_value(dietplanner, spring_water, calories, 0).
 
 % ---------
 % Class: nutrient
@@ -847,25 +743,18 @@ nutrient_instance(dietplanner, protein, whey_protein).
 attribute_value(dietplanner, whey_protein, name, 'Whey Protein').
 attribute_value(dietplanner, whey_protein, description, 'High-quality protein derived from milk.').
 
-nutrient_instance(dietplanner, protein, casein_protein).
-attribute_value(dietplanner, casein_protein, name, 'Casein Protein').
-attribute_value(dietplanner, casein_protein, description, 'Slow-digesting protein found in milk products and supplements.').
-
 nutrient_instance(dietplanner, protein, soy_protein).
 attribute_value(dietplanner, soy_protein, name, 'Soy Protein').
 attribute_value(dietplanner, soy_protein, description, 'Plant-based protein derived from soybeans, suitable for vegetarians and vegans.').
 
-nutrient_instance(dietplanner, protein, egg_white_protein).
-attribute_value(dietplanner, egg_white_protein, name, 'Egg White Protein').
-attribute_value(dietplanner, egg_white_protein, description, 'Protein sourced from egg whites, low in fat and carbohydrates.').
+nutrient_instance(dietplanner, protein, plant_protein).
+attribute_value(dietplanner, plant_protein, name, 'Plant Protein').
+attribute_value(dietplanner, plant_protein, description, 'Plant-based protein suitable for various diets.').
 
-nutrient_instance(dietplanner, protein, pea_protein).
-attribute_value(dietplanner, pea_protein, name, 'Pea Protein').
-attribute_value(dietplanner, pea_protein, description, 'Plant-based protein extracted from yellow peas, suitable for various diets.').
+nutrient_instance(dietplanner, protein, animal_protein).
+attribute_value(dietplanner, animal_protein, name, 'Animal Protein').
+attribute_value(dietplanner, animal_protein, description, 'Protein of animal origin, rich in essential amino acids.').
 
-nutrient_instance(dietplanner, protein, lean_protein).
-attribute_value(dietplanner, lean_protein, name, 'Lean Protein').
-attribute_value(dietplanner, lean_protein, description, 'Lean protein is low in fat and rich in essential amino acids, promoting muscle health and overall well-being.').
 
 % Subclass: vitamin
 nutrient_instance(dietplanner, vitamin, vitamin_c).
@@ -947,13 +836,13 @@ allergen_instance(dietplanner, allergen, crustaceans).
 attribute_value(dietplanner, crustaceans, name, 'Crustaceans').
 attribute_value(dietplanner, crustaceans, description, 'Allergic reactions can result from crustaceans like crabs, lobsters, and shrimp.').
 
-allergen_instance(dietplanner, allergen, milk).
-attribute_value(dietplanner, milk, name, 'Milk').
-attribute_value(dietplanner, milk, description, 'An allergen commonly found in cow milk and dairy products.').
+allergen_instance(dietplanner, allergen, lactose).
+attribute_value(dietplanner, lactose, name, 'Lactose').
+attribute_value(dietplanner, lactose, description, 'A sugar commonly found in milk and dairy products.').
 
-allergen_instance(dietplanner, allergen, chocolate).
-attribute_value(dietplanner, chocolate, name, 'Chocolate').
-attribute_value(dietplanner, chocolate, description, 'Some individuals may have allergies or sensitivities to chocolate or its ingredients.').
+allergen_instance(dietplanner, allergen, cocoa).
+attribute_value(dietplanner, cocoa, name, 'Cocoa').
+attribute_value(dietplanner, cocoa, description, 'An allergen derived from the cocoa bean, commonly used to make chocolate and cocoa-based products.').
 
 
 % ---------
@@ -1228,11 +1117,6 @@ attribute_value(dietplanner, spaghetti_bolognese, name, 'Spaghetti Bolognese').
 attribute_value(dietplanner, spaghetti_bolognese, description, 'Classic Italian dish with spaghetti pasta and savory Bolognese sauce.').
 attribute_value(dietplanner, spaghetti_bolognese, type, lunch).
 
-dish_instance(dietplanner, dish, fruit_salad).
-attribute_value(dietplanner, fruit_salad, name, 'Fruit Salad').
-attribute_value(dietplanner, fruit_salad, description, 'Refreshing salad with a mix of fresh seasonal fruits.').
-attribute_value(dietplanner, fruit_salad, type, snack).
-
 dish_instance(dietplanner, dish, grilled_salmon_with_quinoa).
 attribute_value(dietplanner, grilled_salmon_with_quinoa, name, 'Grilled Salmon with Quinoa').
 attribute_value(dietplanner, grilled_salmon_with_quinoa, description, 'Grilled salmon fillet served with quinoa and steamed vegetables.').
@@ -1298,11 +1182,6 @@ attribute_value(dietplanner, cheese_and_crackers, name, 'Cheese and Crackers').
 attribute_value(dietplanner, cheese_and_crackers, description, 'Cheese and crackers platter.').
 attribute_value(dietplanner, cheese_and_crackers, type, snack).
 
-dish_instance(dietplanner, dish, popcorn).
-attribute_value(dietplanner, popcorn, name, 'Popcorn').
-attribute_value(dietplanner, popcorn, description, 'Buttered popcorn for a tasty snack.').
-attribute_value(dietplanner, popcorn, type, snack).
-
 dish_instance(dietplanner, dish, protein_bar).
 attribute_value(dietplanner, protein_bar, name, 'Protein Bar').
 attribute_value(dietplanner, protein_bar, description, 'High-protein energy bar.').
@@ -1323,20 +1202,10 @@ attribute_value(dietplanner, margherita_pizza, name, 'Pizza Margherita').
 attribute_value(dietplanner, margherita_pizza, description, 'Classic Italian pizza with simple toppings including tomato sauce, fresh mozzarella cheese, basil leaves, and olive oil.').
 attribute_value(dietplanner, margherita_pizza, type, dinner).
 
-dish_instance(dietplanner, dish, caprese_salad).
-attribute_value(dietplanner, caprese_salad, name, 'Caprese Salad').
-attribute_value(dietplanner, caprese_salad, description, 'Classic Italian salad made with fresh tomatoes, mozzarella, and basil.').
-attribute_value(dietplanner, caprese_salad, type, dinner).
-
 dish_instance(dietplanner, dish, tomato_soup).
 attribute_value(dietplanner, tomato_soup, name, 'Tomato Soup').
 attribute_value(dietplanner, tomato_soup, description, 'Hearty and comforting tomato-based soup, perfect for any season.').
 attribute_value(dietplanner, tomato_soup, type, lunch).
-
-dish_instance(dietplanner, dish, chicken_caesar_salad).
-attribute_value(dietplanner, chicken_caesar_salad, name, 'Chicken Caesar Salad').
-attribute_value(dietplanner, chicken_caesar_salad, description, 'Classic salad with romaine lettuce, grilled chicken, croutons, and Caesar dressing.').
-attribute_value(dietplanner, chicken_caesar_salad, type, lunch).
 
 dish_instance(dietplanner, dish, grilled_chicken_burger).
 attribute_value(dietplanner, grilled_chicken_burger, name, 'Grilled Chicken Burger').
@@ -1415,9 +1284,14 @@ attribute_value(dietplanner, beef_tacos, type, dinner).
 has_nutrient(dietplanner, oatmeal, complex_carbohydrates).
 has_nutrient(dietplanner, oatmeal, soluble_fiber).
 has_nutrient(dietplanner, oatmeal, manganese).
+has_nutrient(dietplanner, oatmeal, magnesium).
+has_nutrient(dietplanner, oatmeal, iron).
 
 has_nutrient(dietplanner, corn_flakes, complex_carbohydrates).
 has_nutrient(dietplanner, corn_flakes, glucose).
+has_nutrient(dietplanner, corn_flakes, calcium).
+has_nutrient(dietplanner, corn_flakes, magnesium).
+has_nutrient(dietplanner, corn_flakes, potassium).
 
 has_nutrient(dietplanner, rice_krispies, complex_carbohydrates).
 has_nutrient(dietplanner, rice_krispies, glucose).

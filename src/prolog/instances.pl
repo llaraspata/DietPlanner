@@ -2,53 +2,57 @@
 % Class: food_beverage
 % ---------
 % Subclass: food
-% Subclass: cereal
-foodbeverage_instance(dietplanner, cereal, oatmeal).
+% Subclass: cereal_bread
+foodbeverage_instance(dietplanner, cereal_bread, oatmeal).
 attribute_value(dietplanner, oatmeal, name, 'Oatmeal').
 attribute_value(dietplanner, oatmeal, description, 'Whole grain oatmeal, a nutritious breakfast option.').
 attribute_value(dietplanner, oatmeal, calories, 71).
-attribute_value(dietplanner, oatmeal, min_grams, 20).
-attribute_value(dietplanner, oatmeal, max_grams, 60).
 
-foodbeverage_instance(dietplanner, cereal, corn_flakes).
+foodbeverage_instance(dietplanner, cereal_bread, corn_flakes).
 attribute_value(dietplanner, corn_flakes, name, 'Cornflakes').
 attribute_value(dietplanner, corn_flakes, description, 'Cornflakes, a classic breakfast cereal.').
 attribute_value(dietplanner, corn_flakes, calories, 357).
 
-foodbeverage_instance(dietplanner, cereal, rice_krispies).
+foodbeverage_instance(dietplanner, cereal_bread, rice_krispies).
 attribute_value(dietplanner, rice_krispies, name, 'Rice Krispies').
 attribute_value(dietplanner, rice_krispies, description, 'Crispy rice cereal that is often used in treats.').
 attribute_value(dietplanner, rice_krispies, calories, 130).
 
-foodbeverage_instance(dietplanner, cereal, whole_wheat_cereal).
+foodbeverage_instance(dietplanner, cereal_bread, whole_wheat_cereal).
 attribute_value(dietplanner, whole_wheat_cereal, name, 'Whole Wheat Cereal').
 attribute_value(dietplanner, whole_wheat_cereal, description, 'Cereal made from whole wheat grains.').
 attribute_value(dietplanner, whole_wheat_cereal, calories, 120).
 
-foodbeverage_instance(dietplanner, cereal, muesli).
+foodbeverage_instance(dietplanner, cereal_bread, muesli).
 attribute_value(dietplanner, muesli, name, 'Muesli').
 attribute_value(dietplanner, muesli, description, 'Muesli cereal, a mix of rolled oats, nuts, and dried fruits.').
 attribute_value(dietplanner, muesli, calories, 342).
 
-foodbeverage_instance(dietplanner, cereal, white_rice).
+foodbeverage_instance(dietplanner, cereal_bread, white_rice).
 attribute_value(dietplanner, white_rice, name, 'White Rice').
 attribute_value(dietplanner, white_rice, description, 'White rice, a refined grain with a milder flavor compared to brown rice.').
 attribute_value(dietplanner, white_rice, calories, 130).
 
-foodbeverage_instance(dietplanner, cereal, granola).
+foodbeverage_instance(dietplanner, cereal_bread, granola).
 attribute_value(dietplanner, granola, name, 'Granola').
 attribute_value(dietplanner, granola, description, 'Cereal made from rolled oats, nuts, and sweeteners.').
 attribute_value(dietplanner, granola, calories, 400).
 
-foodbeverage_instance(dietplanner, cereal, pasta).
+foodbeverage_instance(dietplanner, cereal_bread, pasta).
 attribute_value(dietplanner, granola, name, 'Pasta').
 attribute_value(dietplanner, durum_wheat_pasta, description, 'Pasta made from semolina, known for its high protein content and gluten strength.').
 attribute_value(dietplanner, durum_wheat_pasta, calories, 250).
 
-foodbeverage_instance(dietplanner, cereal, white_bread).
+foodbeverage_instance(dietplanner, cereal_bread, white_bread).
 attribute_value(dietplanner, white_bread, name, 'White Bread').
 attribute_value(dietplanner, white_bread, description, 'White bread, a type of bread made from refined wheat flour, commonly used for sandwiches.').
 attribute_value(dietplanner, white_bread, calories, 290).
+
+foodbeverage_instance(dietplanner, cereal_bread, pizza_dough).
+attribute_value(dietplanner, pizza_dough, name, 'Pizza Dough').
+attribute_value(dietplanner, pizza_dough, description, 'A versatile dough used as the base for making pizzas.').
+attribute_value(dietplanner, pizza_dough, calories, 268).
+
 
 
 % Subclass: eggs
@@ -201,7 +205,7 @@ attribute_value(dietplanner, blueberries, name, 'Orange').
 attribute_value(dietplanner, blueberries, description, 'Antioxidant-rich, nutrient-dense fruits known for their vibrant color and potential health benefits.').
 attribute_value(dietplanner, blueberries, calories, 57).
 
-foodbeverage_instance(dietplanner, sweet, strawberries).
+foodbeverage_instance(dietplanner, fruits_olives, strawberries).
 attribute_value(dietplanner, strawberries, name, 'Strawberries').
 attribute_value(dietplanner, strawberries, description, 'Juicy strawberries, a sweet and vitamin-packed fruit.').
 attribute_value(dietplanner, strawberries, calories, 32).
@@ -366,9 +370,9 @@ attribute_value(dietplanner, pecans, description, 'Buttery and rich nuts often u
 attribute_value(dietplanner, pecans, calories, 691).
 
 foodbeverage_instance(dietplanner, nuts, peanuts).
-attribute_value(dietplanner, pecans, name, 'Pecans').
-attribute_value(dietplanner, pecans, description, 'Pecans, sweet and rich nuts often used in pies and other desserts.').
-attribute_value(dietplanner, pecans, calories, 691).
+attribute_value(dietplanner, peanuts, name, 'Pecans').
+attribute_value(dietplanner, peanuts, description, 'Pecans, sweet and rich nuts often used in pies and other desserts.').
+attribute_value(dietplanner, peanuts, calories, 691).
 
 
 % Subclass: seeds
@@ -462,7 +466,7 @@ attribute_value(dietplanner, cookies, calories, 353).
 foodbeverage_instance(dietplanner, sweets, light_cake).
 attribute_value(dietplanner, light_cake, name, 'Light Cake').
 attribute_value(dietplanner, light_cake, description, 'A reduced-calorie cake option, perfect for those watching their intake.').
-attribute_value(dietplanner, light_cake, calories, 150). % Valore calorico indicativo, poiché il tipo specifico di torta leggera può variare.
+attribute_value(dietplanner, light_cake, calories, 150).
 
 foodbeverage_instance(dietplanner, sweet, honey).
 attribute_value(dietplanner, honey, name, 'Honey').
@@ -525,6 +529,12 @@ attribute_value(dietplanner, porcini_mushroom, name, 'Porcini Mushroom').
 attribute_value(dietplanner, porcini_mushroom, description, 'Porcini mushroom, prized for its rich and earthy flavor, often used in Italian cuisine.').
 attribute_value(dietplanner, porcini_mushroom, calories, 26).
 
+foodbeverage_instance(dietplanner, vegetables, tomato_sauce).
+attribute_value(dietplanner, tomato_sauce, name, 'Tomato Sauce').
+attribute_value(dietplanner, tomato_sauce, description, 'A savory sauce made from tomatoes, often used in pasta dishes and pizzas.').
+attribute_value(dietplanner, tomato_sauce, calories, 29).
+
+
 % Subclass: beverage
 % Subclass: coffee_energydrinks
 foodbeverage_instance(dietplanner, coffee_energydrinks, espresso).
@@ -535,12 +545,12 @@ attribute_value(dietplanner, espresso, calories, 2).
 foodbeverage_instance(dietplanner, coffee_energydrinks, american_coffee).
 attribute_value(dietplanner, american_coffee, name, 'Caffè Americano').
 attribute_value(dietplanner, american_coffee, description, 'A classic American-style coffee made by diluting espresso with hot water.').
-attribute_value(dietplanner, american_coffee, calories, 2). % Valore calorico indicativo per una porzione standard.
+attribute_value(dietplanner, american_coffee, calories, 2).
 
 foodbeverage_instance(dietplanner, coffee_energydrinks, cappuccino).
 attribute_value(dietplanner, cappuccino, name, 'Cappuccino').
 attribute_value(dietplanner, cappuccino, description, 'Espresso combined with steamed milk and topped with frothy milk foam.').
-attribute_value(dietplanner, cappuccino, calories, 120). % Valore calorico indicativo per una porzione standard.
+attribute_value(dietplanner, cappuccino, calories, 120).
 
 foodbeverage_instance(dietplanner, coffee_energydrinks, energy_drink).
 attribute_value(dietplanner, energy_drink, name, 'Energy Drink').
@@ -1108,7 +1118,6 @@ attribute_value(dietplanner, spaghetti_aglio_e_olio, name, 'Spaghetti Aglio e Ol
 attribute_value(dietplanner, spaghetti_aglio_e_olio, description, 'Spaghetti with garlic and oil.').
 attribute_value(dietplanner, spaghetti_aglio_e_olio, type, lunch).
 
-
 dish_instance(dietplanner, dish, grilled_chicken_salad).
 attribute_value(dietplanner, grilled_chicken_salad, name, 'Grilled Chicken Salad').
 attribute_value(dietplanner, grilled_chicken_salad, description, 'Healthy salad with grilled chicken, mixed greens, and veggies.').
@@ -1224,10 +1233,6 @@ attribute_value(dietplanner, mixed_berry_smoothie, name, 'Mixed Berry Smoothie')
 attribute_value(dietplanner, mixed_berry_smoothie, description, 'Refreshing smoothie made with a blend of mixed berries and yogurt.').
 attribute_value(dietplanner, mixed_berry_smoothie, type, breakfast).
 
-dish_instance(dietplanner, dish, chocolate_mousse).
-attribute_value(dietplanner, chocolate_mousse, name, 'Chocolate Mousse').
-attribute_value(dietplanner, chocolate_mousse, description, 'Decadent dessert made with whipped chocolate and cream.').
-attribute_value(dietplanner, chocolate_mousse, type, snack).
 
 dish_instance(dietplanner, dish, almond_butter_on_whole_wheat_crackers).
 attribute_value(dietplanner, almond_butter_on_whole_wheat_crackers, name, 'Almond Butter on Whole Wheat Crackers').
@@ -1279,12 +1284,14 @@ attribute_value(dietplanner, beef_tacos, name, 'Beef Tacos').
 attribute_value(dietplanner, beef_tacos, description, 'Tacos filled with seasoned ground beef and various toppings.').
 attribute_value(dietplanner, beef_tacos, type, dinner).
 
+
+
 % ---------------------------------------------------------------------------------
 % Relationships
 % ---------------------------------------------------------------------------------
 
 % ---------
-% has_nutrient(domain, foodbeverage, nutrient)
+% has_nutrient(foodbeverage, nutrient)
 % ---------
 
 % Cereals
@@ -1503,12 +1510,6 @@ has_nutrient(button_mushroom, zinc).
 
 
 
-
-
-
-
-
-
 % Other
 has_nutrient(chicken_breast, lean_protein).
 has_nutrient(chicken_breast, vitamin_b6).
@@ -1591,36 +1592,300 @@ is_contained(dairy, whole_milk).
 is_contained(shellfish, lobster).
 is_contained(dairy, grana_cheese).
 
+
+% ---------
+% made_of(dish, foodbeverage, min_grams, max_grams)
+% ---------
 made_of(margherita_pizza, mozzarella_cheese, 40, 80).
 made_of(margherita_pizza, tomato_sauce, 30, 60).
 made_of(margherita_pizza, olive_oil, 5, 10).
 made_of(margherita_pizza, pizza_dough, 150, 200).
 
-
-made_of(spaghetti_bolognese, pasta).
 made_of(spaghetti_bolognese, pasta, 80, 150).
 made_of(spaghetti_bolognese, beef, 100, 200).
 made_of(spaghetti_bolognese, tomato_sauce, 150, 250).
 made_of(spaghetti_bolognese, garlic, 3, 6).
 made_of(spaghetti_bolognese, olive_oil, 10, 20).
 
+made_of(pancakes_and_maple_syrup, pancakes, 30, 70).
+made_of(pancakes_and_maple_syrup, maple_syrup, 5, 10).
+
+made_of(avocado_toast, white_bread, 30, 60).
+made_of(avocado_toast, avocado, 100, 200).
+made_of(avocado_toast, olive_oil, 5, 15).
+
+made_of(oatmeal_with_berries, oatmeal, 40, 80).
+made_of(oatmeal_with_berries, blueberries, 30, 60).
+made_of(oatmeal_with_berries, whole_milk, 100, 200).
+made_of(oatmeal_with_berries, honey, 10, 20).
+
+made_of(fruit_smoothie, banana, 100, 150).
+made_of(fruit_smoothie, strawberries, 50, 100).
+made_of(fruit_smoothie, blueberries, 30, 60).
+made_of(fruit_smoothie, yogurt, 150, 200).
+made_of(fruit_smoothie, honey, 10, 20).
+
+made_of(scrambled_eggs_and_toast, scrambled_eggs, 20, 40).
+made_of(scrambled_eggs_and_toast, butter, 5, 10).
+made_of(scrambled_eggs_and_toast, skim_milk, 30, 60).
+made_of(scrambled_eggs_and_toast, white_bread, 20, 60).
+
+made_of(greek_yogurt_parfait, greek_yogurt, 150, 200).
+made_of(greek_yogurt_parfait, granola, 30, 60).
+made_of(greek_yogurt_parfait, blueberries, 50, 100).
+made_of(greek_yogurt_parfait, honey, 10, 20).
+
+made_of(breakfast_burrito, boiled_eggs, 10, 30).
+made_of(breakfast_burrito, ham, 30, 60).
+made_of(breakfast_burrito, grana_cheese, 20, 40).
+made_of(breakfast_burrito, tomato_sauce, 10, 20).
+made_of(breakfast_burrito, bell_pepper, 20, 40).
+made_of(breakfast_burrito, onion, 10, 20).
+
+made_of(chicken_caesar_salad, lettuce, 100, 150).
+made_of(chicken_caesar_salad, chicken, 100, 150).
+made_of(chicken_caesar_salad, croutons, 20, 40).
+made_of(chicken_caesar_salad, grana_cheese, 20, 40).
+made_of(chicken_caesar_salad, lemon, 5, 15).
+
+made_of(quinoa_and_vegetable_stir_fry, quinoa, 100, 150).
+made_of(quinoa_and_vegetable_stir_fry, broccoli, 50, 80).
+made_of(quinoa_and_vegetable_stir_fry, carrot, 50, 80).
+made_of(quinoa_and_vegetable_stir_fry, spinach, 50, 80).
+made_of(quinoa_and_vegetable_stir_fry, garlic, 5, 10).
+made_of(quinoa_and_vegetable_stir_fry, ginger, 5, 10).
+made_of(quinoa_and_vegetable_stir_fry, sesame_oil, 5, 10).
+
+made_of(turkey_and_avocado_wrap, tortilla_wrap, 30, 70).
+made_of(turkey_and_avocado_wrap, turkey, 50, 100).
+made_of(turkey_and_avocado_wrap, avocado, 50, 100).
+made_of(turkey_and_avocado_wrap, lettuce, 20, 40).
+made_of(turkey_and_avocado_wrap, tomato, 20, 40).
+
+made_of(grilled_salmon_with_asparagus, salmon, 100, 200).
+made_of(grilled_salmon_with_asparagus, asparagus, 100, 150).
+made_of(grilled_salmon_with_asparagus, olive_oil, 10, 20).
+made_of(grilled_salmon_with_asparagus, lemon, 1, 2).
+
+made_of(vegetarian_pasta_primavera, pasta, 60, 150).
+made_of(vegetarian_pasta_primavera, bell_peppers, 50, 100).
+made_of(vegetarian_pasta_primavera, broccoli, 50, 100).
+made_of(vegetarian_pasta_primavera, carrots, 30, 60).
+made_of(vegetarian_pasta_primavera, peas, 30, 60).
+made_of(vegetarian_pasta_primavera, olive_oil, 10, 20).
+made_of(vegetarian_pasta_primavera, garlic, 5, 10).
+made_of(vegetarian_pasta_primavera, parmesan_cheese, 20, 40).
+
+made_of(beef_and_broccoli_stir_fry, beef, 100, 200).
+made_of(beef_and_broccoli_stir_fry, broccoli, 100, 150).
+made_of(beef_and_broccoli_stir_fry, garlic, 5, 10).
+made_of(beef_and_broccoli_stir_fry, ginger, 5, 10).
+made_of(beef_and_broccoli_stir_fry, sesame_oil, 5, 10).
+made_of(beef_and_broccoli_stir_fry, white_rice, 70, 120).
+
+made_of(baked_chicken_breast_with_sweet_potato, chicken_breast, 150, 200).
+made_of(baked_chicken_breast_with_sweet_potato, potato, 150, 200).
+made_of(baked_chicken_breast_with_sweet_potato, olive_oil, 10, 20).
+made_of(baked_chicken_breast_with_sweet_potato, rosemary, 2, 5).
+made_of(baked_chicken_breast_with_sweet_potato, black_pepper, 1, 5).
+
+made_of(spinach_and_feta_stuffed_mushrooms, porcini_mushroom, 80, 150).
+made_of(spinach_and_feta_stuffed_mushrooms, spinach, 50, 100).
+made_of(spinach_and_feta_stuffed_mushrooms, feta_cheese, 20, 40).
+made_of(spinach_and_feta_stuffed_mushrooms, garlic, 5, 10).
+made_of(spinach_and_feta_stuffed_mushrooms, olive_oil, 10, 20).
+
+made_of(grilled_vegetable_platter, bell_peppers, 60, 150).
+made_of(grilled_vegetable_platter, zucchini, 70, 150).
+made_of(grilled_vegetable_platter, eggplant, 70, 150).
+made_of(grilled_vegetable_platter, tomato, 50, 100).
+made_of(grilled_vegetable_platter, onion, 50, 80).
+made_of(grilled_vegetable_platter, olive_oil, 10, 20).
+made_of(grilled_vegetable_platter, garlic, 5, 10).
+
+made_of(shrimp_scampi, shrimp, 60, 200).
+made_of(shrimp_scampi, pasta, 50, 150).
+made_of(shrimp_scampi, garlic, 5, 10).
+made_of(shrimp_scampi, butter, 10, 20).
+made_of(shrimp_scampi, olive_oil, 10, 20).
+made_of(shrimp_scampi, lemon, 1, 2).
+
+made_of(tofu_and_broccoli_stir_fry, tofu, 60, 200).
+made_of(tofu_and_broccoli_stir_fry, broccoli, 70, 150).
+made_of(tofu_and_broccoli_stir_fry, bell_peppers, 50, 100).
+made_of(tofu_and_broccoli_stir_fry, carrots, 30, 60).
+made_of(tofu_and_broccoli_stir_fry, garlic, 5, 10).
+made_of(tofu_and_broccoli_stir_fry, ginger, 5, 10).
+made_of(tofu_and_broccoli_stir_fry, sesame_oil, 5, 10).
+made_of(tofu_and_broccoli_stir_fry, white_rice, 60, 150).
+
+made_of(roasted_pork_tenderloin_with_vegetables, pork_tenderloin, 70, 250).
+made_of(roasted_pork_tenderloin_with_vegetables, potato, 60, 150).
+made_of(roasted_pork_tenderloin_with_vegetables, carrots, 80, 150).
+made_of(roasted_pork_tenderloin_with_vegetables, onion, 50, 100).
+made_of(roasted_pork_tenderloin_with_vegetables, garlic, 5, 10).
+made_of(roasted_pork_tenderloin_with_vegetables, olive_oil, 10, 20).
+made_of(roasted_pork_tenderloin_with_vegetables, rosemary, 2, 5).
+made_of(roasted_pork_tenderloin_with_vegetables, black_pepper, 1, 5).
+
+made_of(spaghetti_aglio_e_olio, pasta, 70, 150).
+made_of(spaghetti_aglio_e_olio, garlic, 5, 10).
+made_of(spaghetti_aglio_e_olio, olive_oil, 10, 20).
+made_of(spaghetti_aglio_e_olio, red_pepper, 1, 5).
+made_of(spaghetti_aglio_e_olio, parmesan_cheese, 20, 40).
+
+made_of(grilled_chicken_salad, chicken_breast, 70, 180).
+made_of(grilled_chicken_salad, lettuce, 80, 150).
+made_of(grilled_chicken_salad, tomato, 50, 100).
+made_of(grilled_chicken_salad, cucumber, 50, 100).
+made_of(grilled_chicken_salad, red_onion, 20, 50).
+made_of(grilled_chicken_salad, olives_green, 20, 40).
+made_of(grilled_chicken_salad, feta_cheese, 20, 40).
+
+made_of(hummus_and_veggie_platter, hummus, 70, 150).
+made_of(hummus_and_veggie_platter, carrots, 50, 100).
+made_of(hummus_and_veggie_platter, cucumber, 50, 100).
+made_of(hummus_and_veggie_platter, bell_pepper, 50, 100).
+made_of(hummus_and_veggie_platter, tomatoes, 30, 60).
+
+made_of(fruit_salad, apple, 50, 100).
+made_of(fruit_salad, banana, 50, 100).
+made_of(fruit_salad, orange, 50, 100).
+made_of(fruit_salad, grapes, 30, 60).
+made_of(fruit_salad, strawberries, 30, 60).
+made_of(fruit_salad, blueberries, 30, 60).
+made_of(fruit_salad, honey, 10, 20).
+
+made_of(grilled_salmon_with_quinoa, salmon, 80, 200).
+made_of(grilled_salmon_with_quinoa, quinoa, 100, 150).
+made_of(grilled_salmon_with_quinoa, olive_oil, 10, 20).
+made_of(grilled_salmon_with_quinoa, lemon, 1, 2).
+made_of(grilled_salmon_with_quinoa, black_pepper, 1, 5).
+
+made_of(vegan_lentil_curry, lentils, 60, 150).
+made_of(vegan_lentil_curry, onion, 50, 100).
+made_of(vegan_lentil_curry, garlic, 5, 10).
+made_of(vegan_lentil_curry, ginger, 5, 10).
+made_of(vegan_lentil_curry, tomatoes, 50, 100).
+made_of(vegan_lentil_curry, coconut_milk, 70, 150).
+made_of(vegan_lentil_curry, black_pepper, 1, 5).
+
+made_of(trail_mix, almonds, 30, 70).
+made_of(trail_mix, peanuts, 30, 70).
+made_of(trail_mix, blueberries, 20, 70).
+made_of(trail_mix, dark_chocolate, 20, 50).
+made_of(trail_mix, sunflower_seeds, 20, 40).
+made_of(trail_mix, pumpkin_seeds, 20, 40).
+
+made_of(caesar_salad, lettuce, 80, 150).
+made_of(caesar_salad, croutons, 20, 70).
+made_of(caesar_salad, parmesan_cheese, 20, 60).
+made_of(caesar_salad, black_pepper, 1, 5).
+
+made_of(veggie_spring_rolls, rice_paper_wrappers, 2, 5).
+made_of(veggie_spring_rolls, lettuce, 50, 100).
+made_of(veggie_spring_rolls, carrots, 30, 60).
+made_of(veggie_spring_rolls, cucumbers, 30, 60).
+made_of(veggie_spring_rolls, bell_peppers, 30, 60).
+made_of(veggie_spring_rolls, tofu, 30, 60).
+made_of(veggie_spring_rolls, rice_noodles, 20, 60).
+
+made_of(grilled_steak_with_roasted_potatoes, beef, 100, 250).
+made_of(grilled_steak_with_roasted_potatoes, potato, 70, 150).
+made_of(grilled_steak_with_roasted_potatoes, olive_oil, 10, 20).
+made_of(grilled_steak_with_roasted_potatoes, rosemary, 2, 5).
+made_of(grilled_steak_with_roasted_potatoes, black_pepper, 1, 5).
+
+made_of(smoothie_bowl, yogurt, 90, 180).
+made_of(smoothie_bowl, banana, 50, 100).
+made_of(smoothie_bowl, strawberries, 30, 60).
+made_of(smoothie_bowl, blueberries, 30, 60).
+made_of(smoothie_bowl, granola, 20, 40).
+made_of(smoothie_bowl, honey, 10, 20).
+
+made_of(mushroom_risotto, white_rice, 70, 150).
+made_of(mushroom_risotto, mushrooms, 80, 150).
+made_of(mushroom_risotto, onion, 50, 100).
+made_of(mushroom_risotto, garlic, 5, 10).
+made_of(mushroom_risotto, vegetable_broth, 200, 250).
+made_of(mushroom_risotto, butter, 10, 20).
+made_of(mushroom_risotto, parmesan_cheese, 20, 40).
+made_of(mushroom_risotto, black_pepper, 1, 5).
+
+made_of(mixed_nuts, almonds, 5, 15).
+made_of(mixed_nuts, peanuts, 5, 15).
+made_of(mixed_nuts, cashews, 5, 15).
+made_of(mixed_nuts, walnuts, 5, 15).
+made_of(mixed_nuts, pecans, 5, 15).
+
+made_of(greek_yogurt_with_honey, greek_yogurt, 30, 70).
+made_of(greek_yogurt_with_honey, honey, 10, 25).
+
+made_of(vegetable_sticks_with_hummus, hummus, 60, 150).
+made_of(vegetable_sticks_with_hummus, carrots, 50, 100).
+made_of(vegetable_sticks_with_hummus, cucumbers, 50, 100).
+made_of(vegetable_sticks_with_hummus, bell_peppers, 50, 100).
+made_of(vegetable_sticks_with_hummus, celery, 50, 100).
+
+made_of(cheese_and_crackers, cheese, 10, 30).
+made_of(cheese_and_crackers, crackers, 20, 50).
+
+made_of(protein_bar, protein_blend, 25, 50).
+made_of(protein_bar, oats, 10, 20).
+made_of(protein_bar, nuts, 10, 20).
+made_of(protein_bar, dried_fruits, 5, 10).
+made_of(protein_bar, honey, 5, 10).
+
+made_of(chicken_stir_fry, chicken_breast, 70, 200).
+made_of(chicken_stir_fry, bell_peppers, 50, 100).
+made_of(chicken_stir_fry, broccoli, 70, 150).
+made_of(chicken_stir_fry, carrots, 50, 100).
+made_of(chicken_stir_fry, peas, 50, 80).
+made_of(chicken_stir_fry, garlic, 5, 10).
+made_of(chicken_stir_fry, ginger, 5, 10).
+made_of(chicken_stir_fry, sesame_oil, 5, 10).
+made_of(chicken_stir_fry, white_rice, 60, 100).
+
+made_of(pasta_primavera, pasta, 60, 150).
+made_of(pasta_primavera, bell_peppers, 20, 50).
+made_of(pasta_primavera, broccoli, 20, 50).
+made_of(pasta_primavera, carrots, 20, 40).
+made_of(pasta_primavera, peas, 20, 40).
+made_of(pasta_primavera, olive_oil, 10, 20).
+made_of(pasta_primavera, garlic, 5, 10).
+made_of(pasta_primavera, parmesan_cheese, 20, 40).
+
+made_of(caprese_salad, tomatoes, 50, 200).
+made_of(caprese_salad, fresh_mozzarella, 50, 100).
+made_of(caprese_salad, olive_oil, 10, 20).
+made_of(caprese_salad, black_pepper, 1, 5).
+
+made_of(tomato_soup, tomatoes, 100, 200).
+made_of(tomato_soup, onion, 50, 70).
+made_of(tomato_soup, garlic, 5, 10).
+made_of(tomato_soup, vegetable_broth, 100, 200).
+made_of(tomato_soup, olive_oil, 10, 20).
+made_of(tomato_soup, black_pepper, 1, 5).
+
+made_of(grilled_chicken_burger, chicken_patty, 100, 200).
+made_of(grilled_chicken_burger, burger_bun, 50, 70).
+made_of(grilled_chicken_burger, lettuce, 20, 40).
+made_of(grilled_chicken_burger, tomatoes, 20, 40).
+made_of(grilled_chicken_burger, onion, 10, 20).
+
+made_of(mixed_berry_smoothie, blueberries, 50, 100).
+made_of(mixed_berry_smoothie, yogurt, 75, 100).
+made_of(mixed_berry_smoothie, banana, 25, 50).
+made_of(mixed_berry_smoothie, honey, 5, 10).
+made_of(mixed_berry_smoothie, ice, 25, 50).
+
+made_of(almond_butter_on_whole_wheat_crackers, almond_butter, 20, 40).
+made_of(almond_butter_on_whole_wheat_crackers, crackers, 30, 60).
+
+made_of(yogurt_and_granola, yogurt, 40, 60).
+made_of(yogurt_and_granola, granola, 10, 25).
 
 
-made_of(pasta_primavera, pasta).
-made_of(caprese_salad, tomato).
-made_of(tomato_soup, tomato).
-made_of(chicken_caesar_salad, chicken).
-made_of(grilled_chicken_burger, chicken).
-made_of(fruit_salad, apple).
-made_of(mixed_berry_smoothie, blueberries).
-made_of(chocolate_mousse, milk_chocolate).
-made_of(chocolate_chip_cookies, dark_chocolate).
-made_of(veggie_pizza, tomato).
-made_of(garden_salad, carrot).
-made_of(tuna_sandwich, tuna).
-made_of(sushi_roll, tuna).
-made_of(beef_stew, beef).
-made_of(beef_tacos, beef).
 
 
 

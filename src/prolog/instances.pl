@@ -7,6 +7,8 @@ foodbeverage_instance(dietplanner, cereal, oatmeal).
 attribute_value(dietplanner, oatmeal, name, 'Oatmeal').
 attribute_value(dietplanner, oatmeal, description, 'Whole grain oatmeal, a nutritious breakfast option.').
 attribute_value(dietplanner, oatmeal, calories, 71).
+attribute_value(dietplanner, oatmeal, min_grams, 20).
+attribute_value(dietplanner, oatmeal, max_grams, 60).
 
 foodbeverage_instance(dietplanner, cereal, corn_flakes).
 attribute_value(dietplanner, corn_flakes, name, 'Cornflakes').
@@ -250,6 +252,11 @@ foodbeverage_instance(dietplanner, meats, ham).
 attribute_value(dietplanner, ham, name, 'Ham').
 attribute_value(dietplanner, ham, description, 'Ham, a cured pork meat often used in sandwiches and salads.').
 attribute_value(dietplanner, ham, calories, 145).
+
+foodbeverage_instance(dietplanner, meats, veal).
+attribute_value(dietplanner, veal, name, 'Veal').
+attribute_value(dietplanner, veal, description, 'Veal, the meat of young calves, is tender and mild in flavor.').
+attribute_value(dietplanner, veal, calories, 143).
 
 foodbeverage_instance(dietplanner, meats, rabbit).
 attribute_value(dietplanner, rabbit, name, 'Rabbit').
@@ -1281,218 +1288,218 @@ attribute_value(dietplanner, beef_tacos, type, dinner).
 % ---------
 
 % Cereals
-has_nutrient(dietplanner, oatmeal, complex_carbohydrates).
-has_nutrient(dietplanner, oatmeal, soluble_fiber).
-has_nutrient(dietplanner, oatmeal, manganese).
-has_nutrient(dietplanner, oatmeal, magnesium).
-has_nutrient(dietplanner, oatmeal, iron).
+has_nutrient(oatmeal, complex_carbohydrates).
+has_nutrient(oatmeal, soluble_fiber).
+has_nutrient(oatmeal, manganese).
+has_nutrient(oatmeal, magnesium).
+has_nutrient(oatmeal, iron).
 
-has_nutrient(dietplanner, corn_flakes, complex_carbohydrates).
-has_nutrient(dietplanner, corn_flakes, glucose).
-has_nutrient(dietplanner, corn_flakes, calcium).
-has_nutrient(dietplanner, corn_flakes, magnesium).
-has_nutrient(dietplanner, corn_flakes, potassium).
+has_nutrient(corn_flakes, complex_carbohydrates).
+has_nutrient(corn_flakes, glucose).
+has_nutrient(corn_flakes, calcium).
+has_nutrient(corn_flakes, magnesium).
+has_nutrient(corn_flakes, potassium).
 
-has_nutrient(dietplanner, rice_krispies, complex_carbohydrates).
-has_nutrient(dietplanner, rice_krispies, glucose).
+has_nutrient(rice_krispies, complex_carbohydrates).
+has_nutrient(rice_krispies, glucose).
 
-has_nutrient(dietplanner, granola, complex_carbohydrates).
-has_nutrient(dietplanner, granola, soluble_fiber).
+has_nutrient(granola, complex_carbohydrates).
+has_nutrient(granola, soluble_fiber).
 
-has_nutrient(dietplanner, pasta, complex_carbohydrates).
-has_nutrient(dietplanner, pasta, glucose).
-has_nutrient(dietplanner, pasta, starch).
+has_nutrient(pasta, complex_carbohydrates).
+has_nutrient(pasta, glucose).
+has_nutrient(pasta, starch).
 
-has_nutrient(dietplanner, durum_wheat_pasta, complex_carbohydrates).
-has_nutrient(dietplanner, durum_wheat_pasta, glucose).
-has_nutrient(dietplanner, durum_wheat_pasta, starch).
+has_nutrient(durum_wheat_pasta, complex_carbohydrates).
+has_nutrient(durum_wheat_pasta, glucose).
+has_nutrient(durum_wheat_pasta, starch).
 
-has_nutrient(dietplanner, white_bread, complex_carbohydrates).
-has_nutrient(dietplanner, white_bread, glucose).
+has_nutrient(white_bread, complex_carbohydrates).
+has_nutrient(white_bread, glucose).
 
 % Eggs
-has_nutrient(dietplanner, row_eggs, tryptophan).
-has_nutrient(dietplanner, row_eggs, leucine).
-has_nutrient(dietplanner, row_eggs, valine).
-has_nutrient(dietplanner, row_eggs, methionine).
-has_nutrient(dietplanner, row_eggs, phenylalanine).
-has_nutrient(dietplanner, row_eggs, vitamin_a).
-has_nutrient(dietplanner, row_eggs, vitamin_d).
-has_nutrient(dietplanner, row_eggs, vitamin_b12).
+has_nutrient(row_eggs, tryptophan).
+has_nutrient(row_eggs, leucine).
+has_nutrient(row_eggs, valine).
+has_nutrient(row_eggs, methionine).
+has_nutrient(row_eggs, phenylalanine).
+has_nutrient(row_eggs, vitamin_a).
+has_nutrient(row_eggs, vitamin_d).
+has_nutrient(row_eggs, vitamin_b12).
 
-has_nutrient(dietplanner, egg_whites, tryptophan).
-has_nutrient(dietplanner, egg_whites, leucine).
-has_nutrient(dietplanner, egg_whites, valine).
-has_nutrient(dietplanner, egg_whites, methionine).
-has_nutrient(dietplanner, egg_whites, phenylalanine).
+has_nutrient(egg_whites, tryptophan).
+has_nutrient(egg_whites, leucine).
+has_nutrient(egg_whites, valine).
+has_nutrient(egg_whites, methionine).
+has_nutrient(egg_whites, phenylalanine).
 
 % Fat and Oils
-has_nutrient(dietplanner, olive_oil, monounsaturated_fat).
+has_nutrient(olive_oil, monounsaturated_fat).
 
-has_nutrient(dietplanner, coconut_oil, saturated_fats).
+has_nutrient(coconut_oil, saturated_fats).
 
-has_nutrient(dietplanner, avocado_oil, monounsaturated_fat).
+has_nutrient(avocado_oil, monounsaturated_fat).
 
-has_nutrient(dietplanner, canola_oil, monounsaturated_fat).
+has_nutrient(canola_oil, monounsaturated_fat).
 
-has_nutrient(dietplanner, sesame_oil, polyunsaturated_fat).
+has_nutrient(sesame_oil, polyunsaturated_fat).
 
 % Fish and Seafood
-has_nutrient(dietplanner, grilled_salmon, omega_3_fatty_acids).
-has_nutrient(dietplanner, grilled_salmon, vitamin_d).
-has_nutrient(dietplanner, grilled_salmon, vitamin_b12).
+has_nutrient(grilled_salmon, omega_3_fatty_acids).
+has_nutrient(grilled_salmon, vitamin_d).
+has_nutrient(grilled_salmon, vitamin_b12).
 
-has_nutrient(dietplanner, shrimp, tryptophan).
-has_nutrient(dietplanner, shrimp, leucine).
-has_nutrient(dietplanner, shrimp, valine).
-has_nutrient(dietplanner, shrimp, methionine).
-has_nutrient(dietplanner, shrimp, phenylalanine).
+has_nutrient(shrimp, tryptophan).
+has_nutrient(shrimp, leucine).
+has_nutrient(shrimp, valine).
+has_nutrient(shrimp, methionine).
+has_nutrient(shrimp, phenylalanine).
 
-has_nutrient(dietplanner, tuna, tryptophan).
-has_nutrient(dietplanner, tuna, leucine).
-has_nutrient(dietplanner, tuna, valine).
-has_nutrient(dietplanner, tuna, methionine).
-has_nutrient(dietplanner, tuna, phenylalanine).
+has_nutrient(tuna, tryptophan).
+has_nutrient(tuna, leucine).
+has_nutrient(tuna, valine).
+has_nutrient(tuna, methionine).
+has_nutrient(tuna, phenylalanine).
 
-has_nutrient(dietplanner, cod, tryptophan).
-has_nutrient(dietplanner, cod, leucine).
-has_nutrient(dietplanner, cod, valine).
-has_nutrient(dietplanner, cod, methionine).
-has_nutrient(dietplanner, cod, phenylalanine).
+has_nutrient(cod, tryptophan).
+has_nutrient(cod, leucine).
+has_nutrient(cod, valine).
+has_nutrient(cod, methionine).
+has_nutrient(cod, phenylalanine).
 
-has_nutrient(dietplanner, crab, tryptophan).
-has_nutrient(dietplanner, crab, leucine).
-has_nutrient(dietplanner, crab, valine).
-has_nutrient(dietplanner, crab, methionine).
-has_nutrient(dietplanner, crab, phenylalanine).
+has_nutrient(crab, tryptophan).
+has_nutrient(crab, leucine).
+has_nutrient(crab, valine).
+has_nutrient(crab, methionine).
+has_nutrient(crab, phenylalanine).
 
-has_nutrient(dietplanner, lobster, tryptophan).
-has_nutrient(dietplanner, lobster, leucine).
-has_nutrient(dietplanner, lobster, valine).
-has_nutrient(dietplanner, lobster, methionine).
-has_nutrient(dietplanner, lobster, phenylalanine).
+has_nutrient(lobster, tryptophan).
+has_nutrient(lobster, leucine).
+has_nutrient(lobster, valine).
+has_nutrient(lobster, methionine).
+has_nutrient(lobster, phenylalanine).
 
 % Fruit and Olives
-has_nutrient(dietplanner, apple, soluble_fiber).
-has_nutrient(dietplanner, apple, insoluble_fiber).
-has_nutrient(dietplanner, apple, pectin).
-has_nutrient(dietplanner, apple, glucose).
-has_nutrient(dietplanner, apple, fructose).
+has_nutrient(apple, soluble_fiber).
+has_nutrient(apple, insoluble_fiber).
+has_nutrient(apple, pectin).
+has_nutrient(apple, glucose).
+has_nutrient(apple, fructose).
 
-has_nutrient(dietplanner, banana, complex_carbohydrates).
-has_nutrient(dietplanner, banana, glucose).
-has_nutrient(dietplanner, banana, fructose).
-has_nutrient(dietplanner, banana, potassium).
+has_nutrient(banana, complex_carbohydrates).
+has_nutrient(banana, glucose).
+has_nutrient(banana, fructose).
+has_nutrient(banana, potassium).
 
-has_nutrient(dietplanner, grapes, glucose).
-has_nutrient(dietplanner, grapes, fructose).
+has_nutrient(grapes, glucose).
+has_nutrient(grapes, fructose).
 
-has_nutrient(dietplanner, olive, monounsaturated_fat).
+has_nutrient(olive, monounsaturated_fat).
 
-has_nutrient(dietplanner, orange, vitamin_c).
-has_nutrient(dietplanner, orange, glucose).
-has_nutrient(dietplanner, orange, fructose).
+has_nutrient(orange, vitamin_c).
+has_nutrient(orange, glucose).
+has_nutrient(orange, fructose).
 
-has_nutrient(dietplanner, blueberries, vitamin_c).
-has_nutrient(dietplanner, blueberries, insoluble_fiber).
+has_nutrient(blueberries, vitamin_c).
+has_nutrient(blueberries, insoluble_fiber).
 
-has_nutrient(dietplanner, chicken, tryptophan).
-has_nutrient(dietplanner, chicken, leucine).
-has_nutrient(dietplanner, chicken, valine).
-has_nutrient(dietplanner, chicken, methionine).
-has_nutrient(dietplanner, chicken, phenylalanine).
-has_nutrient(dietplanner, chicken, vitamin_b6).
-has_nutrient(dietplanner, chicken, vitamin_b12).
+has_nutrient(chicken, tryptophan).
+has_nutrient(chicken, leucine).
+has_nutrient(chicken, valine).
+has_nutrient(chicken, methionine).
+has_nutrient(chicken, phenylalanine).
+has_nutrient(chicken, vitamin_b6).
+has_nutrient(chicken, vitamin_b12).
 
 % Meat
-has_nutrient(dietplanner, beef, tryptophan).
-has_nutrient(dietplanner, beef, leucine).
-has_nutrient(dietplanner, beef, valine).
-has_nutrient(dietplanner, beef, methionine).
-has_nutrient(dietplanner, beef, phenylalanine).
-has_nutrient(dietplanner, beef, iron).
-has_nutrient(dietplanner, beef, zinc).
+has_nutrient(beef, tryptophan).
+has_nutrient(beef, leucine).
+has_nutrient(beef, valine).
+has_nutrient(beef, methionine).
+has_nutrient(beef, phenylalanine).
+has_nutrient(beef, iron).
+has_nutrient(beef, zinc).
 
-has_nutrient(dietplanner, pork, tryptophan).
-has_nutrient(dietplanner, pork, leucine).
-has_nutrient(dietplanner, pork, valine).
-has_nutrient(dietplanner, pork, methionine).
-has_nutrient(dietplanner, pork, phenylalanine).
-has_nutrient(dietplanner, pork, thiamin).
-has_nutrient(dietplanner, pork, niacin).
+has_nutrient(pork, tryptophan).
+has_nutrient(pork, leucine).
+has_nutrient(pork, valine).
+has_nutrient(pork, methionine).
+has_nutrient(pork, phenylalanine).
+has_nutrient(pork, thiamin).
+has_nutrient(pork, niacin).
 
-has_nutrient(dietplanner, lamb, tryptophan).
-has_nutrient(dietplanner, lamb, leucine).
-has_nutrient(dietplanner, lamb, valine).
-has_nutrient(dietplanner, lamb, methionine).
-has_nutrient(dietplanner, lamb, phenylalanine).
-has_nutrient(dietplanner, lamb, vitamin_b12).
-has_nutrient(dietplanner, lamb, zinc).
+has_nutrient(lamb, tryptophan).
+has_nutrient(lamb, leucine).
+has_nutrient(lamb, valine).
+has_nutrient(lamb, methionine).
+has_nutrient(lamb, phenylalanine).
+has_nutrient(lamb, vitamin_b12).
+has_nutrient(lamb, zinc).
 
-has_nutrient(dietplanner, horse, tryptophan).
-has_nutrient(dietplanner, horse, leucine).
-has_nutrient(dietplanner, horse, valine).
-has_nutrient(dietplanner, horse, methionine).
-has_nutrient(dietplanner, horse, phenylalanine).
-has_nutrient(dietplanner, horse, vitamin_b12).
+has_nutrient(horse, tryptophan).
+has_nutrient(horse, leucine).
+has_nutrient(horse, valine).
+has_nutrient(horse, methionine).
+has_nutrient(horse, phenylalanine).
+has_nutrient(horse, vitamin_b12).
 
 % Milk and Cheese
-has_nutrient(dietplanner, skim_milk, calcium).
-has_nutrient(dietplanner, skim_milk, vitamin_d).
-has_nutrient(dietplanner, skim_milk, vitamin_a).
-has_nutrient(dietplanner, skim_milk, protein).
+has_nutrient(skim_milk, calcium).
+has_nutrient(skim_milk, vitamin_d).
+has_nutrient(skim_milk, vitamin_a).
+has_nutrient(skim_milk, protein).
 
-has_nutrient(dietplanner, whole_milk, calcium).
-has_nutrient(dietplanner, whole_milk, vitamin_d).
-has_nutrient(dietplanner, whole_milk, vitamin_a).
-has_nutrient(dietplanner, whole_milk, vitamin_k).
-has_nutrient(dietplanner, whole_milk, vitamin_e).
-has_nutrient(dietplanner, whole_milk, vitamin_b6).
-has_nutrient(dietplanner, whole_milk, vitamin_b12).
+has_nutrient(whole_milk, calcium).
+has_nutrient(whole_milk, vitamin_d).
+has_nutrient(whole_milk, vitamin_a).
+has_nutrient(whole_milk, vitamin_k).
+has_nutrient(whole_milk, vitamin_e).
+has_nutrient(whole_milk, vitamin_b6).
+has_nutrient(whole_milk, vitamin_b12).
 
-has_nutrient(dietplanner, reduced_fat_milk, calcium).
-has_nutrient(dietplanner, reduced_fat_milk, vitamin_d).
-has_nutrient(dietplanner, reduced_fat_milk, vitamin_a).
-has_nutrient(dietplanner, reduced_fat_milk, vitamin_b12).
-has_nutrient(dietplanner, reduced_fat_milk, whey_protein).
-has_nutrient(dietplanner, reduced_fat_milk, casein_protein).
+has_nutrient(reduced_fat_milk, calcium).
+has_nutrient(reduced_fat_milk, vitamin_d).
+has_nutrient(reduced_fat_milk, vitamin_a).
+has_nutrient(reduced_fat_milk, vitamin_b12).
+has_nutrient(reduced_fat_milk, whey_protein).
+has_nutrient(reduced_fat_milk, casein_protein).
 
-has_nutrient(dietplanner, soy_milk, calcium).
-has_nutrient(dietplanner, soy_milk, vitamin_d).
-has_nutrient(dietplanner, soy_milk, vitamin_a).
-has_nutrient(dietplanner, soy_milk, vitamin_b12).
-has_nutrient(dietplanner, soy_milk, soy_protein).
+has_nutrient(soy_milk, calcium).
+has_nutrient(soy_milk, vitamin_d).
+has_nutrient(soy_milk, vitamin_a).
+has_nutrient(soy_milk, vitamin_b12).
+has_nutrient(soy_milk, soy_protein).
 
-has_nutrient(dietplanner, almond_milk, calcium).
-has_nutrient(dietplanner, almond_milk, vitamin_d).
-has_nutrient(dietplanner, almond_milk, vitamin_e).
-has_nutrient(dietplanner, almond_milk, vitamin_b12).
-has_nutrient(dietplanner, almond_milk, monounsaturated_fat).
-has_nutrient(dietplanner, almond_milk, polyunsaturated_fat).
+has_nutrient(almond_milk, calcium).
+has_nutrient(almond_milk, vitamin_d).
+has_nutrient(almond_milk, vitamin_e).
+has_nutrient(almond_milk, vitamin_b12).
+has_nutrient(almond_milk, monounsaturated_fat).
+has_nutrient(almond_milk, polyunsaturated_fat).
 
-has_nutrient(dietplanner, coconut_milk, calcium).
-has_nutrient(dietplanner, coconut_milk, iron).
-has_nutrient(dietplanner, coconut_milk, vitamin_d).
-has_nutrient(dietplanner, coconut_milk, vitamin_a).
-has_nutrient(dietplanner, coconut_milk, saturated_fats).
+has_nutrient(coconut_milk, calcium).
+has_nutrient(coconut_milk, iron).
+has_nutrient(coconut_milk, vitamin_d).
+has_nutrient(coconut_milk, vitamin_a).
+has_nutrient(coconut_milk, saturated_fats).
 
-has_nutrient(dietplanner, grana_cheese, calcium).
-has_nutrient(dietplanner, grana_cheese, protein).
-has_nutrient(dietplanner, grana_cheese, phosphorus).
-has_nutrient(dietplanner, grana_cheese, vitamin_a).
-has_nutrient(dietplanner, grana_cheese, vitamin_k).
+has_nutrient(grana_cheese, calcium).
+has_nutrient(grana_cheese, protein).
+has_nutrient(grana_cheese, phosphorus).
+has_nutrient(grana_cheese, vitamin_a).
+has_nutrient(grana_cheese, vitamin_k).
 
-has_nutrient(dietplanner, gorgonzola_cheese, calcium).
-has_nutrient(dietplanner, gorgonzola_cheese, protein).
-has_nutrient(dietplanner, gorgonzola_cheese, phosphorus).
-has_nutrient(dietplanner, gorgonzola_cheese, vitamin_a).
-has_nutrient(dietplanner, gorgonzola_cheese, vitamin_k).
+has_nutrient(gorgonzola_cheese, calcium).
+has_nutrient(gorgonzola_cheese, protein).
+has_nutrient(gorgonzola_cheese, phosphorus).
+has_nutrient(gorgonzola_cheese, vitamin_a).
+has_nutrient(gorgonzola_cheese, vitamin_k).
 
 % Mushrooms
-has_nutrient(dietplanner, button_mushroom, phosphorus).
-has_nutrient(dietplanner, button_mushroom, potassium).
-has_nutrient(dietplanner, button_mushroom, magnesium).
-has_nutrient(dietplanner, button_mushroom, zinc).
+has_nutrient(button_mushroom, phosphorus).
+has_nutrient(button_mushroom, potassium).
+has_nutrient(button_mushroom, magnesium).
+has_nutrient(button_mushroom, zinc).
 
 
 
@@ -1503,45 +1510,45 @@ has_nutrient(dietplanner, button_mushroom, zinc).
 
 
 % Other
-has_nutrient(dietplanner, chicken_breast, lean_protein).
-has_nutrient(dietplanner, chicken_breast, vitamin_b6).
-has_nutrient(dietplanner, chicken_breast, phosphorus).
-has_nutrient(dietplanner, spinach, iron).
-has_nutrient(dietplanner, spinach, vitamin_k).
-has_nutrient(dietplanner, spinach, vitamin_a).
-has_nutrient(dietplanner, oatmeal, complex_carbohydrates).
-has_nutrient(dietplanner, oatmeal, soluble_fiber).
-has_nutrient(dietplanner, oatmeal, manganese).
-has_nutrient(dietplanner, salmon, omega_3_fatty_acids).
-has_nutrient(dietplanner, salmon, vitamin_d).
-has_nutrient(dietplanner, salmon, vitamin_b12).
-has_nutrient(dietplanner, almonds, monounsaturated_fat).
-has_nutrient(dietplanner, almonds, vitamin_e).
-has_nutrient(dietplanner, almonds, magnesium).
-has_nutrient(dietplanner, greek_yogurt, casein_protein).
-has_nutrient(dietplanner, greek_yogurt, calcium).
-has_nutrient(dietplanner, blueberries, vitamin_c).
-has_nutrient(dietplanner, blueberries, insoluble_fiber).
+has_nutrient(chicken_breast, lean_protein).
+has_nutrient(chicken_breast, vitamin_b6).
+has_nutrient(chicken_breast, phosphorus).
+has_nutrient(spinach, iron).
+has_nutrient(spinach, vitamin_k).
+has_nutrient(spinach, vitamin_a).
+has_nutrient(oatmeal, complex_carbohydrates).
+has_nutrient(oatmeal, soluble_fiber).
+has_nutrient(oatmeal, manganese).
+has_nutrient(salmon, omega_3_fatty_acids).
+has_nutrient(salmon, vitamin_d).
+has_nutrient(salmon, vitamin_b12).
+has_nutrient(almonds, monounsaturated_fat).
+has_nutrient(almonds, vitamin_e).
+has_nutrient(almonds, magnesium).
+has_nutrient(greek_yogurt, casein_protein).
+has_nutrient(greek_yogurt, calcium).
+has_nutrient(blueberries, vitamin_c).
+has_nutrient(blueberries, insoluble_fiber).
 
-part_of(dietplanner, lean_protein, chicken_breast).
-part_of(dietplanner, vitamin_b6, chicken_breast).
-part_of(dietplanner, phosphorus, chicken_breast).
-part_of(dietplanner, iron, spinach).
-part_of(dietplanner, vitamin_k, spinach).
-part_of(dietplanner, vitamin_a, spinach).
-part_of(dietplanner, complex_carbohydrates, oatmeal).
-part_of(dietplanner, soluble_fiber, oatmeal).
-part_of(dietplanner, manganese, oatmeal).
-part_of(dietplanner, omega_3_fatty_acids, salmon).
-part_of(dietplanner, vitamin_d, salmon).
-part_of(dietplanner, vitamin_b12, salmon).
-part_of(dietplanner, monounsaturated_fat, almonds).
-part_of(dietplanner, vitamin_e, almonds).
-part_of(dietplanner, magnesium, almonds).
-part_of(dietplanner, casein_protein, greek_yogurt).
-part_of(dietplanner, calcium, greek_yogurt).
-part_of(dietplanner, vitamin_c, blueberries).
-part_of(dietplanner, insoluble_fiber, blueberries).
+part_of(lean_protein, chicken_breast).
+part_of(vitamin_b6, chicken_breast).
+part_of(phosphorus, chicken_breast).
+part_of(iron, spinach).
+part_of(vitamin_k, spinach).
+part_of(vitamin_a, spinach).
+part_of(complex_carbohydrates, oatmeal).
+part_of(soluble_fiber, oatmeal).
+part_of(manganese, oatmeal).
+part_of(omega_3_fatty_acids, salmon).
+part_of(vitamin_d, salmon).
+part_of(vitamin_b12, salmon).
+part_of(monounsaturated_fat, almonds).
+part_of(vitamin_e, almonds).
+part_of(magnesium, almonds).
+part_of(casein_protein, greek_yogurt).
+part_of(calcium, greek_yogurt).
+part_of(vitamin_c, blueberries).
+part_of(insoluble_fiber, blueberries).
 
 carry_out(alice_johnson, running-1, 4).
 carry_out(bob_smith, swimming-2, 1).
@@ -1570,38 +1577,50 @@ is_allergic(emma_davis, gluten).
 is_allergic(michael_brown, peanuts).
 is_allergic(sophia_miller, soy).
 
-is_contained(dietplanner, nuts, almond_milk).
-is_contained(dietplanner, shellfish, shrimp).
-is_contained(dietplanner, shellfish, crab).
-is_contained(dietplanner, gluten, wheat_bread).
-is_contained(dietplanner, gluten, pasta).
-is_contained(dietplanner, eggs, chicken_eggs).
-is_contained(dietplanner, eggs, quail_eggs).
-is_contained(dietplanner, eggs, duck_eggs).
-is_contained(dietplanner, eggs, goose_eggs).
-is_contained(dietplanner, eggs, egg_whites).
-is_contained(dietplanner, dairy, whole_milk).
-is_contained(dietplanner, shellfish, lobster).
-is_contained(dietplanner, dairy, grana_cheese).
+is_contained(nuts, almond_milk).
+is_contained(shellfish, shrimp).
+is_contained(shellfish, crab).
+is_contained(gluten, wheat_bread).
+is_contained(gluten, pasta).
+is_contained(eggs, chicken_eggs).
+is_contained(eggs, quail_eggs).
+is_contained(eggs, duck_eggs).
+is_contained(eggs, goose_eggs).
+is_contained(eggs, egg_whites).
+is_contained(dairy, whole_milk).
+is_contained(shellfish, lobster).
+is_contained(dairy, grana_cheese).
 
-made_of(dietplanner, margherita_pizza, grana_cheese).
-made_of(dietplanner, scrambled_eggs, chicken_eggs).
-made_of(dietplanner, spaghetti_bolognese, pasta).
-made_of(dietplanner, pasta_primavera, pasta).
-made_of(dietplanner, caprese_salad, tomato).
-made_of(dietplanner, tomato_soup, tomato).
-made_of(dietplanner, chicken_caesar_salad, chicken).
-made_of(dietplanner, grilled_chicken_burger, chicken).
-made_of(dietplanner, fruit_salad, apple).
-made_of(dietplanner, mixed_berry_smoothie, blueberries).
-made_of(dietplanner, chocolate_mousse, milk_chocolate).
-made_of(dietplanner, chocolate_chip_cookies, dark_chocolate).
-made_of(dietplanner, veggie_pizza, tomato).
-made_of(dietplanner, garden_salad, carrot).
-made_of(dietplanner, tuna_sandwich, tuna).
-made_of(dietplanner, sushi_roll, tuna).
-made_of(dietplanner, beef_stew, beef).
-made_of(dietplanner, beef_tacos, beef).
+made_of(margherita_pizza, mozzarella_cheese, 40, 80).
+made_of(margherita_pizza, tomato_sauce, 30, 60).
+made_of(margherita_pizza, olive_oil, 5, 10).
+made_of(margherita_pizza, pizza_dough, 150, 200).
+
+
+made_of(spaghetti_bolognese, pasta).
+made_of(spaghetti_bolognese, pasta, 80, 150).
+made_of(spaghetti_bolognese, beef, 100, 200).
+made_of(spaghetti_bolognese, tomato_sauce, 150, 250).
+made_of(spaghetti_bolognese, garlic, 3, 6).
+made_of(spaghetti_bolognese, olive_oil, 10, 20).
+
+
+
+made_of(pasta_primavera, pasta).
+made_of(caprese_salad, tomato).
+made_of(tomato_soup, tomato).
+made_of(chicken_caesar_salad, chicken).
+made_of(grilled_chicken_burger, chicken).
+made_of(fruit_salad, apple).
+made_of(mixed_berry_smoothie, blueberries).
+made_of(chocolate_mousse, milk_chocolate).
+made_of(chocolate_chip_cookies, dark_chocolate).
+made_of(veggie_pizza, tomato).
+made_of(garden_salad, carrot).
+made_of(tuna_sandwich, tuna).
+made_of(sushi_roll, tuna).
+made_of(beef_stew, beef).
+made_of(beef_tacos, beef).
 
 
 

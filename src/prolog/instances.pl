@@ -1611,18 +1611,18 @@ made_of(pancakes_and_maple_syrup, pancakes, 30, 70).
 made_of(pancakes_and_maple_syrup, maple_syrup, 5, 10).
 
 made_of(avocado_toast, white_bread, 30, 60).
-made_of(avocado_toast, avocado, 100, 200).
+made_of(avocado_toast, avocado, 20, 50).
 made_of(avocado_toast, olive_oil, 5, 15).
 
 made_of(oatmeal_with_berries, oatmeal, 40, 80).
 made_of(oatmeal_with_berries, blueberries, 30, 60).
-made_of(oatmeal_with_berries, whole_milk, 100, 200).
+made_of(oatmeal_with_berries, whole_milk, 60, 90).
 made_of(oatmeal_with_berries, honey, 10, 20).
 
-made_of(fruit_smoothie, banana, 100, 150).
-made_of(fruit_smoothie, strawberries, 50, 100).
+made_of(fruit_smoothie, banana, 50, 70).
+made_of(fruit_smoothie, strawberries, 50, 70).
 made_of(fruit_smoothie, blueberries, 30, 60).
-made_of(fruit_smoothie, yogurt, 150, 200).
+made_of(fruit_smoothie, yogurt, 30, 60).
 made_of(fruit_smoothie, honey, 10, 20).
 
 made_of(scrambled_eggs_and_toast, scrambled_eggs, 20, 40).
@@ -1630,9 +1630,9 @@ made_of(scrambled_eggs_and_toast, butter, 5, 10).
 made_of(scrambled_eggs_and_toast, skim_milk, 30, 60).
 made_of(scrambled_eggs_and_toast, white_bread, 20, 60).
 
-made_of(greek_yogurt_parfait, greek_yogurt, 150, 200).
+made_of(greek_yogurt_parfait, greek_yogurt, 30, 70).
 made_of(greek_yogurt_parfait, granola, 30, 60).
-made_of(greek_yogurt_parfait, blueberries, 50, 100).
+made_of(greek_yogurt_parfait, blueberries, 20, 40).
 made_of(greek_yogurt_parfait, honey, 10, 20).
 
 made_of(breakfast_burrito, boiled_eggs, 10, 30).
@@ -1748,12 +1748,12 @@ made_of(hummus_and_veggie_platter, cucumber, 50, 100).
 made_of(hummus_and_veggie_platter, bell_pepper, 50, 100).
 made_of(hummus_and_veggie_platter, tomatoes, 30, 60).
 
-made_of(fruit_salad, apple, 50, 100).
-made_of(fruit_salad, banana, 50, 100).
-made_of(fruit_salad, orange, 50, 100).
-made_of(fruit_salad, grapes, 30, 60).
-made_of(fruit_salad, strawberries, 30, 60).
-made_of(fruit_salad, blueberries, 30, 60).
+made_of(fruit_salad, apple, 10, 30).
+made_of(fruit_salad, banana, 10, 30).
+made_of(fruit_salad, orange, 10, 30).
+made_of(fruit_salad, grapes, 10, 20).
+made_of(fruit_salad, strawberries, 5, 15).
+made_of(fruit_salad, blueberries, 5, 15).
 made_of(fruit_salad, honey, 10, 20).
 
 made_of(grilled_salmon_with_quinoa, salmon, 80, 200).
@@ -1770,12 +1770,12 @@ made_of(vegan_lentil_curry, tomatoes, 50, 100).
 made_of(vegan_lentil_curry, coconut_milk, 70, 150).
 made_of(vegan_lentil_curry, black_pepper, 1, 5).
 
-made_of(trail_mix, almonds, 30, 70).
-made_of(trail_mix, peanuts, 30, 70).
-made_of(trail_mix, blueberries, 20, 70).
-made_of(trail_mix, dark_chocolate, 20, 50).
-made_of(trail_mix, sunflower_seeds, 20, 40).
-made_of(trail_mix, pumpkin_seeds, 20, 40).
+made_of(trail_mix, almonds, 5, 10).
+made_of(trail_mix, peanuts, 5, 10).
+made_of(trail_mix, blueberries, 5, 10).
+made_of(trail_mix, dark_chocolate, 5, 10).
+made_of(trail_mix, sunflower_seeds, 5, 10).
+made_of(trail_mix, pumpkin_seeds, 5, 10).
 
 made_of(caesar_salad, lettuce, 80, 150).
 made_of(caesar_salad, croutons, 20, 70).
@@ -1796,11 +1796,11 @@ made_of(grilled_steak_with_roasted_potatoes, olive_oil, 10, 20).
 made_of(grilled_steak_with_roasted_potatoes, rosemary, 2, 5).
 made_of(grilled_steak_with_roasted_potatoes, black_pepper, 1, 5).
 
-made_of(smoothie_bowl, yogurt, 90, 180).
-made_of(smoothie_bowl, banana, 50, 100).
-made_of(smoothie_bowl, strawberries, 30, 60).
-made_of(smoothie_bowl, blueberries, 30, 60).
-made_of(smoothie_bowl, granola, 20, 40).
+made_of(smoothie_bowl, yogurt, 30, 70).
+made_of(smoothie_bowl, banana, 10, 20).
+made_of(smoothie_bowl, strawberries, 10, 25).
+made_of(smoothie_bowl, blueberries, 10, 25).
+made_of(smoothie_bowl, granola, 10, 25).
 made_of(smoothie_bowl, honey, 10, 20).
 
 made_of(mushroom_risotto, white_rice, 70, 150).
@@ -1855,7 +1855,7 @@ made_of(pasta_primavera, olive_oil, 10, 20).
 made_of(pasta_primavera, garlic, 5, 10).
 made_of(pasta_primavera, parmesan_cheese, 20, 40).
 
-made_of(caprese_salad, tomatoes, 50, 200).
+made_of(caprese_salad, tomatoes, 70, 200).
 made_of(caprese_salad, fresh_mozzarella, 50, 100).
 made_of(caprese_salad, olive_oil, 10, 20).
 made_of(caprese_salad, black_pepper, 1, 5).

@@ -1,3 +1,0 @@
-[has(daily_diet1, english_breakfast, [egg-20, bread-50]), has(daily_diet1, yogurt_banana, [banana-10]), has(daily_diet1, turkey_sandwich, [turkey-200, bread-70, spinach-200])]
-
-[has(daily_diet2,yogurt_banana,[banana-234]),has(daily_diet2,turkey_sandwich,[turkey-164,bread-263,spinach-370,tomato-1315]),has(daily_diet2,yogurt_banana,[banana-234]),has(daily_diet2,turkey_sandwich,[turkey-99,bread-158,spinach-222,tomato-789]),has(daily_diet2,english_breakfast,[egg-658,bread-34])]

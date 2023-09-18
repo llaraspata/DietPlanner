@@ -1670,7 +1670,7 @@ made_of(grilled_salmon_with_asparagus, lemon, 1, 2).
 made_of(vegetarian_pasta_primavera, pasta, 60, 150).
 made_of(vegetarian_pasta_primavera, bell_peppers, 50, 100).
 made_of(vegetarian_pasta_primavera, broccoli, 50, 100).
-made_of(vegetarian_pasta_primavera, carrots, 30, 60).
+made_of(vegetarian_pasta_primavera, carrot, 30, 60).
 made_of(vegetarian_pasta_primavera, peas, 30, 60).
 made_of(vegetarian_pasta_primavera, olive_oil, 10, 20).
 made_of(vegetarian_pasta_primavera, garlic, 5, 10).
@@ -1713,7 +1713,7 @@ made_of(shrimp_scampi, lemon, 1, 2).
 made_of(tofu_and_broccoli_stir_fry, tofu, 60, 200).
 made_of(tofu_and_broccoli_stir_fry, broccoli, 70, 150).
 made_of(tofu_and_broccoli_stir_fry, bell_peppers, 50, 100).
-made_of(tofu_and_broccoli_stir_fry, carrots, 30, 60).
+made_of(tofu_and_broccoli_stir_fry, carrot, 30, 60).
 made_of(tofu_and_broccoli_stir_fry, garlic, 5, 10).
 made_of(tofu_and_broccoli_stir_fry, ginger, 5, 10).
 made_of(tofu_and_broccoli_stir_fry, sesame_oil, 5, 10).
@@ -1721,7 +1721,7 @@ made_of(tofu_and_broccoli_stir_fry, white_rice, 60, 150).
 
 made_of(roasted_pork_tenderloin_with_vegetables, pork_tenderloin, 70, 250).
 made_of(roasted_pork_tenderloin_with_vegetables, potato, 60, 150).
-made_of(roasted_pork_tenderloin_with_vegetables, carrots, 80, 150).
+made_of(roasted_pork_tenderloin_with_vegetables, carrot, 80, 150).
 made_of(roasted_pork_tenderloin_with_vegetables, onion, 50, 100).
 made_of(roasted_pork_tenderloin_with_vegetables, garlic, 5, 10).
 made_of(roasted_pork_tenderloin_with_vegetables, olive_oil, 10, 20).
@@ -1743,7 +1743,7 @@ made_of(grilled_chicken_salad, olives_green, 20, 40).
 made_of(grilled_chicken_salad, feta_cheese, 20, 40).
 
 made_of(hummus_and_veggie_platter, hummus, 70, 150).
-made_of(hummus_and_veggie_platter, carrots, 50, 100).
+made_of(hummus_and_veggie_platter, carrot, 50, 100).
 made_of(hummus_and_veggie_platter, cucumber, 50, 100).
 made_of(hummus_and_veggie_platter, bell_pepper, 50, 100).
 made_of(hummus_and_veggie_platter, tomatoes, 30, 60).
@@ -1784,8 +1784,8 @@ made_of(caesar_salad, black_pepper, 1, 5).
 
 made_of(veggie_spring_rolls, rice_paper_wrappers, 2, 5).
 made_of(veggie_spring_rolls, lettuce, 50, 100).
-made_of(veggie_spring_rolls, carrots, 30, 60).
-made_of(veggie_spring_rolls, cucumbers, 30, 60).
+made_of(veggie_spring_rolls, carrot, 30, 60).
+made_of(veggie_spring_rolls, cucumber, 30, 60).
 made_of(veggie_spring_rolls, bell_peppers, 30, 60).
 made_of(veggie_spring_rolls, tofu, 30, 60).
 made_of(veggie_spring_rolls, rice_noodles, 20, 60).
@@ -1822,8 +1822,8 @@ made_of(greek_yogurt_with_honey, greek_yogurt, 30, 70).
 made_of(greek_yogurt_with_honey, honey, 10, 25).
 
 made_of(vegetable_sticks_with_hummus, hummus, 60, 150).
-made_of(vegetable_sticks_with_hummus, carrots, 50, 100).
-made_of(vegetable_sticks_with_hummus, cucumbers, 50, 100).
+made_of(vegetable_sticks_with_hummus, carrot, 50, 100).
+made_of(vegetable_sticks_with_hummus, cucumber, 50, 100).
 made_of(vegetable_sticks_with_hummus, bell_peppers, 50, 100).
 made_of(vegetable_sticks_with_hummus, celery, 50, 100).
 
@@ -1839,7 +1839,7 @@ made_of(protein_bar, honey, 5, 10).
 made_of(chicken_stir_fry, chicken_breast, 70, 200).
 made_of(chicken_stir_fry, bell_peppers, 50, 100).
 made_of(chicken_stir_fry, broccoli, 70, 150).
-made_of(chicken_stir_fry, carrots, 50, 100).
+made_of(chicken_stir_fry, carrot, 50, 100).
 made_of(chicken_stir_fry, peas, 50, 80).
 made_of(chicken_stir_fry, garlic, 5, 10).
 made_of(chicken_stir_fry, ginger, 5, 10).
@@ -1849,7 +1849,7 @@ made_of(chicken_stir_fry, white_rice, 60, 100).
 made_of(pasta_primavera, pasta, 60, 150).
 made_of(pasta_primavera, bell_peppers, 20, 50).
 made_of(pasta_primavera, broccoli, 20, 50).
-made_of(pasta_primavera, carrots, 20, 40).
+made_of(pasta_primavera, carrot, 20, 40).
 made_of(pasta_primavera, peas, 20, 40).
 made_of(pasta_primavera, olive_oil, 10, 20).
 made_of(pasta_primavera, garlic, 5, 10).
@@ -1884,6 +1884,60 @@ made_of(almond_butter_on_whole_wheat_crackers, crackers, 30, 60).
 
 made_of(yogurt_and_granola, yogurt, 40, 60).
 made_of(yogurt_and_granola, granola, 10, 25).
+
+made_of(sliced_apples_with_peanut_butter, apple, 20, 50).
+made_of(sliced_apples_with_peanut_butter, peanut_butter, 10, 25).
+
+made_of(chocolate_chip_cookies, shortcrust_pastry, 10, 25).
+made_of(chocolate_chip_cookies, chocolate_chips, 2, 8).
+
+made_of(veggie_pizza, pizza_dough, 150, 200).
+made_of(veggie_pizza, tomato_sauce, 30, 60).
+made_of(veggie_pizza, mozzarella_cheese, 40, 80).
+made_of(veggie_pizza, bell_peppers, 30, 50).
+made_of(veggie_pizza, porcini_mushroom, 30, 50).
+made_of(veggie_pizza, onion, 15, 30).
+made_of(veggie_pizza, olives_black, 20, 40).
+
+made_of(garden_salad, lettuce, 70, 100).
+made_of(garden_salad, tomato, 30, 50).
+made_of(garden_salad, cucumber, 30, 50).
+made_of(garden_salad, bell_peppers, 20, 40).
+made_of(garden_salad, red_onion, 20, 30).
+made_of(garden_salad, olives_black, 10, 30).
+made_of(garden_salad, feta_cheese, 20, 40).
+made_of(garden_salad, olive_oil, 10, 20).
+made_of(garden_salad, black_pepper, 1, 5).
+
+made_of(tuna_sandwich, canned_tuna, 90, 150).
+made_of(tuna_sandwich, celery, 20, 40).
+made_of(tuna_sandwich, onion, 10, 20).
+made_of(tuna_sandwich, lettuce, 30, 50).
+made_of(tuna_sandwich, tomato, 20, 40).
+made_of(tuna_sandwich, whole_wheat_bread, 50, 100).
+
+made_of(sushi_roll, sushi_rice, 80, 150).
+made_of(sushi_roll, nori_seaweed, 30, 60).
+made_of(sushi_roll, salmon, 50, 100).
+made_of(sushi_roll, cucumber, 20, 40).
+made_of(sushi_roll, avocado, 20, 40).
+made_of(sushi_roll, sesame_seeds, 5, 10).
+
+made_of(beef_stew, beef, 100, 250).
+made_of(beef_stew, potato, 70, 120).
+made_of(beef_stew, carrot, 40, 70).
+made_of(beef_stew, onion, 20, 40).
+made_of(beef_stew, garlic, 5, 10).
+made_of(beef_stew, beef_broth, 100, 250).
+made_of(beef_stew, tomato_sauce, 30, 60).
+made_of(beef_stew, black_pepper, 1, 5).
+
+made_of(beef_tacos, beef, 100, 200).
+made_of(beef_tacos, taco_shells, 50, 100).
+made_of(beef_tacos, lettuce, 30, 50).
+made_of(beef_tacos, tomatoes, 20, 40).
+made_of(beef_tacos, grana_cheese, 30, 60).
+made_of(beef_tacos, onion, 10, 20).
 
 
 

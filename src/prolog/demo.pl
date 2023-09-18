@@ -1,7 +1,3 @@
-:- use_module(library(lists)).
-:- use_module(library(pairs)).
-:- use_module(library(random)).  
-
 % Constants
 %healthy_weight_nutrient_percentages([carbs-45-65, protein-15-20, lipids-20-35, dietary_fiber-1-5]).
 healthy_weight_nutrient_percentages([protein-15-20]).

@@ -53,6 +53,51 @@ attribute_value(dietplanner, pizza_dough, name, 'Pizza Dough').
 attribute_value(dietplanner, pizza_dough, description, 'A versatile dough used as the base for making pizzas.').
 attribute_value(dietplanner, pizza_dough, calories, 268).
 
+foodbeverage_instance(dietplanner, cereal_bread, pancakes).
+attribute_value(dietplanner, pancakes, name, 'Pancakes').
+attribute_value(dietplanner, pancakes, description, 'Fluffy pancakes, a popular breakfast dish made from batter and cooked on a griddle.').
+attribute_value(dietplanner, pancakes, calories, 227).
+
+foodbeverage_instance(dietplanner, cereal_bread, croutons).
+attribute_value(dietplanner, croutons, name, 'Croutons').
+attribute_value(dietplanner, croutons, description, 'Croutons, small toasted or fried pieces of bread, often used as toppings for salads and soups.').
+attribute_value(dietplanner, croutons, calories, 122).
+
+foodbeverage_instance(dietplanner, cereal_bread, quinoa).
+attribute_value(dietplanner, quinoa, name, 'Quinoa').
+attribute_value(dietplanner, quinoa, description, 'Quinoa, a versatile and nutritious grain, known for its high protein content and gluten-free nature.').
+attribute_value(dietplanner, quinoa, calories, 120).
+
+foodbeverage_instance(dietplanner, cereal_bread, tortilla_wrap).
+attribute_value(dietplanner, tortilla_wrap, name, 'Tortilla Wrap').
+attribute_value(dietplanner, tortilla_wrap, description, 'Tortilla wrap, a soft and flexible flatbread often used to make wraps or burritos.').
+attribute_value(dietplanner, tortilla_wrap, calories, 300).
+
+foodbeverage_instance(dietplanner, cereal_bread, rice_paper_wrappers).
+attribute_value(dietplanner, rice_paper_wrappers, name, 'Rice Paper Wrappers').
+attribute_value(dietplanner, rice_paper_wrappers, description, 'Rice paper wrappers, thin and translucent sheets made from rice flour, used to make spring rolls and other dishes.').
+attribute_value(dietplanner, rice_paper_wrappers, calories, 26).
+
+foodbeverage_instance(dietplanner, cereal_bread, burger_bun).
+attribute_value(dietplanner, burger_bun, name, 'Burger Bun').
+attribute_value(dietplanner, burger_bun, description, 'Burger bun, a soft and round bread roll commonly used to make hamburgers and sandwiches.').
+attribute_value(dietplanner, burger_bun, calories, 250).
+
+foodbeverage_instance(dietplanner, cereal_bread, crackers).
+attribute_value(dietplanner, crackers, name, 'Crackers').
+attribute_value(dietplanner, crackers, description, 'Crackers, crunchy and savory baked snacks, often enjoyed with dips, cheese, or as a standalone snack.').
+attribute_value(dietplanner, crackers, calories, 418).
+
+foodbeverage_instance(dietplanner, cereal_bread, shortcrust_pastry).
+attribute_value(dietplanner, shortcrust_pastry, name, 'Shortcrust Pastry').
+attribute_value(dietplanner, shortcrust_pastry, description, 'Shortcrust pastry, a buttery and flaky pastry used as a base for pies, tarts, and quiches.').
+attribute_value(dietplanner, shortcrust_pastry, calories, 457).
+
+foodbeverage_instance(dietplanner, cereal_bread, whole_wheat_bread).
+attribute_value(dietplanner, whole_wheat_bread, name, 'Whole Wheat Bread').
+attribute_value(dietplanner, whole_wheat_bread, description, 'Whole wheat bread, a nutritious and hearty bread made from whole wheat flour.').
+attribute_value(dietplanner, whole_wheat_bread, calories, 247).
+
 
 
 % Subclass: eggs
@@ -169,6 +214,17 @@ attribute_value(dietplanner, oysters, name, 'Oysters').
 attribute_value(dietplanner, oysters, description, 'Oysters, a delicacy often served raw or cooked in various seafood recipes.').
 attribute_value(dietplanner, oysters, calories, 68).
 
+foodbeverage_instance(dietplanner, fish_seafood, canned_tuna).
+attribute_value(dietplanner, canned_tuna, name, 'Canned Tuna').
+attribute_value(dietplanner, canned_tuna, description, 'Canned tuna, a convenient seafood option, often used in salads, sandwiches, and pasta dishes.').
+attribute_value(dietplanner, canned_tuna, calories, 99).
+
+foodbeverage_instance(dietplanner, sea_vegetables, nori_seaweed).
+attribute_value(dietplanner, nori_seaweed, name, 'Nori Seaweed').
+attribute_value(dietplanner, nori_seaweed, description, 'Nori seaweed, a type of edible seaweed commonly used to wrap sushi and as a snack.').
+attribute_value(dietplanner, nori_seaweed, calories, 35).
+
+
 % Subclass: fruits_olives
 foodbeverage_instance(dietplanner, fruits_olives, apple).
 attribute_value(dietplanner, apple, name, 'Apple').
@@ -219,6 +275,17 @@ foodbeverage_instance(dietplanner, fruits_olives, watermelon).
 attribute_value(dietplanner, watermelon, name, 'Watermelon').
 attribute_value(dietplanner, watermelon, description, 'Watermelon, a hydrating and refreshing fruit, especially in hot weather.').
 attribute_value(dietplanner, watermelon, calories, 30).
+
+foodbeverage_instance(dietplanner, fruits_olives, avocado).
+attribute_value(dietplanner, avocado, name, 'Avocado').
+attribute_value(dietplanner, avocado, description, 'Creamy avocado, a versatile fruit often used in salads, sandwiches, and dips.').
+attribute_value(dietplanner, avocado, calories, 160).
+
+foodbeverage_instance(dietplanner, fruits_olives, lemon).
+attribute_value(dietplanner, lemon, name, 'Lemon').
+attribute_value(dietplanner, lemon, description, 'Lemon, a citrus fruit known for its tart flavor and use in cooking, beverages, and as a garnish.').
+attribute_value(dietplanner, lemon, calories, 29).
+
 
 
 % Subclass: meats
@@ -272,7 +339,23 @@ attribute_value(dietplanner, turkey, name, 'Turkey').
 attribute_value(dietplanner, turkey, description, 'Turkey, a lean poultry meat often roasted or sliced for sandwiches.').
 attribute_value(dietplanner, turkey, calories, 135).
 
-% Subclass: milk
+foodbeverage_instance(dietplanner, meats, chicken_breast).
+attribute_value(dietplanner, chicken_breast, name, 'Chicken Breast').
+attribute_value(dietplanner, chicken_breast, description, 'Chicken breast, lean and tender, commonly cooked in various recipes.').
+attribute_value(dietplanner, chicken_breast, calories, 165).
+
+foodbeverage_instance(dietplanner, meats, pork_tenderloin).
+attribute_value(dietplanner, pork_tenderloin, name, 'Pork Tenderloin').
+attribute_value(dietplanner, pork_tenderloin, description, 'Pork tenderloin, a lean and tender cut of pork often prepared roasted or grilled.').
+attribute_value(dietplanner, pork_tenderloin, calories, 143).
+
+foodbeverage_instance(dietplanner, meats, chicken_patty).
+attribute_value(dietplanner, chicken_patty, name, 'Chicken Patty').
+attribute_value(dietplanner, chicken_patty, description, 'Chicken patty, a breaded and seasoned ground chicken patty, often used in sandwiches and as a main dish.').
+attribute_value(dietplanner, chicken_patty, calories, 195).
+
+
+% Subclass: milk_cheese
 foodbeverage_instance(dietplanner, milk_cheese, skim_milk).
 attribute_value(dietplanner, skim_milk, name, 'Skim Milk').
 attribute_value(dietplanner, skim_milk, description, 'Low-fat skim milk for a calcium boost.').
@@ -343,6 +426,12 @@ attribute_value(dietplanner, feta_cheese, name, 'Feta Cheese').
 attribute_value(dietplanner, feta_cheese, description, 'Feta cheese, crumbly and tangy, often used in Mediterranean dishes.').
 attribute_value(dietplanner, feta_cheese, calories, 264).
 
+foodbeverage_instance(dietplanner, dairy_cheese, fresh_mozzarella).
+attribute_value(dietplanner, fresh_mozzarella, name, 'Fresh Mozzarella').
+attribute_value(dietplanner, fresh_mozzarella, description, 'Fresh Mozzarella, a soft and mild cheese with a creamy texture, often used in salads, sandwiches, and Italian dishes.').
+attribute_value(dietplanner, fresh_mozzarella, calories, 280).
+
+
 % Subclass: nuts
 foodbeverage_instance(dietplanner, nuts, almonds).
 attribute_value(dietplanner, almonds, name, 'Almonds').
@@ -373,6 +462,12 @@ foodbeverage_instance(dietplanner, nuts, peanuts).
 attribute_value(dietplanner, peanuts, name, 'Pecans').
 attribute_value(dietplanner, peanuts, description, 'Pecans, sweet and rich nuts often used in pies and other desserts.').
 attribute_value(dietplanner, peanuts, calories, 691).
+
+foodbeverage_instance(dietplanner, spreads_dips, almond_butter).
+attribute_value(dietplanner, almond_butter, name, 'Almond Butter').
+attribute_value(dietplanner, almond_butter, description, 'Almond butter, a creamy spread made from roasted almonds, rich in healthy fats and often used as a topping or dip.').
+attribute_value(dietplanner, almond_butter, calories, 614).
+
 
 
 % Subclass: seeds
@@ -447,6 +542,12 @@ attribute_value(dietplanner, rosemary, name, 'Rosemary').
 attribute_value(dietplanner, rosemary, description, 'Rosemary, a fragrant herb with a pine-like flavor, often used in roasts, stews, and bread.').
 attribute_value(dietplanner, rosemary, calories, 131).
 
+foodbeverage_instance(dietplanner, spices, ginger).
+attribute_value(dietplanner, ginger, name, 'Ginger').
+attribute_value(dietplanner, ginger, description, 'Ginger, a fragrant and spicy root commonly used as a spice and for its medicinal properties.').
+attribute_value(dietplanner, ginger, calories, 80).
+
+
 % Subclass: sweets
 foodbeverage_instance(dietplanner, sweets, dark_chocolate).
 attribute_value(dietplanner, dark_chocolate, name, 'Dark Chocolate').
@@ -477,6 +578,12 @@ foodbeverage_instance(dietplanner, sweets, fruitcake).
 attribute_value(dietplanner, fruitcake, name, 'Fruitcake').
 attribute_value(dietplanner, fruitcake, description, 'Fruitcake, a dense and sweet cake filled with candied fruits and nuts, often enjoyed during holidays.').
 attribute_value(dietplanner, fruitcake, calories, 324).
+
+foodbeverage_instance(dietplanner, sweets, maple_syrup).
+attribute_value(dietplanner, maple_syrup, name, 'Maple Syrup').
+attribute_value(dietplanner, maple_syrup, description, 'Pure maple syrup, a natural sweetener derived from maple trees.').
+attribute_value(dietplanner, maple_syrup, calories, 260).
+
 
 % Subclass: vegetables
 foodbeverage_instance(dietplanner, vegetables, carrot).
@@ -533,6 +640,71 @@ foodbeverage_instance(dietplanner, vegetables, tomato_sauce).
 attribute_value(dietplanner, tomato_sauce, name, 'Tomato Sauce').
 attribute_value(dietplanner, tomato_sauce, description, 'A savory sauce made from tomatoes, often used in pasta dishes and pizzas.').
 attribute_value(dietplanner, tomato_sauce, calories, 29).
+
+foodbeverage_instance(dietplanner, vegetables, onion).
+attribute_value(dietplanner, onion, name, 'Onion').
+attribute_value(dietplanner, onion, description, 'Onion, a pungent and flavorful vegetable used in various culinary dishes.').
+attribute_value(dietplanner, onion, calories, 40).
+
+foodbeverage_instance(dietplanner, vegetables, lettuce).
+attribute_value(dietplanner, lettuce, name, 'Lettuce').
+attribute_value(dietplanner, lettuce, description, 'Lettuce, a crisp and leafy green vegetable commonly used in salads and sandwiches.').
+attribute_value(dietplanner, lettuce, calories, 15).
+
+foodbeverage_instance(dietplanner, vegetables, garlic).
+attribute_value(dietplanner, garlic, name, 'Garlic').
+attribute_value(dietplanner, garlic, description, 'Garlic, a pungent and aromatic bulb often used as a flavoring in cooking.').
+attribute_value(dietplanner, garlic, calories, 149).
+
+foodbeverage_instance(dietplanner, vegetables, asparagus).
+attribute_value(dietplanner, asparagus, name, 'Asparagus').
+attribute_value(dietplanner, asparagus, description, 'Asparagus, a nutritious green vegetable known for its tender spears and unique flavor.').
+attribute_value(dietplanner, asparagus, calories, 20).
+
+foodbeverage_instance(dietplanner, vegetables, peas).
+attribute_value(dietplanner, peas, name, 'Peas').
+attribute_value(dietplanner, peas, description, 'Peas, a sweet and tender legume often used as a side dish or ingredient in various dishes.').
+attribute_value(dietplanner, peas, calories, 81).
+
+foodbeverage_instance(dietplanner, vegetables, eggplant).
+attribute_value(dietplanner, eggplant, name, 'Eggplant').
+attribute_value(dietplanner, eggplant, description, 'Eggplant, a versatile and flavorful vegetable used in a variety of dishes, especially in Mediterranean cuisine.').
+attribute_value(dietplanner, eggplant, calories, 25).
+
+foodbeverage_instance(dietplanner, vegetables, red_pepper).
+attribute_value(dietplanner, red_pepper, name, 'Red Pepper').
+attribute_value(dietplanner, red_pepper, description, 'Red pepper, a sweet and colorful bell pepper often used in cooking, salads, and as a garnish.').
+attribute_value(dietplanner, red_pepper, calories, 31).
+
+foodbeverage_instance(dietplanner, vegetables, hummus).
+attribute_value(dietplanner, hummus, name, 'Hummus').
+attribute_value(dietplanner, hummus, description, 'Hummus, a creamy and savory spread made from chickpeas, tahini, and spices, often served with pita bread or as a dip.').
+attribute_value(dietplanner, hummus, calories, 166).
+
+foodbeverage_instance(dietplanner, vegetables, lentils).
+attribute_value(dietplanner, lentils, name, 'Lentils').
+attribute_value(dietplanner, lentils, description, 'Lentils, small and nutritious legumes often used in soups, stews, and salads.').
+attribute_value(dietplanner, lentils, calories, 116).
+
+foodbeverage_instance(dietplanner, vegetables, cucumber).
+attribute_value(dietplanner, cucumber, name, 'Cucumbers').
+attribute_value(dietplanner, cucumber, description, 'Cucumbers, crisp and refreshing vegetables often used in salads, sandwiches, and as a side dish.').
+attribute_value(dietplanner, cucumber, calories, 16).
+
+foodbeverage_instance(dietplanner, vegetables, vegetable_broth).
+attribute_value(dietplanner, vegetable_broth, name, 'Vegetable Broth').
+attribute_value(dietplanner, vegetable_broth, description, 'Vegetable broth, a flavorful liquid made from simmering vegetables and herbs, often used as a base for soups and stews.').
+attribute_value(dietplanner, vegetable_broth, calories, 7).
+
+foodbeverage_instance(dietplanner, vegetables, celery).
+attribute_value(dietplanner, celery, name, 'Celery').
+attribute_value(dietplanner, celery, description, 'Celery, crisp and crunchy vegetable often used in salads, soups, and as a snack.').
+attribute_value(dietplanner, celery, calories, 16).
+
+foodbeverage_instance(dietplanner, vegetables, red_onion).
+attribute_value(dietplanner, red_onion, name, 'Red Onion').
+attribute_value(dietplanner, red_onion, description, 'Red onion, a pungent and colorful onion variety used in salads, salsas, and various culinary dishes.').
+attribute_value(dietplanner, red_onion, calories, 40).
 
 
 % Subclass: beverage

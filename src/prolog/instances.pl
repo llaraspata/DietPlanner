@@ -214,11 +214,6 @@ attribute_value(dietplanner, oysters, name, 'Oysters').
 attribute_value(dietplanner, oysters, description, 'Oysters, a delicacy often served raw or cooked in various seafood recipes.').
 attribute_value(dietplanner, oysters, calories, 68).
 
-foodbeverage_instance(dietplanner, fish_seafood, canned_tuna).
-attribute_value(dietplanner, canned_tuna, name, 'Canned Tuna').
-attribute_value(dietplanner, canned_tuna, description, 'Canned tuna, a convenient seafood option, often used in salads, sandwiches, and pasta dishes.').
-attribute_value(dietplanner, canned_tuna, calories, 99).
-
 foodbeverage_instance(dietplanner, sea_vegetables, nori_seaweed).
 attribute_value(dietplanner, nori_seaweed, name, 'Nori Seaweed').
 attribute_value(dietplanner, nori_seaweed, description, 'Nori seaweed, a type of edible seaweed commonly used to wrap sushi and as a snack.').
@@ -338,21 +333,6 @@ foodbeverage_instance(dietplanner, meats, turkey).
 attribute_value(dietplanner, turkey, name, 'Turkey').
 attribute_value(dietplanner, turkey, description, 'Turkey, a lean poultry meat often roasted or sliced for sandwiches.').
 attribute_value(dietplanner, turkey, calories, 135).
-
-foodbeverage_instance(dietplanner, meats, chicken_breast).
-attribute_value(dietplanner, chicken_breast, name, 'Chicken Breast').
-attribute_value(dietplanner, chicken_breast, description, 'Chicken breast, lean and tender, commonly cooked in various recipes.').
-attribute_value(dietplanner, chicken_breast, calories, 165).
-
-foodbeverage_instance(dietplanner, meats, pork_tenderloin).
-attribute_value(dietplanner, pork_tenderloin, name, 'Pork Tenderloin').
-attribute_value(dietplanner, pork_tenderloin, description, 'Pork tenderloin, a lean and tender cut of pork often prepared roasted or grilled.').
-attribute_value(dietplanner, pork_tenderloin, calories, 143).
-
-foodbeverage_instance(dietplanner, meats, chicken_patty).
-attribute_value(dietplanner, chicken_patty, name, 'Chicken Patty').
-attribute_value(dietplanner, chicken_patty, description, 'Chicken patty, a breaded and seasoned ground chicken patty, often used in sandwiches and as a main dish.').
-attribute_value(dietplanner, chicken_patty, calories, 195).
 
 
 % Subclass: milk_cheese
@@ -928,22 +908,33 @@ attribute_value(dietplanner, sodium, name, 'Sodium').
 attribute_value(dietplanner, sodium, description, 'Sodium, a mineral that plays a critical role in fluid balance, nerve function, and blood pressure regulation.').
 
 % Subclass: protein
-nutrient_instance(dietplanner, protein, whey_protein).
-attribute_value(dietplanner, whey_protein, name, 'Whey Protein').
-attribute_value(dietplanner, whey_protein, description, 'High-quality protein derived from milk.').
+nutrient_instance(dietplanner, protein, dairy_protein).
+attribute_value(dietplanner, dairy_protein, name, 'Dairy Protein').
+attribute_value(dietplanner, dairy_protein, description, 'Protein derived from milk and dairy products, including casein and whey protein.').
+
+nutrient_instance(dietplanner, protein, plant_protein).
+attribute_value(dietplanner, plant_protein, name, 'Plant Protein').
+attribute_value(dietplanner, plant_protein, description, 'Protein derived from plant sources, including legumes, grains, nuts, and seeds.').
 
 nutrient_instance(dietplanner, protein, soy_protein).
 attribute_value(dietplanner, soy_protein, name, 'Soy Protein').
 attribute_value(dietplanner, soy_protein, description, 'Plant-based protein derived from soybeans, suitable for vegetarians and vegans.').
 
-nutrient_instance(dietplanner, protein, plant_protein).
-attribute_value(dietplanner, plant_protein, name, 'Plant Protein').
-attribute_value(dietplanner, plant_protein, description, 'Plant-based protein suitable for various diets.').
+nutrient_instance(dietplanner, protein, lean_protein).
+attribute_value(dietplanner, lean_protein, name, 'Lean Protein').
+attribute_value(dietplanner, lean_protein, description, 'Lean protein sources with low fat content and rich in essential amino acids.').
 
-nutrient_instance(dietplanner, protein, animal_protein).
-attribute_value(dietplanner, animal_protein, name, 'Animal Protein').
-attribute_value(dietplanner, animal_protein, description, 'Protein of animal origin, rich in essential amino acids.').
+nutrient_instance(dietplanner, protein, red_meat_protein).
+attribute_value(dietplanner, red_meat_protein, name, 'Red Meat Protein').
+attribute_value(dietplanner, red_meat_protein, description, 'Protein obtained from red meats, including beef, pork, and lamb.').
 
+nutrient_instance(dietplanner, protein, egg_protein).
+attribute_value(dietplanner, egg_protein, name, 'Egg Protein').
+attribute_value(dietplanner, egg_protein, description, 'Protein sourced from eggs, primarily egg whites.').
+
+nutrient_instance(dietplanner, protein, tofu_protein).
+attribute_value(dietplanner, tofu_protein, name, 'Tofu Protein').
+attribute_value(dietplanner, tofu_protein, description, 'Protein derived from tofu, a soy-based product, often used in vegetarian and vegan diets.').
 
 % Subclass: vitamin
 nutrient_instance(dietplanner, vitamin, vitamin_c).
@@ -1640,8 +1631,7 @@ has_nutrient(reduced_fat_milk, calcium).
 has_nutrient(reduced_fat_milk, vitamin_d).
 has_nutrient(reduced_fat_milk, vitamin_a).
 has_nutrient(reduced_fat_milk, vitamin_b12).
-has_nutrient(reduced_fat_milk, whey_protein).
-has_nutrient(reduced_fat_milk, casein_protein).
+has_nutrient(reduced_fat_milk, dairy_protein).
 
 has_nutrient(soy_milk, calcium).
 has_nutrient(soy_milk, vitamin_d).
@@ -1683,9 +1673,9 @@ has_nutrient(button_mushroom, zinc).
 
 
 % Other
-has_nutrient(chicken_breast, lean_protein).
-has_nutrient(chicken_breast, vitamin_b6).
-has_nutrient(chicken_breast, phosphorus).
+has_nutrient(chicken, lean_protein).
+has_nutrient(chicken, vitamin_b6).
+has_nutrient(chicken, phosphorus).
 has_nutrient(spinach, iron).
 has_nutrient(spinach, vitamin_k).
 has_nutrient(spinach, vitamin_a).
@@ -1698,14 +1688,14 @@ has_nutrient(salmon, vitamin_b12).
 has_nutrient(almonds, monounsaturated_fat).
 has_nutrient(almonds, vitamin_e).
 has_nutrient(almonds, magnesium).
-has_nutrient(greek_yogurt, casein_protein).
+has_nutrient(greek_yogurt, dairy_protein).
 has_nutrient(greek_yogurt, calcium).
 has_nutrient(blueberries, vitamin_c).
 has_nutrient(blueberries, insoluble_fiber).
 
-part_of(lean_protein, chicken_breast).
-part_of(vitamin_b6, chicken_breast).
-part_of(phosphorus, chicken_breast).
+part_of(lean_protein, chicken).
+part_of(vitamin_b6, chicken).
+part_of(phosphorus, chicken).
 part_of(iron, spinach).
 part_of(vitamin_k, spinach).
 part_of(vitamin_a, spinach).
@@ -1718,7 +1708,7 @@ part_of(vitamin_b12, salmon).
 part_of(monounsaturated_fat, almonds).
 part_of(vitamin_e, almonds).
 part_of(magnesium, almonds).
-part_of(casein_protein, greek_yogurt).
+part_of(dairy_protein, greek_yogurt).
 part_of(calcium, greek_yogurt).
 part_of(vitamin_c, blueberries).
 part_of(insoluble_fiber, blueberries).
@@ -1855,7 +1845,7 @@ made_of(beef_and_broccoli_stir_fry, ginger, 5, 10).
 made_of(beef_and_broccoli_stir_fry, sesame_oil, 5, 10).
 made_of(beef_and_broccoli_stir_fry, white_rice, 70, 120).
 
-made_of(baked_chicken_breast_with_sweet_potato, chicken_breast, 150, 200).
+made_of(baked_chicken_breast_with_sweet_potato, chicken, 150, 200).
 made_of(baked_chicken_breast_with_sweet_potato, potato, 150, 200).
 made_of(baked_chicken_breast_with_sweet_potato, olive_oil, 10, 20).
 made_of(baked_chicken_breast_with_sweet_potato, rosemary, 2, 5).
@@ -1891,7 +1881,7 @@ made_of(tofu_and_broccoli_stir_fry, ginger, 5, 10).
 made_of(tofu_and_broccoli_stir_fry, sesame_oil, 5, 10).
 made_of(tofu_and_broccoli_stir_fry, white_rice, 60, 150).
 
-made_of(roasted_pork_tenderloin_with_vegetables, pork_tenderloin, 70, 250).
+made_of(roasted_pork_tenderloin_with_vegetables, pork, 70, 250).
 made_of(roasted_pork_tenderloin_with_vegetables, potato, 60, 150).
 made_of(roasted_pork_tenderloin_with_vegetables, carrot, 80, 150).
 made_of(roasted_pork_tenderloin_with_vegetables, onion, 50, 100).
@@ -1906,7 +1896,7 @@ made_of(spaghetti_aglio_e_olio, olive_oil, 10, 20).
 made_of(spaghetti_aglio_e_olio, red_pepper, 1, 5).
 made_of(spaghetti_aglio_e_olio, parmesan_cheese, 20, 40).
 
-made_of(grilled_chicken_salad, chicken_breast, 70, 180).
+made_of(grilled_chicken_salad, chicken, 70, 180).
 made_of(grilled_chicken_salad, lettuce, 80, 150).
 made_of(grilled_chicken_salad, tomato, 50, 100).
 made_of(grilled_chicken_salad, cucumber, 50, 100).
@@ -2002,13 +1992,13 @@ made_of(vegetable_sticks_with_hummus, celery, 50, 100).
 made_of(cheese_and_crackers, cheese, 10, 30).
 made_of(cheese_and_crackers, crackers, 20, 50).
 
-made_of(protein_bar, protein_blend, 25, 50).
+made_of(protein_bar, dairy_protein, 25, 50).
 made_of(protein_bar, oats, 10, 20).
 made_of(protein_bar, nuts, 10, 20).
 made_of(protein_bar, dried_fruits, 5, 10).
 made_of(protein_bar, honey, 5, 10).
 
-made_of(chicken_stir_fry, chicken_breast, 70, 200).
+made_of(chicken_stir_fry, chicken, 70, 200).
 made_of(chicken_stir_fry, bell_peppers, 50, 100).
 made_of(chicken_stir_fry, broccoli, 70, 150).
 made_of(chicken_stir_fry, carrot, 50, 100).
@@ -2039,7 +2029,7 @@ made_of(tomato_soup, vegetable_broth, 100, 200).
 made_of(tomato_soup, olive_oil, 10, 20).
 made_of(tomato_soup, black_pepper, 1, 5).
 
-made_of(grilled_chicken_burger, chicken_patty, 100, 200).
+made_of(grilled_chicken_burger, chicken, 100, 200).
 made_of(grilled_chicken_burger, burger_bun, 50, 70).
 made_of(grilled_chicken_burger, lettuce, 20, 40).
 made_of(grilled_chicken_burger, tomatoes, 20, 40).
@@ -2081,7 +2071,7 @@ made_of(garden_salad, feta_cheese, 20, 40).
 made_of(garden_salad, olive_oil, 10, 20).
 made_of(garden_salad, black_pepper, 1, 5).
 
-made_of(tuna_sandwich, canned_tuna, 90, 150).
+made_of(tuna_sandwich, tuna, 90, 150).
 made_of(tuna_sandwich, celery, 20, 40).
 made_of(tuna_sandwich, onion, 10, 20).
 made_of(tuna_sandwich, lettuce, 30, 50).
@@ -2119,8 +2109,3 @@ made_of(beef_tacos, onion, 10, 20).
 % Computed Diet and Daily Diets
 % ---------
 
-has(daily_diet2,yogurt_banana,[banana-234]).
-has(daily_diet2,turkey_sandwich,[turkey-164,bread-263,spinach-370,tomato-1315]).
-has(daily_diet2,yogurt_banana,[banana-234]).
-has(daily_diet2,turkey_sandwich,[turkey-99,bread-158,spinach-222,tomato-789]).
-has(daily_diet2,english_breakfast,[egg-2498.75390497773,bread-263]).

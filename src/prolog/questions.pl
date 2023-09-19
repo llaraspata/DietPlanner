@@ -8,128 +8,95 @@
 
 %domande
 %testo
+domanda(d1,'Hai restrizioni alimentari da segnalare?').
+domanda(d2,'Mangi carne?').
+domanda(d3,'Mangi pesce e frutti di mare?').
+domanda(d4,'Mangi cibi derivati da animali?').
 
-domanda(d1,'Mangi carne?').
-domanda(d2,'Mangi pesce e frutti di mare?').
-domanda(d3,'Mangi cibi derivati da animali?').
-
+domanda(d5,'Hai da segnalare delle condizioni mediche particolari, o malattie croniche ?').
+domanda(d6,'Hai il diabete?').
+domanda(d7,'Soffri di ipertensione arteriosa?').
+domanda(d8,'Hai il colesterolo alto?').
+domanda(d9,'Soffri di disturbi gastro-intestinali?').
+domanda(d10,'Soffri di problemi renali?').
 
 %da sottoporre in base al bmi
-domanda(d4,'Vuoi aumentare la tua massa muscolare?').
-domanda(d5,'Vuoi dimunuire il tuo grasso corporeo?').
+domanda(d11,'Vuoi raggiungere semplicemente il tuo peso forma?').
+domanda(d12,'Vuoi raggiungere il tuo peso forma e aumentare la tua massa muscolare?').
+domanda(d13,'Vuoi raggiungere il tuo peso forma e dimunuire la percentuale di grasso corporeo?').
+
+domanda(d14,'Ti reputi capace di seguire in modo rigoroso la dieta?').
+domanda(d15,'Fai attenzione ai valori nutrizionali di cio che mangi?').
+
 
 %quando premo il pulsante per avviare la creazione della dieta parte una chiamata al predicato run_inference(Nome, Cognome)
 
-domanda(d17,'Soffri di diabete?').
+dieta per diabetici
+dieta per colesterolo alto
+dieta per disturbi gasto-intestinali
+dieta per problemi renali
 
-%risposte
-%testo 
-risposta(r1,'si').
-risposta(r2,'no').
-risposta(r3,'uomo').
-risposta(r4,'donna').
-risposta(r6,'dinamica').
-risposta(r7,'sedentaria').
+dieta vegetariana 
+dieta vegana
 
-
-dieta onnivora equilibrata
-dieta onnivora iperproteica
-dieta onnivora ipocalorica
-
-dieta vegetariana equilibrata
-dieta vegetariana iperproteica
-dieta vegetariana ipocalorica
-
-dieta vegana equilibrata
-dieta vegana iperproteica
-dieta vegana ipocalorica
+dieta equilibrata
+dieta equilibrata senza pesce
+dieta equilibrata senza carne
+dieta iperproteica
+dieta iperproteica senza pesce
+dieta iperproteica senza carne
+dieta ipocalorica
+dieta ipocalorica senza pesce
+dieta ipocalorica senza carne
 
 
+testo(r1,'si').
+testo(r2,'no').
 
 %domanda
 %risposte possibili per ogni domanda
 risposta(d1,r1).
 risposta(d1,r2).
-risposta(d1,r3).
-risposta(d1,r4).
-risposta(d1,r16).
-risposta(d2,r5).
-risposta(d2,r6).
-risposta(d2,r7).
-risposta(d2,r8).
-risposta(d2,r9).
-risposta(d4,r10).
-risposta(d4,r11).
-risposta(d4,r12).
-risposta(d4,r13).
-risposta(d6,r14).
-risposta(d6,r15).
+risposta(d2,r1).
+risposta(d2,r2).
+risposta(d3,r1).
+risposta(d3,r2).
+risposta(d4,r1).
+risposta(d4,r2).
+risposta(d5,r1).
+risposta(d5,r2).
+risposta(d6,r1).
 risposta(d6,r2).
-risposta(d6,r3).
-risposta(d6,r16).
-risposta(d7,r17).
-risposta(d7,r18).
-risposta(d7,r19).
-risposta(d8,r20).
-risposta(d8,r21).
-risposta(d8,r22).
-risposta(d8,r23).
-risposta(d9,r14).
-risposta(d9,r15).
+risposta(d7,r1).
+risposta(d7,r2).
+risposta(d8,r1).
+risposta(d8,r2).
+risposta(d9,r1).
 risposta(d9,r2).
-risposta(d9,r3).
-risposta(d9,r16).
-risposta(d10,r24).
-risposta(d10,r25).
-risposta(d12,r26).
-risposta(d12,r27).
-risposta(d12,r28).
-risposta(d12,r29).
-risposta(d13,r30).
-risposta(d13,r31).
-risposta(d13,r32).
-risposta(d14,r44).
-risposta(d14,r45).
-risposta(d14,r46).
-risposta(d14,r47).
-risposta(d15,r33).
-risposta(d15,r34).
-risposta(d15,r35).
-risposta(d16,r36).
-risposta(d16,r37).
-risposta(d16,r38).
-risposta(d16,r39).
-risposta(d18,r14).
-risposta(d18,r15).
-risposta(d18,r2).
-risposta(d18,r3).
-risposta(d18,r16).
-risposta(d19,r40).
-risposta(d19,r41).
-risposta(d19,r42).
-risposta(d19,r43).
-risposta(d20,r14).
-risposta(d20,r15).
-risposta(d20,r2).
-risposta(d20,r3).
-risposta(d20,r16).
-risposta(d21,r14).
-risposta(d21,r15).
-risposta(d21,r2).
-risposta(d21,r3).
-risposta(d21,r16).
-risposta(d22,r26).
-risposta(d22,r27).
-risposta(d22,r28).
-risposta(d22,r29).
+risposta(d10,r1).
+risposta(d10,r2).
+risposta(d11,r1).
+risposta(d11,r2).
+risposta(d12,r1).
+risposta(d12,r2).
+risposta(d13,r1).
+risposta(d13,r2).
+
 
 %domanda
 %domanda correlata ad altra domanda
+correlata(d1,d2).
 correlata(d1,d3).
-correlata(d10,d11).
-correlata(d10,d8).
-correlata(d13,d14).
-correlata(d18,d19).
+correlata(d2,d4).
+correlata(d3,d4).
+correlata(d5,d6).
+correlata(d5,d7).
+correlata(d5,d8).
+correlata(d5,d9).
+correlata(d5,d10).
+correlata(d11,d12).
+correlata(d12,d13).
+
 
 
 run_inference(User) :-

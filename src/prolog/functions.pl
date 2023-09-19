@@ -112,7 +112,7 @@ delete_file_content(FileName) :-
 
 % Extracts the max number by the Keys list
 get_unique_keys(Keys) :-
-    setof(Key, X^Y^has(Key, X, Y), Keys).
+    (setof(Key, X^Y^has(Key, X, Y), Keys) ; Keys = [daily_diet0]).
 
 % Gets the correct relationships from a file
 get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships) :-
@@ -686,23 +686,27 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
 
 % Generate the next daily diet id
 generate_new_id_daily_diet(NewDailyDiet) :-
+    writeln('ciao'),
     get_unique_keys(Keys), 
     length(Keys, LengthList),
+    writeln(Keys),
     nth(LengthList, Keys, LastKey),
+    writeln(LastKey),
     sub_atom(LastKey, 10, _, 0, LastNumber),
     atom_number(LastNumber, Index),
+    writeln(Index),
     NewNumber is Index + 1, 
     atomic_concat('daily_diet', NewNumber, NewDailyDiet). 
 
 % Generate a daily diet for a person
 generate_daily_diet(_, []).
 generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
-    writeln(Rest),
+    
     dish_types(DishTypes),
     healthy_weight_nutrient_percentages(MacronutrientLimits),
-
+    
     generate_new_id_daily_diet(NewId),
-
+    writeln(NewId),
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
     

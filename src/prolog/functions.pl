@@ -491,7 +491,7 @@ accumulate_ingredients_from_list([Ingredient-Quantity|Rest], Acc, UniqueIngredie
 
 % Get the list of ingredients in a dish of a daily diet as a flat list
 get_foodbeverages_in_dish(Dish, FoodBeverageList) :-
-    findall(FoodBeverage, made_of(Dish, FoodBeverage), FoodBeverageList).
+    findall(FoodBeverage, made_of(Dish, FoodBeverage, _, _), FoodBeverageList).
 
 % Define a predicate to get dishes whose ingredients do not contain a list of allergens
 get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens) :-

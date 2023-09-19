@@ -192,9 +192,6 @@ fact(126, parent(dietplanner, diet, daily_diet), 1).
 
 fact(127, attribute(dietplanner, daily_diet, name, string), 1).
 fact(128, mandatory(dietplanner, daily_diet, name), 1).
-fact(129, attribute(dietplanner, daily_diet, day_type, select), 1).
-fact(130, values(dietplanner, daily_diet, day_type, [on, off]), 1).
-fact(131, mandatory(dietplanner, daily_diet, day), 1).
 
 
 % ---------

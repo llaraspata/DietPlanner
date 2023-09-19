@@ -1693,26 +1693,6 @@ has_nutrient(greek_yogurt, calcium).
 has_nutrient(blueberries, vitamin_c).
 has_nutrient(blueberries, insoluble_fiber).
 
-part_of(lean_protein, chicken).
-part_of(vitamin_b6, chicken).
-part_of(phosphorus, chicken).
-part_of(iron, spinach).
-part_of(vitamin_k, spinach).
-part_of(vitamin_a, spinach).
-part_of(complex_carbohydrates, oatmeal).
-part_of(soluble_fiber, oatmeal).
-part_of(manganese, oatmeal).
-part_of(omega_3_fatty_acids, salmon).
-part_of(vitamin_d, salmon).
-part_of(vitamin_b12, salmon).
-part_of(monounsaturated_fat, almonds).
-part_of(vitamin_e, almonds).
-part_of(magnesium, almonds).
-part_of(dairy_protein, greek_yogurt).
-part_of(calcium, greek_yogurt).
-part_of(vitamin_c, blueberries).
-part_of(insoluble_fiber, blueberries).
-
 carry_out(alice_johnson, running-1, 4).
 carry_out(bob_smith, swimming-2, 1).
 carry_out(emma_davis, yoga-1.5, 3).
@@ -2109,3 +2089,8 @@ made_of(beef_tacos, onion, 10, 20).
 % Computed Diet and Daily Diets
 % ---------
 
+has(daily_diet1, english_breakfast, [egg-20, bread-50]).
+has(daily_diet1, yogurt_banana, [banana-10]).
+has(daily_diet1, poke, [quinoa-70, salmon-150, tomato-100]).
+has(daily_diet1, yogurt_banana, [banana-10]).
+has(daily_diet1, turkey_sandwich, [turkey-200, bread-70, spinach-200]).

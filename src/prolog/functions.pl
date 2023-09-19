@@ -505,7 +505,7 @@ get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens) :-
 dish_contains_allergens(Dish, Allergens) :-
     get_foodbeverages_in_dish(Dish, FoodBeverageList),
     member(FoodBeverage, FoodBeverageList),
-    is_contained(dietplanner, Allergen, FoodBeverage),
+    is_contained(Allergen, FoodBeverage),
     member(Allergen, Allergens).
 
 % Get dishes whose ingredients don't contain allergens a specific person is allergic to

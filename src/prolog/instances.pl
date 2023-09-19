@@ -1454,245 +1454,574 @@ attribute_value(dietplanner, beef_tacos, type, dinner).
 % ---------------------------------------------------------------------------------
 
 % ---------
-% has_nutrient(foodbeverage, nutrient)
+% has_nutrient(foodbeverage, nutrient, contentPer100g)
 % ---------
+has_nutrient(mozzarella_cheese, complex_carbohydrates, 0.51).
+has_nutrient(mozzarella_cheese, glucose, 0.51).
+has_nutrient(mozzarella_cheese, lactose, 0.01).
+has_nutrient(mozzarella_cheese, dairy_protein, 2.2).
+has_nutrient(mozzarella_cheese, vitamin_d, 0.04).
 
-% Cereals
-has_nutrient(oatmeal, complex_carbohydrates).
-has_nutrient(oatmeal, soluble_fiber).
-has_nutrient(oatmeal, manganese).
-has_nutrient(oatmeal, magnesium).
-has_nutrient(oatmeal, iron).
+has_nutrient(tomato_sauce, complex_carbohydrates, 6.2).
+has_nutrient(tomato_sauce, glucose, 1.3).
+has_nutrient(tomato_sauce, fructose, 0.8).
+has_nutrient(tomato_sauce, insoluble_fiber, 0.5).
+has_nutrient(tomato_sauce, pectin, 0.3).
+has_nutrient(tomato_sauce, starch, 3.1).
+has_nutrient(tomato_sauce, sodium, 0.4).
+has_nutrient(tomato_sauce, vitamin_c, 18.7).
+has_nutrient(tomato_sauce, vitamin_a, 723.0).
+has_nutrient(tomato_sauce, vitamin_k, 7.9).
 
-has_nutrient(corn_flakes, complex_carbohydrates).
-has_nutrient(corn_flakes, glucose).
-has_nutrient(corn_flakes, calcium).
-has_nutrient(corn_flakes, magnesium).
-has_nutrient(corn_flakes, potassium).
+has_nutrient(olive_oil, monounsaturated_fat, 83.0).
+has_nutrient(olive_oil, polyunsaturated_fat, 7.0).
+has_nutrient(olive_oil, vitamin_e, 14.0).
 
-has_nutrient(rice_krispies, complex_carbohydrates).
-has_nutrient(rice_krispies, glucose).
+has_nutrient(pizza_dough, complex_carbohydrates, 35.0).
+has_nutrient(pizza_dough, starch, 23.0).
+has_nutrient(pizza_dough, sodium, 601.0).
 
-has_nutrient(granola, complex_carbohydrates).
-has_nutrient(granola, soluble_fiber).
+has_nutrient(pasta, complex_carbohydrates, 25.0).
+has_nutrient(pasta, starch, 20.0).
+has_nutrient(pasta, sodium, 1.0).
 
-has_nutrient(pasta, complex_carbohydrates).
-has_nutrient(pasta, glucose).
-has_nutrient(pasta, starch).
+has_nutrient(beef, protein, 25.0).
+has_nutrient(beef, iron, 2.5).
+has_nutrient(beef, zinc, 5.0).
+has_nutrient(beef, phosphorus, 200.0).
+has_nutrient(beef, sodium, 60.0).
 
-has_nutrient(durum_wheat_pasta, complex_carbohydrates).
-has_nutrient(durum_wheat_pasta, glucose).
-has_nutrient(durum_wheat_pasta, starch).
+has_nutrient(garlic, complex_carbohydrates, 33.1).
+has_nutrient(garlic, glucose, 1.0).
+has_nutrient(garlic, fructose, 0.2).
+has_nutrient(garlic, soluble_fiber, 2.1).
+has_nutrient(garlic, insoluble_fiber, 0.2).
+has_nutrient(garlic, pectin, 0.2).
+has_nutrient(garlic, vitamin_c, 31.2).
 
-has_nutrient(white_bread, complex_carbohydrates).
-has_nutrient(white_bread, glucose).
+has_nutrient(olive_oil, monounsaturated_fat, 73.0).
+has_nutrient(olive_oil, polyunsaturated_fat, 8.2).
+has_nutrient(olive_oil, vitamin_e, 14.0).
 
-% Eggs
-has_nutrient(row_eggs, tryptophan).
-has_nutrient(row_eggs, leucine).
-has_nutrient(row_eggs, valine).
-has_nutrient(row_eggs, methionine).
-has_nutrient(row_eggs, phenylalanine).
-has_nutrient(row_eggs, vitamin_a).
-has_nutrient(row_eggs, vitamin_d).
-has_nutrient(row_eggs, vitamin_b12).
+has_nutrient(pancakes, complex_carbohydrates, 34.0).
+has_nutrient(pancakes, glucose, 6.0).
+has_nutrient(pancakes, fructose, 6.0).
+has_nutrient(pancakes, starch, 20.0).
+has_nutrient(pancakes, soluble_fiber, 0.2).
+has_nutrient(pancakes, insoluble_fiber, 0.4).
+has_nutrient(pancakes, sodium, 548.0).
 
-has_nutrient(egg_whites, tryptophan).
-has_nutrient(egg_whites, leucine).
-has_nutrient(egg_whites, valine).
-has_nutrient(egg_whites, methionine).
-has_nutrient(egg_whites, phenylalanine).
+has_nutrient(maple_syrup, sucrose, 68.0).
+has_nutrient(maple_syrup, glucose, 7.0).
+has_nutrient(maple_syrup, fructose, 7.0).
+has_nutrient(maple_syrup, oligosaccharides, 2.0).
 
-% Fat and Oils
-has_nutrient(olive_oil, monounsaturated_fat).
+has_nutrient(white_bread, complex_carbohydrates, 45.0).
+has_nutrient(white_bread, glucose, 0.8).
+has_nutrient(white_bread, fructose, 0.8).
+has_nutrient(white_bread, starch, 43.0).
+has_nutrient(white_bread, soluble_fiber, 0.4).
+has_nutrient(white_bread, insoluble_fiber, 0.8).
 
-has_nutrient(coconut_oil, saturated_fats).
+has_nutrient(avocado, monounsaturated_fat, 14.7).
+has_nutrient(avocado, polyunsaturated_fat, 2.0).
+has_nutrient(avocado, vitamin_c, 10.0).
+has_nutrient(avocado, vitamin_k, 21.0).
+has_nutrient(avocado, vitamin_e, 2.1).
 
-has_nutrient(avocado_oil, monounsaturated_fat).
+has_nutrient(oatmeal, complex_carbohydrates, 60.0).
+has_nutrient(oatmeal, soluble_fiber, 4.0).
+has_nutrient(oatmeal, insoluble_fiber, 4.0).
+has_nutrient(oatmeal, vitamin_b3, 1.0).
+has_nutrient(oatmeal, iron, 4.7).
 
-has_nutrient(canola_oil, monounsaturated_fat).
+has_nutrient(blueberries, glucose, 5.4).
+has_nutrient(blueberries, fructose, 5.4).
+has_nutrient(blueberries, soluble_fiber, 2.4).
+has_nutrient(blueberries, insoluble_fiber, 0.9).
+has_nutrient(blueberries, vitamin_c, 9.7).
+has_nutrient(blueberries, vitamin_k, 19.0).
 
-has_nutrient(sesame_oil, polyunsaturated_fat).
+has_nutrient(whole_milk, lactose, 4.8).
+has_nutrient(whole_milk, dairy_protein, 3.3).
+has_nutrient(whole_milk, calcium, 113.0).
+has_nutrient(whole_milk, vitamin_a, 68.0).
+has_nutrient(whole_milk, vitamin_d, 0.5).
+has_nutrient(whole_milk, vitamin_b12, 0.4).
 
-% Fish and Seafood
-has_nutrient(grilled_salmon, omega_3_fatty_acids).
-has_nutrient(grilled_salmon, vitamin_d).
-has_nutrient(grilled_salmon, vitamin_b12).
+has_nutrient(honey, glucose, 35.0).
+has_nutrient(honey, fructose, 40.0).
+has_nutrient(honey, sucrose, 1.0).
 
-has_nutrient(shrimp, tryptophan).
-has_nutrient(shrimp, leucine).
-has_nutrient(shrimp, valine).
-has_nutrient(shrimp, methionine).
-has_nutrient(shrimp, phenylalanine).
+has_nutrient(banana, glucose, 5.4).
+has_nutrient(banana, fructose, 5.4).
+has_nutrient(banana, soluble_fiber, 2.6).
+has_nutrient(banana, vitamin_c, 8.7).
+has_nutrient(banana, potassium, 358.0).
+has_nutrient(banana, vitamin_b6, 0.4).
 
-has_nutrient(tuna, tryptophan).
-has_nutrient(tuna, leucine).
-has_nutrient(tuna, valine).
-has_nutrient(tuna, methionine).
-has_nutrient(tuna, phenylalanine).
+has_nutrient(strawberries, glucose, 4.9).
+has_nutrient(strawberries, fructose, 5.4).
+has_nutrient(strawberries, soluble_fiber, 2.0).
+has_nutrient(strawberries, vitamin_c, 58.8).
+has_nutrient(strawberries, manganese, 0.4).
 
-has_nutrient(cod, tryptophan).
-has_nutrient(cod, leucine).
-has_nutrient(cod, valine).
-has_nutrient(cod, methionine).
-has_nutrient(cod, phenylalanine).
+has_nutrient(yogurt, dairy_protein, 3.5).
+has_nutrient(yogurt, calcium, 110.0).
+has_nutrient(yogurt, vitamin_d, 0.1).
+has_nutrient(yogurt, vitamin_b12, 0.5).
 
-has_nutrient(crab, tryptophan).
-has_nutrient(crab, leucine).
-has_nutrient(crab, valine).
-has_nutrient(crab, methionine).
-has_nutrient(crab, phenylalanine).
+has_nutrient(scrambled_eggs, protein, 13.0).
+has_nutrient(scrambled_eggs, vitamin_b12, 1.1).
+has_nutrient(scrambled_eggs, vitamin_b6, 0.2).
+has_nutrient(scrambled_eggs, vitamin_d, 0.1).
+has_nutrient(scrambled_eggs, zinc, 1.0).
 
-has_nutrient(lobster, tryptophan).
-has_nutrient(lobster, leucine).
-has_nutrient(lobster, valine).
-has_nutrient(lobster, methionine).
-has_nutrient(lobster, phenylalanine).
+has_nutrient(butter, saturated_fats, 51.0).
+has_nutrient(butter, monounsaturated_fat, 21.0).
+has_nutrient(butter, cholesterol, 215.0).
+has_nutrient(butter, vitamin_a, 684.0).
+has_nutrient(butter, vitamin_e, 2.8).
 
-% Fruit and Olives
-has_nutrient(apple, soluble_fiber).
-has_nutrient(apple, insoluble_fiber).
-has_nutrient(apple, pectin).
-has_nutrient(apple, glucose).
-has_nutrient(apple, fructose).
+has_nutrient(skim_milk, lactose, 4.9).
+has_nutrient(skim_milk, dairy_protein, 3.4).
+has_nutrient(skim_milk, calcium, 125.0).
+has_nutrient(skim_milk, vitamin_a, 39.0).
+has_nutrient(skim_milk, vitamin_d, 0.4).
+has_nutrient(skim_milk, vitamin_b12, 0.5).
 
-has_nutrient(banana, complex_carbohydrates).
-has_nutrient(banana, glucose).
-has_nutrient(banana, fructose).
-has_nutrient(banana, potassium).
+has_nutrient(greek_yogurt, dairy_protein, 10.0).
+has_nutrient(greek_yogurt, calcium, 150.0).
+has_nutrient(greek_yogurt, vitamin_d, 0.2).
+has_nutrient(greek_yogurt, vitamin_b12, 0.5).
 
-has_nutrient(grapes, glucose).
-has_nutrient(grapes, fructose).
+has_nutrient(granola, complex_carbohydrates, 64.0).
+has_nutrient(granola, glucose, 16.0).
+has_nutrient(granola, fructose, 16.0).
+has_nutrient(granola, soluble_fiber, 2.0).
+has_nutrient(granola, insoluble_fiber, 7.0).
+has_nutrient(granola, protein, 8.0).
 
-has_nutrient(olive, monounsaturated_fat).
+has_nutrient(boiled_eggs, protein, 13.0).
+has_nutrient(boiled_eggs, vitamin_b12, 1.1).
+has_nutrient(boiled_eggs, vitamin_b6, 0.2).
+has_nutrient(boiled_eggs, vitamin_d, 0.1).
+has_nutrient(boiled_eggs, zinc, 1.0).
 
-has_nutrient(orange, vitamin_c).
-has_nutrient(orange, glucose).
-has_nutrient(orange, fructose).
+has_nutrient(ham, protein, 20.0).
+has_nutrient(ham, sodium, 1200.0).
+has_nutrient(ham, phosphorus, 254.0).
+has_nutrient(ham, potassium, 311.0).
+has_nutrient(ham, zinc, 3.1).
 
-has_nutrient(blueberries, vitamin_c).
-has_nutrient(blueberries, insoluble_fiber).
+has_nutrient(grana_cheese, dairy_protein, 32.0).
+has_nutrient(grana_cheese, calcium, 1184.0).
+has_nutrient(grana_cheese, phosphorus, 968.0).
+has_nutrient(grana_cheese, sodium, 1570.0).
+has_nutrient(grana_cheese, vitamin_a, 1250.0).
 
-has_nutrient(chicken, tryptophan).
-has_nutrient(chicken, leucine).
-has_nutrient(chicken, valine).
-has_nutrient(chicken, methionine).
-has_nutrient(chicken, phenylalanine).
-has_nutrient(chicken, vitamin_b6).
-has_nutrient(chicken, vitamin_b12).
+has_nutrient(bell_pepper, glucose, 2.9).
+has_nutrient(bell_pepper, fructose, 2.6).
+has_nutrient(bell_pepper, soluble_fiber, 0.9).
+has_nutrient(bell_pepper, insoluble_fiber, 1.1).
+has_nutrient(bell_pepper, vitamin_c, 128.0).
+has_nutrient(bell_pepper, vitamin_a, 3131.0).
 
-% Meat
-has_nutrient(beef, tryptophan).
-has_nutrient(beef, leucine).
-has_nutrient(beef, valine).
-has_nutrient(beef, methionine).
-has_nutrient(beef, phenylalanine).
-has_nutrient(beef, iron).
-has_nutrient(beef, zinc).
+has_nutrient(onion, complex_carbohydrates, 9.0).
+has_nutrient(onion, glucose, 2.3).
+has_nutrient(onion, fructose, 2.6).
+has_nutrient(onion, soluble_fiber, 1.7).
+has_nutrient(onion, insoluble_fiber, 1.3).
+has_nutrient(onion, vitamin_c, 7.4).
 
-has_nutrient(pork, tryptophan).
-has_nutrient(pork, leucine).
-has_nutrient(pork, valine).
-has_nutrient(pork, methionine).
-has_nutrient(pork, phenylalanine).
-has_nutrient(pork, thiamin).
-has_nutrient(pork, niacin).
+has_nutrient(lettuce, glucose, 0.5).
+has_nutrient(lettuce, fructose, 0.3).
+has_nutrient(lettuce, soluble_fiber, 0.5).
+has_nutrient(lettuce, insoluble_fiber, 0.5).
+has_nutrient(lettuce, vitamin_c, 5.0).
+has_nutrient(lettuce, vitamin_k, 116.0).
 
-has_nutrient(lamb, tryptophan).
-has_nutrient(lamb, leucine).
-has_nutrient(lamb, valine).
-has_nutrient(lamb, methionine).
-has_nutrient(lamb, phenylalanine).
-has_nutrient(lamb, vitamin_b12).
-has_nutrient(lamb, zinc).
+has_nutrient(chicken, protein, 27.3).
+has_nutrient(chicken, phosphorus, 239.0).
+has_nutrient(chicken, potassium, 256.0).
+has_nutrient(chicken, sodium, 74.0).
+has_nutrient(chicken, zinc, 1.3).
 
-has_nutrient(horse, tryptophan).
-has_nutrient(horse, leucine).
-has_nutrient(horse, valine).
-has_nutrient(horse, methionine).
-has_nutrient(horse, phenylalanine).
-has_nutrient(horse, vitamin_b12).
+has_nutrient(croutons, complex_carbohydrates, 54.0).
+has_nutrient(croutons, glucose, 0.0).
+has_nutrient(croutons, fructose, 0.0).
+has_nutrient(croutons, soluble_fiber, 0.0).
+has_nutrient(croutons, insoluble_fiber, 3.6).
+has_nutrient(croutons, sodium, 554.0).
 
-% Milk and Cheese
-has_nutrient(skim_milk, calcium).
-has_nutrient(skim_milk, vitamin_d).
-has_nutrient(skim_milk, vitamin_a).
-has_nutrient(skim_milk, protein).
+has_nutrient(lemon, glucose, 2.5).
+has_nutrient(lemon, fructose, 2.5).
+has_nutrient(lemon, soluble_fiber, 1.0).
+has_nutrient(lemon, insoluble_fiber, 1.0).
+has_nutrient(lemon, vitamin_c, 53.0).
 
-has_nutrient(whole_milk, calcium).
-has_nutrient(whole_milk, vitamin_d).
-has_nutrient(whole_milk, vitamin_a).
-has_nutrient(whole_milk, vitamin_k).
-has_nutrient(whole_milk, vitamin_e).
-has_nutrient(whole_milk, vitamin_b6).
-has_nutrient(whole_milk, vitamin_b12).
+has_nutrient(quinoa, complex_carbohydrates, 64.0).
+has_nutrient(quinoa, glucose, 2.5).
+has_nutrient(quinoa, fructose, 2.5).
+has_nutrient(quinoa, soluble_fiber, 2.8).
+has_nutrient(quinoa, insoluble_fiber, 1.3).
+has_nutrient(quinoa, protein, 14.0).
+has_nutrient(quinoa, magnesium, 197.0).
+has_nutrient(quinoa, phosphorus, 457.0).
+has_nutrient(quinoa, potassium, 563.0).
+has_nutrient(quinoa, zinc, 2.8).
 
-has_nutrient(reduced_fat_milk, calcium).
-has_nutrient(reduced_fat_milk, vitamin_d).
-has_nutrient(reduced_fat_milk, vitamin_a).
-has_nutrient(reduced_fat_milk, vitamin_b12).
-has_nutrient(reduced_fat_milk, dairy_protein).
+has_nutrient(broccoli, glucose, 1.7).
+has_nutrient(broccoli, fructose, 1.7).
+has_nutrient(broccoli, soluble_fiber, 1.2).
+has_nutrient(broccoli, insoluble_fiber, 2.7).
+has_nutrient(broccoli, vitamin_c, 89.2).
+has_nutrient(broccoli, vitamin_k, 101.6).
+has_nutrient(broccoli, vitamin_a, 623.0).
+has_nutrient(broccoli, vitamin_b6, 0.2).
 
-has_nutrient(soy_milk, calcium).
-has_nutrient(soy_milk, vitamin_d).
-has_nutrient(soy_milk, vitamin_a).
-has_nutrient(soy_milk, vitamin_b12).
-has_nutrient(soy_milk, soy_protein).
+has_nutrient(carrot, glucose, 4.7).
+has_nutrient(carrot, fructose, 3.2).
+has_nutrient(carrot, soluble_fiber, 1.6).
+has_nutrient(carrot, insoluble_fiber, 2.8).
+has_nutrient(carrot, vitamin_a, 16706.0).
+has_nutrient(carrot, vitamin_k, 13.2).
 
-has_nutrient(almond_milk, calcium).
-has_nutrient(almond_milk, vitamin_d).
-has_nutrient(almond_milk, vitamin_e).
-has_nutrient(almond_milk, vitamin_b12).
-has_nutrient(almond_milk, monounsaturated_fat).
-has_nutrient(almond_milk, polyunsaturated_fat).
+has_nutrient(spinach, glucose, 0.4).
+has_nutrient(spinach, fructose, 0.4).
+has_nutrient(spinach, soluble_fiber, 0.5).
+has_nutrient(spinach, insoluble_fiber, 0.7).
+has_nutrient(spinach, vitamin_c, 47.0).
+has_nutrient(spinach, vitamin_k, 482.0).
+has_nutrient(spinach, vitamin_a, 469.0).
 
-has_nutrient(coconut_milk, calcium).
-has_nutrient(coconut_milk, iron).
-has_nutrient(coconut_milk, vitamin_d).
-has_nutrient(coconut_milk, vitamin_a).
-has_nutrient(coconut_milk, saturated_fats).
+has_nutrient(ginger, glucose, 1.7).
+has_nutrient(ginger, fructose, 0.4).
+has_nutrient(ginger, soluble_fiber, 0.2).
+has_nutrient(ginger, insoluble_fiber, 0.2).
 
-has_nutrient(grana_cheese, calcium).
-has_nutrient(grana_cheese, protein).
-has_nutrient(grana_cheese, phosphorus).
-has_nutrient(grana_cheese, vitamin_a).
-has_nutrient(grana_cheese, vitamin_k).
+has_nutrient(sesame_oil, monounsaturated_fat, 39.7).
+has_nutrient(sesame_oil, polyunsaturated_fat, 41.7).
+has_nutrient(sesame_oil, vitamin_k, 13.6).
 
-has_nutrient(gorgonzola_cheese, calcium).
-has_nutrient(gorgonzola_cheese, protein).
-has_nutrient(gorgonzola_cheese, phosphorus).
-has_nutrient(gorgonzola_cheese, vitamin_a).
-has_nutrient(gorgonzola_cheese, vitamin_k).
+has_nutrient(white_rice, complex_carbohydrates, 28.2).
+has_nutrient(white_rice, starch, 28.2).
 
-% Mushrooms
-has_nutrient(button_mushroom, phosphorus).
-has_nutrient(button_mushroom, potassium).
-has_nutrient(button_mushroom, magnesium).
-has_nutrient(button_mushroom, zinc).
+has_nutrient(salmon, protein, 25.6).
+has_nutrient(salmon, omega_3_fatty_acids, 2.2).
+has_nutrient(salmon, vitamin_d, 570.0).
+
+has_nutrient(asparagus, glucose, 0.9).
+has_nutrient(asparagus, fructose, 0.5).
+has_nutrient(asparagus, soluble_fiber, 1.0).
+has_nutrient(asparagus, insoluble_fiber, 1.0).
+has_nutrient(asparagus, vitamin_k, 41.0).
+has_nutrient(asparagus, vitamin_a, 38.0).
+has_nutrient(asparagus, folate, 52.0).
+
+has_nutrient(porcini_mushroom, glucose, 0.5).
+has_nutrient(porcini_mushroom, insoluble_fiber, 1.5).
+has_nutrient(porcini_mushroom, vitamin_d, 0.1).
+has_nutrient(porcini_mushroom, iron, 2.4).
+
+has_nutrient(bell_peppers, glucose, 2.9).
+has_nutrient(bell_peppers, fructose, 2.6).
+has_nutrient(bell_peppers, soluble_fiber, 0.9).
+has_nutrient(bell_peppers, insoluble_fiber, 1.1).
+has_nutrient(bell_peppers, vitamin_c, 128.0).
+has_nutrient(bell_peppers, vitamin_a, 3131.0).
+
+has_nutrient(zucchini, glucose, 2.5).
+has_nutrient(zucchini, fructose, 1.2).
+has_nutrient(zucchini, soluble_fiber, 1.0).
+has_nutrient(zucchini, insoluble_fiber, 1.2).
+has_nutrient(zucchini, vitamin_c, 17.9).
+
+has_nutrient(eggplant, glucose, 0.9).
+has_nutrient(eggplant, fructose, 0.9).
+has_nutrient(eggplant, soluble_fiber, 1.8).
+has_nutrient(eggplant, insoluble_fiber, 1.0).
+has_nutrient(eggplant, vitamin_c, 2.2).
+
+has_nutrient(onion, complex_carbohydrates, 9.0).
+has_nutrient(onion, glucose, 2.3).
+has_nutrient(onion, fructose, 2.6).
+has_nutrient(onion, soluble_fiber, 1.7).
+has_nutrient(onion, insoluble_fiber, 1.3).
+has_nutrient(onion, vitamin_c, 7.4).
+
+has_nutrient(shrimp, protein, 24.0).
+has_nutrient(shrimp, phosphorus, 198.0).
+has_nutrient(shrimp, selenium, 48.0).
+has_nutrient(shrimp, vitamin_b12, 1.2).
+
+has_nutrient(tofu, plant_protein, 8.2).
+has_nutrient(tofu, calcium, 350.0).
+has_nutrient(tofu, iron, 5.4).
+has_nutrient(tofu, magnesium, 37.0).
+
+has_nutrient(rice_paper_wrappers, complex_carbohydrates, 76.0).
+
+has_nutrient(rice_noodles, complex_carbohydrates, 25.0).
+
+has_nutrient(potato, glucose, 1.0).
+has_nutrient(potato, fructose, 0.5).
+has_nutrient(potato, soluble_fiber, 0.8).
+has_nutrient(potato, insoluble_fiber, 0.7).
+has_nutrient(potato, vitamin_c, 19.7).
+has_nutrient(potato, potassium, 429.0).
+has_nutrient(potato, vitamin_b6, 0.3).
+
+has_nutrient(rosemary, vitamin_c, 61.2).
+has_nutrient(rosemary, vitamin_a, 440.0).
+has_nutrient(rosemary, vitamin_b6, 0.3).
+
+has_nutrient(black_pepper, glucose, 42.0).
+has_nutrient(black_pepper, fructose, 9.0).
+
+has_nutrient(shortcrust_pastry, complex_carbohydrates, 42.0).
+has_nutrient(shortcrust_pastry, glucose, 2.0).
+has_nutrient(shortcrust_pastry, fructose, 2.0).
+has_nutrient(shortcrust_pastry, saturated_fats, 23.0).
+has_nutrient(shortcrust_pastry, monounsaturated_fat, 9.0).
+has_nutrient(shortcrust_pastry, polyunsaturated_fat, 1.0).
+
+has_nutrient(chocolate_chips, glucose, 56.0).
+has_nutrient(chocolate_chips, fructose, 32.0).
+
+has_nutrient(burger_bun, complex_carbohydrates, 46.0).
+has_nutrient(burger_bun, glucose, 8.0).
+has_nutrient(burger_bun, fructose, 8.0).
+has_nutrient(burger_bun, starch, 30.0).
+has_nutrient(burger_bun, insoluble_fiber, 1.0).
+
+has_nutrient(fresh_mozzarella, dairy_protein, 22.0).
+has_nutrient(fresh_mozzarella, calcium, 463.0).
+has_nutrient(fresh_mozzarella, vitamin_d, 0.2).
+
+has_nutrient(porcini_mushroom, glucose, 0.5).
+has_nutrient(porcini_mushroom, insoluble_fiber, 1.5).
+has_nutrient(porcini_mushroom, vitamin_d, 0.1).
+has_nutrient(porcini_mushroom, iron, 2.4).
+
+has_nutrient(olives_black, insoluble_fiber, 3.3).
+
+has_nutrient(lettuce, glucose, 0.5).
+has_nutrient(lettuce, fructose, 0.3).
+has_nutrient(lettuce, soluble_fiber, 0.5).
+has_nutrient(lettuce, insoluble_fiber, 0.5).
+has_nutrient(lettuce, vitamin_c, 5.0).
+has_nutrient(lettuce, vitamin_k, 116.0).
+
+has_nutrient(tomato, glucose, 2.4).
+has_nutrient(tomato, fructose, 2.3).
+has_nutrient(tomato, soluble_fiber, 1.0).
+has_nutrient(tomato, insoluble_fiber, 0.7).
+has_nutrient(tomato, vitamin_c, 14.0).
+has_nutrient(tomato, vitamin_a, 833.0).
+
+has_nutrient(cucumber, glucose, 0.6).
+has_nutrient(cucumber, fructose, 0.8).
+has_nutrient(cucumber, soluble_fiber, 0.2).
+has_nutrient(cucumber, insoluble_fiber, 0.3).
+has_nutrient(cucumber, vitamin_c, 2.8).
+has_nutrient(cucumber, vitamin_k, 16.4).
+
+has_nutrient(red_onion, complex_carbohydrates, 8.0).
+has_nutrient(red_onion, glucose, 2.3).
+has_nutrient(red_onion, fructose, 2.6).
+has_nutrient(red_onion, soluble_fiber, 1.7).
+has_nutrient(red_onion, insoluble_fiber, 1.3).
+has_nutrient(red_onion, vitamin_c, 7.4).
+
+has_nutrient(feta_cheese, dairy_protein, 14.0).
+has_nutrient(feta_cheese, calcium, 493.0).
+has_nutrient(feta_cheese, vitamin_d, 0.1).
+has_nutrient(feta_cheese, vitamin_b12, 1.5).
+
+has_nutrient(honey, glucose, 35.0).
+has_nutrient(honey, fructose, 40.0).
+has_nutrient(honey, sucrose, 1.0).
+
+has_nutrient(apple, glucose, 9.0).
+has_nutrient(apple, fructose, 9.0).
+has_nutrient(apple, soluble_fiber, 1.7).
+has_nutrient(apple, insoluble_fiber, 0.3).
+has_nutrient(apple, vitamin_c, 0.5).
+
+has_nutrient(orange, glucose, 8.2).
+has_nutrient(orange, fructose, 8.2).
+has_nutrient(orange, soluble_fiber, 1.8).
+has_nutrient(orange, insoluble_fiber, 0.4).
+has_nutrient(orange, vitamin_c, 53.2).
+
+has_nutrient(grapes, glucose, 16.0).
+has_nutrient(grapes, fructose, 17.0).
+has_nutrient(grapes, soluble_fiber, 0.9).
+has_nutrient(grapes, insoluble_fiber, 0.7).
+has_nutrient(grapes, vitamin_c, 3.2).
+
+has_nutrient(yogurt, dairy_protein, 3.5).
+has_nutrient(yogurt, calcium, 110.0).
+has_nutrient(yogurt, vitamin_d, 0.1).
+has_nutrient(yogurt, vitamin_b12, 0.5).
+
+has_nutrient(granola, complex_carbohydrates, 64.0).
+has_nutrient(granola, glucose, 16.0).
+has_nutrient(granola, fructose, 16.0).
+has_nutrient(granola, soluble_fiber, 2.0).
+has_nutrient(granola, insoluble_fiber, 7.0).
+has_nutrient(granola, protein, 8.0).
+
+has_nutrient(almonds, protein, 21.0).
+has_nutrient(almonds, monounsaturated_fat, 32.0).
+has_nutrient(almonds, polyunsaturated_fat, 13.0).
+has_nutrient(almonds, vitamin_e, 25.0).
+has_nutrient(almonds, magnesium, 268.0).
+
+has_nutrient(peanuts, protein, 25.8).
+has_nutrient(peanuts, monounsaturated_fat, 24.4).
+has_nutrient(peanuts, polyunsaturated_fat, 15.6).
+has_nutrient(peanuts, vitamin_e, 8.3).
+has_nutrient(peanuts, magnesium, 168.0).
+
+has_nutrient(cashews, protein, 18.2).
+has_nutrient(cashews, monounsaturated_fat, 24.4).
+has_nutrient(cashews, polyunsaturated_fat, 8.4).
+has_nutrient(cashews, vitamin_e, 0.9).
+has_nutrient(cashews, magnesium, 292.0).
+
+has_nutrient(walnuts, protein, 15.2).
+has_nutrient(walnuts, monounsaturated_fat, 9.1).
+has_nutrient(walnuts, polyunsaturated_fat, 47.2).
+has_nutrient(walnuts, omega_3_fatty_acids, 9.1).
+has_nutrient(walnuts, omega_6_fatty_acids, 37.2).
+has_nutrient(walnuts, vitamin_e, 0.7).
+
+has_nutrient(pecans, protein, 9.2).
+has_nutrient(pecans, monounsaturated_fat, 40.8).
+has_nutrient(pecans, polyunsaturated_fat, 8.4).
+has_nutrient(pecans, vitamin_e, 0.9).
+has_nutrient(pecans, magnesium, 121.0).
+
+has_nutrient(greek_yogurt, dairy_protein, 10.0).
+has_nutrient(greek_yogurt, calcium, 150.0).
+has_nutrient(greek_yogurt, vitamin_d, 0.2).
+has_nutrient(greek_yogurt, vitamin_b12, 0.5).
+
+has_nutrient(hummus, plant_protein, 8.0).
+has_nutrient(hummus, complex_carbohydrates, 14.0).
+has_nutrient(hummus, soluble_fiber, 2.6).
+
+has_nutrient(carrot, glucose, 4.7).
+has_nutrient(carrot, fructose, 3.2).
+has_nutrient(carrot, soluble_fiber, 1.6).
+has_nutrient(carrot, insoluble_fiber, 2.8).
+has_nutrient(carrot, vitamin_a, 16706.0).
+has_nutrient(carrot, vitamin_k, 13.2).
+
+has_nutrient(cucumber, glucose, 0.6).
+has_nutrient(cucumber, fructose, 0.8).
+has_nutrient(cucumber, soluble_fiber, 0.2).
+has_nutrient(cucumber, insoluble_fiber, 0.3).
+has_nutrient(cucumber, vitamin_c, 2.8).
+has_nutrient(cucumber, vitamin_k, 16.4).
+
+has_nutrient(tomatoes, glucose, 2.4).
+has_nutrient(tomatoes, fructose, 2.3).
+has_nutrient(tomatoes, soluble_fiber, 1.0).
+has_nutrient(tomatoes, insoluble_fiber, 0.7).
+has_nutrient(tomatoes, vitamin_c, 14.0).
+has_nutrient(tomatoes, vitamin_a, 833.0).
+
+has_nutrient(lentils, complex_carbohydrates, 20.1).
+has_nutrient(lentils, glucose, 0.9).
+has_nutrient(lentils, fructose, 0.4).
+has_nutrient(lentils, soluble_fiber, 3.3).
+has_nutrient(lentils, insoluble_fiber, 1.6).
+has_nutrient(lentils, plant_protein, 9.0).
+
+has_nutrient(coconut_milk, saturated_fats, 29.7).
+has_nutrient(coconut_milk, monounsaturated_fat, 5.8).
+has_nutrient(coconut_milk, polyunsaturated_fat, 0.8).
+has_nutrient(coconut_milk, vitamin_c, 2.8).
+
+has_nutrient(black_pepper, glucose, 42.0).
+has_nutrient(black_pepper, fructose, 9.0).
+
+has_nutrient(almond_butter, protein, 21.0).
+has_nutrient(almond_butter, monounsaturated_fat, 24.4).
+has_nutrient(almond_butter, polyunsaturated_fat, 15.6).
+has_nutrient(almond_butter, vitamin_e, 25.0).
+has_nutrient(almond_butter, magnesium, 268.0).
+
+has_nutrient(crackers, complex_carbohydrates, 75.0).
+
+has_nutrient(oats, complex_carbohydrates, 60.0).
+has_nutrient(oats, soluble_fiber, 10.6).
+has_nutrient(oats, insoluble_fiber, 1.7).
+has_nutrient(oats, protein, 16.9).
+
+has_nutrient(nuts, protein, 21.2).
+has_nutrient(nuts, monounsaturated_fat, 24.2).
+has_nutrient(nuts, polyunsaturated_fat, 14.0).
+has_nutrient(nuts, vitamin_e, 7.5).
+has_nutrient(nuts, magnesium, 251.0).
+
+has_nutrient(dried_fruits, glucose, 63.6).
+has_nutrient(dried_fruits, fructose, 45.0).
+has_nutrient(dried_fruits, soluble_fiber, 6.7).
+has_nutrient(dried_fruits, insoluble_fiber, 3.3).
+has_nutrient(dried_fruits, vitamin_c, 0.8).
+
+has_nutrient(ice, glucose, 0.0).
+has_nutrient(ice, fructose, 0.0).
+has_nutrient(ice, soluble_fiber, 0.0).
+has_nutrient(ice, insoluble_fiber, 0.0).
+
+has_nutrient(celery, glucose, 0.9).
+has_nutrient(celery, fructose, 0.7).
+has_nutrient(celery, soluble_fiber, 1.6).
+has_nutrient(celery, insoluble_fiber, 0.9).
+has_nutrient(celery, vitamin_k, 29.3).
+
+has_nutrient(shortcrust_pastry, complex_carbohydrates, 42.0).
+has_nutrient(shortcrust_pastry, glucose, 2.0).
+has_nutrient(shortcrust_pastry, fructose, 2.0).
+has_nutrient(shortcrust_pastry, saturated_fats, 23.0).
+has_nutrient(shortcrust_pastry, monounsaturated_fat, 9.0).
+has_nutrient(shortcrust_pastry, polyunsaturated_fat, 1.0).
+
+has_nutrient(chocolate_chips, glucose, 56.0).
+has_nutrient(chocolate_chips, fructose, 32.0).
+
+has_nutrient(sushi_rice, complex_carbohydrates, 80.0).
+
+has_nutrient(nori_seaweed, soluble_fiber, 33.0).
+has_nutrient(nori_seaweed, insoluble_fiber, 19.0).
+has_nutrient(nori_seaweed, vitamin_a, 800.0).
+
+has_nutrient(sesame_seeds, complex_carbohydrates, 23.4).
+has_nutrient(sesame_seeds, insoluble_fiber, 8.0).
+has_nutrient(sesame_seeds, monounsaturated_fat, 39.7).
+has_nutrient(sesame_seeds, polyunsaturated_fat, 41.7).
+has_nutrient(sesame_seeds, vitamin_k, 13.6).
+
+has_nutrient(beef_broth, protein, 0.5).
+has_nutrient(beef_broth, sodium, 750.0).
+has_nutrient(beef_broth, potassium, 3.0).
+has_nutrient(beef_broth, iron, 0.1).
+
+has_nutrient(taco_shells, complex_carbohydrates, 72.0).
+has_nutrient(taco_shells, insoluble_fiber, 3.0).
+
+has_nutrient(grana_cheese, dairy_protein, 35.0).
+has_nutrient(grana_cheese, vitamin_b12, 2.0).
 
 
-
-% Other
-has_nutrient(chicken, lean_protein).
-has_nutrient(chicken, vitamin_b6).
-has_nutrient(chicken, phosphorus).
-has_nutrient(spinach, iron).
-has_nutrient(spinach, vitamin_k).
-has_nutrient(spinach, vitamin_a).
-has_nutrient(oatmeal, complex_carbohydrates).
-has_nutrient(oatmeal, soluble_fiber).
-has_nutrient(oatmeal, manganese).
-has_nutrient(salmon, omega_3_fatty_acids).
-has_nutrient(salmon, vitamin_d).
-has_nutrient(salmon, vitamin_b12).
-has_nutrient(almonds, monounsaturated_fat).
-has_nutrient(almonds, vitamin_e).
-has_nutrient(almonds, magnesium).
-has_nutrient(greek_yogurt, dairy_protein).
-has_nutrient(greek_yogurt, calcium).
-has_nutrient(blueberries, vitamin_c).
-has_nutrient(blueberries, insoluble_fiber).
-
+% ---------
+% carry_out(person, activity-housPerTime, numberOfDays)
+% ---------
 carry_out(alice_johnson, running-1, 4).
 carry_out(bob_smith, swimming-2, 1).
 carry_out(emma_davis, yoga-1.5, 3).
@@ -1709,6 +2038,9 @@ carry_out(michael_brown, basketball-1.5, 3).
 carry_out(sophia_miller, cycling_race-3, 6).
 carry_out(sophia_miller, nature_walk-1, 1).
 
+% ---------
+% is_allergic(person, allergen)
+% ---------
 is_allergic(alice_johnson, dairy).
 is_allergic(bob_smith, peanuts).
 is_allergic(emma_davis, soy).
@@ -1720,6 +2052,9 @@ is_allergic(emma_davis, gluten).
 is_allergic(michael_brown, peanuts).
 is_allergic(sophia_miller, soy).
 
+% ---------
+% is_contained(allergen, foodbeverage)
+% ---------
 is_contained(nuts, almond_milk).
 is_contained(shellfish, shrimp).
 is_contained(shellfish, crab).

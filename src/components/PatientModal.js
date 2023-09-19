@@ -58,7 +58,7 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
     let {allergens, activities} = useGetActivityAllergenNames();
     const [patient, setPatient] = useState({});
     const [patientActivities, setPatientActivities] = useState([]);
-    let energyDemand = useGetComputedCalories(patient);
+    let energyDemand = useGetComputedCalories(structuredClone(patient));
 
     useEffect(() => {
         if(open && Object.keys(defaultPatient).length !== 0) {
@@ -68,8 +68,6 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
             setPatient(structuredClone(def))
         }
     }, [open])
-
-    console.log(patient)
 
     useEffect(() => {
         let newPatient = {...patient}

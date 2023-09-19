@@ -54,6 +54,8 @@ export function useGetComputedCalories(patient){
         if(patient && patient.name && patient.surname && patient.age &&
             patient.gender && patient.height && patient.weight) {
             consultFunctionsInstances(session).then(() => {
+                patient.name = patient.name.replace(/\s/g, '');
+                patient.surname = patient.surname.replace(/\s/g, '');
                 let patientCode = `${patient.name.toLowerCase()}_${patient.surname.toLowerCase()}`
                 session.consult(`
                     person_instance(dietplanner, person, ${patientCode}).

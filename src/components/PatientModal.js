@@ -46,6 +46,9 @@ const MIN_WEIGHT = 0
 const MAX_WEIGHT = 600
 const MIN_NUMBER_DAYS_ON = 0
 const MAX_NUMBER_DAYS_ON = 7
+const MIN_NUMBER_DAYS_ON_ACTIVITY = 1
+const MIN_ACTIVITY_DURATION = 1
+const MAX_ACTIVITY_DURATION = 300
 
 const PillsGridContainer = styled(Grid)(({ theme }) => ({
     paddingLeft: "1rem",
@@ -102,7 +105,11 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
 
     const onChangePatientActivity = (newValue, field, index) => {
         let newPatientActivities = structuredClone(patientActivities);
-        newPatientActivities[index][field] = newValue
+        if(field === "numberDayOn")
+            newPatientActivities[index][field] = Math.min(patient.numberDayOn, Math.max(MIN_NUMBER_DAYS_ON_ACTIVITY, parseInt(newValue)))
+        else if(field === "avgMinutes")
+            newPatientActivities[index][field] = Math.min(MAX_ACTIVITY_DURATION, Math.max(MIN_ACTIVITY_DURATION, parseInt(newValue)))
+        else newPatientActivities[index][field] = newValue
         setPatientActivities(structuredClone(newPatientActivities))
     }
 
@@ -129,14 +136,33 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
         close()
     }
 
+    const isSaveEnabled = () => {
+        if(
+            patient.name && patient.surname && patient.age && !isNaN(patient.age) && patient.gender &&
+            patient.height && !isNaN(patient.height) && patient.weight && !isNaN(patient.weight) &&
+            patient.numberDayOn !== null && patient.numberDayOn !== undefined && !isNaN(patient.numberDayOn)
+        ) {
+            if(patient.numberDayOn === 0) return true;
+            else {
+                let allCorrect = true
+                patientActivities.map(pa => {
+                    if(!pa.activity || !pa.numberDayOn || isNaN(pa.numberDayOn) || !pa.avgMinutes || isNaN(pa.avgMinutes))
+                        allCorrect = false;
+                })
+                if(allCorrect) return true;
+                else return false;
+            }
+        } else return false
+    }
+
     return (
         <Dialog open={open} onClose={close} classes={{paper: classes.paper}}>
             <DialogTitle style={{textAlign: "right"}}>
                 <IconButton aria-label="cancel" onClick={close}>
                     <CancelRoundedIcon color="secondary"/>
                 </IconButton>
-                <IconButton aria-label="save" onClick={save}>
-                    <CheckCircleRoundedIcon color="secondary"/>
+                <IconButton aria-label="save" onClick={save} disabled={!isSaveEnabled()}>
+                    <CheckCircleRoundedIcon color={isSaveEnabled() ? "secondary" : "gray"}/>
                 </IconButton>
             </DialogTitle>
             <DialogContent className={classes.root}>
@@ -252,7 +278,7 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
                                             <TextInput
                                                 value={pa.numberDayOn} required type="number"
                                                 label="Days a week this activity" id={`numberDayOn-${index}`}
-                                                step={1} min={1} max={patient.numberDayOn}
+                                                step={1} min={MIN_NUMBER_DAYS_ON_ACTIVITY} max={patient.numberDayOn}
                                                 onTextChange={(value) => onChangePatientActivity(value, "numberDayOn", index)}
                                             />
                                         </Grid>
@@ -260,15 +286,18 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
                                             <TextInput
                                                 value={pa.avgMinutes} required type="number"
                                                 label="Minutes for a session" id={`avgMinutes-${index}`}
-                                                step={1} min={1} max={24*60}
+                                                step={1} min={MIN_ACTIVITY_DURATION} max={MAX_ACTIVITY_DURATION}
                                                 onTextChange={(value) => onChangePatientActivity(value, "avgMinutes", index)}
                                             />
                                         </Grid>
-                                        <Grid item xs={1} spacing={0}>
-                                            <IconButton aria-label="delete" onClick={() => deletePatientActivity(index)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Grid>
+                                        {index !== 0 &&
+                                            <Grid item xs={1} spacing={0}>
+                                                <IconButton aria-label="delete"
+                                                            onClick={() => deletePatientActivity(index)}>
+                                                    <DeleteIcon/>
+                                                </IconButton>
+                                            </Grid>
+                                        }
                                     </Grid>
                                 )
                             }

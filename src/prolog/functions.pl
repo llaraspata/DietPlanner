@@ -27,6 +27,7 @@ female_bmr_constant(655.1).
 
 % TODO: comment
 dish_types([breakfast, snack, lunch, snack, dinner]).
+daily_diet_names([daily_diet1, daily_diet2, daily_diet3, daily_diet4, daily_diet5, daily_diet6, daily_diet7]).
 
 % Checks on generated Daily Diet
 healthy_weight_nutrient_percentages([carbs-45-65, protein-15-20, lipids-20-35, dietary_fiber-1-5]).
@@ -45,6 +46,19 @@ compare_second_param(Order, Sublist1, Sublist2) :-
     nth0(1, Sublist2, Param2),
     compare(Order, Param2, Param1).
 
+order_list_by_values(Values, Keys, OrderedList) :-
+    map_list(Values, Keys, Pairs),
+    keysort(Pairs, SortedPairs),
+    pairs_values(SortedPairs, OrderedList).
+
+map_list([], [], []).
+map_list([Value|Values], [Key|Keys], [Value-Key|Rest]) :-
+    map_list(Values, Keys, Rest).
+
+% Predicato per confrontare due elementi [_, Value1] e [_, Value2]
+compare_values(Order, [_, Value1], [_, Value2]) :-
+    compare(Order, Value2, Value1).
+
 % Creates an empty list of N elements/days
 create_days_list(0, []).
 create_days_list(N, [[] | Rest]) :-
@@ -55,7 +69,7 @@ create_days_list(N, [[] | Rest]) :-
 % Given a list, where each element is a list, returns the index of the shortest element (among the first and the n-th elements).
 find_shortest_list_index(Lists, N, Index) :-
     (   Lists = []
-    ->  Index = 1  % Lista vuota, restituisci un indice non valido
+    ->  Index = 1  
     ;   find_shortest_list_index(Lists, N, 1, inf, -1, Index)
     ).
 % After analyzing all elements within the given list, returns the index of the shortest one
@@ -110,41 +124,21 @@ delete_file_content(FileName) :-
     close(Stream),
     writeln('File content deleted successfully').
 
-% Extracts the max number by the Keys list
-get_unique_keys(Keys) :-
-    (setof(Key, X^Y^has(Key, X, Y), Keys) ; Keys = [daily_diet0]).
-
-% Gets the correct relationships from a file
-get_final_relationships(DailyDiet, FileName, OldRelationship, NewRelationship, FinalRelationships) :-
-    open(FileName, read, ReadStream),
-    get_correct_relationships(ReadStream, DailyDiet, OldRelationship, [], Relationships),
-    close(ReadStream),
-    append(Relationships, [NewRelationship], FinalRelationships).
-
-% Define a predicate to get correct relationships from a stream
-get_correct_relationships(Stream, DailyDiet, OldRelationship, Acc, Relationships) :-
-    \+ at_end_of_stream(Stream),
-    read(Stream, Term),
-    (
-        Term \= OldRelationship,
-        Term \= end_of_file
-    ->
-        append(Acc, [Term], NewAcc)
-    ;
-        NewAcc = Acc
-    ),
-    get_correct_relationships(Stream, DailyDiet, OldRelationship, NewAcc, Relationships).
-get_correct_relationships(_, _, _, Relationships, Relationships) :-
-    !.
+% Predicato per sostituire un predicato specifico con uno nuovo in una lista
+replace_specific_predicate([], _, _, []).
+replace_specific_predicate([OldPredicate | Rest], OldPredicate, NewPredicate, [NewPredicate | RestModified]) :-
+    replace_specific_predicate(Rest, OldPredicate, NewPredicate, RestModified).
+replace_specific_predicate([Predicate | Rest], OldPredicate, NewPredicate, [Predicate | RestModified]) :-
+    replace_specific_predicate(Rest, OldPredicate, NewPredicate, RestModified).
 
 % Writes a list of relationships in a specified file
-write_relationship([], _).
-write_relationship([Relationships | Rest], FileName) :-
-    add_new_relationship(Relationships, FileName),
-    write_relationship(Rest, FileName).
+write_relationship(_, [], _).
+write_relationship(DailyDiet, [Relationship | Rest], FileName) :-
+    add_new_relationship(Relationship, FileName),
+    write_relationship(DailyDiet, Rest, FileName).
 
 % Process the file's content and find specific instances
-get_list_relationships_in_file(Stream, DailyDiet,  Acc, ListRelationships) :-
+read_relationships_from_file(Stream, Acc, ListRelationships) :-
     \+ at_end_of_stream(Stream),
     read(Stream, Term),
     ( Term \= end_of_file
@@ -153,27 +147,22 @@ get_list_relationships_in_file(Stream, DailyDiet,  Acc, ListRelationships) :-
     ;
         NewAcc = Acc
     ),
-    get_list_relationships_in_file(Stream, DailyDiet, NewAcc, ListRelationships).
-get_list_relationships_in_file(_, _, ListRelationships, ListRelationships) :-
+    read_relationships_from_file(Stream, NewAcc, ListRelationships).
+read_relationships_from_file(_, ListRelationships, ListRelationships) :-
     !.
 
-% Reads the computed daily diet from a file and writes it in another one
-write_daily_diet(FileToRead, FileToWrite) :-
-    open(FileToRead, read, ReadStream), 
-    write_daily_diet_helper(ReadStream, FileToWrite),
-    close(ReadStream).
+select_elements_with_pattern([], _, []).
+select_elements_with_pattern([Element | Rest], Pattern, [Element | RestSelected]) :-
+    Element =.. [has, FirstArg | _], FirstArg = Pattern,
+    select_elements_with_pattern(Rest, Pattern, RestSelected).
+select_elements_with_pattern([_ | Rest], Pattern, SelectedElements) :-
+    select_elements_with_pattern(Rest, Pattern, SelectedElements).
 
-write_daily_diet_helper(Stream, FileToWrite) :-
-    \+ at_end_of_stream(Stream),
-    read(Stream, Term),
-    process_term(Stream, Term, FileToWrite),
-    write_daily_diet_helper(Stream, FileToWrite).
 
-% Writes the previosly read term in the file
-process_term(_, end_of_file, _) :- !.
-process_term(ReadStream, Term, FileToWrite) :-
-    add_new_relationship(Term, FileToWrite),
-    process_term(ReadStream, _, FileToWrite).
+
+get_list_relationships_in_file(Stream, DailyDiet, ListRelationships) :-
+    read_relationships_from_file(Stream, [], TotalList),   
+    select_elements_with_pattern(TotalList, DailyDiet, ListRelationships).
 
 
 % ---------
@@ -455,7 +444,7 @@ find_bmi_energyeffort_dayon(PersonID, BMIValue, EnergyValue, NumberDayOn) :-
 % Get the list of ingredients in a dish of a daily diet as a flat list
 get_ingredients_in_dish(FileName, DailyDiet, Ingredients) :-
     open(FileName, read, Stream),
-    get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
+    get_list_relationships_in_file(Stream, DailyDiet, ListRelationships),
     extract_ingredients_and_dishes(ListRelationships, [], _, IngredientLists, _), % Get the list of dishes
     flatten(IngredientLists, Ingredients),
     close(Stream).
@@ -463,7 +452,7 @@ get_ingredients_in_dish(FileName, DailyDiet, Ingredients) :-
 % Get unique ingredients and cumulative quantities for a daily diet
 unique_ingredients_in_daily_diet(FileName, DailyDiet, UniqueIngredients) :-
     open(FileName, read, Stream),
-    get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
+    get_list_relationships_in_file(Stream, DailyDiet, ListRelationships),
     extract_ingredients_and_dishes(ListRelationships, _, [], _, Dishes), % Get the list of dishes
     remove_duplicates(Dishes, FinalDishes),
     accumulate_ingredients(FileName, FinalDishes, [], UniqueIngredients),
@@ -527,24 +516,40 @@ get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDietDishes) :-
     append(Acc, [Dish], NewAcc ),
     get_daily_diet_dishes(Person, Rest, NewAcc, DailyDietDishes).
 
+equal_lists([], []).
+equal_lists([X|Xs], [X|Ys]) :- 
+    equal_lists(Xs, Ys).
+
 % Get the old ingredient list of a given Dish in a specified DailyDiet
-get_old_ingredient_list(DailyDiet, Dish, ListRelationships, IngredientsList) :-
+get_old_ingredient_list_and_modify_macro(_, [], _, _, _, _, _, _).
+get_old_ingredient_list_and_modify_macro(DailyDiet, [Head|Tail], ListRelationships, Fix, MacroNutrient, Dish, IngredientsList, NewIngredientList) :-
     member(Relation, ListRelationships),
-    Relation = has(DailyDiet, Dish, IngredientsList),
-    !.
+    Relation = has(DailyDiet, Head, IngredientsList),
+    writeln('relaztion'),
+    writeln(Relation),
+    writeln(Head),
+    Dish = Head,
+    find_ingredient_with_highest_nutrient(IngredientsList, MacroNutrient, FoodWithMoreNutrient),
+    change_ingredient_nutrient_grams(Head, IngredientsList, Fix, FoodWithMoreNutrient, [], NewIngredientList),
+    (equal_lists(IngredientsList, NewIngredientList) ->
+        writeln('dentro'),
+        get_old_ingredient_list_and_modify_macro(DailyDiet, Tail, ListRelationships, Fix, MacroNutrient, Dish, [], [])
+    ;
+        !
+    ).
 
 % Fix dish grams accoridng to Macrnutrient check results
-fix_macronutrients_grams(NewId, FileName, Dish, MacroNutrient, Fix, FinalRelationships) :-
+fix_macronutrients_grams(NewId, FileName, ListDish, MacroNutrient, Fix, FinalRelationships) :-
     open(FileName, read, Stream),
-    get_list_relationships_in_file(Stream, NewId, [], ListRelationships),
+    get_list_relationships_in_file(Stream, NewId, ListRelationships),
     !,
     close(Stream),
-    get_old_ingredient_list(NewId, Dish, ListRelationships, IngredientsList),
-    OldRelationship = has(NewId, Dish, IngredientsList),
-    find_ingredient_with_highest_nutrient(IngredientsList, MacroNutrient, FoodWithMoreNutrient),
-    change_ingredient_nutrient_grams(IngredientsList, MacroNutrient, Fix, FoodWithMoreNutrient, [], NewIngredientList),
+    writeln('lista'),
+    writeln(ListDish),
+    get_old_ingredient_list_and_modify_macro(NewId, ListDish, ListRelationships, Fix, MacroNutrient, Dish, OldIngredientList, NewIngredientList),
+    OldRelationship = has(NewId, Dish, OldIngredientList),
     NewRelationship = has(NewId, Dish, NewIngredientList),
-    get_final_relationships(NewId, FileName, OldRelationship, NewRelationship, FinalRelationships).
+    replace_specific_predicate(ListRelationships, OldRelationship, NewRelationship, FinalRelationships).
 
 % Gets the Food in a list of ingredients (Aliments) which has the highest content of a given macronutrient
 find_ingredient_with_highest_nutrient(Aliments, MacroNutrient, FoodWithMore) :- 
@@ -553,108 +558,152 @@ find_ingredient_with_highest_nutrient(Aliments, MacroNutrient, FoodWithMore) :-
     keysort(NutrientContentPairs, SortedPairs),
     reverse(SortedPairs, [Content-FoodWithMore | _]).
 
-% Change the grams of a given food (FoodWithMoreNutrient) in a list of ingredients w.r.t. the fix to be done 
-change_ingredient_nutrient_grams([], _, _, _, NewIngredientList, NewIngredientList).
-change_ingredient_nutrient_grams([FoodBeverage-Grams | Rest], MacroNutrient, Fix, FoodWithMoreNutrient, Acc, NewIngredientList) :-
-    (
-        (FoodBeverage = FoodWithMoreNutrient, Fix = 1) ->
-        % Decrease by 5% 
-        NewGrams is (Grams * 90) / 100
-        ;
-        (FoodBeverage = FoodWithMoreNutrient, Fix = -1) ->
-        % Increase by 5%
-        NewGrams is (Grams * 110) / 100
-        ;
-        % Else (FoodBeverage è diverso da FoodWithMore o Fix non è 1 o -1)
-        NewGrams is Grams
-    ),
-    append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_nutrient_grams(Rest, MacroNutrient, Fix, FoodWithMoreNutrient, NewAcc, NewIngredientList).
+get_old_ingredient_list_and_modify_calories(_, [], _, _, _, _, _).
+get_old_ingredient_list_and_modify_calories(DailyDiet, [Head|Tail], ListRelationships, Fix, Dish, IngredientsList, NewIngredientList) :-
+    member(Relation, ListRelationships),
+    Relation = has(DailyDiet, Head, IngredientsList),
+    Dish = Head,
+    change_ingredient_calories_grams(Head, IngredientsList, Fix, [], NewIngredientList),
+    (equal_lists(IngredientsList, NewIngredientList) ->
+        get_old_ingredient_list_and_modify_calories(DailyDiet, Tail, ListRelationships, Fix, Dish, [], [])
+    ;
+        !
+    ).
 
 % Fix dish grams accoridng to Calories check results
-fix_calories_grams(NewId, FileName, Dish, Fix, FinalRelationships) :-
+fix_calories_grams(NewId, FileName, ListDish, Fix, FinalRelationships) :-
     open(FileName, read, Stream),
-    get_list_relationships_in_file(Stream, NewId, [], ListRelationships),
+    get_list_relationships_in_file(Stream, NewId, ListRelationships),
     !,
     close(Stream),
-    get_old_ingredient_list(NewId, Dish, ListRelationships, IngredientsList),
-    OldRelationship = has(NewId, Dish, IngredientsList),
-    change_ingredient_calories_grams(IngredientsList, Fix, [], NewIngredientList),
+    get_old_ingredient_list_and_modify_calories(NewId, ListDish, ListRelationships, Fix, Dish, OldIngredientList, NewIngredientList),
+    OldRelationship = has(NewId, Dish, OldIngredientList),
     NewRelationship = has(NewId, Dish, NewIngredientList),
-    get_final_relationships(NewId, FileName, OldRelationship, NewRelationship, FinalRelationships).
+    replace_specific_predicate(ListRelationships, OldRelationship, NewRelationship, FinalRelationships).
 
-% Change ingredients' grams w.r.t. the fix to be done 
-change_ingredient_calories_grams([], _, NewIngredientList, NewIngredientList).
-change_ingredient_calories_grams([FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+change_ingredient_nutrient_grams(_, [], _, _, NewIngredientList, NewIngredientList).
+change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWithMoreNutrient, Acc, NewIngredientList) :-
+    made_of(Dish, FoodWithMoreNutrient, Min, Max),
     (
-        Fix = 1 
-    ->
-        % Decrease by 5% 
-        NewGrams is (Grams * 95) / 100
-    ;
-        Fix = -1
-    ->
-        % Increase by 5%
-        NewGrams is (Grams * 105) / 100
+        FoodBeverage = FoodWithMoreNutrient,
+        (
+            % If Fix = 1, Decrease by 5%
+            (Fix = 1) ->
+            (
+                NewGrams is (Grams * 90) / 100,
+                ((NewGrams >= Min, NewGrams =< Max) ->
+                    true
+                ;
+                    NewGrams = Grams
+                )
+            )
+            ;
+            % If Fix = -1, Increase by 5%
+            (Fix = -1) ->
+            (
+                NewGrams is (Grams * 110) / 100,
+                ((NewGrams >= Min, NewGrams =< Max) ->
+                    true
+                ;
+                    NewGrams = Grams
+                )
+            )
+            ;
+            % If Fix = 0
+            (Fix = 0) ->
+            (
+                NewGrams = Grams
+            )
+        )
+        ;
+        % Else (FoodBeverage è diverso da FoodWithMore)
+        NewGrams = Grams
     ),
-    append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_calories_grams(Rest, Fix, NewAcc, NewIngredientList).
+    IntegerNewGrams is round(NewGrams),
+    append(Acc, [FoodBeverage-IntegerNewGrams], NewAcc),
+    change_ingredient_nutrient_grams(Dish, Rest, Fix, FoodWithMoreNutrient, NewAcc, NewIngredientList).
+
+change_ingredient_calories_grams(_, [], _, NewIngredientList, NewIngredientList).  % La versione iniziale aveva 5 argomenti, ho aggiunto un 5° argomento per restituire il risultato.
+change_ingredient_calories_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+    made_of(Dish, FoodWithMoreNutrient, Min, Max),
+    (
+        % If Fix = 1, Decrease by 5%
+        (Fix = 1) ->
+        (
+            NewGrams is (Grams * 90) / 100,
+            ((NewGrams >= Min, NewGrams =< Max) ->
+                true
+            ;
+                NewGrams = Grams
+            )
+        )
+        ;
+        % If Fix = -1, Increase by 5%
+        (Fix = -1) ->
+        (
+            NewGrams is (Grams * 110) / 100,
+            ((NewGrams >= Min, NewGrams =< Max) ->
+                true
+            ;
+                NewGrams = Grams
+            )
+        )
+        ;
+        % If Fix = 0
+        (Fix = 0) ->
+        (
+            NewGrams = Grams
+        )
+    ),
+    IntegerNewGrams is round(NewGrams),
+    append(Acc, [FoodBeverage-IntegerNewGrams], NewAcc),
+    change_ingredient_calories_grams(Dish, Rest, Fix, NewAcc, NewIngredientList),  % Chiamata ricorsiva
+
 
 % Returns the the list of calories, where each element corresponds to the calories of a dish (represented by its ingredients)
 get_dish_calories_lists([], CaloriesList, CaloriesList).
 get_dish_calories_lists([Ingredients | Rest], Acc, CaloriesList) :-
     compute_actual_dish_calories(Ingredients, 0, ActualCalories),
-    append(Acc, [ActualCalories], NewAcc),
+    IntegerCalories is round(ActualCalories),
+    append(Acc, [IntegerCalories], NewAcc),
     get_dish_calories_lists(Rest, NewAcc, CaloriesList).
 
 % Returns the most caloric dish in a daily diet
-get_most_caloric_dish_in_daily_diet(DailyDiet, ListRelationships, Dish) :-
+get_ordered_list_dish_by_calories(ListRelationships, FinalListDish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
-    get_dish_calories_lists(IngredientLists, [], CaloriesList),
-    max_list(CaloriesList, Max),
-    !,
-    nth(Index, CaloriesList, Max),
-    nth(Index, DishList, Dish).
-
+    get_dish_calories_lists(IngredientLists, MacroNutrient, [], CaloriesList),
+    order_list_by_values(CaloriesList, DishList, FinalListDish).
+    
 % Returns the dish with the highest macronutrient quantity in a daily diet
-get_dish_with_highest_nutrient_amount_in_daily_diet(ListRelationships, MacroNutrient, Dish) :-
+get_ordered_list_dish_by_nutrient(ListRelationships, MacroNutrient, FinalListDish) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, DishList),
     get_dish_macronutrient_amount_lists(IngredientLists, MacroNutrient, [], MacroNutrientQuantityList),
-    max_list(MacroNutrientQuantityList, Max),
-    !,
-    nth(Index, MacroNutrientQuantityList, Max),
-    nth(Index, DishList, Dish).
+    order_list_by_values(MacroNutrientQuantityList, DishList, FinalListDish).   
 
 % Returns the list of macronutrient quantities, where each element represents a dish
 get_dish_macronutrient_amount_lists([], _, CaloriesList, CaloriesList).
 get_dish_macronutrient_amount_lists([Ingredients | Rest], MacroNutrient, Acc, CaloriesList) :-
     cumulative_macro_nutrient_percentage(Ingredients, MacroNutrient, Percentage),
-    append(Acc, [Percentage], NewAcc),
+    IntegerPercentage is round(Percentage),
+    append(Acc, [IntegerPercentage], NewAcc),
     get_dish_macronutrient_amount_lists(Rest, MacroNutrient, NewAcc, CaloriesList).
 
 % Generate ingredients' grams for all dishes in a daily diet
-set_grams_for_dish(_, [], []).
-set_grams_for_dish(NewId, [Dish | RestDish], [Calories | RestCalories]) :-
+set_grams_for_dish(_, []).
+set_grams_for_dish(NewId, [Dish | RestDish]) :-
     get_foodbeverages_in_dish(Dish, FoodBeverageList),
-    compute_ingredients_grams(FoodBeverageList, Calories, IngredientLists),
+    actual_foodbeverage_grams(FoodBeverageList, Dish, [], IngredientLists), 
     NewRelationship = has(NewId, Dish, IngredientLists),
     add_new_relationship(NewRelationship, 'temp_computed_diet.pl'),
-    set_grams_for_dish(NewId, RestDish, RestCalories).
-
-% Computes the ingredient's grams given the final daily calories amount for a list of ingredients
-compute_ingredients_grams(FoodBeverageList, Calories, IngredientLists) :-
-    length(FoodBeverageList, NumberIngredients),
-    CaloriesPerIngredient is Calories / NumberIngredients,
-    actual_foodbeverage_grams(FoodBeverageList, CaloriesPerIngredient, [], IngredientLists).
+    set_grams_for_dish(NewId, RestDish).
+ 
 
 % Computes the ingredient's grams given the final daily calories
 actual_foodbeverage_grams([], _, IngredientLists, IngredientLists).
-actual_foodbeverage_grams([FoodBeverage | Rest], Calories, Acc, IngredientLists) :-
-    attribute_value(dietplanner, FoodBeverage, calories, CaloriesPer100g),
-    PortionSizeGrams is round((Calories * 100) / CaloriesPer100g),
-    append(Acc, [FoodBeverage-PortionSizeGrams], NewAcc),
-    actual_foodbeverage_grams(Rest, Calories, NewAcc, IngredientLists).
-
+actual_foodbeverage_grams([FoodBeverage | Rest], Dish, Acc, IngredientLists) :-
+    made_of(Dish, FoodBeverage, Min, _),
+    append(Acc, [FoodBeverage-Min], NewAcc),
+    actual_foodbeverage_grams(Rest, Dish, NewAcc, IngredientLists).
 
 % ---------
 % Daily Diet
@@ -684,38 +733,20 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
     ),
     count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
 
-% Generate the next daily diet id
-generate_new_id_daily_diet(NewDailyDiet) :-
-    writeln('ciao'),
-    get_unique_keys(Keys), 
-    length(Keys, LengthList),
-    writeln(Keys),
-    nth(LengthList, Keys, LastKey),
-    writeln(LastKey),
-    sub_atom(LastKey, 10, _, 0, LastNumber),
-    atom_number(LastNumber, Index),
-    writeln(Index),
-    NewNumber is Index + 1, 
-    atomic_concat('daily_diet', NewNumber, NewDailyDiet). 
-
 % Generate a daily diet for a person
-generate_daily_diet(_, []).
-generate_daily_diet(Person, [TotalDayCalories | Rest]) :-
-    
+generate_daily_diet(_, [], _, []).
+generate_daily_diet(Person, [NewId | RestNames], FileName, [TotalDayCalories | Rest]) :-
     dish_types(DishTypes),
     healthy_weight_nutrient_percentages(MacronutrientLimits),
     
-    generate_new_id_daily_diet(NewId),
-    writeln(NewId),
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
-    get_daily_diet_calories(TotalDayCalories, DailyCalories),
+    get_daily_diet_calories(TotalDayCalories, DailyCalories),  
+    set_grams_for_dish(NewId, DailyDietDishes),
     
-    set_grams_for_dish(NewId, DailyDietDishes, DailyCalories),
-    FileName = 'temp_computed_diet.pl',
-
     check_and_fix_daily_diet(FileName, NewId, MacronutrientLimits, DailyCalories),
+    
 
-    generate_daily_diet(Person, Rest).
+    generate_daily_diet(Person, RestNames, FileName, Rest).
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
 check_and_fix_daily_diet(FileName, NewId, MacronutrientLimits, DailyCalories) :-
@@ -726,9 +757,7 @@ check_and_fix_daily_diet(FileName, NewId, MacronutrientLimits, DailyCalories) :-
             (
                 MacronutrientResult = 0, CaloryResult = 0 ->
                     !,
-                    writeln('Diet generated successfully'),
-                    write_daily_diet(FileName, 'instances.pl'),
-                    delete_file_content(FileName)
+                    writeln('Diet generated successfully')
                 ;
                 MacronutrientResult = -1    ->
                     fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult)
@@ -747,34 +776,39 @@ check_and_fix_daily_diet(FileName, NewId, MacronutrientLimits, DailyCalories) :-
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(FileName, NewId, MacroNutrient, MacronutrientResult) :-
     writeln('Diet does not meet Macronutrients constraints, regenerating...'),
-    read_file_and_find_dish_with_highest_nutrient(FileName, NewId, MacroNutrient, Dish),
-    fix_macronutrients_grams(NewId, FileName, Dish, MacroNutrient, MacronutrientResult, FinalRelationships),
+    read_file_and_get_list_dish_by_nutrient(FileName, NewId, MacroNutrient, ListDish),
+    write('ciao'),
+    write(ListDish),
+    fix_macronutrients_grams(NewId, FileName, ListDish, MacroNutrient, MacronutrientResult, FinalRelationships),
+    writeln('inizio'),
+    writeln(FinalRelationships),
+    writeln('fine'),
     !,
-    delete_file_content(FileName),
-    write_relationship(FinalRelationships, FileName).
+    write_relationship(NewId, FinalRelationships, FileName).
 
 % Fix dish grams w.r.t. calories checks
 fix_calories(FileName, NewId, CaloriesResult) :-
     writeln('Diet does not meet Calories constraints, regenerating...'),
-    read_file_and_find_most_caloric_dish(FileName, NewId, Dish),
-    fix_calories_grams(NewId, FileName, Dish, CaloryResult, FinalRelationships),
+    read_file_and_get_list_dish_by_calories(FileName, NewId, ListDish),
+    fix_calories_grams(NewId, FileName, ListDish, CaloryResult, FinalRelationships),
     !,
-    delete_file_content(FileName),
-    write_relationship(FinalRelationships, FileName).
+    write_relationship(NewId, FinalRelationships, FileName).
 
 % Read a file and find specific instances
-read_file_and_find_most_caloric_dish(FileName, DailyDiet, Dish) :-
+read_file_and_get_list_dish_by_calories(FileName, DailyDiet, ListDish) :-
     open(FileName, read, Stream),
-    get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
-    get_most_caloric_dish_in_daily_diet(DailyDiet, ListRelationships, Dish),
-    close(Stream).
+    get_list_relationships_in_file(Stream, DailyDiet, ListRelationships),
+    close(Stream),
+    get_ordered_list_dish_by_calories(ListRelationships, ListDish).
 
 % Predicate to read a file and find specific instances
-read_file_and_find_dish_with_highest_nutrient(FileName, DailyDiet, MacroNutrient, Dish) :-
+read_file_and_get_list_dish_by_nutrient(FileName, DailyDiet, MacroNutrient, ListDish) :-
     open(FileName, read, Stream),
-    get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
+    get_list_relationships_in_file(Stream, DailyDiet, ListRelationships),
     close(Stream),
-    get_dish_with_highest_nutrient_amount_in_daily_diet(ListRelationships, MacroNutrient, Dish).
+    writeln('prova'),
+    writeln(ListRelationships),
+    get_ordered_list_dish_by_nutrient(ListRelationships, MacroNutrient, ListDish).
 
 % Given a list of terms, gets the list of ingredients and a list of dishes
 extract_ingredients_and_dishes([], AllIngredients, AllDishes, AllIngredients, AllDishes).
@@ -815,7 +849,7 @@ check_macronutrient_percentage(_, _, _, Result, _) :-
 % Checks that the calories in a daily diet is between a specified range
 check_daily_calories(FileName, DailyDiet, DailyCalories, Result) :-
     open(FileName, read, Stream),
-    get_list_relationships_in_file(Stream, DailyDiet, [], ListRelationships),
+    get_list_relationships_in_file(Stream, DailyDiet, ListRelationships),
     close(Stream),
     extract_ingredients_and_dishes(ListRelationships, [], _, IngredientLists, _),
     check_dish_calories(IngredientsList, DailyCalories, Result),
@@ -853,4 +887,7 @@ compute_diet(Name, Surname) :-
     find_person_id(Name, Surname, Person),
     generate_list_calories_week(Person, TotalWeekCaloriesList),
     !,
-    generate_daily_diet(Person, TotalWeekCaloriesList).
+    daily_diet_names(DailyDietNames),
+    FileName = 'temp_computed_diet.pl',
+    delete_file_content(FileName),
+    generate_daily_diet(Person, DailyDietNames, FileName, TotalWeekCaloriesList).

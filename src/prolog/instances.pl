@@ -1181,11 +1181,6 @@ attribute_value(dietplanner, pancakes_and_maple_syrup, name, 'Pancakes and Maple
 attribute_value(dietplanner, pancakes_and_maple_syrup, description, 'Delicious pancakes with maple syrup.').
 attribute_value(dietplanner, pancakes_and_maple_syrup, type, breakfast).
 
-dish_instance(dietplanner, dish, avocado_toast).
-attribute_value(dietplanner, avocado_toast, name, 'Avocado Toast').
-attribute_value(dietplanner, avocado_toast, description, 'Toast with avocado, tomato, and egg.').
-attribute_value(dietplanner, avocado_toast, type, breakfast).
-
 dish_instance(dietplanner, dish, oatmeal_with_berries).
 attribute_value(dietplanner, oatmeal_with_berries, name, 'Oatmeal with Berries').
 attribute_value(dietplanner, oatmeal_with_berries, description, 'Oatmeal with berries and honey.').
@@ -1485,7 +1480,7 @@ has_nutrient(pasta, complex_carbohydrates, 25.0).
 has_nutrient(pasta, starch, 20.0).
 has_nutrient(pasta, sodium, 1.0).
 
-has_nutrient(beef, protein, 25.0).
+has_nutrient(beef, red_meat_protein, 25.0).
 has_nutrient(beef, iron, 2.5).
 has_nutrient(beef, zinc, 5.0).
 has_nutrient(beef, phosphorus, 200.0).
@@ -1571,7 +1566,7 @@ has_nutrient(yogurt, calcium, 110.0).
 has_nutrient(yogurt, vitamin_d, 0.1).
 has_nutrient(yogurt, vitamin_b12, 0.5).
 
-has_nutrient(scrambled_eggs, protein, 13.0).
+has_nutrient(scrambled_eggs, egg_protein, 13.0).
 has_nutrient(scrambled_eggs, vitamin_b12, 1.1).
 has_nutrient(scrambled_eggs, vitamin_b6, 0.2).
 has_nutrient(scrambled_eggs, vitamin_d, 0.1).
@@ -1600,15 +1595,15 @@ has_nutrient(granola, glucose, 16.0).
 has_nutrient(granola, fructose, 16.0).
 has_nutrient(granola, soluble_fiber, 2.0).
 has_nutrient(granola, insoluble_fiber, 7.0).
-has_nutrient(granola, protein, 8.0).
+has_nutrient(granola, dairy_protein, 8.0).
 
-has_nutrient(boiled_eggs, protein, 13.0).
+has_nutrient(boiled_eggs, egg_protein, 13.0).
 has_nutrient(boiled_eggs, vitamin_b12, 1.1).
 has_nutrient(boiled_eggs, vitamin_b6, 0.2).
 has_nutrient(boiled_eggs, vitamin_d, 0.1).
 has_nutrient(boiled_eggs, zinc, 1.0).
 
-has_nutrient(ham, protein, 20.0).
+has_nutrient(ham, lean_protein, 20.0).
 has_nutrient(ham, sodium, 1200.0).
 has_nutrient(ham, phosphorus, 254.0).
 has_nutrient(ham, potassium, 311.0).
@@ -1641,7 +1636,7 @@ has_nutrient(lettuce, insoluble_fiber, 0.5).
 has_nutrient(lettuce, vitamin_c, 5.0).
 has_nutrient(lettuce, vitamin_k, 116.0).
 
-has_nutrient(chicken, protein, 27.3).
+has_nutrient(chicken, lean_protein, 27.3).
 has_nutrient(chicken, phosphorus, 239.0).
 has_nutrient(chicken, potassium, 256.0).
 has_nutrient(chicken, sodium, 74.0).
@@ -1665,7 +1660,7 @@ has_nutrient(quinoa, glucose, 2.5).
 has_nutrient(quinoa, fructose, 2.5).
 has_nutrient(quinoa, soluble_fiber, 2.8).
 has_nutrient(quinoa, insoluble_fiber, 1.3).
-has_nutrient(quinoa, protein, 14.0).
+has_nutrient(quinoa, plant_protein, 14.0).
 has_nutrient(quinoa, magnesium, 197.0).
 has_nutrient(quinoa, phosphorus, 457.0).
 has_nutrient(quinoa, potassium, 563.0).
@@ -1707,7 +1702,7 @@ has_nutrient(sesame_oil, vitamin_k, 13.6).
 has_nutrient(white_rice, complex_carbohydrates, 28.2).
 has_nutrient(white_rice, starch, 28.2).
 
-has_nutrient(salmon, protein, 25.6).
+has_nutrient(salmon, lean_protein, 25.6).
 has_nutrient(salmon, omega_3_fatty_acids, 2.2).
 has_nutrient(salmon, vitamin_d, 570.0).
 
@@ -1724,12 +1719,12 @@ has_nutrient(porcini_mushroom, insoluble_fiber, 1.5).
 has_nutrient(porcini_mushroom, vitamin_d, 0.1).
 has_nutrient(porcini_mushroom, iron, 2.4).
 
-has_nutrient(bell_peppers, glucose, 2.9).
-has_nutrient(bell_peppers, fructose, 2.6).
-has_nutrient(bell_peppers, soluble_fiber, 0.9).
-has_nutrient(bell_peppers, insoluble_fiber, 1.1).
-has_nutrient(bell_peppers, vitamin_c, 128.0).
-has_nutrient(bell_peppers, vitamin_a, 3131.0).
+has_nutrient(bell_pepper, glucose, 2.9).
+has_nutrient(bell_pepper, fructose, 2.6).
+has_nutrient(bell_pepper, soluble_fiber, 0.9).
+has_nutrient(bell_pepper, insoluble_fiber, 1.1).
+has_nutrient(bell_pepper, vitamin_c, 128.0).
+has_nutrient(bell_pepper, vitamin_a, 3131.0).
 
 has_nutrient(zucchini, glucose, 2.5).
 has_nutrient(zucchini, fructose, 1.2).
@@ -1750,7 +1745,7 @@ has_nutrient(onion, soluble_fiber, 1.7).
 has_nutrient(onion, insoluble_fiber, 1.3).
 has_nutrient(onion, vitamin_c, 7.4).
 
-has_nutrient(shrimp, protein, 24.0).
+has_nutrient(shrimp, lean_protein, 24.0).
 has_nutrient(shrimp, phosphorus, 198.0).
 has_nutrient(shrimp, selenium, 48.0).
 has_nutrient(shrimp, vitamin_b12, 1.2).
@@ -1871,34 +1866,34 @@ has_nutrient(granola, glucose, 16.0).
 has_nutrient(granola, fructose, 16.0).
 has_nutrient(granola, soluble_fiber, 2.0).
 has_nutrient(granola, insoluble_fiber, 7.0).
-has_nutrient(granola, protein, 8.0).
+has_nutrient(granola, dairy_protein, 8.0).
 
-has_nutrient(almonds, protein, 21.0).
+has_nutrient(almonds, plant_protein, 21.0).
 has_nutrient(almonds, monounsaturated_fat, 32.0).
 has_nutrient(almonds, polyunsaturated_fat, 13.0).
 has_nutrient(almonds, vitamin_e, 25.0).
 has_nutrient(almonds, magnesium, 268.0).
 
-has_nutrient(peanuts, protein, 25.8).
+has_nutrient(peanuts, plant_protein, 25.8).
 has_nutrient(peanuts, monounsaturated_fat, 24.4).
 has_nutrient(peanuts, polyunsaturated_fat, 15.6).
 has_nutrient(peanuts, vitamin_e, 8.3).
 has_nutrient(peanuts, magnesium, 168.0).
 
-has_nutrient(cashews, protein, 18.2).
+has_nutrient(cashews, plant_protein, 18.2).
 has_nutrient(cashews, monounsaturated_fat, 24.4).
 has_nutrient(cashews, polyunsaturated_fat, 8.4).
 has_nutrient(cashews, vitamin_e, 0.9).
 has_nutrient(cashews, magnesium, 292.0).
 
-has_nutrient(walnuts, protein, 15.2).
+has_nutrient(walnuts, plant_protein, 15.2).
 has_nutrient(walnuts, monounsaturated_fat, 9.1).
 has_nutrient(walnuts, polyunsaturated_fat, 47.2).
 has_nutrient(walnuts, omega_3_fatty_acids, 9.1).
 has_nutrient(walnuts, omega_6_fatty_acids, 37.2).
 has_nutrient(walnuts, vitamin_e, 0.7).
 
-has_nutrient(pecans, protein, 9.2).
+has_nutrient(pecans, plant_protein, 9.2).
 has_nutrient(pecans, monounsaturated_fat, 40.8).
 has_nutrient(pecans, polyunsaturated_fat, 8.4).
 has_nutrient(pecans, vitamin_e, 0.9).
@@ -1949,7 +1944,7 @@ has_nutrient(coconut_milk, vitamin_c, 2.8).
 has_nutrient(black_pepper, glucose, 42.0).
 has_nutrient(black_pepper, fructose, 9.0).
 
-has_nutrient(almond_butter, protein, 21.0).
+has_nutrient(almond_butter, plant_protein, 21.0).
 has_nutrient(almond_butter, monounsaturated_fat, 24.4).
 has_nutrient(almond_butter, polyunsaturated_fat, 15.6).
 has_nutrient(almond_butter, vitamin_e, 25.0).
@@ -1960,9 +1955,9 @@ has_nutrient(crackers, complex_carbohydrates, 75.0).
 has_nutrient(oats, complex_carbohydrates, 60.0).
 has_nutrient(oats, soluble_fiber, 10.6).
 has_nutrient(oats, insoluble_fiber, 1.7).
-has_nutrient(oats, protein, 16.9).
+has_nutrient(oats, plant_protein, 16.9).
 
-has_nutrient(nuts, protein, 21.2).
+has_nutrient(nuts, plant_protein, 21.2).
 has_nutrient(nuts, monounsaturated_fat, 24.2).
 has_nutrient(nuts, polyunsaturated_fat, 14.0).
 has_nutrient(nuts, vitamin_e, 7.5).
@@ -2007,7 +2002,7 @@ has_nutrient(sesame_seeds, monounsaturated_fat, 39.7).
 has_nutrient(sesame_seeds, polyunsaturated_fat, 41.7).
 has_nutrient(sesame_seeds, vitamin_k, 13.6).
 
-has_nutrient(beef_broth, protein, 0.5).
+has_nutrient(beef_broth, red_meat_protein, 0.5).
 has_nutrient(beef_broth, sodium, 750.0).
 has_nutrient(beef_broth, potassium, 3.0).
 has_nutrient(beef_broth, iron, 0.1).
@@ -2087,10 +2082,6 @@ made_of(spaghetti_bolognese, olive_oil, 10, 20).
 made_of(pancakes_and_maple_syrup, pancakes, 30, 70).
 made_of(pancakes_and_maple_syrup, maple_syrup, 5, 10).
 
-made_of(avocado_toast, white_bread, 30, 60).
-made_of(avocado_toast, avocado, 20, 50).
-made_of(avocado_toast, olive_oil, 5, 15).
-
 made_of(oatmeal_with_berries, oatmeal, 40, 80).
 made_of(oatmeal_with_berries, blueberries, 30, 60).
 made_of(oatmeal_with_berries, whole_milk, 60, 90).
@@ -2105,7 +2096,7 @@ made_of(fruit_smoothie, honey, 10, 20).
 made_of(scrambled_eggs_and_toast, scrambled_eggs, 20, 40).
 made_of(scrambled_eggs_and_toast, butter, 5, 10).
 made_of(scrambled_eggs_and_toast, skim_milk, 30, 60).
-made_of(scrambled_eggs_and_toast, white_bread, 20, 60).
+made_of(scrambled_eggs_and_toast, white_bread, 20, 80).
 
 made_of(greek_yogurt_parfait, greek_yogurt, 30, 70).
 made_of(greek_yogurt_parfait, granola, 30, 60).
@@ -2135,7 +2126,7 @@ made_of(quinoa_and_vegetable_stir_fry, sesame_oil, 5, 10).
 
 made_of(turkey_and_avocado_wrap, tortilla_wrap, 30, 70).
 made_of(turkey_and_avocado_wrap, turkey, 50, 100).
-made_of(turkey_and_avocado_wrap, avocado, 50, 100).
+made_of(turkey_and_avocado_wrap, avocado, 40, 100).
 made_of(turkey_and_avocado_wrap, lettuce, 20, 40).
 made_of(turkey_and_avocado_wrap, tomato, 20, 40).
 
@@ -2145,7 +2136,7 @@ made_of(grilled_salmon_with_asparagus, olive_oil, 10, 20).
 made_of(grilled_salmon_with_asparagus, lemon, 1, 2).
 
 made_of(vegetarian_pasta_primavera, pasta, 60, 150).
-made_of(vegetarian_pasta_primavera, bell_peppers, 50, 100).
+made_of(vegetarian_pasta_primavera, bell_pepper, 50, 100).
 made_of(vegetarian_pasta_primavera, broccoli, 50, 100).
 made_of(vegetarian_pasta_primavera, carrot, 30, 60).
 made_of(vegetarian_pasta_primavera, peas, 30, 60).
@@ -2172,7 +2163,7 @@ made_of(spinach_and_feta_stuffed_mushrooms, feta_cheese, 20, 40).
 made_of(spinach_and_feta_stuffed_mushrooms, garlic, 5, 10).
 made_of(spinach_and_feta_stuffed_mushrooms, olive_oil, 10, 20).
 
-made_of(grilled_vegetable_platter, bell_peppers, 60, 150).
+made_of(grilled_vegetable_platter, bell_pepper, 60, 150).
 made_of(grilled_vegetable_platter, zucchini, 70, 150).
 made_of(grilled_vegetable_platter, eggplant, 70, 150).
 made_of(grilled_vegetable_platter, tomato, 50, 100).
@@ -2189,7 +2180,7 @@ made_of(shrimp_scampi, lemon, 1, 2).
 
 made_of(tofu_and_broccoli_stir_fry, tofu, 60, 200).
 made_of(tofu_and_broccoli_stir_fry, broccoli, 70, 150).
-made_of(tofu_and_broccoli_stir_fry, bell_peppers, 50, 100).
+made_of(tofu_and_broccoli_stir_fry, bell_pepper, 50, 100).
 made_of(tofu_and_broccoli_stir_fry, carrot, 30, 60).
 made_of(tofu_and_broccoli_stir_fry, garlic, 5, 10).
 made_of(tofu_and_broccoli_stir_fry, ginger, 5, 10).
@@ -2263,7 +2254,7 @@ made_of(veggie_spring_rolls, rice_paper_wrappers, 2, 5).
 made_of(veggie_spring_rolls, lettuce, 50, 100).
 made_of(veggie_spring_rolls, carrot, 30, 60).
 made_of(veggie_spring_rolls, cucumber, 30, 60).
-made_of(veggie_spring_rolls, bell_peppers, 30, 60).
+made_of(veggie_spring_rolls, bell_pepper, 30, 60).
 made_of(veggie_spring_rolls, tofu, 30, 60).
 made_of(veggie_spring_rolls, rice_noodles, 20, 60).
 
@@ -2301,7 +2292,7 @@ made_of(greek_yogurt_with_honey, honey, 10, 25).
 made_of(vegetable_sticks_with_hummus, hummus, 60, 150).
 made_of(vegetable_sticks_with_hummus, carrot, 50, 100).
 made_of(vegetable_sticks_with_hummus, cucumber, 50, 100).
-made_of(vegetable_sticks_with_hummus, bell_peppers, 50, 100).
+made_of(vegetable_sticks_with_hummus, bell_pepper, 50, 100).
 made_of(vegetable_sticks_with_hummus, celery, 50, 100).
 
 made_of(cheese_and_crackers, cheese, 10, 30).
@@ -2314,7 +2305,7 @@ made_of(protein_bar, dried_fruits, 5, 10).
 made_of(protein_bar, honey, 5, 10).
 
 made_of(chicken_stir_fry, chicken, 70, 200).
-made_of(chicken_stir_fry, bell_peppers, 50, 100).
+made_of(chicken_stir_fry, bell_pepper, 50, 100).
 made_of(chicken_stir_fry, broccoli, 70, 150).
 made_of(chicken_stir_fry, carrot, 50, 100).
 made_of(chicken_stir_fry, peas, 50, 80).
@@ -2324,7 +2315,7 @@ made_of(chicken_stir_fry, sesame_oil, 5, 10).
 made_of(chicken_stir_fry, white_rice, 60, 100).
 
 made_of(pasta_primavera, pasta, 60, 150).
-made_of(pasta_primavera, bell_peppers, 20, 50).
+made_of(pasta_primavera, bell_pepper, 20, 50).
 made_of(pasta_primavera, broccoli, 20, 50).
 made_of(pasta_primavera, carrot, 20, 40).
 made_of(pasta_primavera, peas, 20, 40).
@@ -2371,7 +2362,7 @@ made_of(chocolate_chip_cookies, chocolate_chips, 2, 8).
 made_of(veggie_pizza, pizza_dough, 150, 200).
 made_of(veggie_pizza, tomato_sauce, 30, 60).
 made_of(veggie_pizza, mozzarella_cheese, 40, 80).
-made_of(veggie_pizza, bell_peppers, 30, 50).
+made_of(veggie_pizza, bell_pepper, 30, 50).
 made_of(veggie_pizza, porcini_mushroom, 30, 50).
 made_of(veggie_pizza, onion, 15, 30).
 made_of(veggie_pizza, olives_black, 20, 40).
@@ -2379,7 +2370,7 @@ made_of(veggie_pizza, olives_black, 20, 40).
 made_of(garden_salad, lettuce, 70, 100).
 made_of(garden_salad, tomato, 30, 50).
 made_of(garden_salad, cucumber, 30, 50).
-made_of(garden_salad, bell_peppers, 20, 40).
+made_of(garden_salad, bell_pepper, 20, 40).
 made_of(garden_salad, red_onion, 20, 30).
 made_of(garden_salad, olives_black, 10, 30).
 made_of(garden_salad, feta_cheese, 20, 40).
@@ -2397,7 +2388,7 @@ made_of(sushi_roll, sushi_rice, 80, 150).
 made_of(sushi_roll, nori_seaweed, 30, 60).
 made_of(sushi_roll, salmon, 50, 100).
 made_of(sushi_roll, cucumber, 20, 40).
-made_of(sushi_roll, avocado, 20, 40).
+made_of(sushi_roll, avocado, 10, 50).
 made_of(sushi_roll, sesame_seeds, 5, 10).
 
 made_of(beef_stew, beef, 100, 250).
@@ -2423,9 +2414,3 @@ made_of(beef_tacos, onion, 10, 20).
 % ---------
 % Computed Diet and Daily Diets
 % ---------
-
-has(daily_diet1, english_breakfast, [egg-20, bread-50]).
-has(daily_diet1, yogurt_banana, [banana-10]).
-has(daily_diet1, poke, [quinoa-70, salmon-150, tomato-100]).
-has(daily_diet1, yogurt_banana, [banana-10]).
-has(daily_diet1, turkey_sandwich, [turkey-200, bread-70, spinach-200]).

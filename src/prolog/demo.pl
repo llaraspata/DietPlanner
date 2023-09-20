@@ -902,3 +902,16 @@ compute_diet(Name, Surname) :-
     generate_list_calories_week(Person, TotalWeekCaloriesList),
     generate_daily_diet(Person, TotalWeekCaloriesList).
 
+
+
+demo_content('diet_instance(lucrezia, diet1).').
+filename('temporary_diet.pl').
+
+% Create a new file and write some content to it, an.
+create_and_consult_file :-
+    filename(FileName),
+    open(FileName, write, Stream),
+    demo_content(Content),
+    write(Stream, Content),
+    close(Stream), 
+    consult(FileName).

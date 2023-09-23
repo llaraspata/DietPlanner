@@ -30,7 +30,6 @@ get_topic_order(SortedTopics) :-
 
     get_topic_order_helper(FinalFirstTopics, FinalSecondTopics, [], [], SortedTopics).
 
-
 get_topic_order_helper([], _, _, Acc, SortedTopics) :-
     !,
     length(Acc, Length),
@@ -49,6 +48,7 @@ get_topic_order_helper([Topic | Rest], SecondTopics, AccOldTopic, AccSortedTopic
 get_new_second_topic_list(Topic, NewSecondTopics) :-
     findall(SecondTopic, (comes_after(FirstTopic, SecondTopic), FirstTopic \= Topic, SecondTopic \= Topic), NewSecondTopics).
 
+% Given a topic, returns the following one
 get_next_topic(CurrentTopic, NextTopic) :-
     get_topic_order(SortedTopics),
     nth(J, SortedTopics, CurrentTopic),
@@ -61,6 +61,7 @@ get_next_topic(CurrentTopic, NextTopic) :-
 % ---------
 % Question
 % ---------
+% Gets the next question id and its text, and the list of its possible answers, considering the current question and the given answer
 get_next_question([], q0, a0, NextQuestionId, NextQuestion, NextAnswers) :-
     get_topic_order(SortedTopics),
     nth(1, SortedTopics, FirstTopic),
@@ -85,10 +86,12 @@ get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQue
     !,
     get_question_possible_answer_id_text(NextQuestionId, NextAnswers).
 
+% Given a topic, returns the id of its first question
 get_first_question_of_topic(Topic, FirstQuestionId) :-
     !,
     belongs_to(FirstQuestionId, Topic, 1).
 
+% Checks that the history of the given answers matches the prerequirements for the next question to ask to the user
 check_prerequirements([], [], 1) :- 
     !.
 check_prerequirements(History, [], 1).
@@ -102,9 +105,6 @@ check_prerequirements(History, [Question-Answer | Rest], _) :-
         ;
             check_prerequirements(History, Rest, 0)
     ).
-
-
-
 
 
 % ---------
@@ -129,7 +129,3 @@ get_question_possible_answers_helper([Id | Rest], Acc, AnswerList) :-
     attribute_value(_, Id, text, Text),
     append(Acc, [Text], NewAcc),
     get_question_possible_answers_helper(Rest, NewAcc, AnswerList).
-
-
-
-% TODO: get next question

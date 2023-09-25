@@ -129,3 +129,52 @@ get_question_possible_answers_helper([Id | Rest], Acc, AnswerList) :-
     attribute_value(_, Id, text, Text),
     append(Acc, [Text], NewAcc),
     get_question_possible_answers_helper(Rest, NewAcc, AnswerList).
+
+% Get user's answers
+has_answered(User, q1, a1) :-
+    assertz(has_dietary_restrictions(User)).
+
+has_answered(User, q2, a1) :-
+    assertz(eat(User, meat)).
+
+has_answered(User, q3, a1) :-
+    assertz(eat(User, fish_seafood)).
+
+has_answered(User, q2, a2) :-
+    assertz(do_not_eat(User, meat)).
+
+has_answered(User, q3, a2) :-
+    assertz(do_not_eat(User, fish_seafood)).
+
+has_answered(User, q4, a2) :-
+    assertz(do_not_eat(User, animal_derived)).
+
+has_answered(User, q5, a1) :-
+    assertz(has_medical_issues(User)).
+
+has_answered(User, q6, a1) :-
+    assertz(has(User, diabetes)).
+
+has_answered(User, q7, a1) :-
+    assertz(has(User, high_blood_pressure)).
+
+has_answered(User, q8, a1) :-
+    assertz(has(User, high_cholesterol)).
+
+has_answered(User, q9, a1) :-
+    assertz(has(User, gastrointestinal_disorders)).
+    
+has_answered(User, q10, a1) :-
+    assertz(has(User, kidney_problems)).
+
+has_answered(User, q11, a1) :-
+    assertz(wants_to(User, healthy_weight)).
+
+has_answered(User, q11, a1) :-
+    assertz(wants_to(User, reach_healthy_weight)).
+
+has_answered(User, q11, a1) :-
+    assertz(wants_to(User, increase_muscle_mass)).
+
+has_answered(User, q11, a1) :-
+    assertz(wants_to(User, reduce_body_fat)).

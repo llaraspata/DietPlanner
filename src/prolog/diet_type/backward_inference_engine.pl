@@ -1,20 +1,8 @@
-% backward_chaining.pl
-
-% Goal
-% goal :- ancestor(mary, susan).
-
-% Backward chaining algorithm
-% goal :- true.
-% goal :- ancestor(X, Y), goal.
-
 % ---------
 % Modules to consult
 % ---------
-% inference_engine.pl
-
-% Consult the files with goals and rules.
 :- consult('rules.pl').
-:- consult('demo_test.pl').     % temporary -> what asserted here will be assert dynamically while compiling the questionnaire
+:- consult('demo_test.pl').     % temporary -> what is asserted here will be asserted dynamically while compiling the questionnaire
 
 % Define the dynamic predicate to store the goal.
 :- dynamic(goal/1).
@@ -33,5 +21,13 @@ infer_goal(Goal) :-
 
 infer_goal(Goal) :-
     % Check if there's a rule that can help satisfy the goal.
-    call(Goal),  % This will call the appropriate rule based on the goal.
-    infer_goal(Goal).
+    rule(Id, Conclusion, Premises),  % Retrieve a rule from 'rules.pl'.
+    Goal = Conclusion,           % Match the conclusion of the rule to the current goal.
+    all_true(Premises),         % Check if all premises of the rule are true.
+    !,
+    assertz(Goal),
+    infer_goal(Goal).           % Recursively check if any further sub-goals need to be satisfied.
+
+% Helper predicate to check if all premises are true.
+all_true([]).
+all_true([H | T]) :- fact(H), all_true(T).

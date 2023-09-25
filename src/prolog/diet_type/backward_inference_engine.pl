@@ -28,10 +28,10 @@ read_goal :-
 % Backward chaining inference rule.
 infer_goal(Goal) :-
     Goal,  % Check if the goal is already satisfied.
+    !,
     writeln('Goal satisfied: '), writeln(Goal).
 
 infer_goal(Goal) :-
     % Check if there's a rule that can help satisfy the goal.
     call(Goal),  % This will call the appropriate rule based on the goal.
     infer_goal(Goal).
-

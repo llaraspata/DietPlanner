@@ -279,7 +279,7 @@ is_related_to(q6, q7, a1, []).
 is_related_to(q6, q7, a2, []).
 
 is_related_to(q7, q8, a1, []).
-is_related_to(q7, q8, a2, []).
+is_related_to(q7, q9, a2, []).
 
 is_related_to(q8, q9, a1, []).
 is_related_to(q8, q9, a2, []).

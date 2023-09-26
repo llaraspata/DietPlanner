@@ -1,9 +1,3 @@
-% ---------
-% Modules to consult
-% ---------
-:- consult('rules.pl').
-:- consult('demo_test.pl').     % temporary -> what is asserted here will be asserted dynamically while compiling the questionnaire
-
 % Define the dynamic predicate to store the goal.
 :- dynamic(goal/1).
 % Define a dynamic predicate to store inferred facts.
@@ -44,5 +38,5 @@ forward_chaining.
 
 % Helper predicate to check if all premises are true.
 all_true([]).
-all_true([H | T]) :- inferred_fact(H), all_true(T).
 all_true([H | T]) :- fact(H), all_true(T).
+all_true([H | T]) :- inferred_fact(H), all_true(T).

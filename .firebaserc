@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "dietplanner-f0792"
+  },
+  "targets": {
+    "dietplanner-f0792": {
+      "hosting": {
+        "dietplanner-f0792": [
+          "dietplanner-f0792"
+        ]
+      }
+    }
+  }
+}

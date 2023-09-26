@@ -1,18 +1,4 @@
 % ---------
-% Modules to consult
-% ---------
-:- consult('instances.pl').
-
-
-% ---------
-% Libraries
-% ---------
-:- use_module(library(lists)).
-:- use_module(library(pairs)).
-:- use_module(library(random)).
-
-
-% ---------
 % Constants
 % ---------
 % Harris-Benedict equation

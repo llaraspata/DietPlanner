@@ -44,5 +44,5 @@ forward_chaining.
 
 % Helper predicate to check if all premises are true.
 all_true([]).
-all_true([H | T]) :- inferred_fact(H), all_true(T).
 all_true([H | T]) :- fact(H), all_true(T).
+all_true([H | T]) :- inferred_fact(H), all_true(T).

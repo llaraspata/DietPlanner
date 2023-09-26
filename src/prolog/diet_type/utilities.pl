@@ -1,7 +1,7 @@
 % ---------
 % Modules to consult
 % ---------
-:- consult('questions.pl').
+:- consult('questionnaire.pl').
 
 % ---------
 % Libraries
@@ -178,3 +178,10 @@ has_answered(User, q11, a1) :-
 
 has_answered(User, q11, a1) :-
     assertz(wants_to(User, reduce_body_fat)).
+
+
+% ---------
+% Diet type
+% ---------
+get_suggested_diet_type(User, SuggestedTypes) :-
+    findall(DietType, suggested_diet_type(User, DietType), SuggestedTypes).

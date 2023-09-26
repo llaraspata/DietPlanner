@@ -17,6 +17,10 @@ inference_goal_instance(dietplanner, diet_type, kidney_problem_diet).
 attribute_value(dietplanner, kidney_problem_diet, name, 'Kidney problems diet').
 attribute_value(dietplanner, kidney_problem_diet, description, 'TODO').
 
+inference_goal_instance(dietplanner, diet_type, omnivorous_diet).
+attribute_value(dietplanner, vegetarian_diet, name, 'Omnivorous diet').
+attribute_value(dietplanner, vegetarian_diet, description, 'TODO').
+
 inference_goal_instance(dietplanner, diet_type, vegetarian_diet).
 attribute_value(dietplanner, vegetarian_diet, name, 'Vegetarian diet').
 attribute_value(dietplanner, vegetarian_diet, description, 'TODO').
@@ -29,38 +33,13 @@ inference_goal_instance(dietplanner, diet_type, healthy_weight_diet).
 attribute_value(dietplanner, healthy_weight_diet, name, 'Healty weight diet').
 attribute_value(dietplanner, healthy_weight_diet, description, 'TODO').
 
-inference_goal_instance(dietplanner, diet_type, healthy_weight_diet_no_meat).
-attribute_value(dietplanner, healthy_weight_diet_no_meat, name, 'Healty weight diet without meat').
-attribute_value(dietplanner, healthy_weight_diet_no_meat, description, 'TODO').
-
-inference_goal_instance(dietplanner, diet_type, healthy_weight_diet_no_fish_seafood).
-attribute_value(dietplanner, healthy_weight_diet_no_fish_seafood, name, 'Healty weight diet without fish and seafood').
-attribute_value(dietplanner, healthy_weight_diet_no_fish_seafood, description, 'TODO').
-
 inference_goal_instance(dietplanner, diet_type, hyperproteic_diet).
 attribute_value(dietplanner, hyperproteic_diet, name, 'Hyperproteic diet').
 attribute_value(dietplanner, hyperproteic_diet, description, 'TODO').
 
-inference_goal_instance(dietplanner, diet_type, hyperproteic_diet_no_meat).
-attribute_value(dietplanner, hyperproteic_diet_no_meat, name, 'Hyperproteic diet without meat').
-attribute_value(dietplanner, hyperproteic_diet_no_meat, description, 'TODO').
-
-inference_goal_instance(dietplanner, diet_type, hyperproteic_diet_no_fish_seafood).
-attribute_value(dietplanner, hyperproteic_diet_no_fish_seafood, name, 'Hyperproteic diet without fish and seafood').
-attribute_value(dietplanner, hyperproteic_diet_no_fish_seafood, description, 'TODO').
-
 inference_goal_instance(dietplanner, diet_type, hypocaloric_diet).
 attribute_value(dietplanner, hypocaloric_diet, name, 'Hypocaloric diet').
 attribute_value(dietplanner, hypocaloric_diet, description, 'TODO').
-
-inference_goal_instance(dietplanner, diet_type, hypocaloric_diet_no_meat).
-attribute_value(dietplanner, hypocaloric_diet_no_meat, name, 'Hypocaloric diet without meat').
-attribute_value(dietplanner, hypocaloric_diet_no_meat, description, 'TODO').
-
-inference_goal_instance(dietplanner, diet_type, hypocaloric_diet_no_fish_seafood).
-attribute_value(dietplanner, hypocaloric_diet_no_fish_seafood, name, 'Hypocaloric diet without fish and seafood').
-attribute_value(dietplanner, hypocaloric_diet_no_fish_seafood, description, 'TODO').
-
 
 % ---------
 % Topic

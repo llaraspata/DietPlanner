@@ -1,9 +1,3 @@
-% ---------
-% Modules to consult
-% ---------
-:- consult('rules.pl').
-:- consult('demo_test.pl').     % temporary -> what is asserted here will be asserted dynamically while compiling the questionnaire
-
 % Define the dynamic predicate to store the goal.
 :- dynamic(goal/1).
 % Define a dynamic predicate to store inferred facts.

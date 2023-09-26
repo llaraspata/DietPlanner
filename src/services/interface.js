@@ -2,8 +2,13 @@ import {useEffect,useState} from "react";
 import functions from '../prolog/functions.pl'
 import instances from '../prolog/instances.pl'
 
+import utilities from "../prolog/diet_type/utilities.pl"
+import questionnaire from "../prolog/diet_type/questionnaire.pl"
+
 
 const pl = require('tau-prolog');
+const listLoader = require("tau-prolog/modules/lists.js");
+const randomLoader = require("tau-prolog/modules/random.js")
 
 function fromList(xs) {
     let arr = [];
@@ -75,4 +80,22 @@ export function useGetComputedCalories(patient){
     }, [patient])
 
     return energyDemand
+}
+
+export function useGetFirstQuestion() {
+
+    listLoader(pl)
+    let session = pl.create();
+
+    useEffect(() => {
+        fetch(utilities).then((res) => res.text()).then((utilitiesProgram) => {
+            fetch(questionnaire).then((res) => res.text()).then((questionnaireProgram) => {
+                session.consult(utilitiesProgram);
+                session.consult(questionnaireProgram);
+                console.log("programs consulted")
+                session.query("get_next_question([], q0, a0, NextQuestionId, NextQuestion, NextAnswers).");
+                session.answer(a => console.log(a))
+            })
+        })
+    }, [])
 }

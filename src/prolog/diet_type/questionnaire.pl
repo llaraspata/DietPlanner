@@ -18,8 +18,8 @@ attribute_value(dietplanner, kidney_problem_diet, name, 'Kidney problems diet').
 attribute_value(dietplanner, kidney_problem_diet, description, 'TODO').
 
 inference_goal_instance(dietplanner, diet_type, omnivorous_diet).
-attribute_value(dietplanner, vegetarian_diet, name, 'Omnivorous diet').
-attribute_value(dietplanner, vegetarian_diet, description, 'TODO').
+attribute_value(dietplanner, omnivorous_diet, name, 'Omnivorous diet').
+attribute_value(dietplanner, omnivorous_diet, description, 'TODO').
 
 inference_goal_instance(dietplanner, diet_type, vegetarian_diet).
 attribute_value(dietplanner, vegetarian_diet, name, 'Vegetarian diet').

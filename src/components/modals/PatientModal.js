@@ -3,12 +3,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import makeStyles from '@mui/styles/makeStyles';
-import Pill from "./Pill";
+import Pill from "../Pill";
 import {Autocomplete,Button,Grid,IconButton,MenuItem} from "@mui/material";
-import TextInput from "./TextInput";
+import TextInput from "../TextInput";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import {useGetActivityAllergenNames,useGetComputedCalories} from "../services/interface";
+import {useGetActivityAllergenNames,useGetComputedCalories} from "../../services/interface";
 import {styled} from "@mui/styles";
 
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';

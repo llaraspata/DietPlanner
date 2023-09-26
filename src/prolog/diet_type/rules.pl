@@ -37,6 +37,28 @@ rule(
 
 rule(
     r4,
+    suggested_diet_type(User, no_meat_diet), 
+    [
+        has_dietary_restrictions(User),
+        do_not_eat(User, meat),
+        \+ do_not_eat(User, fish_seafood),
+        \+ do_not_eat(User, animal_derived)
+    ]
+).
+
+rule(
+    r5,
+    suggested_diet_type(User, no_fish_seafood_diet), 
+    [
+        has_dietary_restrictions(User),
+        do_not_eat(User, fish_seafood),
+        \+ do_not_eat(User, meat),
+        \+ do_not_eat(User, animal_derived)
+    ]
+).
+
+rule(
+    r6,
     suggested_diet_type(User, diabetic_diet), 
     [
         has_medical_issues(User),
@@ -45,7 +67,7 @@ rule(
 ).
 
 rule(
-    r5,
+    r7,
     suggested_diet_type(User, high_cholesterol_diet), 
     [
         has_medical_issues(User),
@@ -55,7 +77,7 @@ rule(
 ).
 
 rule(
-    r6,
+    r8,
     suggested_diet_type(User, gastrointestinal_disorder_diet), 
     [
         has_medical_issues(User),
@@ -64,7 +86,7 @@ rule(
 ).
 
 rule(
-    r7,
+    r9,
     suggested_diet_type(User, kidney_problem_diet), 
     [
         has_medical_issues(User),
@@ -73,7 +95,7 @@ rule(
 ).
 
 rule(
-    r8,
+    r10,
     suggested_diet_type(User, healthy_weight_diet), 
     [
         \+ has_dietary_restrictions(User),
@@ -82,7 +104,7 @@ rule(
 ).
 
 rule(
-    r9,
+    r11,
     suggested_diet_type(User, hyperproteic_diet), 
     [
         \+ has_dietary_restrictions(User),
@@ -91,7 +113,7 @@ rule(
 ).
 
 rule(
-    r10,
+    r12,
     suggested_diet_type(User, hypocaloric_diet), 
     [
         \+ has_dietary_restrictions(User),

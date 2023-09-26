@@ -29,6 +29,14 @@ inference_goal_instance(dietplanner, diet_type, vegan_diet).
 attribute_value(dietplanner, vegan_diet, name, 'Vegan diet').
 attribute_value(dietplanner, vegan_diet, description, 'TODO').
 
+inference_goal_instance(dietplanner, diet_type, no_meat_diet).
+attribute_value(dietplanner, no_meat_diet, name, 'No meat diet').
+attribute_value(dietplanner, no_meat_diet, description, 'TODO').
+
+inference_goal_instance(dietplanner, diet_type, no_fish_seafood_diet).
+attribute_value(dietplanner, no_fish_seafood_diet, name, 'No fish and seafood diet').
+attribute_value(dietplanner, no_fish_seafood_diet, description, 'TODO').
+
 inference_goal_instance(dietplanner, diet_type, healthy_weight_diet).
 attribute_value(dietplanner, healthy_weight_diet, name, 'Healty weight diet').
 attribute_value(dietplanner, healthy_weight_diet, description, 'TODO').
@@ -167,7 +175,7 @@ attribute_value(dietplanner, a2, text, 'No').
 % ---------
 comes_after(eating_habits, health_conditions).
 comes_after(health_conditions, body_goal).
-comes_after(body_goal, dietary_habits).
+% comes_after(body_goal, dietary_habits). -> non le dobbiamo mettere??
 
 
 % ---------

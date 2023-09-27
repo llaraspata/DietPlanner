@@ -1,7 +1,15 @@
-% Define the dynamic predicate to store the goal.
+% ---------
+% Modules to consult
+% ---------
+:- consult('demo_test.pl').
+:- consult('rules.pl').
+
+% ---------
+% Predicates
+% ---------
 :- dynamic(goal/1).
-% Define a dynamic predicate to store inferred facts.
 :- dynamic(inferred_fact/1).
+
 
 % Read and assert the goal.
 read_goal :-
@@ -11,19 +19,18 @@ read_goal :-
 
 % Backward chaining inference rule.
 backward_chaining(Goal) :-
-    Goal,  % Check if the goal is already satisfied.
+    Goal,
     !,
     writeln('Goal satisfied: '), writeln(Goal).
-
 backward_chaining(Goal) :-
-    % Check if there's a rule that can help satisfy the goal.
-    rule(Id, Conclusion, Premises),  % Retrieve a rule from 'rules.pl'.
-    Goal = Conclusion,           % Match the conclusion of the rule to the current goal.
-    all_true(Premises),         % Check if all premises of the rule are true.
+    rule(Id, Conclusion, Premises),
+    Goal = Conclusion,
+    all_true(Premises),
     !,
     assertz(Goal),
-    backward_chaining(Goal).           % Recursively check if any further sub-goals need to be satisfied.
-
+    get_explanation(Id, Explanation),
+    assertz(why(Conclusion, Explanation)),
+    backward_chaining(Goal).
 
 % Forward chaining algorithm.
 forward_chaining :-
@@ -32,6 +39,8 @@ forward_chaining :-
     all_true(Premises),
     assert(inferred_fact(Conclusion)),
     assertz(Conclusion),
+    get_explanation(Id, Explanation),
+    assertz(why(Conclusion, Explanation)),
     write('Inferred: '), writeln(Conclusion),
     forward_chaining.
 forward_chaining.
@@ -40,3 +49,7 @@ forward_chaining.
 all_true([]).
 all_true([H | T]) :- fact(H), all_true(T).
 all_true([H | T]) :- inferred_fact(H), all_true(T).
+
+% Gets the explanation in natural language of a rule
+get_explanation(RuleId, Explanation) :-
+    explanation(RuleId, Explanation).

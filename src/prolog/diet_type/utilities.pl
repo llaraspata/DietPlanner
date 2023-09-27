@@ -1,38 +1,12 @@
 % ---------
+% Modules to consult
+% ---------
+:- consult('questionnaire.pl').
+
+% ---------
 % Libraries
 % ---------
 :- use_module(library(lists)).
-
-
-delete([], _, []).
-delete([Head|List], Elem, Residue) :-
-	Head == Elem, !,
-	delete(List, Elem, Residue).
-delete([Head|List], Elem, [Head|Residue]) :-
-	delete(List, Elem, Residue).
-
-nth(V, In, Element) :- var(V), !,
-	generate_nth(1, V, In, Element).
-nth(1, [Head|_], Head) :- !.
-nth(N, [_|Tail], Elem) :-
-	nonvar(N), !,
-	M is N-1,			% should be succ(M, N)
-	find_nth(M, Tail, Elem).
-
-find_nth(1, [Head|_], Head) :- !.
-find_nth(N, [_|Tail], Elem) :-
-	M is N-1,
-	find_nth(M, Tail, Elem).
-
-generate_nth(I, I, [Head|_], Head).
-generate_nth(I, IN, [_|List], El) :-
-	I1 is I+1,
-	generate_nth(I1, IN, List, El).
-
-remove_duplicates([], []).
-remove_duplicates([Elem|L], [Elem|NL]) :-
-	delete(L, Elem, Temp),
-	remove_duplicates(Temp, NL).
 
 % ---------
 % Inference Goals
@@ -207,5 +181,12 @@ has_answered(User, q11, a1) :-
 % ---------
 % Diet type
 % ---------
+% Gets the suggested diet types for a user, together with the explanation in natural language of the reason why each diet type has been suggested
 get_suggested_diet_type(User, SuggestedTypes) :-
-    findall(DietType, suggested_diet_type(User, DietType), SuggestedTypes).
+    findall(
+        DietType-Explanation, 
+        (
+            suggested_diet_type(User, DietType),
+            why(suggested_diet_type(User, DietType), Explanation)
+        ), 
+        SuggestedTypes).

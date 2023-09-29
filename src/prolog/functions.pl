@@ -29,7 +29,7 @@ dish_types([breakfast, snack, lunch, snack, dinner]).
 daily_diet_names([daily_diet1, daily_diet2]).
 
 % Checks on generated Daily Diet
-healthy_weight_nutrient_percentages([carbs-45-65, protein-15-20, lipids-20-35, dietary_fiber-1-5]).
+healthy_weight_nutrient_percentages([carbs-40-50, protein-20-25, lipids-25-30, dietary_fiber-1-5]).
 
 
 % ---------
@@ -138,13 +138,6 @@ actual_calories_quantity(FoodBeverage, PortionSizeGrams, ActualQuantity) :-
     standard_calories_quantity(FoodBeverage, QuantityPer100),
     ActualQuantity is (PortionSizeGrams / 100) * QuantityPer100.
 
-% Compute the total calories about a list of foods 
-compute_calories_amount([], 0).
-compute_calories_amount([Food|Rest], TotalCalories) :-
-    attribute_value(dietplanner, Food, calories, CaloriesFood),
-    compute_calories_amount(Rest, RestCalories),
-    TotalCalories is RestCalories + CaloriesFood.
-
 % TODO: comment
 set_calories_week([], _, _, []).
 set_calories_week([Day|Rest], BMI, EnergyValue, [TotalCalories|Tail]) :-
@@ -227,16 +220,18 @@ cumulative_macro_nutrient_quantity(_, [], CumulativeQuantity, CumulativeQuantity
 % Recursive case: Calculate the cumulative quantity for the first nutrient in the category.
 cumulative_macro_nutrient_quantity(FoodGramsList, [Nutrient|Rest], PartialCumulativeQuantity, CumulativeQuantity) :-
     cumulative_nutrient_quantity(FoodGramsList, Nutrient, NutrientQuantity),
+    !,
     NewPartialCumulativeQuantity is PartialCumulativeQuantity + NutrientQuantity,
     cumulative_macro_nutrient_quantity(FoodGramsList, Rest, NewPartialCumulativeQuantity, CumulativeQuantity).
 
 % Calculate the cumulative quantity of a specific nutrient in a list of food-grams pairs.
 cumulative_nutrient_quantity(FoodGramsList, Nutrient, CumulativeQuantity) :-
-    cumulative_nutrient_quantity(FoodGramsList, Nutrient, 0, CumulativeQuantity).
+    !,
+    compute_nutrient_quantity(FoodGramsList, Nutrient, 0, CumulativeQuantity).
 % Base case: When the list is empty, the cumulative quantity is 0.
-cumulative_nutrient_quantity([], _, CumulativeQuantity, CumulativeQuantity).
+compute_nutrient_quantity([], _, CumulativeQuantity, CumulativeQuantity).
 % Recursive case: Calculate the cumulative quantity for the first pair in the list.
-cumulative_nutrient_quantity([FoodBeverage-Grams|Rest], Nutrient, PartialCumulativeQuantity, CumulativeQuantity) :-
+compute_nutrient_quantity([FoodBeverage-Grams|Rest], Nutrient, PartialCumulativeQuantity, CumulativeQuantity) :-
     % Check if the food item has the specified nutrient.
     (has_nutrient(FoodBeverage, Nutrient, NutrientPer100g) ->
         % Calculate the nutrient quantity for this food item and add it to the partial cumulative quantity.
@@ -247,30 +242,15 @@ cumulative_nutrient_quantity([FoodBeverage-Grams|Rest], Nutrient, PartialCumulat
         NewPartialCumulativeQuantity = PartialCumulativeQuantity
     ),
     % Recursively process the rest of the list.
-    cumulative_nutrient_quantity(Rest, Nutrient, NewPartialCumulativeQuantity, CumulativeQuantity).
+    compute_nutrient_quantity(Rest, Nutrient, NewPartialCumulativeQuantity, CumulativeQuantity).
 
-% Compute the cumulative macro nutrient quantity as a percentage
-cumulative_macro_nutrient_percentage(FoodGramsList, MacroNutrient, Percentage) :-
-    % Calculate the cumulative macro nutrient quantity
-    cumulative_macro_nutrient_quantity(FoodGramsList, MacroNutrient, MacroNutrientQuantity),
-    total_grams(FoodGramsList, TotalQuantity),
-    % Calculate the percentage
-    Percentage is (100 * MacroNutrientQuantity) / TotalQuantity.
-
-% Compute the total grams in a list of food-grams pairs
-total_grams(FoodGramsList, Total) :-
-    total_grams(FoodGramsList, 0, Total).
-% Base case: When the list is empty, the total grams is 0.
-total_grams([], Total, Total).
-% Recursive case: Calculate the total grams for the first pair in the list.
-total_grams([_Food-Grams|Rest], PartialTotal, Total) :-
-    NewPartialTotal is PartialTotal + Grams,
-    total_grams(Rest, NewPartialTotal, Total).
 
 % Get total nutrient percentage in a daily diet
-daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalPercentage) :-
+daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalNutrientQuantity) :-
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
-    cumulative_macro_nutrient_percentage(UniqueIngredients, MacroNutrient, TotalPercentage),
+    writeln('Macro'),
+    writeln(MacroNutrient),
+    cumulative_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
     !.
 
 
@@ -400,7 +380,8 @@ find_bmi_energyeffort_dayon(PersonID, BMIValue, EnergyValue, NumberDayOn) :-
 % Get the list of ingredients in a dish of a daily diet as a flat list
 get_ingredients_in_dish(ListRelationships, Dish, Ingredients) :-
     extract_ingredients_and_dishes(ListRelationships, [], [], IngredientLists, Dishes), % Get the list of dishes
-    select_ingredients(IngredientLists, Dishes, Dish, Ingredients).
+    select_ingredients(IngredientLists, Dishes, Dish, Ingredients),
+    !.
 
 select_ingredients([], [], _, []).
 select_ingredients([Head|Tail], [First|Rest], Dish, Ingredients) :-
@@ -462,7 +443,7 @@ dish_contains_allergens(Dish, Allergens) :-
 % Get dishes whose ingredients don't contain allergens a specific person is allergic to
 get_dishes_without_allergens_for_person(Person, DishType, DishesWithoutAllergens) :-
     get_person_allergies(Person, Allergies),
-    get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens).
+    get_dishes_without_allergens(Allergies, DishType, DishesWithoutAllergens).
 
 % Get a random dish from a list of candidate dishes
 get_random_dish_in_list(DishList, Dish) :-
@@ -500,6 +481,8 @@ get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldIngredientList, Ne
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
     get_old_ingredient_list_and_modify_macro(NewId, ListDish, Fix, MacroNutrient, [], [], OldRelatioships, NewRelatioships),
     get_old_new_relationship(OldRelatioships, NewRelatioships, OldIngredientList, NewIngredientList),
+    !,
+    writeln('cazzo'),
     has(NewId, Dish, OldIngredientList),
     (
         NewIngredientList = 0 ->
@@ -507,8 +490,7 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
             has(NewId, DefaultDish, IngredientList),
             find_ingredient_with_highest_nutrient(IngredientList, MacroNutrient, FoodWithMoreNutrient),
             default_case_fix(FoodWithMoreNutrient, Fix, IngredientList, [], DefaultIngredientList),
-            !,  % Introduce un cut per interrompere ulteriori esecuzioni
-            writeln('Ingredient'),
+            writeln('Caso Base'),
             retract(has(NewId, DefaultDish, IngredientList)),
             assertz(has(NewId, DefaultDish, DefaultIngredientList)),
             writeln(has(NewId, DefaultDish, IngredientList)),
@@ -557,7 +539,6 @@ find_ingredient_with_more_calories([FoodBeverage-Grams | Rest], CurrentMax, Food
 default_case_fix(_, _, [], NewIngredientList, NewIngredientList).
 default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList) :-
     (
-        writeln('critso'),
         FoodBeverage = Food,
         (
             % If Fix = 1, Decrease by 5%
@@ -693,9 +674,9 @@ get_ordered_list_dish_by_nutrient(ListRelationships, MacroNutrient, FinalListDis
 % Returns the list of macronutrient quantities, where each element represents a dish
 get_dish_macronutrient_amount_lists([], _, CaloriesList, CaloriesList).
 get_dish_macronutrient_amount_lists([Ingredients | Rest], MacroNutrient, Acc, CaloriesList) :-
-    cumulative_macro_nutrient_percentage(Ingredients, MacroNutrient, Percentage),
-    IntegerPercentage is round(Percentage),
-    append(Acc, [IntegerPercentage], NewAcc),
+    cumulative_macro_nutrient_quantity(Ingredients, MacroNutrient, Quantity),
+    IntegerQuantity is round(Quantity),
+    append(Acc, [IntegerQuantity], NewAcc),
     get_dish_macronutrient_amount_lists(Rest, MacroNutrient, NewAcc, CaloriesList).
 
 % Generate ingredients' grams for all dishes in a daily diet
@@ -749,7 +730,6 @@ generate_daily_diet(Person, [NewId | RestNames], [TotalDayCalories | Rest]) :-
     dish_types(DishTypes),
     healthy_weight_nutrient_percentages(MacronutrientLimits),
     
-    
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
@@ -761,27 +741,33 @@ generate_daily_diet(Person, [NewId | RestNames], [TotalDayCalories | Rest]) :-
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
 check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
     repeat,
+    (
+        check_daily_macronutrient(NewId, DailyCalories, MacronutrientLimits, MacronutrientResult, MacroNutrient),
+        check_daily_calories(NewId, DailyCalories, CaloryResult),
+        writeln('fix'),
+        writeln(MacroNutrient),
+        writeln(MacronutrientResult),
+        writeln(CaloryResult),
         (
-            check_macronutrient_percentage(NewId, MacronutrientLimits, MacronutrientResult, MacroNutrient),
-            check_daily_calories(NewId, DailyCalories, CaloryResult),
-            (
-                MacronutrientResult = 0, CaloryResult = 0 ->
-                    !,
-                    writeln('Diet generated successfully')
-                ;
-                MacronutrientResult = -1    ->
-                    fix_macronutient(NewId, MacroNutrient, MacronutrientResult)
-                ;
-                MacronutrientResult = 1     ->
-                    fix_macronutient(NewId, MacroNutrient, MacronutrientResult)
-                ;
-                CaloryResult = -1    ->
-                    fix_calories(NewId, CaloriesResult)
-                ;
-                CaloryResult = 1     ->
-                    fix_calories(NewId, CaloriesResult)
-            )
-        ).
+            MacronutrientResult = 0, CaloryResult = 0 ->
+                writeln('Daily Diet generated successfully'),
+                !
+            ;
+            MacronutrientResult = -1    ->
+                fix_macronutient(NewId, MacroNutrient, MacronutrientResult)
+            ;
+            MacronutrientResult = 1     ->
+                fix_macronutient(NewId, MacroNutrient, MacronutrientResult)
+            ;
+            CaloryResult = -1    ->
+                fix_calories(NewId, CaloriesResult)
+            ;
+            CaloryResult = 1     ->
+                fix_calories(NewId, CaloriesResult)
+        )
+    ),
+    fail. % Fail to exit the repeat loop.
+
 
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
@@ -789,6 +775,7 @@ fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
     nth0(0, ListDish, DefaultDish),
     fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, MacronutrientResult),
+    !,
     writeln('fine').
 
 % Fix dish grams w.r.t. calories checks
@@ -817,33 +804,54 @@ extract_ingredients_and_dishes([Term | Rest], AccIngredients, AccDishes, AllIngr
     append(AccDishes, [Dish], NewDish),
     extract_ingredients_and_dishes(Rest, NewIngredient, NewDish, AllIngredients, AllDishes).
 
-% Checks that the macronutrient quantity (in percentage) in a daily diet is between a specified range
-check_macronutrient_helper(DailyDiet, MacroNutrient, LowerBound, UpperBound, Result) :-
-    daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, Percentage),
-    writeln('Percentula'),
-    writeln(Percentage),    
+convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories) :-
+    (   MacroNutrient = lipids ->
+            TotalCalories is (TotalNutrientQuantity * 9)
+        ;   
+        MacroNutrient = dietary_fiber ->    
+            TotalCalories is TotalNutrientQuantity 
+        ;   
+            TotalCalories is (TotalNutrientQuantity * 5)
+    ).
+
+% Checks that the macronutrient quantity in a daily diet is between a specified range
+check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, UpperBound, Result) :-
+    unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
+    writeln(MacroNutrient),
+    writeln(UniqueIngredients),
+    sum_list(DailyCalories, DayCalories),
+    writeln(DayCalories),
+    !,
+    cumulative_macro_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
+    convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories),
+    writeln('Percentuale'),
+    writeln(TotalCalories),
+    Min is round((DayCalories * LowerBound) / 100),
+    Max is round((DayCalories * UpperBound) / 100),
+    writeln(Min),
+    writeln(Max),
     (
-        Percentage < LowerBound ->
+        TotalCalories < Min ->
         TempResult is -1
         ;
-        Percentage > UpperBound ->
+        TotalCalories > Max ->
         TempResult is 1
         ;
-        Percentage >= LowerBound, Percentage =< UpperBound ->
+        TotalCalories >= Min, TotalCalories =< Max ->
         TempResult is 0 
     ),
     Result = TempResult.
 
 % Checks different macronutrients constraints, stopping the execution when the result is different from 0, meaning that some check failed
-check_macronutrient_percentage(_, [], 0, _).
-check_macronutrient_percentage(DailyDiet, [MacroNutrient-LowerBound-UpperBound | Rest], Result, MacroNutrient) :-
-    check_macronutrient_helper(DailyDiet, MacroNutrient, LowerBound, UpperBound, InnerResult),
+check_daily_macronutrient(_, _, [], 0, _).
+check_daily_macronutrient(DailyDiet, DailyCalories, [MacroNutrient-LowerBound-UpperBound | Rest], Result, MacroNutrient) :-
+    check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, UpperBound, InnerResult),
     (InnerResult = 0 ->
-        check_macronutrient_percentage(DailyDiet, Rest, Result, MacroNutrient)
+        check_daily_macronutrient(DailyDiet, DailyCalories, Rest, Result, MacroNutrient)
         ;
         Result = InnerResult
     ).
-check_macronutrient_percentage(_, _, _, Result, _) :- 
+check_daily_macronutrient(_, _, _, _, Result, _) :- 
     Result \= 0, 
     !.
 

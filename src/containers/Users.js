@@ -16,6 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import QuestionnaireModal from "../components/modals/QuestionnaireModal";
+import {useGetAllDietTypes} from "../services/interface";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -34,6 +35,7 @@ export default function Users(){
     const {enqueueSnackbar} = useSnackbar();
     const [editCreateUserModal, setEditCreateUserModal] = useState(false);
     const [questionnaireModal, setQuestionnaireModal] = useState(false);
+    const dietTypes = useGetAllDietTypes()
 
     const [patients, setPatients] = useState([])
     const [user, loading, error] = useAuthState(auth);
@@ -44,19 +46,20 @@ export default function Users(){
         { field: 'bmi', headerName: 'BMI', flex: 2, renderCell: (params) => params.value?.toFixed(2) },
         { field: 'energyDemand', headerName: 'Energy Demand (kcal)', flex: 2},
         {
-            field: "type",
-            headerName: "Diet type",
+            field: "suggestedDiets",
+            headerName: "Diet types",
             flex: 4,
             renderCell: (params) => {
-                return <Grid container justifyContent="space-between">
+                const types = params.value ? dietTypes.filter(dt => params.value.includes(dt.id)).map(dt => dt.value).join(", ") : ""
+                return <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item>
-                        {params.value}
+                        {types}
                     </Grid>
                     <Grid item>
                         <Button variant="outlined" fullWidth
-                                startIcon={params.value ? <RestartAltIcon/> : <AccountTreeIcon/>}
-                                onClick={() => setQuestionnaireModal(true)}>
-                            {params.value ? "Re-copmute type" : "Generate type"}
+                                startIcon={params.value && params.value.length !== 0 ? <RestartAltIcon/> : <AccountTreeIcon/>}
+                                onClick={() => setQuestionnaireModal(params.row.id)}>
+                            {params.value && params.value.length !== 0 ? "Re-copmute type" : "Generate type"}
                         </Button>
                     </Grid>
                 </Grid>
@@ -67,11 +70,13 @@ export default function Users(){
             type: 'actions',
             width: 150,
             renderCell: (params) => <Grid container direction={"row"} justifyContent="flex-end">
-                <Grid item>
-                    <IconButton>
-                        <CalendarMonthIcon fontSize="medium"/>
-                    </IconButton>
-                </Grid>
+                {params.row.suggestedDiets && params.row.suggestedDiets.length > 0 &&
+                    <Grid item>
+                        <IconButton>
+                            <CalendarMonthIcon fontSize="medium"/>
+                        </IconButton>
+                    </Grid>
+                }
                 <Grid item>
                     <IconButton onClick={() => setEditCreateUserModal(params.row)}>
                         <EditIcon fontSize="medium"/>
@@ -138,11 +143,23 @@ export default function Users(){
                     return {
                         id: doc.id,
                         activities: doc.data().patientActivities,
+                        suggestedDiets: doc.data().suggestedDiets,
                         ...doc.data().patient
                     }
                 });
                 setPatients(newData);
             })
+    }
+
+    const saveDietType = (suggestedTypes) => {
+        enqueueSnackbar("Saving...", {variant: "info"});
+        updateDoc(doc(db, `patients-${user.uid}`, questionnaireModal), {
+            suggestedDiets: suggestedTypes
+        }).then(() => {
+            setQuestionnaireModal(false)
+            fetchPatients()
+            enqueueSnackbar("Saved", {variant: "success"})
+        }).catch((e) => enqueueSnackbar(e, {variant: "error"}))
     }
 
     return <div style={{ height: '80%', width: '100%' }}>
@@ -166,6 +183,6 @@ export default function Users(){
         <PatientModal open={!!editCreateUserModal} onClose={() => setEditCreateUserModal(false)}
                       onSave={onSave} defaultPatient={editCreateUserModal}/>
         <QuestionnaireModal open={!!questionnaireModal} onClose={() => setQuestionnaireModal(false)}
-                            onSave={() => setQuestionnaireModal(false)}/>
+                            onSave={saveDietType}/>
     </div>
 }

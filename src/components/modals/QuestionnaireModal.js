@@ -25,6 +25,7 @@ import TextInput from "../TextInput";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
+        width: "100rem",
         backgroundColor: theme.palette.primary.light,
         borderRadius: 0
     },

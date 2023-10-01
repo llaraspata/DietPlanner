@@ -6,15 +6,12 @@
 % Read and assert the goal.
 read_goal :-
     inference_goal(Goal),
-    writeln(Goal),
-    assert(goal(Goal)).
+    assertz(goal(Goal)).
 
 % Backward chaining inference rule.
 backward_chaining(Goal) :-
     Goal,  % Check if the goal is already satisfied.
-    !,
-    writeln('Goal satisfied: '), writeln(Goal).
-
+    !.
 backward_chaining(Goal) :-
     % Check if there's a rule that can help satisfy the goal.
     rule(Id, Conclusion, Premises),  % Retrieve a rule from 'rules.pl'.
@@ -30,9 +27,8 @@ forward_chaining :-
     rule(Id, Conclusion, Premises),
     \+ inferred_fact(Conclusion),
     all_true(Premises),
-    assert(inferred_fact(Conclusion)),
+    assertz(inferred_fact(Conclusion)),
     assertz(Conclusion),
-    write('Inferred: '), writeln(Conclusion),
     forward_chaining.
 forward_chaining.
 

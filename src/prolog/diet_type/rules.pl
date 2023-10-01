@@ -9,7 +9,7 @@ rule(
     r1,
     suggested_diet_type(User, omnivorous_diet), 
     [
-        \+ has_dietary_restrictions(User)
+        has_no_dietary_restrictions(User)
     ]
 ).
 
@@ -41,8 +41,8 @@ rule(
     [
         has_dietary_restrictions(User),
         do_not_eat(User, meat),
-        \+ do_not_eat(User, fish_seafood),
-        \+ do_not_eat(User, animal_derived)
+        eat(User, fish_seafood),
+        eat(User, animal_derived)
     ]
 ).
 
@@ -52,8 +52,8 @@ rule(
     [
         has_dietary_restrictions(User),
         do_not_eat(User, fish_seafood),
-        \+ do_not_eat(User, meat),
-        \+ do_not_eat(User, animal_derived)
+        eat(User, meat),
+        eat(User, animal_derived)
     ]
 ).
 
@@ -98,7 +98,6 @@ rule(
     r10,
     suggested_diet_type(User, healthy_weight_diet), 
     [
-        \+ has_dietary_restrictions(User),
         wants_to(User, reach_healthy_weight)
     ]
 ).
@@ -107,7 +106,6 @@ rule(
     r11,
     suggested_diet_type(User, hyperproteic_diet), 
     [
-        \+ has_dietary_restrictions(User),
         wants_to(User, increase_muscle_mass)
     ]
 ).
@@ -116,7 +114,6 @@ rule(
     r12,
     suggested_diet_type(User, hypocaloric_diet), 
     [
-        \+ has_dietary_restrictions(User),
         wants_to(User, reduce_body_fat)
     ]
 ).

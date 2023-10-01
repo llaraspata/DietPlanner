@@ -102,6 +102,16 @@ get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQue
     get_question_possible_answer_id_text(NextQuestionId, NextAnswers).
 
 get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQuestion, NextAnswers) :-
+    is_related_to(CurrentQuestion, NextQuestionId, GivenAnswer, Prerequirements),
+    \+ check_prerequirements(History, Prerequirements, 1),
+    belongs_to(CurrentQuestion, CurrentTopic, _),
+    get_next_topic(CurrentTopic, NextTopic),
+    get_first_question_of_topic(NextTopic, IdNextQuestion),
+    attribute_value(_, IdNextQuestion, text, NextQuestion),
+    !,
+    get_question_possible_answer_id_text(IdNextQuestion, NextAnswers).
+
+get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQuestion, NextAnswers) :-
     \+ is_related_to(CurrentQuestion, _, GivenAnswer, _),
     belongs_to(CurrentQuestion, CurrentTopic, _),
     get_next_topic(CurrentTopic, NextTopic),
@@ -158,6 +168,9 @@ get_question_possible_answers_helper([Id | Rest], Acc, AnswerList) :-
 has_answered(User, q1, a1) :-
     assertz(fact(has_dietary_restrictions(User))).
 
+has_answered(User, q1, a2) :-
+    assertz(fact(has_no_dietary_restrictions(User))).
+
 has_answered(User, q2, a1) :-
     assertz(fact(eat(User, meat))).
 
@@ -192,15 +205,12 @@ has_answered(User, q10, a1) :-
     assertz(fact(has(User, kidney_problems))).
 
 has_answered(User, q11, a1) :-
-    assertz(fact(wants_to(User, healthy_weight))).
-
-has_answered(User, q11, a1) :-
     assertz(fact(wants_to(User, reach_healthy_weight))).
 
-has_answered(User, q11, a1) :-
+has_answered(User, q12, a1) :-
     assertz(fact(wants_to(User, increase_muscle_mass))).
 
-has_answered(User, q11, a1) :-
+has_answered(User, q13, a1) :-
     assertz(fact(wants_to(User, reduce_body_fat))).
 
 
@@ -208,4 +218,5 @@ has_answered(User, q11, a1) :-
 % Diet type
 % ---------
 get_suggested_diet_type(User, SuggestedTypes) :-
-    findall(DietType, suggested_diet_type(User, DietType), SuggestedTypes).
+    findall(DietType, suggested_diet_type(User, DietType), SuggestedTypesWithDuplicates),
+    remove_duplicates(SuggestedTypesWithDuplicates, SuggestedTypes).

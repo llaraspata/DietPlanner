@@ -82,7 +82,7 @@ attribute_value(dietplanner, q2, mandatory, TODO).
 attribute_value(dietplanner, q2, importance, TODO).
 
 question_instance(dietplanner, question, q3).
-attribute_value(dietplanner, q3, text, 'Do you fish and seafood?').
+attribute_value(dietplanner, q3, text, 'Do you eat fish and seafood?').
 attribute_value(dietplanner, q3, asked_why, 'TODO').
 attribute_value(dietplanner, q3, mandatory, TODO).
 attribute_value(dietplanner, q3, importance, TODO).

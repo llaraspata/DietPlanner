@@ -1,5 +1,3 @@
-inference_goal(suggested_diet_type(User, DietType)).
-
 % ---------
 % Rules
 % ---------

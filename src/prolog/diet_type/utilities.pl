@@ -2,7 +2,7 @@
 % Libraries
 % ---------
 :- use_module(library(lists)).
-    
+
 delete([], _, []).
 delete([Head|List], Elem, Residue) :-
 	Head == Elem, !,

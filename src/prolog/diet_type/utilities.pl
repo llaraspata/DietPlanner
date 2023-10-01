@@ -3,37 +3,6 @@
 % ---------
 :- use_module(library(lists)).
 
-
-delete([], _, []).
-delete([Head|List], Elem, Residue) :-
-	Head == Elem, !,
-	delete(List, Elem, Residue).
-delete([Head|List], Elem, [Head|Residue]) :-
-	delete(List, Elem, Residue).
-
-nth(V, In, Element) :- var(V), !,
-	generate_nth(1, V, In, Element).
-nth(1, [Head|_], Head) :- !.
-nth(N, [_|Tail], Elem) :-
-	nonvar(N), !,
-	M is N-1,			% should be succ(M, N)
-	find_nth(M, Tail, Elem).
-
-find_nth(1, [Head|_], Head) :- !.
-find_nth(N, [_|Tail], Elem) :-
-	M is N-1,
-	find_nth(M, Tail, Elem).
-
-generate_nth(I, I, [Head|_], Head).
-generate_nth(I, IN, [_|List], El) :-
-	I1 is I+1,
-	generate_nth(I1, IN, List, El).
-
-remove_duplicates([], []).
-remove_duplicates([Elem|L], [Elem|NL]) :-
-	delete(L, Elem, Temp),
-	remove_duplicates(Temp, NL).
-
 % ---------
 % Inference Goals
 % ---------
@@ -101,7 +70,7 @@ get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQue
     !,
     get_question_possible_answer_id_text(NextQuestionId, NextAnswers).
 
-get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQuestion, NextAnswers) :-
+get_next_question(History, CurrentQuestion, GivenAnswer, IdNextQuestion, NextQuestion, NextAnswers) :-
     is_related_to(CurrentQuestion, NextQuestionId, GivenAnswer, Prerequirements),
     \+ check_prerequirements(History, Prerequirements, 1),
     belongs_to(CurrentQuestion, CurrentTopic, _),

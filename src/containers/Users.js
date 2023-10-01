@@ -51,9 +51,9 @@ export default function Users(){
             flex: 4,
             renderCell: (params) => {
                 const types = params.value ? dietTypes.filter(dt => params.value.includes(dt.id)).map(dt => dt.value).join(", ") : ""
-                return <Grid container justifyContent="space-between" alignItems="center">
-                    <Grid item>
-                        {types}
+                return <Grid container direction="row" alignItems="center" justifyContent="space-between" wrap="nowrap">
+                    <Grid item xs={7}>
+                        <Typography noWrap>{types}</Typography>
                     </Grid>
                     <Grid item>
                         <Button variant="outlined" fullWidth

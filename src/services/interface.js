@@ -165,7 +165,6 @@ export function useGetSuggestedDietTypes(answeredQuestions, inferenceMethod) {
                 })
 
                 if(inferenceMethod === INFERENCE_METHODS.forward) session.query("forward_chaining.")
-                //todo la backward dà problemi
                 else session.query(`backward_chaining(suggested_diet_type(${userId}, DietType)).`)
                 session.answer(a => a.id === "throw" && console.error("chaining", a))
 
@@ -194,7 +193,6 @@ export function useGetAllDietTypes() {
         consultUtilitiesQuestionnaire(session).then(() => {
             session.query("collect_inference_goals(X).")
             session.answer(a => {
-                console.log(fromList(a.lookup("X")))
                 let newDietTypes = []
                 fromList(a.lookup("X")).map(ig => {
                     newDietTypes.push({

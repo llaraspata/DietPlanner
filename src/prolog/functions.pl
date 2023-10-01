@@ -220,13 +220,11 @@ cumulative_macro_nutrient_quantity(_, [], CumulativeQuantity, CumulativeQuantity
 % Recursive case: Calculate the cumulative quantity for the first nutrient in the category.
 cumulative_macro_nutrient_quantity(FoodGramsList, [Nutrient|Rest], PartialCumulativeQuantity, CumulativeQuantity) :-
     cumulative_nutrient_quantity(FoodGramsList, Nutrient, NutrientQuantity),
-    !,
     NewPartialCumulativeQuantity is PartialCumulativeQuantity + NutrientQuantity,
     cumulative_macro_nutrient_quantity(FoodGramsList, Rest, NewPartialCumulativeQuantity, CumulativeQuantity).
 
 % Calculate the cumulative quantity of a specific nutrient in a list of food-grams pairs.
 cumulative_nutrient_quantity(FoodGramsList, Nutrient, CumulativeQuantity) :-
-    !,
     compute_nutrient_quantity(FoodGramsList, Nutrient, 0, CumulativeQuantity).
 % Base case: When the list is empty, the cumulative quantity is 0.
 compute_nutrient_quantity([], _, CumulativeQuantity, CumulativeQuantity).
@@ -477,12 +475,27 @@ get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldRel, NewRel) :-
 get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldIngredientList, NewIngredientList) :-
     get_old_new_relationship(Rest, Tail, OldIngredientList, NewIngredientList).
 
-% Fix dish grams accoridng to Macrnutrient check results
+% Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
+    writeln('APPENA ENTRATO NEL fix'),
+
     get_old_ingredient_list_and_modify_macro(NewId, ListDish, Fix, MacroNutrient, [], [], OldRelatioships, NewRelatioships),
+    
+    writeln('--Macronutrient'),
+    writeln(MacroNutrient),
+    writeln('--OldRelatioships'),
+    writeln(OldRelatioships),
+    writeln('--NewRelatioships'),
+    writeln(NewRelatioships),
+
     get_old_new_relationship(OldRelatioships, NewRelatioships, OldIngredientList, NewIngredientList),
+
+    writeln('--OldIngredientList'),
+    writeln(OldIngredientList),
+    writeln('--NewIngredientList'),
+    writeln(NewIngredientList),
+
     !,
-    writeln('cazzo'),
     has(NewId, Dish, OldIngredientList),
     (
         NewIngredientList = 0 ->
@@ -490,9 +503,10 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
             has(NewId, DefaultDish, IngredientList),
             find_ingredient_with_highest_nutrient(IngredientList, MacroNutrient, FoodWithMoreNutrient),
             default_case_fix(FoodWithMoreNutrient, Fix, IngredientList, [], DefaultIngredientList),
-            writeln('Caso Base'),
             retract(has(NewId, DefaultDish, IngredientList)),
             assertz(has(NewId, DefaultDish, DefaultIngredientList)),
+            
+            writeln('Default case:'),
             writeln(has(NewId, DefaultDish, IngredientList)),
             writeln(has(NewId, DefaultDish, DefaultIngredientList))
             
@@ -501,7 +515,10 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
         (
             retract(has(NewId, Dish, OldIngredientList)),
             assertz(has(NewId, Dish, NewIngredientList)),
+
+            writeln('Old relation'),
             writeln(has(NewId, Dish, OldIngredientList)),
+            writeln('New relation'),
             writeln(has(NewId, Dish, NewIngredientList))
         )
     ).
@@ -518,7 +535,17 @@ get_old_ingredient_list_and_modify_calories(_, [], _, _, OldRelationships, NewRe
 get_old_ingredient_list_and_modify_calories(DailyDiet, [Head|Tail], Fix, MacroNutrient, AccOldRel, AccNewRel, OldRelationships, NewRelationships) :-
     has(DailyDiet, Head, IngredientsList),
     find_ingredient_with_more_calories(IngredientsList, FoodWithMoreCalories),
+
+    writeln('--Fix'),
+    writeln(Fix),
+    writeln('--FoodWithMoreCalories'),
+    writeln(FoodWithMoreCalories),
+
     change_ingredient_calories_grams(Head, IngredientsList, Fix, FoodWithMoreCalories, [], TempIngredientList),
+
+    writeln('--TempIngredientList'),
+    writeln(TempIngredientList),
+
     append(AccOldRel, [IngredientsList], NewAccOldRel),
     append(AccNewRel, [TempIngredientList], NewAccNewRel), 
     get_old_ingredient_list_and_modify_calories(DailyDiet, Tail, Fix, MacroNutrient, NewAccOldRel, NewAccNewRel, OldRelationships, NewRelationships).
@@ -578,7 +605,10 @@ fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
         (
             retract(has(NewId, Dish, OldIngredientList)),
             assertz(has(NewId, Dish, NewIngredientList)),
+            
+            writeln('Old relation'),
             writeln(has(NewId, Dish, OldIngredientList)),
+            writeln('New relation'),
             writeln(has(NewId, Dish, NewIngredientList))
         )
     ).
@@ -734,30 +764,33 @@ generate_daily_diet(Person, [NewId | RestNames], [TotalDayCalories | Rest]) :-
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
     
+    writeln('-----------------------'),
+    writeln('Dopo set_grams_for_dish'),
+
     check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
 
+    writeln('Ho fixato tutto'),
+    writeln('-----------------------'),
+    
+    !,
     generate_daily_diet(Person, RestNames, Rest).
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
 check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
     repeat,
     (
-        check_daily_macronutrient(NewId, DailyCalories, MacronutrientLimits, MacronutrientResult, MacroNutrient),
+        check_daily_macronutrient(NewId, DailyCalories, MacronutrientLimits, MacronutrientResult, FailedMacroNutrient),
         check_daily_calories(NewId, DailyCalories, CaloryResult),
-        writeln('fix'),
-        writeln(MacroNutrient),
-        writeln(MacronutrientResult),
-        writeln(CaloryResult),
         (
             MacronutrientResult = 0, CaloryResult = 0 ->
                 writeln('Daily Diet generated successfully'),
                 !
             ;
             MacronutrientResult = -1    ->
-                fix_macronutient(NewId, MacroNutrient, MacronutrientResult)
+                fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
             ;
             MacronutrientResult = 1     ->
-                fix_macronutient(NewId, MacroNutrient, MacronutrientResult)
+                fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
             ;
             CaloryResult = -1    ->
                 fix_calories(NewId, CaloriesResult)
@@ -765,18 +798,19 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
             CaloryResult = 1     ->
                 fix_calories(NewId, CaloriesResult)
         )
-    ),
-    fail. % Fail to exit the repeat loop.
+    ). % Fail to exit the repeat loop.
 
 
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     writeln('Diet does not meet Macronutrients constraints, regenerating...'),
+    writeln('Failed'),
+    writeln(MacroNutrient),
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
     nth0(0, ListDish, DefaultDish),
     fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, MacronutrientResult),
     !,
-    writeln('fine').
+    fail.
 
 % Fix dish grams w.r.t. calories checks
 fix_calories(NewId, CaloriesResult) :-
@@ -784,7 +818,8 @@ fix_calories(NewId, CaloriesResult) :-
     get_list_dish_by_calories(NewId, ListDish),
     nth0(0, ListDish, DefaultDish),
     fix_calories_grams(NewId, ListDish, DefaultDish, CaloryResult),
-    !.
+    !,
+    fail.
 
 % Read a file and find specific instances
 get_list_dish_by_calories(DailyDiet, ListDish) :-
@@ -817,19 +852,19 @@ convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories) :
 % Checks that the macronutrient quantity in a daily diet is between a specified range
 check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, UpperBound, Result) :-
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
+
     writeln(MacroNutrient),
-    writeln(UniqueIngredients),
+
     sum_list(DailyCalories, DayCalories),
-    writeln(DayCalories),
+
     !,
     cumulative_macro_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
+
     convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories),
-    writeln('Percentuale'),
-    writeln(TotalCalories),
+
     Min is round((DayCalories * LowerBound) / 100),
     Max is round((DayCalories * UpperBound) / 100),
-    writeln(Min),
-    writeln(Max),
+
     (
         TotalCalories < Min ->
         TempResult is -1
@@ -840,20 +875,43 @@ check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, 
         TotalCalories >= Min, TotalCalories =< Max ->
         TempResult is 0 
     ),
-    Result = TempResult.
+
+    Result = TempResult,
+    
+    writeln('Result'),
+    writeln(Result),
+    writeln('TotalCalories'),
+    writeln(TotalCalories),
+    writeln('Min'),
+    writeln(Min),
+    writeln('Max'),
+    writeln(Max).
 
 % Checks different macronutrients constraints, stopping the execution when the result is different from 0, meaning that some check failed
 check_daily_macronutrient(_, _, [], 0, _).
-check_daily_macronutrient(DailyDiet, DailyCalories, [MacroNutrient-LowerBound-UpperBound | Rest], Result, MacroNutrient) :-
+check_daily_macronutrient(DailyDiet, DailyCalories, [MacroNutrient-LowerBound-UpperBound | Rest], Result, FailedMacroNutrient) :-
     check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, UpperBound, InnerResult),
     (InnerResult = 0 ->
-        check_daily_macronutrient(DailyDiet, DailyCalories, Rest, Result, MacroNutrient)
+        writeln('--     INNER RESULT = 0'),
+        check_daily_macronutrient(DailyDiet, DailyCalories, Rest, Result, FailedMacroNutrient)
         ;
-        Result = InnerResult
+        writeln('--     check failed'),
+
+        Result = InnerResult,
+        
+        writeln(Result)
+
     ).
-check_daily_macronutrient(_, _, _, _, Result, _) :- 
-    Result \= 0, 
+check_daily_macronutrient(DailyDiet, DailyCalories, [MacroNutrient-_-_ | _], Result, FailedMacroNutrient) :-
+    Result \= 0,
+    FailedMacroNutrient = MacroNutrient,
+
+    writeln('Check Failed - Result'),
+    writeln(Result),
+    writeln('Check Failed - FailedMacroNutrient'),
+    writeln(FailedMacroNutrient),
     !.
+    %check_daily_macronutrient(DailyDiet, DailyCalories, Rest, Result, MacroNutrient).
 
 % Checks that the calories in a daily diet is between a specified range
 check_daily_calories(DailyDiet, DailyCalories, Result) :-
@@ -888,10 +946,10 @@ check_dish_calories(_, _, Result) :-
 
 init_diet(Name, Surname, Type, Person, Structure) :-
     find_person_id(Name, Surname, Person),
-    atomic_concat('diet_', Person, DietName), 
-    atomic_concat('Diet for ', Name, Temp), 
-    atomic_concat(Temp, ' ', Temp1), 
-    atomic_concat(Temp1, Surname, TotalName), 
+    atomic_concat('diet_', Person, DietName),
+    atomic_concat('Diet for ', Name, Temp),
+    atomic_concat(Temp, ' ', Temp1),
+    atomic_concat(Temp1, Surname, TotalName),
     Structure = [diet_instance(dietplanner, diet, DietName),
                 attribute_value(dietplanner, DietName, name, TotalName),
                 attribute_value(dietplanner, diet_nome, type, Type),
@@ -931,6 +989,4 @@ compute_diet(Name, Surname, Type, Structure, Instances) :-
     !,
     generate_daily_diet(Person, DailyDietNames, TotalWeekCaloriesList),
     read_relationships(Instances),
-    writeln(Instances).
-
-   
+    writeln(Instances).   

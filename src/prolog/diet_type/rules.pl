@@ -31,7 +31,7 @@ rule(
         has_dietary_restrictions(User),
         do_not_eat(User, meat),
         do_not_eat(User, fish_seafood),
-        \+ do_not_eat(User, animal_derived)
+        eat(User, animal_derived)
     ]
 ).
 

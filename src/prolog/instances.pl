@@ -1784,7 +1784,6 @@ has_nutrient(eggplant, insoluble_fiber, 1.0).
 has_nutrient(eggplant, vitamin_c, 0.022).
 has_nutrient(eggplant, plant_protein, 1).
 has_nutrient(eggplant, vitamin_a, 0.023).
-has_nutrient(eggplant, total_carbohydrates, 6).
 
 has_nutrient(onion, complex_carbohydrates, 9.0).
 has_nutrient(onion, glucose, 2.3).
@@ -2602,7 +2601,7 @@ made_of(tuna_sandwich, celery, 20, 80).
 made_of(tuna_sandwich, onion, 10, 30).
 made_of(tuna_sandwich, lettuce, 30, 60).
 made_of(tuna_sandwich, tomato, 20, 80).
-made_of(tuna_sandwich, whole_wheat_bread, 30, 150).
+made_of(tuna_sandwich, white_bread, 30, 150).
 
 made_of(sushi_roll, white_rice, 40, 180).
 made_of(sushi_roll, nori_seaweed, 20, 80).

@@ -26,7 +26,7 @@ female_bmr_constant(655.1).
 % TODO: comment
 dish_types([breakfast, snack, lunch, snack, dinner]).
 %daily_diet_names([daily_diet1, daily_diet2, daily_diet3, daily_diet4, daily_diet5, daily_diet6, daily_diet7]).
-daily_diet_names([daily_diet1, daily_diet2]).
+daily_diet_names([daily_diet1]).
 
 % Checks on generated Daily Diet
 healthy_weight_nutrient_percentages([carbs-40-50, protein-20-25, lipids-25-30, dietary_fiber-1-5]).
@@ -478,7 +478,6 @@ get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldIngredientList, Ne
 % Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
     writeln('APPENA ENTRATO NEL fix'),
-    writeln(MacroNutrient),
     get_old_ingredient_list_and_modify_macro(NewId, ListDish, Fix, MacroNutrient, [], [], OldRelatioships, NewRelatioships),
     
     writeln('--Macronutrient'),
@@ -581,7 +580,8 @@ default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList)
     ),
     IntegerNewGrams is round(NewGrams),
     append(Acc, [FoodBeverage-IntegerNewGrams], NewAcc),
-    default_case_fix(Food, Fix, Rest, NewAcc, NewIngredientList).
+    default_case_fix(Food, Fix, Rest, NewAcc, NewIngredientList),
+    !.
 
 
 % Fix dish grams accoridng to Calories check results
@@ -787,8 +787,6 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
                 !
             ;
             MacronutrientResult = -1    ->
-                writeln('FailedMacroNutrient'),
-                writeln(FailedMacroNutrient),
                 fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
             ;
             MacronutrientResult = 1     ->
@@ -806,8 +804,6 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     writeln('Diet does not meet Macronutrients constraints, regenerating...'),
-    writeln('Failed'),
-    writeln(MacroNutrient),
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
     nth0(0, ListDish, DefaultDish),
     fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, MacronutrientResult),
@@ -854,8 +850,6 @@ convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories) :
 % Checks that the macronutrient quantity in a daily diet is between a specified range
 check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, UpperBound, Result) :-
     unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
-    writeln(MacroNutrient),
-
     sum_list(DailyCalories, DayCalories),
     !,
     cumulative_macro_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
@@ -889,26 +883,23 @@ check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, 
 
 % Caso base: se la lista è vuota, e non ci sono altre macro da controllare, la funzione restituisce 0 (nessun errore).
 check_daily_macronutrient(_, _, [], 0, _) :-
+    writeln('TUTTO CORRRETOOOOOOO'),
     !.
 
 % Caso ricorsivo: se il check del macronutriente corrente fallisce (InnerResult \= 0), 
 % la funzione restituisce l'InnerResult e il MacroNutrient corrente come FailedMacroNutrient.
-check_daily_macronutrient(DailyDiet, DailyCalories, [MacroNutrient-LowerBound-UpperBound | _], Result, FailedMacroNutrient) :-
+check_daily_macronutrient(DailyDiet, DailyCalories, [MacroNutrient-LowerBound-UpperBound | Rest], Result, FailedMacroNutrient) :-
+    writeln('--- sto esaminando un elemento della lista dei vincoli ---'),
     check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, UpperBound, InnerResult),
-    InnerResult \= 0,
-    Result = InnerResult,
-    FailedMacroNutrient = MacroNutrient,
-    writeln('Check Failed - Result'),
-    writeln(Result),
-    writeln('Check Failed - FailedMacroNutrient'),
-    writeln(FailedMacroNutrient), 
-    !.  % Blocca ulteriori backtracking
-
-% Caso ricorsivo: se il check del macronutriente corrente passa (InnerResult = 0), 
-% la funzione prosegue con la verifica del macronutriente successivo nella lista.
-check_daily_macronutrient(DailyDiet, DailyCalories, [_ | Rest], Result, FailedMacroNutrient) :-
-    check_daily_macronutrient(DailyDiet, DailyCalories, Rest, Result, FailedMacroNutrient).
-
+    (
+        InnerResult \= 0 
+        ->
+            Result = InnerResult,
+            FailedMacroNutrient = MacroNutrient,
+            !  % Blocca ulteriori backtracking
+        ;
+            check_daily_macronutrient(DailyDiet, DailyCalories, Rest, Result, FailedMacroNutrient)
+    ).
 
 
 % Checks that the calories in a daily diet is between a specified range

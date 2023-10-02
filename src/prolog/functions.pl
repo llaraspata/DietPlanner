@@ -116,7 +116,9 @@ read_relationships(ListRelationships) :-
 
 select_elements_with_pattern([], _, []).
 select_elements_with_pattern([Element | Rest], Pattern, [Element | RestSelected]) :-
-    Element =.. [has, FirstArg | _], FirstArg = Pattern,
+    Element =.. [has, FirstArg | _], 
+    FirstArg = Pattern,
+    !,
     select_elements_with_pattern(Rest, Pattern, RestSelected).
 select_elements_with_pattern([_ | Rest], Pattern, SelectedElements) :-
     select_elements_with_pattern(Rest, Pattern, SelectedElements).
@@ -466,39 +468,27 @@ get_old_ingredient_list_and_modify_macro(DailyDiet, [Head|Tail], Fix, MacroNutri
     find_ingredient_with_highest_nutrient(IngredientsList, MacroNutrient, FoodWithMoreNutrient),
     change_ingredient_nutrient_grams(Head, IngredientsList, Fix, FoodWithMoreNutrient, [], TempIngredientList),
     append(AccOldRel, [IngredientsList], NewAccOldRel),
-    append(AccNewRel, [TempIngredientList], NewAccNewRel),    
+    append(AccNewRel, [TempIngredientList], NewAccNewRel), 
+    !,   
     get_old_ingredient_list_and_modify_macro(DailyDiet, Tail, Fix, MacroNutrient, NewAccOldRel, NewAccNewRel, OldRelatioships, NewRelatioships).
 
 
 
 get_old_new_relationship([], [], _, 0).
 get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldRel, NewRel) :-
-    OldRel \== NewRel.
+    OldRel \== NewRel,
+    !.
 get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldIngredientList, NewIngredientList) :-
     get_old_new_relationship(Rest, Tail, OldIngredientList, NewIngredientList).
 
 % Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
-    writeln('APPENA ENTRATO NEL fix'),
-    !,
-    get_old_ingredient_list_and_modify_macro(NewId, ListDish, Fix, MacroNutrient, [], [], OldRelatioships, NewRelatioships),
-    writeln('--Macronutrient'),
-    writeln(MacroNutrient),
-    writeln('--OldRelatioships'),
-    writeln(OldRelatioships),
-    writeln('--NewRelatioships'),
-    writeln(NewRelatioships),
-
+    get_old_ingredient_list_and_modify_macro(NewId, ListDish, Fix, MacroNutrient, [], [], OldRelatioships, NewRelatioships),    
     get_old_new_relationship(OldRelatioships, NewRelatioships, OldIngredientList, NewIngredientList),
 
-    writeln('--OldIngredientList'),
-    writeln(OldIngredientList),
-    writeln('--NewIngredientList'),
-    writeln(NewIngredientList),
-
-    !,
     has(NewId, Dish, OldIngredientList),
     (
+        writeln('IFIFIFIFIFIFFIFIF'),
         NewIngredientList = 0 ->
         (
             has(NewId, DefaultDish, IngredientList),
@@ -516,9 +506,9 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
         )
         ;
         (
+            
             retract(has(NewId, Dish, OldIngredientList)),
             assertz(has(NewId, Dish, NewIngredientList)),
-
             writeln('Old relation'),
             writeln(has(NewId, Dish, OldIngredientList)),
             writeln('New relation'),
@@ -709,6 +699,7 @@ get_dish_macronutrient_amount_lists([Ingredients | Rest], MacroNutrient, Acc, Ca
     cumulative_macro_nutrient_quantity(Ingredients, MacroNutrient, Quantity),
     IntegerQuantity is round(Quantity),
     append(Acc, [IntegerQuantity], NewAcc),
+    !,
     get_dish_macronutrient_amount_lists(Rest, MacroNutrient, NewAcc, CaloriesList).
 
 % Generate ingredients' grams for all dishes in a daily diet

@@ -1491,7 +1491,6 @@ has_nutrient(beef, polyunsaturated_fat, 1).
 has_nutrient(garlic, complex_carbohydrates, 33.1).
 has_nutrient(garlic, glucose, 1.0).
 has_nutrient(garlic, fructose, 0.2).
-has_nutrient(garlic, plant_protein, 6).
 has_nutrient(garlic, soluble_fiber, 2.1).
 has_nutrient(garlic, insoluble_fiber, 0.2).
 has_nutrient(garlic, pectin, 0.2).
@@ -2171,7 +2170,7 @@ has_nutrient(sesame_seeds, vitamin_k, 13.6).
 has_nutrient(sesame_seeds, potassium, 0.468).
 has_nutrient(sesame_seeds, calcium, 0.975).
 
-has_nutrient(beef_broth, red_meat_protein, 2.0).
+has_nutrient(beef_broth, red_meat_protein, 10.0).
 has_nutrient(beef_broth, sodium, 0.750).
 has_nutrient(beef_broth, potassium, 0.40).
 has_nutrient(beef_broth, iron, 0.1).

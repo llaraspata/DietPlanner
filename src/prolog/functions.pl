@@ -29,7 +29,7 @@ dish_types([breakfast, snack, lunch, snack, dinner]).
 daily_diet_names([daily_diet1]).
 
 % Checks on generated Daily Diet
-healthy_weight_nutrient_percentages([carbs-40-50, protein-20-25, lipids-25-30, dietary_fiber-1-5]).
+healthy_weight_nutrient_percentages([carbs-40-50, protein-20-30, lipids-25-35, dietary_fiber-1-5]).
 
 
 % ---------
@@ -478,8 +478,8 @@ get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldIngredientList, Ne
 % Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
     writeln('APPENA ENTRATO NEL fix'),
+    !,
     get_old_ingredient_list_and_modify_macro(NewId, ListDish, Fix, MacroNutrient, [], [], OldRelatioships, NewRelatioships),
-    
     writeln('--Macronutrient'),
     writeln(MacroNutrient),
     writeln('--OldRelatioships'),
@@ -506,6 +506,8 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
             assertz(has(NewId, DefaultDish, DefaultIngredientList)),
             
             writeln('Default case:'),
+            writeln(FoodWithMoreNutrient),
+            writeln(MacroNutrient),
             writeln(has(NewId, DefaultDish, IngredientList)),
             writeln(has(NewId, DefaultDish, DefaultIngredientList))
             
@@ -533,7 +535,7 @@ find_ingredient_with_highest_nutrient(Aliments, MacroNutrient, FoodWithMore) :-
 get_old_ingredient_list_and_modify_calories(_, [], _, _, OldRelationships, NewRelationships, OldRelationships, NewRelationships).
 get_old_ingredient_list_and_modify_calories(DailyDiet, [Head|Tail], Fix, MacroNutrient, AccOldRel, AccNewRel, OldRelationships, NewRelationships) :-
     has(DailyDiet, Head, IngredientsList),
-    find_ingredient_with_more_calories(IngredientsList, FoodWithMoreCalories),
+    find_ingredient_with_more_calories(IngredientsList, 0, FoodWithMoreCalories),
 
     writeln('--Fix'),
     writeln(Fix),
@@ -552,36 +554,36 @@ get_old_ingredient_list_and_modify_calories(DailyDiet, [Head|Tail], Fix, MacroNu
 
 
 find_ingredient_with_more_calories([], MaxFoodBeverage, MaxFoodBeverage).
-find_ingredient_with_more_calories([FoodBeverage-Grams | Rest], CurrentMax, FoodWithMoreCalories) :-
+find_ingredient_with_more_calories([FoodBeverage-Grams | Rest], CurrentMax, MaxFoodBeverage) :-
     attribute_value(dietplanner, FoodBeverage, calories, CaloriesFood),
     (
         CaloriesFood > CurrentMax ->
-            find_ingredient_with_more_calories(Rest, FoodBeverages, CaloriesFood, MaxFoodBeverage)
+            find_ingredient_with_more_calories(Rest, CaloriesFood, FoodBeverage)
         ;
-            find_ingredient_with_more_calories(Rest, FoodBeverages, CurrentMax, MaxFoodBeverage)
-        
+            find_ingredient_with_more_calories(Rest, CurrentMax, MaxFoodBeverage)
     ).
+
 
 default_case_fix(_, _, [], NewIngredientList, NewIngredientList).
 default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList) :-
     (
         FoodBeverage = Food,
         (
-            % If Fix = 1, Decrease by 5%
+            % If Fix = 1, Decrease by 10%
             Fix = 1,
-            NewGrams is (Grams * 90) / 100
+            NewGrams is floor((Grams * 90) / 100),
+            !
         ;
-            % If Fix = -1, Increase by 5%
+            % If Fix = -1, Increase by 10%
             Fix = -1,
-            NewGrams is (Grams * 110) / 100
+            NewGrams is ceiling((Grams * 110) / 100),
+            !
         )
         ;
         NewGrams = Grams
     ),
-    IntegerNewGrams is round(NewGrams),
-    append(Acc, [FoodBeverage-IntegerNewGrams], NewAcc),
-    default_case_fix(Food, Fix, Rest, NewAcc, NewIngredientList),
-    !.
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
+    default_case_fix(Food, Fix, Rest, NewAcc, NewIngredientList).
 
 
 % Fix dish grams accoridng to Calories check results
@@ -593,7 +595,7 @@ fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
         NewIngredientList = 0 ->
         (            
             has(NewId, DefaultDish, IngredientList),
-            find_ingredient_with_more_calories(IngredientList, FoodWithMoreCalories),
+            find_ingredient_with_more_calories(IngredientList, 0, FoodWithMoreCalories),
             default_case_fix(FoodWithMoreCalories, Fix, IngredientList, [], DefaultIngredientList),
             !,
             writeln(has(NewId, DefaultDish, IngredientList)),
@@ -623,7 +625,7 @@ change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
             % If Fix = 1, Decrease by 5%
             (Fix = 1) ->
             (
-                NewGrams is (Grams * 90) / 100,
+                NewGrams is floor((Grams * 90) / 100),
                 ((NewGrams >= Min, NewGrams =< Max) ->
                     true
                 ;
@@ -634,7 +636,7 @@ change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
             % If Fix = -1, Increase by 5%
             (Fix = -1) ->
             (
-                NewGrams is (Grams * 110) / 100,
+                NewGrams is ceiling((Grams * 110) / 100),
                 ((NewGrams >= Min, NewGrams =< Max) ->
                     true
                 ;
@@ -646,8 +648,7 @@ change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
         % Else (FoodBeverage è diverso da FoodWithMore)
         NewGrams = Grams
     ),
-    IntegerNewGrams is round(NewGrams),
-    append(Acc, [FoodBeverage-IntegerNewGrams], NewAcc),
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
     change_ingredient_nutrient_grams(Dish, Rest, Fix, FoodWithMoreNutrient, NewAcc, NewIngredientList).
 
 change_ingredient_calories_grams(_, [], _, _, NewIngredientList, NewIngredientList).  % La versione iniziale aveva 5 argomenti, ho aggiunto un 5° argomento per restituire il risultato.
@@ -657,18 +658,18 @@ change_ingredient_calories_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
         % If Fix = 1, Decrease by 5%
         (Fix = 1) ->
         (
-            NewGrams is (Grams * 90) / 100,
+            NewGrams is floor((Grams * 90) / 100),
             ((NewGrams >= Min, NewGrams =< Max) ->
                 true
             ;
                 NewGrams = Grams
             )
         )
-        ;
+        ;NewGrams is
         % If Fix = -1, Increase by 5%
         (Fix = -1) ->
         (
-            NewGrams is (Grams * 110) / 100,
+            NewGrams is ceiling((Grams * 110) / 100),
             ((NewGrams >= Min, NewGrams =< Max) ->
                 true
             ;
@@ -676,8 +677,7 @@ change_ingredient_calories_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
             )
         )
     ),
-    IntegerNewGrams is round(NewGrams),
-    append(Acc, [FoodBeverage-IntegerNewGrams], NewAcc),
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
     change_ingredient_calories_grams(Dish, Rest, Fix, FoodWithMoreCalories, NewAcc, NewIngredientList),  % Chiamata ricorsiva
 
 
@@ -763,7 +763,7 @@ generate_daily_diet(Person, [NewId | RestNames], [TotalDayCalories | Rest]) :-
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
-    
+    writeln(DailyDietDishes),
     writeln('-----------------------'),
     writeln('Dopo set_grams_for_dish'),
 
@@ -855,8 +855,8 @@ check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, 
     cumulative_macro_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
     convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories),
 
-    Min is round((DayCalories * LowerBound) / 100),
-    Max is round((DayCalories * UpperBound) / 100),
+    Min is floor((DayCalories * LowerBound) / 100),
+    Max is ceiling((DayCalories * UpperBound) / 100),
 
     (
         TotalCalories < Min ->

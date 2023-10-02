@@ -59,7 +59,7 @@ compare_values(Order, [_, Value1], [_, Value2]) :-
     compare(Order, Value2, Value1).
 
 % Creates an empty list of N elements/days
-create_days_list(0, []).
+create_days_list(0, []) :- !.
 create_days_list(N, [[] | Rest]) :-
     N > 0,
     NextN is N - 1,
@@ -144,6 +144,7 @@ set_calories_week([Day|Rest], BMI, EnergyValue, [TotalCalories|Tail]) :-
     set_right_number_calories(BMI, EnergyValue, ActivityDurationList, BaseCalories),
     set_calories_day(Day, BMI, TotalEffort),
     TotalCalories is TotalEffort + BaseCalories,
+    !,
     set_calories_week(Rest, BMI, EnergyValue, Tail).
 
 % TODO: comment
@@ -286,6 +287,7 @@ distribute_activities(DaysPerWeek, ActivityList, DistributedList) :-
     create_days_list(7, EmptyList),  
     % Sort the activity list w.r.t. their frequency
     sort_activity_list(ActivityList, SortedActivityList),  
+    !,
     distribute_activities_recursive(DaysPerWeek, SortedActivityList, EmptyList, DistributedList).
 distribute_activities(DaysPerWeek, ActivityList, DistributedList) :-
     writeln('Error: the number of days is not valid'), 

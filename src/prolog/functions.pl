@@ -54,6 +54,11 @@ map_list([], [], []).
 map_list([Value|Values], [Key|Keys], [Value-Key|Rest]) :-
     map_list(Values, Keys, Rest).
 
+flatten_list([], []).
+flatten_list([H|T], FlatList) :-
+    flatten_list(T, NewFlatList),
+    append(H, NewFlatList, FlatList).
+
 % Predicato per confrontare due elementi [_, Value1] e [_, Value2]
 compare_values(Order, [_, Value1], [_, Value2]) :-
     compare(Order, Value2, Value1).
@@ -244,16 +249,6 @@ compute_nutrient_quantity([FoodBeverage-Grams|Rest], Nutrient, PartialCumulative
     ),
     % Recursively process the rest of the list.
     compute_nutrient_quantity(Rest, Nutrient, NewPartialCumulativeQuantity, CumulativeQuantity).
-
-
-% Get total nutrient percentage in a daily diet
-daily_diet_total_nutrient_percentage(DailyDiet, MacroNutrient, TotalNutrientQuantity) :-
-    unique_ingredients_in_daily_diet(DailyDiet, UniqueIngredients), 
-    writeln('Macro'),
-    writeln(MacroNutrient),
-    cumulative_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
-    !.
-
 
 % ---------
 % Allergen
@@ -461,38 +456,34 @@ get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDietDishes) :-
     append(Acc, [Dish], NewAcc),
     get_daily_diet_dishes(Person, Rest, NewAcc, DailyDietDishes).
 
-% Get the old ingredient list of a given Dish in a specified DailyDiet
-get_old_ingredient_list_and_modify_macro(_, [], _, _, OldRelatioships, NewRelatioships, OldRelatioships, NewRelatioships).
-get_old_ingredient_list_and_modify_macro(DailyDiet, [Head|Tail], Fix, MacroNutrient, AccOldRel, AccNewRel, OldRelatioships, NewRelatioships) :-
+get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrient, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
-    find_ingredient_with_highest_nutrient(IngredientsList, MacroNutrient, FoodWithMoreNutrient),
-    change_ingredient_nutrient_grams(Head, IngredientsList, Fix, FoodWithMoreNutrient, [], TempIngredientList),
-    !,
-    append(AccOldRel, [IngredientsList], NewAccOldRel),
-    append(AccNewRel, [TempIngredientList], NewAccNewRel),  
-    get_old_ingredient_list_and_modify_macro(DailyDiet, Tail, Fix, MacroNutrient, NewAccOldRel, NewAccNewRel, OldRelatioships, NewRelatioships).
-
-
-
-get_old_new_relationship([], [], _, 0).
-get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldRel, NewRel) :-
-    OldRel \== NewRel,
+    find_ingredients_sorted_by_nutrient(IngredientsList, MacroNutrient, OrderedList),
+    writeln('list'),
+    writeln(OrderedList),
+    change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
+    
+    writeln(IngredientsList),
+    writeln(TempIngredientList),
+    IngredientsList \== TempIngredientList,
+    OldRel = IngredientsList, 
+    NewRel = TempIngredientList,
     !.
-get_old_new_relationship([OldRel | Rest], [NewRel | Tail], OldIngredientList, NewIngredientList) :-
-    get_old_new_relationship(Rest, Tail, OldIngredientList, NewIngredientList).
+get_old_new_ingredient_list_by_nutrient(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
+    get_old_new_ingredient_list_by_nutrient(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
+get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, 0).
 
 % Fix dish grams accoridng to MacroNutrient check results
-fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
-    get_old_ingredient_list_and_modify_macro(NewId, ListDish, Fix, MacroNutrient, [], [], OldRelatioships, NewRelatioships),    
-    get_old_new_relationship(OldRelatioships, NewRelatioships, OldIngredientList, NewIngredientList),
-
+fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :- 
+    get_old_new_ingredient_list_by_nutrient(NewId, ListDish, Fix, MacroNutrient, OldIngredientList, NewIngredientList),
     has(NewId, Dish, OldIngredientList),
     (
         writeln('IFIFIFIFIFIFFIFIF'),
         NewIngredientList = 0 ->
         (
             has(NewId, DefaultDish, IngredientList),
-            find_ingredient_with_highest_nutrient(IngredientList, MacroNutrient, FoodWithMoreNutrient),
+            find_ingredients_sorted_by_nutrient(IngredientList, MacroNutrient, OrderedList),
+            nth0(0, OrderedList, FoodWithMoreNutrient-_),
             default_case_fix(FoodWithMoreNutrient, Fix, IngredientList, [], DefaultIngredientList),
             retract(has(NewId, DefaultDish, IngredientList)),
             assertz(has(NewId, DefaultDish, DefaultIngredientList)),
@@ -518,43 +509,50 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
 
 
 % Gets the Food in a list of ingredients (Aliments) which has the highest content of a given macronutrient
-find_ingredient_with_highest_nutrient(Aliments, MacroNutrient, FoodWithMore) :- 
+find_ingredients_sorted_by_nutrient(Aliments, MacroNutrient, IngredientList) :- 
     findall(Nutrient, nutrient_instance(_, MacroNutrient, Nutrient), Nutrients),
-    findall(Content-Food, (member(Food-Gram, Aliments), member(Nutrient, Nutrients), has_nutrient(Food, Nutrient, Content)), NutrientContentPairs),
+    findall(Content-Food-Gram, (member(Food-Gram, Aliments), member(Nutrient, Nutrients), has_nutrient(Food, Nutrient, Content)), NutrientContentPairs),
     keysort(NutrientContentPairs, SortedPairs),
-    reverse(SortedPairs, [Content-FoodWithMore | _]).
+    reverse(SortedPairs, DescSortedPairs),
+    extract_pairs_values(DescSortedPairs, SortedFood),
+    remove_duplicates(SortedFood, IngredientList).
 
-get_old_ingredient_list_and_modify_calories(_, [], _, _, OldRelationships, NewRelationships, OldRelationships, NewRelationships).
-get_old_ingredient_list_and_modify_calories(DailyDiet, [Head|Tail], Fix, MacroNutrient, AccOldRel, AccNewRel, OldRelationships, NewRelationships) :-
+extract_pairs_values([], []).
+extract_pairs_values([_-Food-Gram | T1], [Food-Gram | T2]) :-
+    extract_pairs_values(T1, T2).
+
+get_old_new_ingredient_list_by_calories(DailyDiet, ListDish, Fix, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
-    find_ingredient_with_more_calories(IngredientsList, 0, FoodWithMoreCalories),
 
-    writeln('--Fix'),
-    writeln(Fix),
-    writeln('--FoodWithMoreCalories'),
-    writeln(FoodWithMoreCalories),
+    sort_ingredients_by_calories(IngredientsList, OrderedList),
+    change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
 
-    change_ingredient_calories_grams(Head, IngredientsList, Fix, FoodWithMoreCalories, [], TempIngredientList),
+    IngredientsList \== TempIngredientList,
+    OldRel = IngredientsList, 
+    NewRel = TempIngredientList,
+    !.
+get_old_new_ingredient_list_by_calories(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
+    get_old_new_ingredient_list_by_calories(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
+get_old_new_ingredient_list_by_calories(_, [], _, _, _, 0).
 
-    writeln('--TempIngredientList'),
-    writeln(TempIngredientList),
+% Base case: an empty list is already sorted.
+sort_ingredients_by_calories([], []).
+% Recursive case: sort the tail, then insert the head in the correct position.
+sort_ingredients_by_calories([Head|Tail], SortedList) :-
+    sort_ingredients_by_calories(Tail, SortedTail),
+    insert_ingredient(Head, SortedTail, SortedList).
 
-    append(AccOldRel, [IngredientsList], NewAccOldRel),
-    append(AccNewRel, [TempIngredientList], NewAccNewRel), 
-    get_old_ingredient_list_and_modify_calories(DailyDiet, Tail, Fix, MacroNutrient, NewAccOldRel, NewAccNewRel, OldRelationships, NewRelationships).
-
-
-
-find_ingredient_with_more_calories([], MaxFoodBeverage, MaxFoodBeverage).
-find_ingredient_with_more_calories([FoodBeverage-Grams | Rest], CurrentMax, MaxFoodBeverage) :-
-    attribute_value(dietplanner, FoodBeverage, calories, CaloriesFood),
-    (
-        CaloriesFood > CurrentMax ->
-            find_ingredient_with_more_calories(Rest, CaloriesFood, FoodBeverage)
-        ;
-            find_ingredient_with_more_calories(Rest, CurrentMax, MaxFoodBeverage)
-    ).
-
+% Insert an element into a sorted list, resulting in a new sorted list.
+insert_ingredient(FoodBeverage-Grams, [], [FoodBeverage-Grams]).
+insert_ingredient(FoodBeverage1-Grams1, [FoodBeverage2-Grams2 | Tail], [FoodBeverage1-Grams1, FoodBeverage2-Grams2 | Tail]) :-
+    attribute_value(dietplanner, FoodBeverage1, calories, Calories1),
+    attribute_value(dietplanner, FoodBeverage2, calories, Calories2),
+    Calories1 =< Calories2.
+insert_ingredient(FoodBeverage1-Grams1, [FoodBeverage2-Grams2 | Tail], [FoodBeverage2-Grams2 | NewTail]) :-
+    attribute_value(dietplanner, FoodBeverage1, calories, Calories1),
+    attribute_value(dietplanner, FoodBeverage2, calories, Calories2),
+    Calories1 > Calories2,
+    insert_ingredient(FoodBeverage1-Grams1, Tail, NewTail).
 
 default_case_fix(_, _, [], NewIngredientList, NewIngredientList).
 default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList) :-
@@ -579,14 +577,14 @@ default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList)
 
 % Fix dish grams accoridng to Calories check results
 fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
-    get_old_ingredient_list_and_modify_calories(NewId, ListDish, Fix, [], [], OldRelatioships, NewRelatioships),
-    get_old_new_relationship(OldRelatioships, NewRelatioships, OldIngredientList, NewIngredientList),
+    get_old_new_ingredient_list_by_calories(NewId, ListDish, Fix, OldRel, NewRel),
     has(NewId, Dish, OldIngredientList),
     (
         NewIngredientList = 0 ->
         (            
             has(NewId, DefaultDish, IngredientList),
-            find_ingredient_with_more_calories(IngredientList, 0, FoodWithMoreCalories),
+            sort_ingredients_by_calories(IngredientList, OrderedList),
+            nth0(0, OrderedList, FoodWithMoreCalories),
             default_case_fix(FoodWithMoreCalories, Fix, IngredientList, [], DefaultIngredientList),
             !,
             writeln(has(NewId, DefaultDish, IngredientList)),
@@ -606,72 +604,28 @@ fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
         )
     ).
     
-
-change_ingredient_nutrient_grams(_, [], _, _, NewIngredientList, NewIngredientList).
-change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWithMoreNutrient, Acc, NewIngredientList) :-
-    made_of(Dish, FoodWithMoreNutrient, Min, Max),
-    (
-        FoodBeverage = FoodWithMoreNutrient,
-        (
-            % If Fix = 1, Decrease by 10%
-            Fix = 1 ->
-            (
-                NewGrams is floor((Grams * 90) / 100),
-                ((NewGrams >= Min, NewGrams =< Max) ->
-                    true
-                ;
-                    NewGrams = Grams
-                )
-            )
-            ;
-            % If Fix = -1, Increase by 10%
-            Fix = -1 ->
-            (
-                NewGrams is ceiling((Grams * 110) / 100),
-                ((NewGrams >= Min, NewGrams =< Max) ->
-                    true
-                ;
-                    NewGrams = Grams
-                )
-            )
-        )
-        ;
-        % Else (FoodBeverage è diverso da FoodWithMore)
-        NewGrams = Grams
-    ),
-    !,
-    append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_nutrient_grams(Dish, Rest, Fix, FoodWithMoreNutrient, NewAcc, NewIngredientList).
-
-change_ingredient_calories_grams(_, [], _, _, NewIngredientList, NewIngredientList).  % La versione iniziale aveva 5 argomenti, ho aggiunto un 5° argomento per restituire il risultato.
-change_ingredient_calories_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWithMoreCalories, Acc, NewIngredientList) :-
-    made_of(Dish, FoodWithMoreCalories, Min, Max),
+change_ingredient_grams(_, [], _, NewIngredientList, NewIngredientList).
+change_ingredient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+    made_of(Dish, FoodBeverage, Min, Max),
     (
         % If Fix = 1, Decrease by 10%
-        Fix = 1 ->
-        (
-            NewGrams is floor((Grams * 90) / 100),
-            ((NewGrams >= Min, NewGrams =< Max) ->
-                true
-            ;
-                NewGrams = Grams
-            )
-        )
+        Fix = 1,
+        NewGrams is floor((Grams * 90) / 100),
+        NewGrams >= Min, NewGrams =< Max
         ;
         % If Fix = -1, Increase by 10%
-        Fix = -1 ->
-        (
-            NewGrams is ceiling((Grams * 110) / 100),
-            ((NewGrams >= Min, NewGrams =< Max) ->
-                true
-            ;
-                NewGrams = Grams
-            )
-        )
+        Fix = -1,
+        NewGrams is ceiling((Grams * 110) / 100),
+        NewGrams >= Min, NewGrams =< Max
     ),
     !,
-    append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_calories_grams(Dish, Rest, Fix, FoodWithMoreCalories, NewAcc, NewIngredientList),  % Chiamata ricorsiva
+    append(Acc, [FoodBeverage-NewGrams | Rest], NewIngredientList). % End after making the first successful modification
+
+change_ingredient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+    % This clause handles the case where no change is made
+    append(Acc, [FoodBeverage-Grams], NewAcc),
+    change_ingredient_grams(Dish, Rest, Fix, NewAcc, NewIngredientList).
+
 
 
 % Returns the the list of calories, where each element corresponds to the calories of a dish (represented by its ingredients)
@@ -727,7 +681,7 @@ actual_foodbeverage_grams([FoodBeverage | Rest], Dish, Acc, IngredientLists) :-
 % Get the list of food and beverages in a dish of a daily diet
 get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList) :-
     findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients),
-    flatten(Ingredients, IngredientLists),
+    flatten_list(Ingredients, IngredientLists),
     get_only_foodbeverages(IngredientLists, [], FoodBeverageList).
 
 get_only_foodbeverages([], Acc, Acc). 

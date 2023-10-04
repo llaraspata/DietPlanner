@@ -467,9 +467,9 @@ get_old_ingredient_list_and_modify_macro(DailyDiet, [Head|Tail], Fix, MacroNutri
     has(DailyDiet, Head, IngredientsList),
     find_ingredient_with_highest_nutrient(IngredientsList, MacroNutrient, FoodWithMoreNutrient),
     change_ingredient_nutrient_grams(Head, IngredientsList, Fix, FoodWithMoreNutrient, [], TempIngredientList),
+    !,
     append(AccOldRel, [IngredientsList], NewAccOldRel),
-    append(AccNewRel, [TempIngredientList], NewAccNewRel), 
-    !,   
+    append(AccNewRel, [TempIngredientList], NewAccNewRel),  
     get_old_ingredient_list_and_modify_macro(DailyDiet, Tail, Fix, MacroNutrient, NewAccOldRel, NewAccNewRel, OldRelatioships, NewRelatioships).
 
 
@@ -563,17 +563,16 @@ default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList)
         (
             % If Fix = 1, Decrease by 10%
             Fix = 1,
-            NewGrams is floor((Grams * 90) / 100),
-            !
+            NewGrams is floor((Grams * 90) / 100)
         ;
             % If Fix = -1, Increase by 10%
             Fix = -1,
-            NewGrams is ceiling((Grams * 110) / 100),
-            !
+            NewGrams is ceiling((Grams * 110) / 100)
         )
         ;
         NewGrams = Grams
     ),
+    !,
     append(Acc, [FoodBeverage-NewGrams], NewAcc),
     default_case_fix(Food, Fix, Rest, NewAcc, NewIngredientList).
 
@@ -614,8 +613,8 @@ change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
     (
         FoodBeverage = FoodWithMoreNutrient,
         (
-            % If Fix = 1, Decrease by 5%
-            (Fix = 1) ->
+            % If Fix = 1, Decrease by 10%
+            Fix = 1 ->
             (
                 NewGrams is floor((Grams * 90) / 100),
                 ((NewGrams >= Min, NewGrams =< Max) ->
@@ -625,8 +624,8 @@ change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
                 )
             )
             ;
-            % If Fix = -1, Increase by 5%
-            (Fix = -1) ->
+            % If Fix = -1, Increase by 10%
+            Fix = -1 ->
             (
                 NewGrams is ceiling((Grams * 110) / 100),
                 ((NewGrams >= Min, NewGrams =< Max) ->
@@ -640,6 +639,7 @@ change_ingredient_nutrient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
         % Else (FoodBeverage è diverso da FoodWithMore)
         NewGrams = Grams
     ),
+    !,
     append(Acc, [FoodBeverage-NewGrams], NewAcc),
     change_ingredient_nutrient_grams(Dish, Rest, Fix, FoodWithMoreNutrient, NewAcc, NewIngredientList).
 
@@ -647,8 +647,8 @@ change_ingredient_calories_grams(_, [], _, _, NewIngredientList, NewIngredientLi
 change_ingredient_calories_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWithMoreCalories, Acc, NewIngredientList) :-
     made_of(Dish, FoodWithMoreCalories, Min, Max),
     (
-        % If Fix = 1, Decrease by 5%
-        (Fix = 1) ->
+        % If Fix = 1, Decrease by 10%
+        Fix = 1 ->
         (
             NewGrams is floor((Grams * 90) / 100),
             ((NewGrams >= Min, NewGrams =< Max) ->
@@ -657,9 +657,9 @@ change_ingredient_calories_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
                 NewGrams = Grams
             )
         )
-        ;NewGrams is
-        % If Fix = -1, Increase by 5%
-        (Fix = -1) ->
+        ;
+        % If Fix = -1, Increase by 10%
+        Fix = -1 ->
         (
             NewGrams is ceiling((Grams * 110) / 100),
             ((NewGrams >= Min, NewGrams =< Max) ->
@@ -669,6 +669,7 @@ change_ingredient_calories_grams(Dish, [FoodBeverage-Grams | Rest], Fix, FoodWit
             )
         )
     ),
+    !,
     append(Acc, [FoodBeverage-NewGrams], NewAcc),
     change_ingredient_calories_grams(Dish, Rest, Fix, FoodWithMoreCalories, NewAcc, NewIngredientList),  % Chiamata ricorsiva
 
@@ -709,6 +710,7 @@ set_grams_for_dish(NewId, [Dish | RestDish]) :-
     actual_foodbeverage_grams(FoodBeverageList, Dish, [], IngredientLists), 
     !,
     assertz(has(NewId, Dish, IngredientLists)),
+    writeln(has(NewId, Dish, IngredientLists)),
     set_grams_for_dish(NewId, RestDish).
  
 
@@ -799,6 +801,8 @@ fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     writeln('Diet does not meet Macronutrients constraints, regenerating...'),
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
     nth0(0, ListDish, DefaultDish),
+    writeln('ListDish'),
+    writeln(ListDish),
     fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, MacronutrientResult),
     !,
     fail.

@@ -4,13 +4,10 @@ import Main from "./Main";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "./firebase";
 import {CircularProgress} from "@mui/material";
-import {useGetFirstQuestion} from "./services/interface";
 
 export default function App() {
 
     const [user, loading] = useAuthState(auth);
-
-    useGetFirstQuestion();
 
     if(loading) return <CircularProgress />
 

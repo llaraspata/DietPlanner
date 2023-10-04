@@ -4,7 +4,10 @@ import instances from '../prolog/instances.pl'
 
 import utilities from "../prolog/diet_type/utilities.pl"
 import questionnaire from "../prolog/diet_type/questionnaire.pl"
+import rules from "../prolog/diet_type/rules.pl"
+import inference_engine from "../prolog/diet_type/inference_engine.pl"
 
+import {INFERENCE_METHODS} from "../components/modals/QuestionnaireModal";
 
 const pl = require('tau-prolog');
 const listLoader = require("tau-prolog/modules/lists.js");
@@ -21,11 +24,26 @@ function fromList(xs) {
     return null;
 }
 
-export async function consultFunctionsInstances(session){
+async function consultFunctionsInstances(session){
     const functionsCode = await fetch(functions).then((res) => res.text()).then((program) => program)
     const instancesCode = await fetch(instances).then((res) => res.text()).then((program) => program)
     session.consult(functionsCode);
     session.consult(instancesCode);
+}
+
+async function consultUtilitiesQuestionnaire(session){
+    const utilitiesCode = await fetch(utilities).then((res) => res.text()).then((program) => program)
+    const questionnaireCode = await fetch(questionnaire).then((res) => res.text()).then((program) => program)
+    session.consult(utilitiesCode);
+    session.consult(questionnaireCode);
+}
+
+async function consultUtilitiesQuestionnaireRulesInferenceEngine(session){
+    await consultUtilitiesQuestionnaire(session);
+    const rulesCode = await fetch(rules).then((res) => res.text()).then((program) => program)
+    const inferenceEngineCode = await fetch(inference_engine).then((res) => res.text()).then((program) => program)
+    session.consult(rulesCode);
+    session.consult(inferenceEngineCode);
 }
 
 export function useGetActivityAllergenNames() {
@@ -82,20 +100,110 @@ export function useGetComputedCalories(patient){
     return energyDemand
 }
 
-export function useGetFirstQuestion() {
+export function useGetQuestions(answeredQuestions = []) {
 
     listLoader(pl)
     let session = pl.create();
+    let [nextQuestionId, setNextQuestionId] = useState()
+    let [nextQuestion, setNextQuestion] = useState()
+    let [nextAnswers, setNextAnswers] = useState([])
 
     useEffect(() => {
-        fetch(utilities).then((res) => res.text()).then((utilitiesProgram) => {
-            fetch(questionnaire).then((res) => res.text()).then((questionnaireProgram) => {
-                session.consult(utilitiesProgram);
-                session.consult(questionnaireProgram);
-                console.log("programs consulted")
-                session.query("get_next_question([], q0, a0, NextQuestionId, NextQuestion, NextAnswers).");
-                session.answer(a => console.log(a))
+        let oldQuestions = []
+        answeredQuestions.map(aq => {
+            oldQuestions.push(`${aq.questionId}-${aq.answerId}`)
+        })
+        consultUtilitiesQuestionnaire(session).then(() => {
+            const query = `get_next_question(
+                ${oldQuestions.length === 0 ? "[]" : `[${oldQuestions.toString()}]`}, 
+                ${answeredQuestions.length === 0 ? "q0" : `${answeredQuestions[answeredQuestions.length - 1].questionId}`}, 
+                ${answeredQuestions.length === 0 ? "a0" : `${answeredQuestions[answeredQuestions.length - 1].answerId}`}, 
+                NextQuestionId, NextQuestion, NextAnswers).`
+            session.query(query);
+            session.answer(a => {
+                try {
+                    setNextQuestionId(a.lookup("NextQuestionId").id)
+                    setNextQuestion(a.lookup("NextQuestion").id)
+                    let answers = []
+                    fromList(a.lookup("NextAnswers")).map(ans => {
+                        answers.push({
+                            id: ans.args[0].id,
+                            value: ans.args[1].id
+                        })
+                    })
+                    setNextAnswers(answers)
+                } catch (e) {
+                    setNextQuestionId(null)
+                    setNextQuestion(null)
+                    setNextAnswers(null)
+                }
+
             })
         })
-    }, [])
+    }, [answeredQuestions])
+
+    return {
+        newQuestion: nextQuestion,
+        newAnswers: nextAnswers,
+        newQuestionId: nextQuestionId
+    }
+}
+
+export function useGetSuggestedDietTypes(answeredQuestions, inferenceMethod) {
+
+    listLoader(pl)
+    let session = pl.create();
+    let [suggestedTypes, setSuggestedTypes] = useState([])
+
+    useEffect(() => {
+        if(inferenceMethod && answeredQuestions.length > 0) {
+            let userId = "user_id"
+            consultUtilitiesQuestionnaireRulesInferenceEngine(session).then(() => {
+                answeredQuestions.map(a => {
+                    session.query(`has_answered(${userId}, ${a.questionId}, ${a.answerId}).`)
+                    session.answer(a => a.id === "throw" && console.error("has_answered", a))
+                })
+
+                if(inferenceMethod === INFERENCE_METHODS.forward) session.query("forward_chaining.")
+                else session.query(`backward_chaining(suggested_diet_type(${userId}, DietType)).`)
+                session.answer(a => a.id === "throw" && console.error("chaining", a))
+
+                session.query(`get_suggested_diet_type(${userId}, SuggestedTypes).`)
+                session.answer(a => {
+                    try {
+                        setSuggestedTypes(fromList(a.lookup("SuggestedTypes")).map(t => t.id))
+                    } catch (e) {
+                        console.error("get_suggested_diet_type", a)
+                    }
+                })
+            })
+        } else setSuggestedTypes([])
+    }, [answeredQuestions, inferenceMethod])
+
+    return suggestedTypes
+}
+
+export function useGetAllDietTypes() {
+
+    listLoader(pl)
+    let session = pl.create();
+    let [dietTypes, setDietTypes] = useState([])
+
+    useEffect(() => {
+        consultUtilitiesQuestionnaire(session).then(() => {
+            session.query("collect_inference_goals(X).")
+            session.answer(a => {
+                let newDietTypes = []
+                fromList(a.lookup("X")).map(ig => {
+                    newDietTypes.push({
+                        id: ig.args[0].id,
+                        value: ig.args[1].id
+                    })
+                })
+                setDietTypes(newDietTypes)
+            })
+        })
+    },[])
+
+    return dietTypes
 }

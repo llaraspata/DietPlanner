@@ -1,9 +1,4 @@
 % ---------
-% Goal predicate
-% ---------
-inference_goal(suggested_diet_type(User, DietType)).
-
-% ---------
 % Rules
 % ---------
 % rule(id, conclusion, [premises])
@@ -12,7 +7,7 @@ rule(
     r1,
     suggested_diet_type(User, omnivorous_diet), 
     [
-        \+ has_dietary_restrictions(User)
+        has_no_dietary_restrictions(User)
     ]
 ).
 explanation(r1, 'According to the rule with id r1, the omnivorous diet is suggested if the patient does not have any dietary restrictions.').
@@ -36,7 +31,7 @@ rule(
         has_dietary_restrictions(User),
         do_not_eat(User, meat),
         do_not_eat(User, fish_seafood),
-        \+ do_not_eat(User, animal_derived)
+        eat(User, animal_derived)
     ]
 ).
 explanation(r3, 'According to the rule with id r3, the vegetarian diet is suggested if the patient has dietary restrictions that include avoiding meat and fish/seafood, but allow the consumption of animal-derived products.').
@@ -47,8 +42,7 @@ rule(
     [
         has_dietary_restrictions(User),
         do_not_eat(User, meat),
-        \+ do_not_eat(User, fish_seafood),
-        \+ do_not_eat(User, animal_derived)
+        eat(User, fish_seafood)
     ]
 ).
 explanation(r4, 'According to the rule with id r4, the no meat diet is suggested if the patient has the only dietary restrictions of avoiding meat, but allow the consumption of fish/seafood and animal-derived products.').
@@ -59,8 +53,7 @@ rule(
     [
         has_dietary_restrictions(User),
         do_not_eat(User, fish_seafood),
-        \+ do_not_eat(User, meat),
-        \+ do_not_eat(User, animal_derived)
+        eat(User, meat)
     ]
 ).
 explanation(r5, 'According to the rule with id r5, the no fish and seafood diet is suggested if the patient has the only dietary restrictions of avoiding fish/seafood, but allow the consumption of meat and animal-derived products.').
@@ -110,7 +103,6 @@ rule(
     r10,
     suggested_diet_type(User, healthy_weight_diet), 
     [
-        \+ has_dietary_restrictions(User),
         wants_to(User, reach_healthy_weight)
     ]
 ).
@@ -120,7 +112,6 @@ rule(
     r11,
     suggested_diet_type(User, hyperproteic_diet), 
     [
-        \+ has_dietary_restrictions(User),
         wants_to(User, increase_muscle_mass)
     ]
 ).
@@ -130,7 +121,6 @@ rule(
     r12,
     suggested_diet_type(User, hypocaloric_diet), 
     [
-        \+ has_dietary_restrictions(User),
         wants_to(User, reduce_body_fat)
     ]
 ).

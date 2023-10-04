@@ -1,31 +1,11 @@
-% ---------
-% Modules to consult
-% ---------
-:- consult('demo_test.pl').
-:- consult('rules.pl').
-
-% ---------
-% Predicates
-% ---------
-:- dynamic(goal/1).
+% Define a dynamic predicate to store inferred facts.
 :- dynamic(inferred_fact/1).
 
-
-% Read and assert the goal.
-read_goal :-
-    inference_goal(Goal),
-    writeln(Goal),
-    assert(goal(Goal)).
-
-% Backward chaining inference rule.
 backward_chaining(Goal) :-
-    Goal,
-    !,
-    writeln('Goal satisfied: '), writeln(Goal).
-backward_chaining(Goal) :-
-    rule(Id, Conclusion, Premises),
-    Goal = Conclusion,
-    all_true(Premises),
+    % Check if there's a rule that can help satisfy the goal.
+    rule(Id, Conclusion, Premises),  % Retrieve a rule from 'rules.pl'.
+    Goal = Conclusion,           % Match the conclusion of the rule to the current goal.
+    all_true(Premises),         % Check if all premises of the rule are true.
     !,
     assertz(Goal),
     get_explanation(Id, Explanation),
@@ -37,7 +17,7 @@ forward_chaining :-
     rule(Id, Conclusion, Premises),
     \+ inferred_fact(Conclusion),
     all_true(Premises),
-    assert(inferred_fact(Conclusion)),
+    assertz(inferred_fact(Conclusion)),
     assertz(Conclusion),
     get_explanation(Id, Explanation),
     assertz(why(Conclusion, Explanation)),

@@ -8,6 +8,36 @@
 % ---------
 :- use_module(library(lists)).
 
+delete([], _, []).
+delete([Head|List], Elem, Residue) :-
+	Head == Elem, !,
+	delete(List, Elem, Residue).
+delete([Head|List], Elem, [Head|Residue]) :-
+	delete(List, Elem, Residue).
+
+nth(V, In, Element) :- var(V), !,
+	generate_nth(1, V, In, Element).
+nth(1, [Head|_], Head) :- !.
+nth(N, [_|Tail], Elem) :-
+	nonvar(N), !,
+	M is N-1,			% should be succ(M, N)
+	find_nth(M, Tail, Elem).
+
+find_nth(1, [Head|_], Head) :- !.
+find_nth(N, [_|Tail], Elem) :-
+	M is N-1,
+	find_nth(M, Tail, Elem).
+
+generate_nth(I, I, [Head|_], Head).
+generate_nth(I, IN, [_|List], El) :-
+	I1 is I+1,
+	generate_nth(I1, IN, List, El).
+
+remove_duplicates([], []).
+remove_duplicates([Elem|L], [Elem|NL]) :-
+	delete(L, Elem, Temp),
+	remove_duplicates(Temp, NL).
+    
 % ---------
 % Inference Goals
 % ---------
@@ -75,6 +105,16 @@ get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQue
     !,
     get_question_possible_answer_id_text(NextQuestionId, NextAnswers).
 
+get_next_question(History, CurrentQuestion, GivenAnswer, IdNextQuestion, NextQuestion, NextAnswers) :-
+    is_related_to(CurrentQuestion, NextQuestionId, GivenAnswer, Prerequirements),
+    \+ check_prerequirements(History, Prerequirements, 1),
+    belongs_to(CurrentQuestion, CurrentTopic, _),
+    get_next_topic(CurrentTopic, NextTopic),
+    get_first_question_of_topic(NextTopic, IdNextQuestion),
+    attribute_value(_, IdNextQuestion, text, NextQuestion),
+    !,
+    get_question_possible_answer_id_text(IdNextQuestion, NextAnswers).
+
 get_next_question(History, CurrentQuestion, GivenAnswer, NextQuestionId, NextQuestion, NextAnswers) :-
     \+ is_related_to(CurrentQuestion, _, GivenAnswer, _),
     belongs_to(CurrentQuestion, CurrentTopic, _),
@@ -132,6 +172,9 @@ get_question_possible_answers_helper([Id | Rest], Acc, AnswerList) :-
 has_answered(User, q1, a1) :-
     assertz(fact(has_dietary_restrictions(User))).
 
+has_answered(User, q1, a2) :-
+    assertz(fact(has_no_dietary_restrictions(User))).
+
 has_answered(User, q2, a1) :-
     assertz(fact(eat(User, meat))).
 
@@ -143,6 +186,9 @@ has_answered(User, q2, a2) :-
 
 has_answered(User, q3, a2) :-
     assertz(fact(do_not_eat(User, fish_seafood))).
+
+has_answered(User, q4, a1) :-
+    assertz(fact(eat(User, animal_derived))).
 
 has_answered(User, q4, a2) :-
     assertz(fact(do_not_eat(User, animal_derived))).
@@ -166,15 +212,12 @@ has_answered(User, q10, a1) :-
     assertz(fact(has(User, kidney_problems))).
 
 has_answered(User, q11, a1) :-
-    assertz(fact(wants_to(User, healthy_weight))).
-
-has_answered(User, q11, a1) :-
     assertz(fact(wants_to(User, reach_healthy_weight))).
 
-has_answered(User, q11, a1) :-
+has_answered(User, q12, a1) :-
     assertz(fact(wants_to(User, increase_muscle_mass))).
 
-has_answered(User, q11, a1) :-
+has_answered(User, q13, a1) :-
     assertz(fact(wants_to(User, reduce_body_fat))).
 
 

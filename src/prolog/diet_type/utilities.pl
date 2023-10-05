@@ -1,9 +1,4 @@
 % ---------
-% Modules to consult
-% ---------
-:- consult('questionnaire.pl').
-
-% ---------
 % Libraries
 % ---------
 :- use_module(library(lists)).

@@ -1,4 +1,9 @@
 % ---------
+% Modules to consult
+% ---------
+:- consult('questionnaire.pl').
+
+% ---------
 % Libraries
 % ---------
 :- use_module(library(lists)).
@@ -219,6 +224,12 @@ has_answered(User, q13, a1) :-
 % ---------
 % Diet type
 % ---------
+% Gets the suggested diet types for a user, together with the explanation in natural language of the reason why each diet type has been suggested
 get_suggested_diet_type(User, SuggestedTypes) :-
-    findall(DietType, suggested_diet_type(User, DietType), SuggestedTypesWithDuplicates),
-    remove_duplicates(SuggestedTypesWithDuplicates, SuggestedTypes).
+    findall(
+        DietType-Explanation, 
+        (
+            suggested_diet_type(User, DietType),
+            why(suggested_diet_type(User, DietType), Explanation)
+        ), 
+        SuggestedTypes).

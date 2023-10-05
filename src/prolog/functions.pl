@@ -29,7 +29,7 @@ dish_types([breakfast, snack, lunch, snack, dinner]).
 daily_diet_names([daily_diet1]).
 
 % Checks on generated Daily Diet
-healthy_weight_nutrient_percentages([carbs-40-50, protein-20-30, lipids-25-35, dietary_fiber-1-5]).
+healthy_weight_nutrient_percentages([carbs-40-55, protein-15-30, lipids-20-35, dietary_fiber-1-5]).
 
 
 % ---------
@@ -48,7 +48,8 @@ compare_second_param(Order, Sublist1, Sublist2) :-
 order_list_by_values(Values, Keys, OrderedList) :-
     map_list(Values, Keys, Pairs),
     keysort(Pairs, SortedPairs),
-    pairs_values(SortedPairs, OrderedList).
+    pairs_values(SortedPairs, DescSortedPairs),
+    reverse(DescSortedPairs, OrderedList).
 
 map_list([], [], []).
 map_list([Value|Values], [Key|Keys], [Value-Key|Rest]) :-
@@ -459,10 +460,14 @@ get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDietDishes) :-
 get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrient, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
     find_ingredients_sorted_by_nutrient(IngredientsList, MacroNutrient, OrderedList),
-    writeln('list'),
+    writeln('cazzo'),
+    writeln(MacroNutrient),
     writeln(OrderedList),
+    writeln(Head),
+    writeln(Fix),
+    dif(OrderedList, []),
     change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
-    
+    writeln('dio'),
     writeln(IngredientsList),
     writeln(TempIngredientList),
     IngredientsList \== TempIngredientList,
@@ -471,7 +476,7 @@ get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrie
     !.
 get_old_new_ingredient_list_by_nutrient(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
     get_old_new_ingredient_list_by_nutrient(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
-get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, 0).
+get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, []).
 
 % Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :- 
@@ -479,7 +484,7 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
     has(NewId, Dish, OldIngredientList),
     (
         writeln('IFIFIFIFIFIFFIFIF'),
-        NewIngredientList = 0 ->
+        length(NewIngredientList, 0) ->
         (
             has(NewId, DefaultDish, IngredientList),
             find_ingredients_sorted_by_nutrient(IngredientList, MacroNutrient, OrderedList),
@@ -523,10 +528,9 @@ extract_pairs_values([_-Food-Gram | T1], [Food-Gram | T2]) :-
 
 get_old_new_ingredient_list_by_calories(DailyDiet, ListDish, Fix, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
-
     sort_ingredients_by_calories(IngredientsList, OrderedList),
+    dif(OrderedList, []),
     change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
-
     IngredientsList \== TempIngredientList,
     OldRel = IngredientsList, 
     NewRel = TempIngredientList,
@@ -580,7 +584,7 @@ fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
     get_old_new_ingredient_list_by_calories(NewId, ListDish, Fix, OldRel, NewRel),
     has(NewId, Dish, OldIngredientList),
     (
-        NewIngredientList = 0 ->
+        length(NewIngredientList, 0) ->
         (            
             has(NewId, DefaultDish, IngredientList),
             sort_ingredients_by_calories(IngredientList, OrderedList),
@@ -790,11 +794,14 @@ extract_ingredients_and_dishes([Term | Rest], AccIngredients, AccDishes, AllIngr
 
 convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories) :-
     (   MacroNutrient = lipids ->
-            TotalCalories is (TotalNutrientQuantity * 9)
+            TotalCalories is (TotalNutrientQuantity * 8)
         ;   
         MacroNutrient = dietary_fiber ->    
             TotalCalories is TotalNutrientQuantity 
-        ;   
+        ;  
+        MacroNutrient = protein ->    
+            TotalCalories is (TotalNutrientQuantity * 6) 
+        ; 
             TotalCalories is (TotalNutrientQuantity * 5)
     ).
 
@@ -865,13 +872,13 @@ check_dish_calories([], _, 0).
 check_dish_calories([Ingredients | RestIngredients], [DishCalories | RestCalories], Result) :-
     compute_actual_dish_calories(Ingredients, 0, ActualCalories),
     (
-        ActualCalories =< DishCalories - 40   ->
+        ActualCalories =< DishCalories - 60   ->
         InnerResult is -1
     ;
         ActualCalories >= DishCalories + 1    ->
         InnerResult is 1
     ;
-        ActualCalories >= DishCalories - 40, ActualCalories =< DishCalories + 1 ->
+        ActualCalories >= DishCalories - 60, ActualCalories =< DishCalories + 1 ->
         InnerResult is 0
     ),
     (InnerResult = 0 ->

@@ -460,9 +460,9 @@ get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrie
     has(DailyDiet, Head, IngredientsList),
     find_ingredients_sorted_by_nutrient(IngredientsList, MacroNutrient, OrderedList),
     writeln('list'),
-    writeln(OrderedList),
     change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
-    
+    writeln(Head),
+    writeln(DailyDiet),
     writeln(IngredientsList),
     writeln(TempIngredientList),
     IngredientsList \== TempIngredientList,
@@ -470,8 +470,11 @@ get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrie
     NewRel = TempIngredientList,
     !.
 get_old_new_ingredient_list_by_nutrient(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
+    writeln('minchia'),
     get_old_new_ingredient_list_by_nutrient(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
-get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, 0).
+get_old_new_ingredient_list_by_nutrient(_, _, _, _, [], []) :-
+    writeln('cazzo').
+
 
 % Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :- 

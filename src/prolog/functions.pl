@@ -251,6 +251,20 @@ compute_nutrient_quantity([FoodBeverage-Grams|Rest], Nutrient, PartialCumulative
     % Recursively process the rest of the list.
     compute_nutrient_quantity(Rest, Nutrient, NewPartialCumulativeQuantity, CumulativeQuantity).
 
+% Helper predicate to accumulate micronutrient from a list
+accumulate_micronutrient_content_from_list([], FinalContentFoodList, FinalContentFoodList).
+accumulate_micronutrient_content_from_list([Content-Food-Grams|Rest], Acc, FinalContentFoodList) :-
+    % Check if the micronutrient is already in the accumulated list
+    (member(ExistingContent-Food-Grams, Acc) ->
+        NewContent is ExistingContent + Content,
+        select(ExistingContent-Food-Grams, Acc, TempAcc), % Remove the old entry
+        append(TempAcc, [NewContent-Food-Grams], UpdatedAcc)
+    ;
+        append(Acc, [Content-Food-Grams], UpdatedAcc)
+    ),
+    accumulate_micronutrient_content_from_list(Rest, UpdatedAcc, FinalContentFoodList),
+    !.
+
 % ---------
 % Allergen
 % ---------
@@ -495,41 +509,14 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
 
 % Gets the Food in a list of ingredients (Aliments) which has the highest content of a given macronutrient
 find_ingredients_sorted_by_nutrient(Aliments, MacroNutrient, IngredientList) :- 
-    writeln('---------------------------------------------'),
-    writeln('-- Aliments'),
-    writeln(Aliments),
-    writeln('-- MacroNutrient'),
-    writeln(MacroNutrient),
-
     findall(Nutrient, nutrient_instance(_, MacroNutrient, Nutrient), Nutrients),
-
-    writeln('-- Nutrients'),
-    writeln(Nutrients),
-
     findall(Content-Food-Gram, (member(Food-Gram, Aliments), member(Nutrient, Nutrients), has_nutrient(Food, Nutrient, Content)), NutrientContentPairs),
     keysort(NutrientContentPairs, SortedPairs),
-    
-    writeln('-- NutrientContentPairs'),
-    writeln(NutrientContentPairs),
-
-    writeln('-- SortedPairs'),
-    writeln(SortedPairs),
-
-    reverse(SortedPairs, DescSortedPairs),
-
-    writeln('-- DescSortedPairs'),
-    writeln(DescSortedPairs),
-
+    accumulate_micronutrient_content_from_list(SortedPairs, [], FinalSortedPairs),
+    reverse(FinalSortedPairs, DescSortedPairs),
     extract_pairs_values(DescSortedPairs, SortedFood),
-
-    writeln('-- SortedFood'),
-    writeln(SortedFood),
+    remove_duplicates(SortedFood, IngredientList).
     
-    remove_duplicates(SortedFood, IngredientList),
-    
-    writeln('-- IngredientList'),
-    writeln(IngredientList).
-
 extract_pairs_values([], []).
 extract_pairs_values([_-Food-Gram | T1], [Food-Gram | T2]) :-
     extract_pairs_values(T1, T2).

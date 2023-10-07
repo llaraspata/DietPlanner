@@ -9,8 +9,7 @@ backward_chaining(Goal) :-
     !,
     assertz(Goal),
     get_explanation(Id, Explanation),
-    assertz(why(Conclusion, Explanation)),
-    backward_chaining(Goal).
+    assertz(why(Conclusion, Explanation)).
 
 % Forward chaining algorithm.
 forward_chaining :-

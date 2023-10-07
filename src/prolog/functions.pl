@@ -29,7 +29,7 @@ dish_types([breakfast, snack, lunch, snack, dinner]).
 daily_diet_names([daily_diet1]).
 
 % Checks on generated Daily Diet
-healthy_weight_nutrient_percentages([carbs-40-55, protein-15-30, lipids-20-35, dietary_fiber-1-5]).
+healthy_weight_nutrient_percentages([carbs-40-55, protein-20-30, lipids-20-30, dietary_fiber-1-5]).
 
 
 % ---------
@@ -755,6 +755,8 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     writeln('Diet does not meet Macronutrients constraints, regenerating...'),
+    writeln(' -- Failed Macronutrient'),
+    writeln(MacroNutrient - MacronutrientResult),
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
     nth0(0, ListDish, DefaultDish),
     fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, MacronutrientResult),

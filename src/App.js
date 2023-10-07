@@ -1,22 +1,20 @@
-const pl = require('tau-prolog');
+import {BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import Login from "./Login";
+import Main from "./Main";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth} from "./firebase";
+import {CircularProgress} from "@mui/material";
 
 export default function App() {
 
-    let session = pl.create();
+    const [user, loading] = useAuthState(auth);
 
-    function fromList(xs) {
-        let arr = [];
-        while(pl.type.is_term(xs) && xs.indicator === "./2") {
-            arr.push(xs.args[0]);
-            xs = xs.args[1];
-        }
-        if(pl.type.is_term(xs) && xs.indicator === "[]/0")
-            return arr;
-        return null;
-    }
+    if(loading) return <CircularProgress />
 
-    session.query("X = [1,2,3].");
-    session.answer(a => console.log(fromList(a.lookup("X")))); // [ {...}, {...}, {...} ]
-      
-    return <div>Hello World!</div>
+    return <Router>
+        <Routes>
+            <Route exact path="/login" element={!user ? <Login /> :  <Navigate to="/"/>}/>
+            <Route exact path="/" element={user ? <Main /> : <Navigate to="/login"/>}/>
+        </Routes>
+    </Router>
 }

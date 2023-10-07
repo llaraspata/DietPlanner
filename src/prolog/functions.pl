@@ -435,7 +435,8 @@ accumulate_ingredients_from_list([Ingredient-Quantity|Rest], Acc, UniqueIngredie
 
 % Get the list of ingredients in a dish of a daily diet as a flat list
 get_foodbeverages_in_dish(Dish, FoodBeverageList) :-
-    findall(FoodBeverage, made_of(Dish, FoodBeverage, _, _), FoodBeverageList).
+    findall(FoodBeverage, made_of(Dish, FoodBeverage, _, _), FoodBeverageListWithDuplicates),
+    remove_duplicates(FoodBeverageListWithDuplicates, FoodBeverageList).
 
 % Define a predicate to get dishes whose ingredients do not contain a list of allergens
 get_dishes_without_allergens(Allergens, DishType, DishesWithoutAllergens) :-
@@ -482,7 +483,7 @@ get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrie
     !.
 get_old_new_ingredient_list_by_nutrient(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
     get_old_new_ingredient_list_by_nutrient(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
-get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, []).
+get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, []) :- !.
 
 % Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :- 
@@ -499,24 +500,42 @@ fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :-
             assertz(has(NewId, DefaultDish, DefaultIngredientList))            
         )
         ;
-        (
-            
+        (            
             retract(has(NewId, Dish, OldIngredientList)),
             assertz(has(NewId, Dish, NewIngredientList))
         )
     ).
 
 
+get_micronutrient_content_list(_, [], Contents, Contents).
+get_micronutrient_content_list(Food-Gram, [Nutrient | Rest], Acc, Contents) :-
+    findall(Content-Food-Gram, (has_nutrient(Food, Nutrient, Content)), TempContents),
+    append(Acc, TempContents, NewAcc),
+    get_micronutrient_content_list(Food-Gram, Rest, NewAcc, Contents),
+    !.
+
+collect_nutrient_content([], _, NutrientContentPairs, NutrientContentPairs).
+collect_nutrient_content([Food-Gram | Rest], Nutrients, Acc, NutrientContentPairs) :-
+    get_micronutrient_content_list(Food-Gram, Nutrients, [], Contents),
+    (
+        length(Contents, 0) 
+        ->
+            append(Acc, [0-Food-Gram], NewAcc)
+        ;
+            append(Acc, Contents, NewAcc)
+    ),
+    !,
+    collect_nutrient_content(Rest, Nutrients, NewAcc, NutrientContentPairs).
+
 % Gets the Food in a list of ingredients (Aliments) which has the highest content of a given macronutrient
-find_ingredients_sorted_by_nutrient(Aliments, MacroNutrient, IngredientList) :- 
+find_ingredients_sorted_by_nutrient(Aliments, MacroNutrient, SortedFood) :- 
     findall(Nutrient, nutrient_instance(_, MacroNutrient, Nutrient), Nutrients),
-    findall(Content-Food-Gram, (member(Food-Gram, Aliments), member(Nutrient, Nutrients), has_nutrient(Food, Nutrient, Content)), NutrientContentPairs),
+    collect_nutrient_content(Aliments, Nutrients, [], NutrientContentPairs),
     keysort(NutrientContentPairs, SortedPairs),
     accumulate_micronutrient_content_from_list(SortedPairs, [], FinalSortedPairs),
     reverse(FinalSortedPairs, DescSortedPairs),
-    extract_pairs_values(DescSortedPairs, SortedFood),
-    remove_duplicates(SortedFood, IngredientList).
-    
+    extract_pairs_values(DescSortedPairs, SortedFood).
+
 extract_pairs_values([], []).
 extract_pairs_values([_-Food-Gram | T1], [Food-Gram | T2]) :-
     extract_pairs_values(T1, T2).
@@ -698,13 +717,11 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
 generate_daily_diet(_, [], []).
 generate_daily_diet(Person, [NewId | RestNames], [TotalDayCalories | Rest]) :-
     dish_types(DishTypes),
-    healthy_weight_nutrient_percentages(MacronutrientLimits),
-    
+    healthy_weight_nutrient_percentages(MacronutrientLimits),    
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
     check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
-    writeln('Daily diet generated successfully'),
     writeln('-----------------------'),
     !,
     generate_daily_diet(Person, RestNames, Rest).

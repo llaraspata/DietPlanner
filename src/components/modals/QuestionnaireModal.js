@@ -19,9 +19,11 @@ import {
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import {useGetAllDietTypes,useGetQuestions,useGetSuggestedDietTypes} from "../../services/interface";
 import TextInput from "../TextInput";
+import WhyModal from "./WhyModal";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -55,6 +57,7 @@ export default function QuestionnaireModal({open, onClose, onSave}) {
     const [answeredQuestions, setAnsweredQuestions] = useState([]);
     const [inferenceMethod, setInferenceMethod] = useState(null);
     const [isEditingManually, setIsEditingManually] = useState(false);
+    const [isSeeingWhy, setIsSeeingWhy] = useState(false);
     const [localSuggestedTypes, setLocalSuggestedTypes] = useState([])
     const {newQuestion, newAnswers, newQuestionId} = useGetQuestions(answeredQuestions)
     const suggestedTypes = useGetSuggestedDietTypes(answeredQuestions, inferenceMethod)
@@ -62,7 +65,7 @@ export default function QuestionnaireModal({open, onClose, onSave}) {
 
     useEffect(() => {
         if(suggestedTypes && localSuggestedTypes.length === 0 && suggestedTypes.length !== 0)
-            setLocalSuggestedTypes(suggestedTypes)
+            setLocalSuggestedTypes(suggestedTypes.map(st => st.id))
     }, [suggestedTypes])
 
     const close = () => {
@@ -169,9 +172,14 @@ export default function QuestionnaireModal({open, onClose, onSave}) {
                             Inferred Diet Types: <br/>
                             <ul>
                             {
-                                suggestedTypes.map(st => <li><b>{dietTypes.find(dt => dt.id === st).value}</b></li>)
+                                suggestedTypes.map(st => <li><b>{dietTypes.find(dt => dt.id === st.id).value}</b></li>)
                             }
                             </ul>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="outlined" fullWidth startIcon={<VisibilityIcon/>} onClick={() => setIsSeeingWhy(true)}>
+                                Show why
+                            </Button>
                         </Grid>
                         {!isEditingManually &&
                             <Grid item>
@@ -203,5 +211,7 @@ export default function QuestionnaireModal({open, onClose, onSave}) {
                 }
             </Grid>
         </DialogContent>
+        <WhyModal open={isSeeingWhy} onClose={() => setIsSeeingWhy(false)}
+                  suggestedTypes={suggestedTypes} dietTypes={dietTypes}/>
     </Dialog>
 }

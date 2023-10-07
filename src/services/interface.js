@@ -163,19 +163,29 @@ export function useGetSuggestedDietTypes(answeredQuestions, inferenceMethod) {
                     session.query(`has_answered(${userId}, ${a.questionId}, ${a.answerId}).`)
                     session.answer(a => a.id === "throw" && console.error("has_answered", a))
                 })
+                console.log("useGetSuggestedDietTypes after has_answered")
 
                 if(inferenceMethod === INFERENCE_METHODS.forward) session.query("forward_chaining.")
                 else session.query(`backward_chaining(suggested_diet_type(${userId}, DietType)).`)
                 session.answer(a => a.id === "throw" && console.error("chaining", a))
+                console.log("useGetSuggestedDietTypes after chaining")
 
                 session.query(`get_suggested_diet_type(${userId}, SuggestedTypes).`)
                 session.answer(a => {
                     try {
-                        setSuggestedTypes(fromList(a.lookup("SuggestedTypes")).map(t => t.id))
+                        let answers = []
+                        fromList(a.lookup("SuggestedTypes")).map(ans => {
+                            answers.push({
+                                id: ans.args[0].id,
+                                value: ans.args[1].id
+                            })
+                        })
+                        setSuggestedTypes(answers)
                     } catch (e) {
                         console.error("get_suggested_diet_type", a)
                     }
                 })
+                console.log("useGetSuggestedDietTypes fine")
             })
         } else setSuggestedTypes([])
     }, [answeredQuestions, inferenceMethod])

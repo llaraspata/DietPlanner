@@ -21,7 +21,6 @@ forward_chaining :-
     assertz(Conclusion),
     get_explanation(Id, Explanation),
     assertz(why(Conclusion, Explanation)),
-    write('Inferred: '), writeln(Conclusion),
     forward_chaining.
 forward_chaining.
 

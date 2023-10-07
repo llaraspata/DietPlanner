@@ -9,7 +9,8 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {makeStyles} from "@mui/styles";
 import {useSnackbar} from "notistack";
 import ConfirmDeleteIconButton from "../components/ConfirmDeleteIconButton";
-
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import AddIcon from "@mui/icons-material/Add";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EditIcon from '@mui/icons-material/Edit';
@@ -28,6 +29,18 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 }))
+
+const HtmlTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 300,
+        fontSize: theme.typography.pxToRem(13),
+        border: '1px solid #dadde9',
+    },
+}));
 
 export default function Users(){
 
@@ -52,9 +65,11 @@ export default function Users(){
             renderCell: (params) => {
                 const types = params.value ? dietTypes.filter(dt => params.value.includes(dt.id)).map(dt => dt.value).join(", ") : ""
                 return <Grid container direction="row" alignItems="center" justifyContent="space-between" wrap="nowrap">
-                    <Grid item xs={7}>
-                        <Typography noWrap>{types}</Typography>
-                    </Grid>
+                    <HtmlTooltip title={types}>
+                        <Grid item xs={7}>
+                            <Typography noWrap component="div" variant="div">{types}</Typography>
+                        </Grid>
+                    </HtmlTooltip>
                     <Grid item>
                         <Button variant="outlined" fullWidth
                                 startIcon={params.value && params.value.length !== 0 ? <RestartAltIcon/> : <AccountTreeIcon/>}

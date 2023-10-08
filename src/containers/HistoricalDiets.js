@@ -6,7 +6,7 @@ import React,{useEffect,useState} from "react";
 import dayjs from "dayjs"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useGetAllDietTypes,useGetDiet} from "../services/interface";
-import {addDoc,collection,deleteDoc,doc,getDoc,updateDoc} from "firebase/firestore";
+import {addDoc,collection,deleteDoc,doc,getDoc,getDocs,updateDoc} from "firebase/firestore";
 import {auth,db} from "../firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useSnackbar} from "notistack";
@@ -37,30 +37,30 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
     const [showingDiet, setShowingDiet] = useState(false)
 
     useEffect(() => {
-        if(patient.historicalDiets && patient.historicalDiets.length > 0) {
-            let newHistoricalDiets = []
-            const promises = patient.historicalDiets.map(hs => {
-                return getDoc(doc(db, `diets-${user.uid}`, hs))
-                    .then((querySnapshot) => {
-                        if(querySnapshot.data()) newHistoricalDiets.push({id: hs, ...querySnapshot.data()});
-                    });
-            });
-            Promise.all(promises).then(() => {
-                setHistoricalDiets(newHistoricalDiets);
+        fetchHistoricalDiets()
+    }, [])
+
+    const fetchHistoricalDiets = async () => {
+        await getDocs(collection(db, `diets-${patient.id}`))
+            .then((querySnapshot)=>{
+                const newData = querySnapshot.docs.map((doc) => {
+                    return {
+                        id: doc.id,
+                        ...doc.data()
+                    }
+                });
+                setHistoricalDiets(newData);
             })
-        } else if (patient.historicalDiets && patient.historicalDiets.length === 0) setHistoricalDiets([]);
-    }, [patient.historicalDiets])
+    }
+    console.log(historicalDiets)
 
     const onDelete = (dietId) => {
         enqueueSnackbar("Deleting...", {variant: "info"});
-        deleteDoc(doc(db, `diets-${user.uid}`, dietId))
+        deleteDoc(doc(db, `diets-${patient.id}`, dietId))
             .then(() => {
-                updateDoc(doc(db, `patients-${user.uid}`, patient.id), {
-                    historicalDiets: patient.historicalDiets.filter(id => id !== dietId)
-                }).then(() => {
-                    fetchPatients()
+                fetchHistoricalDiets().then(() =>
                     enqueueSnackbar("Deleted", {variant: "success"})
-                }).catch((e) => enqueueSnackbar(e, {variant: "error"}))
+                )
             })
             .catch(e => enqueueSnackbar(e, {variant: "error"}))
     }
@@ -116,18 +116,14 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
             suggestedDiets: patient.suggestedDiets,
             diet: diet
         }
-        if(!patient.historicalDiets) patient.historicalDiets = []
-
         try {
             enqueueSnackbar("Saving...", {variant: "info"});
-            addDoc(collection(db, `diets-${user.uid}`), {...newDiet}).then(r => {
-                updateDoc(doc(db, `patients-${user.uid}`, patient.id), {
-                    historicalDiets: [r._key.path.segments[1], ...patient.historicalDiets]
-                }).then(() => {
-                    fetchPatients()
-                    enqueueSnackbar("Saved", {variant: "success"})
-                }).catch((e) => enqueueSnackbar(e, {variant: "error"}))
-            })
+            addDoc(collection(db, `diets-${patient.id}`), {...newDiet})
+                .then(() => {
+                    fetchHistoricalDiets().then(() =>
+                        enqueueSnackbar("Saved", {variant: "success"})
+                    )
+                })
         } catch (e) {
             enqueueSnackbar(e, {variant: "error"})
         }

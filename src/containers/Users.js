@@ -18,6 +18,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import QuestionnaireModal from "../components/modals/QuestionnaireModal";
 import {useGetAllDietTypes} from "../services/interface";
+import HistoricalDiets from "./HistoricalDiets";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const HtmlTooltip = styled(({ className, ...props }) => (
+export const HtmlTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
@@ -48,6 +49,7 @@ export default function Users(){
     const {enqueueSnackbar} = useSnackbar();
     const [editCreateUserModal, setEditCreateUserModal] = useState(false);
     const [questionnaireModal, setQuestionnaireModal] = useState(false);
+    const [showHistoricalDietsPatientId, setShowHistoricalDietsPatientId] = useState(false);
     const dietTypes = useGetAllDietTypes()
 
     const [patients, setPatients] = useState([])
@@ -87,7 +89,7 @@ export default function Users(){
             renderCell: (params) => <Grid container direction={"row"} justifyContent="flex-end">
                 {params.row.suggestedDiets && params.row.suggestedDiets.length > 0 &&
                     <Grid item>
-                        <IconButton>
+                        <IconButton onClick={() => setShowHistoricalDietsPatientId(params.row.id)}>
                             <CalendarMonthIcon fontSize="medium"/>
                         </IconButton>
                     </Grid>
@@ -159,6 +161,7 @@ export default function Users(){
                         id: doc.id,
                         activities: doc.data().patientActivities,
                         suggestedDiets: doc.data().suggestedDiets,
+                        historicalDiets: doc.data().historicalDiets,
                         ...doc.data().patient
                     }
                 });
@@ -176,6 +179,12 @@ export default function Users(){
             enqueueSnackbar("Saved", {variant: "success"})
         }).catch((e) => enqueueSnackbar(e, {variant: "error"}))
     }
+
+    if(showHistoricalDietsPatientId) return <HistoricalDiets
+                                        patient={patients.find(p => p.id === showHistoricalDietsPatientId)}
+                                        onGoBack={() => setShowHistoricalDietsPatientId(false)}
+                                        fetchPatients={fetchPatients}
+                                     />
 
     return <div style={{ height: '80%', width: '100%' }}>
         <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{padding: "1rem"}}>

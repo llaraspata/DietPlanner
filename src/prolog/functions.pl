@@ -118,7 +118,20 @@ replace_list_helper([X|Rest], Index, NewList, CurrIndex, [X|RestResult]) :-
 
 % Process the file's content and find specific instances
 read_relationships(ListRelationships) :-
-    findall(has(DailyDiet, FoodBeverage, IngredientsList), has(DailyDiet, FoodBeverage, IngredientsList), ListRelationships).
+    findall(has(DailyDiet, Dish, IngredientsList), has(DailyDiet, Dish, IngredientsList), ListRelationships).
+
+% Process the file's content and find specific instances
+read_diet(ListRelationships) :-
+    findall(DailyDiet-Dish-IngredientsList, has(DailyDiet, Dish, IngredientsList), DailyDietList), 
+    add_dish_type(DailyDietList, [], ListRelationships).
+
+add_dish_type([], ListRelationships, ListRelationships).
+add_dish_type([DailyDiet-Dish-IngredientsList | Rest], Acc, ListRelationships) :-
+    !,
+    attribute_value(dietplanner, Dish, type, DishType),
+    append(Acc, [DailyDiet-DishType-Dish-IngredientsList], NewAcc),
+    !,
+    add_dish_type(Rest, NewAcc, ListRelationships).
 
 select_elements_with_pattern([], _, []).
 select_elements_with_pattern([Element | Rest], Pattern, [Element | RestSelected]) :-

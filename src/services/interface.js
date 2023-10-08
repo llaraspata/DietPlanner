@@ -163,12 +163,10 @@ export function useGetSuggestedDietTypes(answeredQuestions, inferenceMethod) {
                     session.query(`has_answered(${userId}, ${a.questionId}, ${a.answerId}).`)
                     session.answer(a => a.id === "throw" && console.error("has_answered", a))
                 })
-                console.log("useGetSuggestedDietTypes after has_answered")
 
                 if(inferenceMethod === INFERENCE_METHODS.forward) session.query("forward_chaining.")
                 else session.query(`backward_chaining(suggested_diet_type(${userId}, DietType)).`)
                 session.answer(a => a.id === "throw" && console.error("chaining", a))
-                console.log("useGetSuggestedDietTypes after chaining")
 
                 session.query(`get_suggested_diet_type(${userId}, SuggestedTypes).`)
                 session.answer(a => {
@@ -185,7 +183,6 @@ export function useGetSuggestedDietTypes(answeredQuestions, inferenceMethod) {
                         console.error("get_suggested_diet_type", a)
                     }
                 })
-                console.log("useGetSuggestedDietTypes fine")
             })
         } else setSuggestedTypes([])
     }, [answeredQuestions, inferenceMethod])
@@ -216,4 +213,58 @@ export function useGetAllDietTypes() {
     },[])
 
     return dietTypes
+}
+
+export function useGetDiet(patient) {
+
+    const typicalDiet = {
+        breakfast: {
+            name: "pancakes_and_maple_syrup",
+            ingredients: [
+                {name: "pancakes", grams: 30},
+                {name: "maple_syrup", grams: 5}
+            ]
+        },
+        snack1: {
+            name: "vegetable_sticks_with_hummus",
+            ingredients: [
+                {name: "hummus", grams: 40},
+                {name: "carrot", grams: 30},
+                {name: "cucumber", grams: 40},
+                {name: "bell_peppers", grams: 20},
+                {name: "celery", grams: 40},
+            ]
+        },
+        lunch: {
+            name: "chicken_caesar_salad",
+            ingredients: [
+                {name: "lettuce", grams: 80},
+                {name: "chicken", grams: 80},
+                {name: "croutons", grams: 15},
+                {name: "grana_cheese", grams: 15},
+                {name: "lemon", grams: 5},
+            ]
+        },
+        snack2: {
+            name: "almond_butter_on_whole_wheat_crackers",
+            ingredients: [
+                {name: "almond_butter", grams: 20},
+                {name: "crackers", grams: 30}
+            ]
+        },
+        dinner: {
+            name: "veggie_pizza",
+            ingredients: [
+                {name: "pizza_dough", grams: 80},
+                {name: "tomato_sauce", grams: 30},
+                {name: "mozzarella_cheese", grams: 40},
+                {name: "bell_peppers", grams: 30},
+                {name: "porcini_mushroom", grams: 20},
+                {name: "onion", grams: 15},
+                {name: "olives_black", grams: 20}
+            ]
+        }
+    }
+
+    return [typicalDiet, typicalDiet, typicalDiet, typicalDiet, typicalDiet, typicalDiet, typicalDiet]
 }

@@ -731,11 +731,12 @@ generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
     dish_types(DishTypes),
 
     get_macronutrient_limits(DietType, MacronutrientLimits),
+    set_daily_calories(DietType, TotalDayCalories, NewTotalDayCalories),
 
     % TODO: assert structure
 
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
-    get_daily_diet_calories(TotalDayCalories, DailyCalories),
+    get_daily_diet_calories(NewTotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
     check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
     writeln('-----------------------').
@@ -757,6 +758,18 @@ get_macronutrient_limits(DietType, MacronutrientLimits) :-
         ;
             % In any other case (if not specified), it's assumed an healthy (standard) diet
             healthy_weight_nutrient_percentages(MacronutrientLimits)
+    ),
+    a = a.
+
+
+set_daily_calories(DietType, TotalDayCalories, NewTotalDayCalories) :-
+    (
+        DietType = hypocaloric_diet 
+        -> 
+            % Reduce the total calories by 20%
+            NewTotalDayCalories is (TotalDayCalories * 80) / 100 
+        ;
+            NewTotalDayCalories is TotalDayCalories
     ),
     a = a.
 

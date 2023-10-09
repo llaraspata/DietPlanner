@@ -727,11 +727,11 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
     count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
 
 % Generate a daily diet for a person
-generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
+generate_daily_diet(Person, DietTypes, NewId, TotalDayCalories) :-
     dish_types(DishTypes),
 
-    get_macronutrient_limits(DietType, MacronutrientLimits),
-    set_daily_calories(DietType, TotalDayCalories, NewTotalDayCalories),
+    get_macronutrient_limits(DietTypes, MacronutrientLimits),
+    set_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories),
 
     % TODO: assert structure
 
@@ -741,37 +741,35 @@ generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
     check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
     writeln('-----------------------').
 
-
-get_macronutrient_limits(DietType, MacronutrientLimits) :-
+get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
     (
-        DietType = healthy_weight_diet
+        member(healthy_weight_diet, DietTypes)
         ->
             healthy_weight_nutrient_percentages(MacronutrientLimits)
         ;
-        DietType = hyperproteic_diet
+        member(hyperproteic_diet, DietTypes)
         ->
             hyperproteic_nutrient_percentages(MacronutrientLimits)
         ;
-        DietType = hypocaloric_diet 
+        member(hypocaloric_diet, DietTypes)
         ->
             healthy_weight_nutrient_percentages(MacronutrientLimits)
         ;
-            % In any other case (if not specified), it's assumed an healthy (standard) diet
+            % In any other case (or if not specified), it's assumed an healthy (standard) diet
             healthy_weight_nutrient_percentages(MacronutrientLimits)
-    ),
-    a = a.
+    ).
 
-
-set_daily_calories(DietType, TotalDayCalories, NewTotalDayCalories) :-
+set_daily_calories([], NewTotalDayCalories, NewTotalDayCalories).
+set_daily_calories([DietType | Rest], TotalDayCalories, NewTotalDayCalories) :-
     (
         DietType = hypocaloric_diet 
         -> 
             % Reduce the total calories by 20%
-            NewTotalDayCalories is (TotalDayCalories * 80) / 100 
+            TempDayCalories is (TotalDayCalories * 80) / 100 
         ;
-            NewTotalDayCalories is TotalDayCalories
+            TempDayCalories is TotalDayCalories
     ),
-    a = a.
+    set_daily_calories(Rest, TempDayCalories, NewTotalDayCalories).
 
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet

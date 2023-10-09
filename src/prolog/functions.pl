@@ -25,8 +25,7 @@ female_bmr_constant(655.1).
 
 % TODO: comment
 dish_types([breakfast, snack, lunch, snack, dinner]).
-%daily_diet_names([daily_diet1, daily_diet2, daily_diet3, daily_diet4, daily_diet5, daily_diet6, daily_diet7]).
-daily_diet_names([daily_diet1]).
+daily_diet_names([daily_diet1, daily_diet2, daily_diet3, daily_diet4, daily_diet5, daily_diet6, daily_diet7]).
 
 % Checks on generated Daily Diet
 healthy_weight_nutrient_percentages([carbs-40-55, protein-20-30, lipids-20-30, dietary_fiber-1-5]).
@@ -686,7 +685,6 @@ set_grams_for_dish(_, []).
 set_grams_for_dish(NewId, [Dish | RestDish]) :-
     get_foodbeverages_in_dish(Dish, FoodBeverageList),
     actual_foodbeverage_grams(FoodBeverageList, Dish, [], IngredientLists), 
-    !,
     assertz(has(NewId, Dish, IngredientLists)),
     set_grams_for_dish(NewId, RestDish).
  
@@ -727,17 +725,17 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
     count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
 
 % Generate a daily diet for a person
-generate_daily_diet(_, [], []).
-generate_daily_diet(Person, [NewId | RestNames], [TotalDayCalories | Rest]) :-
+generate_daily_diet(Person, NewId, TotalDayCalories) :-
     dish_types(DishTypes),
     healthy_weight_nutrient_percentages(MacronutrientLimits),    
+
+    % TODO: assert structure
+
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(TotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
     check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
-    writeln('-----------------------'),
-    !,
-    generate_daily_diet(Person, RestNames, Rest).
+    writeln('-----------------------').
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
 check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
@@ -937,3 +935,8 @@ compute_diet(Name, Surname, Type, Structure, Instances) :-
     generate_daily_diet(Person, DailyDietNames, TotalWeekCaloriesList),
     read_relationships(Instances),
     writeln(Instances).   
+
+
+get_init_info(Person, TotalWeekCaloriesList, DailyDietNames) :-
+    generate_list_calories_week(Person, TotalWeekCaloriesList),
+    daily_diet_names(DailyDietNames).

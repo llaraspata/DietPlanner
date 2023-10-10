@@ -27,8 +27,10 @@ female_bmr_constant(655.1).
 dish_types([breakfast, snack, lunch, snack, dinner]).
 daily_diet_names([daily_diet1, daily_diet2, daily_diet3, daily_diet4, daily_diet5, daily_diet6, daily_diet7]).
 
-% Checks on generated Daily Diet
+% Checks on generated Daily Diet based on diet type
 healthy_weight_nutrient_percentages([carbs-40-55, protein-20-30, lipids-20-30, dietary_fiber-1-5]).
+hyperproteic_nutrient_percentages([carbs-20-30, protein-40-55, lipids-20-30, dietary_fiber-1-5]).
+
 
 
 % ---------
@@ -725,17 +727,50 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
     count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
 
 % Generate a daily diet for a person
-generate_daily_diet(Person, NewId, TotalDayCalories) :-
+generate_daily_diet(Person, DietTypes, NewId, TotalDayCalories) :-
     dish_types(DishTypes),
-    healthy_weight_nutrient_percentages(MacronutrientLimits),    
+
+    get_macronutrient_limits(DietTypes, MacronutrientLimits),
+    set_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories),
 
     % TODO: assert structure
 
     get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
-    get_daily_diet_calories(TotalDayCalories, DailyCalories),
+    get_daily_diet_calories(NewTotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
     check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
     writeln('-----------------------').
+
+get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
+    (
+        member(healthy_weight_diet, DietTypes)
+        ->
+            healthy_weight_nutrient_percentages(MacronutrientLimits)
+        ;
+        member(hyperproteic_diet, DietTypes)
+        ->
+            hyperproteic_nutrient_percentages(MacronutrientLimits)
+        ;
+        member(hypocaloric_diet, DietTypes)
+        ->
+            healthy_weight_nutrient_percentages(MacronutrientLimits)
+        ;
+            % In any other case (or if not specified), it's assumed an healthy (standard) diet
+            healthy_weight_nutrient_percentages(MacronutrientLimits)
+    ).
+
+set_daily_calories([], NewTotalDayCalories, NewTotalDayCalories).
+set_daily_calories([DietType | Rest], TotalDayCalories, NewTotalDayCalories) :-
+    (
+        DietType = hypocaloric_diet 
+        -> 
+            % Reduce the total calories by 20%
+            TempDayCalories is (TotalDayCalories * 80) / 100 
+        ;
+            TempDayCalories is TotalDayCalories
+    ),
+    set_daily_calories(Rest, TempDayCalories, NewTotalDayCalories).
+
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
 check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-

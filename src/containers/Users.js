@@ -54,7 +54,6 @@ export default function Users(){
 
     const [patients, setPatients] = useState([])
     const [user, loading, error] = useAuthState(auth);
-    console.log(patients)
 
     const columns = [
         { field: 'name', headerName: 'Name', flex: 2 },
@@ -162,7 +161,6 @@ export default function Users(){
                         id: doc.id,
                         activities: doc.data().patientActivities,
                         suggestedDiets: doc.data().suggestedDiets,
-                        historicalDiets: doc.data().historicalDiets,
                         ...doc.data().patient
                     }
                 });

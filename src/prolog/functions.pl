@@ -121,16 +121,11 @@ replace_list_helper([X|Rest], Index, NewList, CurrIndex, [X|RestResult]) :-
 read_relationships(ListRelationships) :-
     findall(has(DailyDiet, Dish, IngredientsList), has(DailyDiet, Dish, IngredientsList), ListRelationships).
 
-% Process the file's content and find specific instances
-read_diet(ListRelationships) :-
-    findall(DailyDiet-Dish-IngredientsList, has(DailyDiet, Dish, IngredientsList), DailyDietList), 
-    add_dish_type(DailyDietList, [], ListRelationships).
-
 add_dish_type([], ListRelationships, ListRelationships).
-add_dish_type([DailyDiet-Dish-IngredientsList | Rest], Acc, ListRelationships) :-
+add_dish_type([Dish-IngredientsList | Rest], Acc, ListRelationships) :-
     !,
     attribute_value(dietplanner, Dish, type, DishType),
-    append(Acc, [DailyDiet-DishType-Dish-IngredientsList], NewAcc),
+    append(Acc, [DishType-Dish-IngredientsList], NewAcc),
     !,
     add_dish_type(Rest, NewAcc, ListRelationships).
 
@@ -482,11 +477,8 @@ get_random_dish_in_list(DishList, Dish) :-
 get_daily_diet_dishes(_, _, [], DailyDietDishes, DailyDietDishes).
 get_daily_diet_dishes(Person, DietTypes, [DishType | Rest], Acc, DailyDietDishes) :-
     get_dishes_without_allergens_for_person(Person, DishType, DishList),
-    
     fix_dishes_with_dietary_restrictions(DietTypes, DishList, NewDishList),
-
     get_random_dish_in_list(NewDishList, Dish),
-    
     append(Acc, [Dish], NewAcc),
     get_daily_diet_dishes(Person, DietTypes, Rest, NewAcc, DailyDietDishes).
 
@@ -1076,18 +1068,19 @@ init_diet(Name, Surname, Type, Person, Structure) :-
 % ---------
 % Diet
 % ---------
-% Compute the diet for a specific person
-compute_diet(Name, Surname, Type, Structure, Instances) :-
-    init_diet(Name, Surname, Type, Person, Structure),
-    generate_list_calories_week(Person, TotalWeekCaloriesList),
-    daily_diet_names(DailyDietNames),
-    retractall(has(_, _, _)),
-    !,
-    generate_daily_diet(Person, DailyDietNames, TotalWeekCaloriesList),
-    read_relationships(Instances),
-    writeln(Instances).   
-
-
+% Returns initial info to generate a diet
 get_init_info(Person, TotalWeekCaloriesList, DailyDietNames) :-
     generate_list_calories_week(Person, TotalWeekCaloriesList),
     daily_diet_names(DailyDietNames).
+
+% Given the id of the daily diet and the desidered dish type, returns the dish name and its ingredients list
+read_diet(DailyDietId, DishType, DailyDietList) :-
+    findall(
+        Dish-IngredientsList, 
+        (
+            !,
+            attribute_value(dietplanner, Dish, type, DishType),
+            has(DailyDietId, Dish, IngredientsList)
+        ), 
+        DailyDietList
+    ).

@@ -6,7 +6,7 @@ import React,{useEffect,useState} from "react";
 import dayjs from "dayjs"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useGetAllDietTypes,useGetDiet} from "../services/interface";
-import {addDoc,collection,deleteDoc,doc,getDoc,getDocs,updateDoc} from "firebase/firestore";
+import {addDoc,collection,deleteDoc,doc,getDocs} from "firebase/firestore";
 import {auth,db} from "../firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useSnackbar} from "notistack";
@@ -14,6 +14,7 @@ import {HtmlTooltip} from "./Users";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {makeStyles} from "@mui/styles";
 import ConfirmDeleteIconButton from "../components/ConfirmDeleteIconButton";
+import DietInfo from "./DietInfo";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -127,6 +128,11 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
             enqueueSnackbar(e, {variant: "error"})
         }
     }
+
+    if(showingDiet) return <DietInfo
+        dietData={historicalDiets.find(hd => hd.id === showingDiet)} patient={patient}
+        onGoBack={() => setShowingDiet(false)}
+    />
 
     return <div style={{ height: '80%', width: '100%' }}>
         <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{padding: "1rem"}}>

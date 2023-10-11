@@ -222,7 +222,7 @@ function getPatientInstance(patient, session) {
     patient.surname = patient.surname.replace(/\s/g,'');
     let patientCode = `${patient.name.toLowerCase()}_${patient.surname.toLowerCase()}`
     const patientInstance = `
-    person_instance(dietplanner, person, ${patientCode}).
+        person_instance(dietplanner, person, ${patientCode}).
         attribute_value(dietplanner, ${patientCode}, name, '${patient.name}').
         attribute_value(dietplanner, ${patientCode}, surname, '${patient.surname}').
         attribute_value(dietplanner, ${patientCode}, age, ${patient.age}).
@@ -232,14 +232,14 @@ function getPatientInstance(patient, session) {
         attribute_value(dietplanner, ${patientCode}, bmi, ${patient.bmi.toFixed(2)}).
         attribute_value(dietplanner, ${patientCode}, energy_demand, ${patient.energyDemand}).
         attribute_value(dietplanner, ${patientCode}, number_day_on, ${patient.numberDayOn}).
-        ${patient.activities.map(pa => {
-        return `
-        carry_out(${patientCode}, ${pa.activity}-${pa.avgMinutes / 60}, ${pa.numberDayOn}).`
-    }).join(' ')}
-        ${patient.allergies.map(al => {
-        return `
-        is_allergic(${patientCode}, ${al}).`
-    }).join(' ')}
+        ${patient.activities ? patient.activities.map(pa => {
+            return `
+            carry_out(${patientCode}, ${pa.activity}-${pa.avgMinutes / 60}, ${pa.numberDayOn}).`
+        }).join(' ') : ""}
+        ${patient.allergies ? patient.allergies.map(al => {
+            return `
+            is_allergic(${patientCode}, ${al}).`
+        }).join(' ') : ""}
     `
 
     return {patientCode, patientInstance};
@@ -324,10 +324,10 @@ export function useGetDiet(patient) {
         if(totalWeekCaloriesList.length !== 0 && dailyDietNames.length !== 0
             && Object.keys(dietDay1).length === 0 && Object.keys(dietDay7).length === 0) {
 
+            const {patientCode, patientInstance} = getPatientInstance(patient, session)
             for(let i = 0; i < 7; i++) {
 
                 const dailyName = dailyDietNames[i]
-                const {patientCode, patientInstance} = getPatientInstance(patient, session)
                 let dailyDiet = {}
 
                 consultFunctionsInstances(session, patientInstance).then(() => {

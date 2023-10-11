@@ -76,7 +76,7 @@ create_days_list(N, [[] | Rest]) :-
 find_shortest_list_index(Lists, N, Index) :-
     (   Lists = []
     ->  Index = 1  
-    ;   find_shortest_list_index(Lists, N, 1, inf, -1, Index)
+    ;   find_shortest_list_index(Lists, N, 1, 10, -1, Index)
     ).
 % After analyzing all elements within the given list, returns the index of the shortest one
 find_shortest_list_index(_, 0, _, _, ShortestIndex, ShortestIndex).
@@ -121,16 +121,11 @@ replace_list_helper([X|Rest], Index, NewList, CurrIndex, [X|RestResult]) :-
 read_relationships(ListRelationships) :-
     findall(has(DailyDiet, Dish, IngredientsList), has(DailyDiet, Dish, IngredientsList), ListRelationships).
 
-% Process the file's content and find specific instances
-read_diet(ListRelationships) :-
-    findall(DailyDiet-Dish-IngredientsList, has(DailyDiet, Dish, IngredientsList), DailyDietList), 
-    add_dish_type(DailyDietList, [], ListRelationships).
-
 add_dish_type([], ListRelationships, ListRelationships).
-add_dish_type([DailyDiet-Dish-IngredientsList | Rest], Acc, ListRelationships) :-
+add_dish_type([Dish-IngredientsList | Rest], Acc, ListRelationships) :-
     !,
     attribute_value(dietplanner, Dish, type, DishType),
-    append(Acc, [DailyDiet-DishType-Dish-IngredientsList], NewAcc),
+    append(Acc, [DishType-Dish-IngredientsList], NewAcc),
     !,
     add_dish_type(Rest, NewAcc, ListRelationships).
 
@@ -479,12 +474,126 @@ get_random_dish_in_list(DishList, Dish) :-
     nth(Index, DishList, Dish).
 
 % Given a person, returns the list of dishes excluding those containing allergens the person is allergic to
-get_daily_diet_dishes(_, [], DailyDietDishes, DailyDietDishes).
-get_daily_diet_dishes(Person, [DishType | Rest], Acc, DailyDietDishes) :-
+get_daily_diet_dishes(_, _, [], DailyDietDishes, DailyDietDishes).
+get_daily_diet_dishes(Person, DietTypes, [DishType | Rest], Acc, DailyDietDishes) :-
     get_dishes_without_allergens_for_person(Person, DishType, DishList),
-    get_random_dish_in_list(DishList, Dish),
+    fix_dishes_with_dietary_restrictions(DietTypes, DishList, NewDishList),
+    get_random_dish_in_list(NewDishList, Dish),
     append(Acc, [Dish], NewAcc),
-    get_daily_diet_dishes(Person, Rest, NewAcc, DailyDietDishes).
+    get_daily_diet_dishes(Person, DietTypes, Rest, NewAcc, DailyDietDishes).
+
+get_meat_foods(MeatFoods) :-
+    findall(Food, foodbeverage_instance(dietplanner, meats, Food), MeatFoods).
+
+get_fish_seafood_foods(FishSeafoodFoods) :-
+    findall(Food, foodbeverage_instance(dietplanner, fish_seafood, Food), FishSeafoodFoods).
+
+fix_dishes_with_dietary_restrictions(DietTypes, DishList, NewDishList) :-
+    (
+        member(no_meat_diet, DietTypes) 
+        ->
+            remove_meat(DishList, [], NewDishList)
+        ;
+        member(no_fish_seafood_diet, DietTypes) 
+        ->
+            remove_fish_seafood(DishList, [], NewDishList)
+        ;
+        member(vegetarian_diet, DietTypes) 
+        ->
+            remove_meat_and_fish_seafood(DishList, [], NewDishList)
+        ;
+        member(vegan_diet, DietTypes) 
+        ->
+            remove_animal_derived(DishList, [], NewDishList)
+        ;
+            NewDishList = DishList
+    ).
+
+% Given an initial dish list, return the list of dishes which do not contain meat
+remove_meat([], NewDishList, NewDishList).
+remove_meat([Dish | Rest], Acc, NewDishList) :-
+    get_foodbeverages_in_dish(Dish, FoodBeverageList),
+    get_meat_foods(MeatFoods),
+    has_food_category(MeatFoods, FoodBeverageList, [], MeatFood),
+    length(MeatFood, Length),
+    (
+        Length > 0
+        -> 
+            NewAcc = Acc
+        ;
+            append(Acc, [Dish], NewAcc)
+    ),
+    remove_meat(Rest, NewAcc, NewDishList).
+
+% Given an initial dish list, return the list of dishes which do not contain fish and seafood
+remove_fish_seafood([], NewDishList, NewDishList).
+remove_fish_seafood([Dish | Rest], Acc, NewDishList) :-
+    get_foodbeverages_in_dish(Dish, FoodBeverageList),
+    get_fish_seafood_foods(FishSeafoodFoods),
+    has_food_category(FishSeafoodFoods, FoodBeverageList, [], FishFood),
+    length(FishFood, Length),
+    (
+        Length > 0
+        -> 
+            NewAcc = Acc
+        ;
+            append(Acc, [Dish], NewAcc)
+    ),
+    remove_fish_seafood(Rest, NewAcc, NewDishList).
+
+% Given an initial dish list, return the list of dishes which do not contain meat, and fish and seafood
+remove_meat_and_fish_seafood(DishList, [], NewDishList) :-
+    remove_meat(DishList, [], TempDishList),
+    remove_fish_seafood(TempDishList, [], NewDishList).
+
+% Given an initial dish list, return the list of dishes which do not contain animale derived food
+remove_animal_derived(DishList, [], NewDishList) :-
+    remove_meat(DishList, [], DishListNoMeat),
+    remove_fish_seafood(DishListNoMeat, [], TempDishList),
+    remove_animal_derived_helper(TempDishList, [], NewDishList).
+
+remove_animal_derived_helper([], NewDishList, NewDishList).
+remove_animal_derived_helper([Dish | Rest], Acc, NewDishList) :-
+    get_foodbeverages_in_dish(Dish, FoodBeverageList),
+    get_animal_derived_foods(AnimalDerivedFoods),
+    has_food_category(AnimalDerivedFoods, FoodBeverageList, [], AnimalDerivedFood),
+    length(AnimalDerivedFood, Length),
+    (
+        Length > 0
+        -> 
+            NewAcc = Acc
+        ;
+            append(Acc, [Dish], NewAcc)
+    ),
+    remove_animal_derived_helper(Rest, NewAcc, NewDishList).
+
+
+% Define a predicate to get dishes whose ingredients do not contain a list of allergens
+get_animal_derived_foods(AnimalDerivedFoods) :-
+    findall(
+        Food, 
+        (
+            has_nutrient(Food, red_meat_protein, _)
+            ;
+            has_nutrient(Food, egg_protein, _)
+            ;
+            has_nutrient(Food, dairy_protein, _)
+        ), 
+        AnimalDerivedFoodsWithDuplicates
+    ),
+    remove_duplicates(AnimalDerivedFoodsWithDuplicates, AnimalDerivedFoods).
+
+% Returns the list of food which belongs to a specific category (whose instances list is given as input parameter)
+has_food_category(_, [], List, List).
+has_food_category(FoodInCategory, [Food | Rest], Acc, List) :-
+    (
+        member(Food, FoodInCategory)
+        ->
+            append(Acc, [Food], NewAcc)
+        ;
+            NewAcc = Acc
+    ),
+    has_food_category(FoodInCategory, Rest, NewAcc, List).
 
 get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrient, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
@@ -727,19 +836,20 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
     count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
 
 % Generate a daily diet for a person
-generate_daily_diet(Person, DietTypes, NewId, TotalDayCalories) :-
-    dish_types(DishTypes),
-
-    get_macronutrient_limits(DietTypes, MacronutrientLimits),
-    set_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories),
-
-    % TODO: assert structure
-
-    get_daily_diet_dishes(Person, DishTypes, [], DailyDietDishes),
-    get_daily_diet_calories(NewTotalDayCalories, DailyCalories),
-    set_grams_for_dish(NewId, DailyDietDishes),
+generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
+    prepare_daily_diet(Person, DietType, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories),
     check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
     writeln('-----------------------').
+
+prepare_daily_diet(Person, DietType, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories) :-
+    dish_types(DishTypes),
+    get_macronutrient_limits(DietTypeList, MacronutrientLimits),
+    set_total_daily_calories(DietTypeList, TotalDayCalories, NewTotalDayCalories),
+    get_daily_diet_dishes(Person, DietTypeList, DishTypes, [], DailyDietDishes),
+    get_daily_diet_calories(NewTotalDayCalories, DailyCalories),
+    set_grams_for_dish(NewId, DailyDietDishes),
+    !.
+
 
 get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
     (
@@ -759,17 +869,15 @@ get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
             healthy_weight_nutrient_percentages(MacronutrientLimits)
     ).
 
-set_daily_calories([], NewTotalDayCalories, NewTotalDayCalories).
-set_daily_calories([DietType | Rest], TotalDayCalories, NewTotalDayCalories) :-
+set_total_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories) :-
     (
-        DietType = hypocaloric_diet 
+        member(hypocaloric_diet, DietTypes)
         -> 
             % Reduce the total calories by 20%
-            TempDayCalories is (TotalDayCalories * 80) / 100 
+            NewTotalDayCalories is (TotalDayCalories * 80) / 100 
         ;
-            TempDayCalories is TotalDayCalories
-    ),
-    set_daily_calories(Rest, TempDayCalories, NewTotalDayCalories).
+            NewTotalDayCalories is TotalDayCalories
+    ).
 
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
@@ -960,18 +1068,19 @@ init_diet(Name, Surname, Type, Person, Structure) :-
 % ---------
 % Diet
 % ---------
-% Compute the diet for a specific person
-compute_diet(Name, Surname, Type, Structure, Instances) :-
-    init_diet(Name, Surname, Type, Person, Structure),
-    generate_list_calories_week(Person, TotalWeekCaloriesList),
-    daily_diet_names(DailyDietNames),
-    retractall(has(_, _, _)),
-    !,
-    generate_daily_diet(Person, DailyDietNames, TotalWeekCaloriesList),
-    read_relationships(Instances),
-    writeln(Instances).   
-
-
+% Returns initial info to generate a diet
 get_init_info(Person, TotalWeekCaloriesList, DailyDietNames) :-
     generate_list_calories_week(Person, TotalWeekCaloriesList),
     daily_diet_names(DailyDietNames).
+
+% Given the id of the daily diet and the desidered dish type, returns the dish name and its ingredients list
+read_diet(DailyDietId, DishType, DailyDietList) :-
+    findall(
+        Dish-IngredientsList, 
+        (
+            !,
+            attribute_value(dietplanner, Dish, type, DishType),
+            has(DailyDietId, Dish, IngredientsList)
+        ), 
+        DailyDietList
+    ).

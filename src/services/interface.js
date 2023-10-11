@@ -24,9 +24,10 @@ function fromList(xs) {
     return null;
 }
 
-async function consultFunctionsInstances(session){
+async function consultFunctionsInstances(session, additionalInstances = ""){
     const functionsCode = await fetch(functions).then((res) => res.text()).then((program) => program)
-    const instancesCode = await fetch(instances).then((res) => res.text()).then((program) => program)
+    let instancesCode = await fetch(instances).then((res) => res.text()).then((program) => program)
+    instancesCode = instancesCode + additionalInstances
     session.consult(functionsCode);
     session.consult(instancesCode);
 }
@@ -48,6 +49,7 @@ async function consultUtilitiesQuestionnaireRulesInferenceEngine(session){
 
 export function useGetActivityAllergenNames() {
 
+    listLoader(pl)
     let session = pl.create();
     let [allergens, setAllergens] = useState([])
     let [activities, setActivities] = useState([])
@@ -215,7 +217,79 @@ export function useGetAllDietTypes() {
     return dietTypes
 }
 
+function getPatientInstance(patient, session) {
+    patient.name = patient.name.replace(/\s/g,'');
+    patient.surname = patient.surname.replace(/\s/g,'');
+    let patientCode = `${patient.name.toLowerCase()}_${patient.surname.toLowerCase()}`
+    const patientInstance = `
+    person_instance(dietplanner, person, ${patientCode}).
+        attribute_value(dietplanner, ${patientCode}, name, '${patient.name}').
+        attribute_value(dietplanner, ${patientCode}, surname, '${patient.surname}').
+        attribute_value(dietplanner, ${patientCode}, age, ${patient.age}).
+        attribute_value(dietplanner, ${patientCode}, gender, '${patient.gender}').
+        attribute_value(dietplanner, ${patientCode}, height, ${patient.height}).
+        attribute_value(dietplanner, ${patientCode}, weight, ${patient.weight}).
+        attribute_value(dietplanner, ${patientCode}, bmi, ${patient.bmi.toFixed(2)}).
+        attribute_value(dietplanner, ${patientCode}, energy_demand, ${patient.energyDemand}).
+        attribute_value(dietplanner, ${patientCode}, number_day_on, ${patient.numberDayOn}).
+        ${patient.activities.map(pa => {
+        return `
+        carry_out(${patientCode}, ${pa.activity}-${pa.avgMinutes / 60}, ${pa.numberDayOn}).`
+    }).join(' ')}
+        ${patient.allergies.map(al => {
+        return `
+        is_allergic(${patientCode}, ${al}).`
+    }).join(' ')}
+    `
+
+    return {patientCode, patientInstance};
+}
+
+
 export function useGetDiet(patient) {
+
+    listLoader(pl)
+    randomLoader(pl)
+    let session = pl.create();
+
+    let [totalWeekCaloriesList, setTotalWeekCaloriesList] = useState([])
+    let [dailyDietNames, setDailyDietNames] = useState([])
+
+    useEffect(() => {
+
+        const {patientCode, patientInstance} = getPatientInstance(patient, session)
+
+        consultFunctionsInstances(session, patientInstance).then(() => {
+
+            session.query(`generate_list_calories_week(${patientCode}, TotalWeekCaloriesList).`)
+            session.answer(a => {
+                setTotalWeekCaloriesList(fromList(a.lookup("TotalWeekCaloriesList")).map(d => d.value))
+            })
+
+            session.query(`daily_diet_names(DailyDietNames).`)
+            session.answer(a => {
+                setDailyDietNames(dailyDietNames = fromList(a.lookup("DailyDietNames")).map(d => d.id))
+            })
+        })
+    }, [patient])
+
+    useEffect(() => {
+        if(totalWeekCaloriesList.length !== 0 && dailyDietNames.length !== 0) {
+
+            let diet = {}
+            for(let i = 0; i < totalWeekCaloriesList.length; i++) {
+                const {patientCode, patientInstance} = getPatientInstance(patient, session)
+                consultFunctionsInstances(session, patientInstance).then(() => {
+
+                    session.query(`generate_daily_diet(${patientCode}, [], ${dailyDietNames[i]}, ${totalWeekCaloriesList[i]}).`)
+                    session.answer(a => console.log(a))
+
+                    session.query("read_diet(Diet).")
+                    session.answer(a => {})
+                })
+            }
+        }
+    }, [totalWeekCaloriesList, dailyDietNames])
 
     const typicalDiet = {
         breakfast: {

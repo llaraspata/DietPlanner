@@ -52,7 +52,6 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
                 setHistoricalDiets(newData);
             })
     }
-    console.log(historicalDiets)
 
     const onDelete = (dietId) => {
         enqueueSnackbar("Deleting...", {variant: "info"});

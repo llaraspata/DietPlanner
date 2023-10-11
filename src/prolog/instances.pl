@@ -1,5 +1,3 @@
-:- dynamic has/3.
-
 % ---------
 % Class: food_beverage
 % ---------

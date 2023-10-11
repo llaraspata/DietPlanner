@@ -1,4 +1,4 @@
-import {Button,Grid,IconButton} from "@mui/material";
+import {Button,Grid,IconButton,Tooltip} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import {DataGrid} from "@mui/x-data-grid";
@@ -137,19 +137,30 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
             </Grid>
             <Grid item>
                 <Typography component="h2" variant="h5">
-                    Historical data for <b>{patient.name} {patient.surname}</b>
+                    Historical data for <b>{patient?.name} {patient?.surname}</b>
                 </Typography>
             </Grid>
             <Grid item>
-                <Button variant="outlined" fullWidth startIcon={<AddIcon/>} onClick={saveComputedDiet}>
-                    Compute New Diet
-                </Button>
+                <Tooltip title={diet.length < 7 && "Computing new diet, please wait..."}>
+                   <span>
+                       <Button variant="outlined" fullWidth
+                               disabled={diet.length < 7}
+                               startIcon={<AddIcon/>} onClick={saveComputedDiet}>
+                                Add new Diet
+                       </Button>
+                   </span>
+                </Tooltip>
             </Grid>
         </Grid>
         <DataGrid
             className={classes.table}
             rows={historicalDiets || []}
             columns={columns}
+            initialState={{
+                sorting: {
+                    sortModel: [{ field: 'date', sort: 'desc' }],
+                },
+            }}
         />
     </div>
 }

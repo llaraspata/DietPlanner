@@ -255,90 +255,103 @@ export function useGetDiet(patient) {
     let [totalWeekCaloriesList, setTotalWeekCaloriesList] = useState([])
     let [dailyDietNames, setDailyDietNames] = useState([])
 
+    let [dietDay1, setDietDay1] = useState({})
+    let [dietDay2, setDietDay2] = useState({})
+    let [dietDay3, setDietDay3] = useState({})
+    let [dietDay4, setDietDay4] = useState({})
+    let [dietDay5, setDietDay5] = useState({})
+    let [dietDay6, setDietDay6] = useState({})
+    let [dietDay7, setDietDay7] = useState({})
+
     useEffect(() => {
+        if(patient && patient.name && patient.surname) {
 
-        const {patientCode, patientInstance} = getPatientInstance(patient, session)
+            setDietDay1({})
+            setDietDay2({})
+            setDietDay3({})
+            setDietDay4({})
+            setDietDay5({})
+            setDietDay6({})
+            setDietDay7({})
+            const {patientCode,patientInstance} = getPatientInstance(patient,session)
 
-        consultFunctionsInstances(session, patientInstance).then(() => {
+            consultFunctionsInstances(session,patientInstance).then(() => {
 
-            session.query(`generate_list_calories_week(${patientCode}, TotalWeekCaloriesList).`)
-            session.answer(a => {
-                setTotalWeekCaloriesList(fromList(a.lookup("TotalWeekCaloriesList")).map(d => d.value))
+                session.query(`generate_list_calories_week(${patientCode}, TotalWeekCaloriesList).`)
+                session.answer(a => {
+                    setTotalWeekCaloriesList(fromList(a.lookup("TotalWeekCaloriesList")).map(d => d.value))
+                })
+
+                session.query(`daily_diet_names(DailyDietNames).`)
+                session.answer(a => {
+                    setDailyDietNames(dailyDietNames = fromList(a.lookup("DailyDietNames")).map(d => d.id))
+                })
             })
-
-            session.query(`daily_diet_names(DailyDietNames).`)
-            session.answer(a => {
-                setDailyDietNames(dailyDietNames = fromList(a.lookup("DailyDietNames")).map(d => d.id))
-            })
-        })
+        }
     }, [patient])
 
+    const saveMeal = (a, meal, dailyDiet, day) => {
+        let lookup = fromList(a.lookup("DailyDietList"))
+        let dishName = lookup[0].args[0].id
+
+        let ingredients = []
+        lookup = lookup[0].args[1].args
+        while(lookup.length > 0) {
+            let ingredientName = lookup[0].args[0].id
+            let ingredientGrams = lookup[0].args[1].value
+            lookup = lookup[1].args
+            ingredients.push({name: ingredientName, grams: ingredientGrams})
+        }
+
+        dailyDiet[meal] = {
+            name: dishName,
+            ingredients: ingredients
+        }
+
+        if(Object.keys(dailyDiet).length === 5) {
+            dailyDiet.calories = totalWeekCaloriesList[day]
+            if(day === 0) setDietDay1(dailyDiet)
+            if(day === 1) setDietDay2(dailyDiet)
+            if(day === 2) setDietDay3(dailyDiet)
+            if(day === 3) setDietDay4(dailyDiet)
+            if(day === 4) setDietDay5(dailyDiet)
+            if(day === 5) setDietDay6(dailyDiet)
+            if(day === 6) setDietDay7(dailyDiet)
+        }
+    }
+
     useEffect(() => {
-        if(totalWeekCaloriesList.length !== 0 && dailyDietNames.length !== 0) {
+        if(totalWeekCaloriesList.length !== 0 && dailyDietNames.length !== 0
+            && Object.keys(dietDay1).length === 0 && Object.keys(dietDay7).length === 0) {
 
-            let diet = {}
-            for(let i = 0; i < totalWeekCaloriesList.length; i++) {
+            for(let i = 0; i < 7; i++) {
+
+                const dailyName = dailyDietNames[i]
                 const {patientCode, patientInstance} = getPatientInstance(patient, session)
+                let dailyDiet = {}
+
                 consultFunctionsInstances(session, patientInstance).then(() => {
-
                     session.query(`generate_daily_diet(${patientCode}, [], ${dailyDietNames[i]}, ${totalWeekCaloriesList[i]}).`)
-                    session.answer(a => console.log(a))
-
-                    session.query("read_diet(Diet).")
                     session.answer(a => {})
+
+                    session.query(`read_diet(${dailyName}, breakfast, DailyDietList).`)
+                    session.answer(a => saveMeal(a, "breakfast", dailyDiet, i))
+
+                    session.query(`read_diet(${dailyName}, lunch, DailyDietList).`)
+                    session.answer(a => saveMeal(a, "lunch", dailyDiet, i))
+
+                    session.query(`read_diet(${dailyName}, snack, DailyDietList).`)
+                    session.answer(a => saveMeal(a, "snack1", dailyDiet, i))
+
+                    session.query(`read_diet(${dailyName}, snack, DailyDietList).`)
+                    session.answer(a => saveMeal(a, "snack2", dailyDiet, i))
+
+                    session.query(`read_diet(${dailyName}, dinner, DailyDietList).`)
+                    session.answer(a => saveMeal(a, "dinner", dailyDiet, i))
                 })
             }
         }
     }, [totalWeekCaloriesList, dailyDietNames])
 
-    const typicalDiet = {
-        breakfast: {
-            name: "pancakes_and_maple_syrup",
-            ingredients: [
-                {name: "pancakes", grams: 30},
-                {name: "maple_syrup", grams: 5}
-            ]
-        },
-        snack1: {
-            name: "vegetable_sticks_with_hummus",
-            ingredients: [
-                {name: "hummus", grams: 40},
-                {name: "carrot", grams: 30},
-                {name: "cucumber", grams: 40},
-                {name: "bell_peppers", grams: 20},
-                {name: "celery", grams: 40},
-            ]
-        },
-        lunch: {
-            name: "chicken_caesar_salad",
-            ingredients: [
-                {name: "lettuce", grams: 80},
-                {name: "chicken", grams: 80},
-                {name: "croutons", grams: 15},
-                {name: "grana_cheese", grams: 15},
-                {name: "lemon", grams: 5},
-            ]
-        },
-        snack2: {
-            name: "almond_butter_on_whole_wheat_crackers",
-            ingredients: [
-                {name: "almond_butter", grams: 20},
-                {name: "crackers", grams: 30}
-            ]
-        },
-        dinner: {
-            name: "veggie_pizza",
-            ingredients: [
-                {name: "pizza_dough", grams: 80},
-                {name: "tomato_sauce", grams: 30},
-                {name: "mozzarella_cheese", grams: 40},
-                {name: "bell_peppers", grams: 30},
-                {name: "porcini_mushroom", grams: 20},
-                {name: "onion", grams: 15},
-                {name: "olives_black", grams: 20}
-            ]
-        }
-    }
-
-    return [typicalDiet, typicalDiet, typicalDiet, typicalDiet, typicalDiet, typicalDiet, typicalDiet]
+    return [dietDay1, dietDay2, dietDay3, dietDay4, dietDay5, dietDay6, dietDay7].filter(d => Object.keys(d).length !== 0)
 }

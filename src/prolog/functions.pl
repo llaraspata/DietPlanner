@@ -404,6 +404,10 @@ subtract([E|T], D, R) :-
 subtract([H|T], D, [H|R]) :-
 	subtract(T, D, R).
 
+pairs_values([], []).
+pairs_values([_-V|T0], [V|T]) :-
+   pairs_values(T0, T).
+
 % ---------
 % Libraries
 % ---------
@@ -478,7 +482,7 @@ create_days_list(N, [[] | Rest]) :-
 find_shortest_list_index(Lists, N, Index) :-
     (   Lists = []
     ->  Index = 1  
-     find_shortest_list_index(Lists, N, 1, 9999, -1, Index)
+    ; find_shortest_list_index(Lists, N, 1, 9999, -1, Index)
     ).
 % After analyzing all elements within the given list, returns the index of the shortest one
 find_shortest_list_index(_, 0, _, _, ShortestIndex, ShortestIndex).
@@ -999,7 +1003,7 @@ has_food_category(FoodInCategory, [Food | Rest], Acc, List) :-
 get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrient, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
     find_ingredients_sorted_by_nutrient(IngredientsList, MacroNutrient, OrderedList),
-    dif(OrderedList, []),
+    is_not_empty(OrderedList),
     change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
     IngredientsList \== TempIngredientList,
     OldRel = IngredientsList, 
@@ -1067,7 +1071,7 @@ extract_pairs_values([_-Food-Gram | T1], [Food-Gram | T2]) :-
 get_old_new_ingredient_list_by_calories(DailyDiet, ListDish, Fix, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
     sort_ingredients_by_calories(IngredientsList, OrderedList),
-    dif(OrderedList, []),
+    is_not_empty(OrderedList),
     change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
     IngredientsList \== TempIngredientList,
     OldRel = IngredientsList, 

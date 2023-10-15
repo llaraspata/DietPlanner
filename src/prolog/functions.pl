@@ -609,14 +609,22 @@ get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, []) :- !.
 fix_macronutrients_grams(DailyDiet, [], MacroNutrient, Fix). 
 fix_macronutrients_grams(DailyDiet, [Dish | Rest], MacroNutrient, Fix) :- 
 
+    writeln(''),
+    writeln('fix_macronutrients_grams'),
+    writeln(''),
+
+    writeln('DailyDiet'),
+    writeln(DailyDiet),
+    writeln('Dish'),
+    writeln(Dish),
+
     has(DailyDiet, Dish, IngredientsList),
+
+    writeln('IngredientsList'),
+    writeln(IngredientsList),
 
     change_ingredient_grams_macronutrient(Dish, IngredientsList, Fix, [], NewIngredientList),
     
-    writeln('Dish'),
-    writeln(Dish),
-    writeln('IngredientsList'),
-    writeln(IngredientsList),
     writeln('NewIngredientList'),
     writeln(NewIngredientList),
 
@@ -765,14 +773,20 @@ change_ingredient_grams_macronutrient(Dish, [FoodBeverage-Grams | Rest], Fix, Ac
     made_of(Dish, FoodBeverage, Min, Max),
     (
         % If Fix = 1, Decrease by 10%
-        Fix = 1,
-        NewGrams is floor((Grams * 90) / 100),
-        NewGrams >= Min, NewGrams =< Max
+        (
+            Fix = 1,
+            NewGrams is floor((Grams * 90) / 100),
+            NewGrams >= Min, NewGrams =< Max
+        )
         ;
         % If Fix = -1, Increase by 10%
-        Fix = -1,
-        NewGrams is ceiling((Grams * 110) / 100),
-        NewGrams >= Min, NewGrams =< Max
+        (
+            Fix = -1,
+            NewGrams is ceiling((Grams * 110) / 100),
+            NewGrams >= Min, NewGrams =< Max
+        )
+        ; 
+            NewGrams is Grams
     ),
     !,
     append(Acc, [FoodBeverage-NewGrams], NewAcc),
@@ -855,9 +869,7 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
 % Generate a daily diet for a person
 generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
     prepare_daily_diet(Person, DietType, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories),
-    writeln('...MacronutrientLimits...'),
-    writeln(MacronutrientLimits),
-    check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories).
+    check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, 50).
 
 prepare_daily_diet(Person, DietTypes, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories) :-
     dish_types(DishTypes),
@@ -898,8 +910,8 @@ set_total_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories) :-
 
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
-check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
-    repeat,
+check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, MaxIterations) :-
+    between(0, MaxIterations, Iteration),
     (
         check_daily_macronutrient(NewId, DailyCalories, MacronutrientLimits, MacronutrientResult, FailedMacroNutrient),
         check_daily_calories(NewId, DailyCalories, CaloryResult),
@@ -907,8 +919,8 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
             MacronutrientResult = 0, CaloryResult = 0 ->
                 !,
                 writeln('Diet generated successfully'),
-                writeln('Diet generated successfully'),
-                writeln('Diet generated successfully'),
+                writeln('Iteration'),
+                writeln(Iteration),
                 writeln('Diet generated successfully'),
                 writeln('Diet generated successfully'),
                 writeln('Diet generated successfully'),
@@ -919,31 +931,46 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
             MacronutrientResult = -1    ->
                 writeln('---Failed macronutrient'),
                 writeln(FailedMacroNutrient - MacronutrientResult),
+                writeln('Iteration'),
+                writeln(Iteration),
 
                 fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
             ;
             MacronutrientResult = 1     ->
                 writeln('---Failed macronutrient'),
                 writeln(FailedMacroNutrient - MacronutrientResult),
+                writeln('Iteration'),
+                writeln(Iteration),
 
                 fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
             ;
             CaloryResult = -1    ->
                 writeln('---Failed calories'),
                 writeln(CaloriesResult), 
+                writeln('Iteration'),
+                writeln(Iteration),
+
                 fix_calories(NewId, CaloriesResult)
             ;
             CaloryResult = 1     ->
                 writeln('---Failed calories'),
                 writeln(CaloriesResult), 
+                writeln('Iteration'),
+                writeln(Iteration),
+
                 fix_calories(NewId, CaloriesResult)
         )
-    ). % Fail to exit the repeat loop.
+    ).
 
 
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
+
+    writeln(''),
+    writeln('ListDish'),
+    writeln(ListDish),
+
     fix_macronutrients_grams(NewId, ListDish, MacroNutrient, MacronutrientResult),
     !,
     fail.
@@ -994,22 +1021,24 @@ check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, 
     !,
     cumulative_macro_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
     convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories),
-    Min is floor((DayCalories * LowerBound) / 100),
-    Max is ceiling((DayCalories * UpperBound) / 100),
+    Min is floor((DayCalories * LowerBound) / 100) - 5,
+    Max is ceiling((DayCalories * UpperBound) / 100) + 5,
+
+    ActualCalories is ceiling(TotalCalories),
 
     writeln('Macronutrient'),
     writeln(MacroNutrient),
-    writeln('Min - TotalCalories - Max'),
-    writeln(Min - TotalCalories - Max),
+    writeln('Min - ActualCalories - Max'),
+    writeln(Min - ActualCalories - Max),
 
     (
-        TotalCalories < Min ->
+        ActualCalories < Min ->
         TempResult is -1
         ;
-        TotalCalories > Max ->
+        ActualCalories > Max ->
         TempResult is 1
         ;
-        TotalCalories >= Min, TotalCalories =< Max ->
+        ActualCalories >= Min, ActualCalories =< Max ->
         TempResult is 0 
     ),
     Result = TempResult.

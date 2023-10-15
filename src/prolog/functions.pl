@@ -25,7 +25,7 @@ daily_diet_names([daily_diet1, daily_diet2, daily_diet3, daily_diet4, daily_diet
 
 % Checks on generated Daily Diet based on diet type
 healthy_weight_nutrient_percentages([carbs-40-55, protein-20-30, lipids-20-30, dietary_fiber-0.5-3]).
-hyperproteic_nutrient_percentages([carbs-20-30, protein-40-55, lipids-20-30, dietary_fiber-0.5-3]).
+hyperproteic_nutrient_percentages([carbs-30-40, protein-35-60, lipids-20-30, dietary_fiber-0.5-3]).
 
 
 
@@ -608,29 +608,10 @@ get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, []) :- !.
 % Fix dish grams accoridng to MacroNutrient check results
 fix_macronutrients_grams(DailyDiet, [], MacroNutrient, Fix). 
 fix_macronutrients_grams(DailyDiet, [Dish | Rest], MacroNutrient, Fix) :- 
-
-    writeln(''),
-    writeln('fix_macronutrients_grams'),
-    writeln(''),
-
-    writeln('DailyDiet'),
-    writeln(DailyDiet),
-    writeln('Dish'),
-    writeln(Dish),
-
     has(DailyDiet, Dish, IngredientsList),
-
-    writeln('IngredientsList'),
-    writeln(IngredientsList),
-
     change_ingredient_grams_macronutrient(Dish, IngredientsList, Fix, [], NewIngredientList),
-    
-    writeln('NewIngredientList'),
-    writeln(NewIngredientList),
-
     retract(has(DailyDiet, Dish, IngredientsList)),
     assertz(has(DailyDiet, Dish, NewIngredientList)),
-
     fix_macronutrients_grams(DailyDiet, Rest, MacroNutrient, Fix),
     !.
 
@@ -869,7 +850,7 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
 % Generate a daily diet for a person
 generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
     prepare_daily_diet(Person, DietType, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories),
-    check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, 50).
+    check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, 15).
 
 prepare_daily_diet(Person, DietTypes, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories) :-
     dish_types(DishTypes),
@@ -881,6 +862,10 @@ prepare_daily_diet(Person, DietTypes, NewId, TotalDayCalories, MacronutrientLimi
     !.
 
 get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
+    get_macronutrient_limits_diet_goal(DietTypes, TempMacronutrientLimits),
+    adjust_macronutrient_limits_health_disease(DietTypes, TempMacronutrientLimits, MacronutrientLimits).
+
+get_macronutrient_limits_diet_goal(DietTypes, MacronutrientLimits) :-
     (
         member(healthy_weight_diet, DietTypes)
         ->
@@ -897,6 +882,68 @@ get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
             % In any other case (or if not specified), it's assumed an healthy (standard) diet
             healthy_weight_nutrient_percentages(MacronutrientLimits)
     ).
+
+adjust_macronutrient_limits_health_disease([], MacronutrientLimits, MacronutrientLimits).
+adjust_macronutrient_limits_health_disease([DietType | Rest], TempMacronutrientLimits, MacronutrientLimits) :-
+    (
+        DietType = diabetic_diet
+        ->
+            change_macronutrient_limit(carbs, -5, TempMacronutrientLimits, [], NewTempMacronutrientLimits)
+        ;
+        DietType = high_cholesterol_diet
+        ->
+            change_macronutrient_limit(lipids, -9, TempMacronutrientLimits, [], NewTempMacronutrientLimits)
+        ;
+        DietType = kidney_problem_diet
+        ->
+            change_macronutrient_limit(lipids, -5, TempMacronutrientLimits, [], TempMacronutrientLimits2),
+            change_macronutrient_limit(carbs, 5, TempMacronutrientLimits2, [], TempMacronutrientLimits3),
+            change_macronutrient_limit(dietary_fiber, 2, TempMacronutrientLimits3, [], NewTempMacronutrientLimits)
+        ;
+        DietType = gastrointestinal_disorder_diet
+        ->
+            change_macronutrient_limit(carbs, -5, TempMacronutrientLimits, [], TempMacronutrientLimits2),
+            change_macronutrient_limit(dietary_fiber, -2, TempMacronutrientLimits2, [], NewTempMacronutrientLimits)
+        ;
+            % In any other case (or if not specified), the limits remain as are
+            NewTempMacronutrientLimits = TempMacronutrientLimits
+    ), 
+    !,
+    adjust_macronutrient_limits_health_disease(Rest, NewTempMacronutrientLimits, MacronutrientLimits).
+
+change_macronutrient_limit(_, _, [], MacronutrientLimits, MacronutrientLimits).
+change_macronutrient_limit(MacroNutrient, Quantity, [Element-Min-Max | Rest], Acc, MacronutrientLimits) :-
+    (
+        MacroNutrient = Element 
+        ->
+            TempMin is (Min + Quantity),
+            TempMax is (Max + Quantity)
+        ;
+            TempMin is Min,
+            TempMax is Max
+    ),
+    (
+        (TempMin < 0, TempMax < 0)
+        ->
+            NewMin is Min,
+            NewMax is Max
+        ;
+        TempMin < 0 
+        ->
+            NewMin is Min,
+            NewMax is TempMax
+        ;
+        TempMax < 0 
+        ->
+            NewMin is TempMin,
+            NewMax is Max
+        ;
+            NewMin is TempMin, 
+            NewMax is TempMax
+    ),
+    append(Acc, [Element-NewMin-NewMax], NewAcc),
+    !, 
+    change_macronutrient_limit(MacroNutrient, Quantity, Rest, NewAcc, MacronutrientLimits).
 
 set_total_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories) :-
     (
@@ -918,46 +965,18 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, MaxIteration
         (
             MacronutrientResult = 0, CaloryResult = 0 ->
                 !,
-                writeln('Diet generated successfully'),
-                writeln('Iteration'),
-                writeln(Iteration),
-                writeln('Diet generated successfully'),
-                writeln('Diet generated successfully'),
-                writeln('Diet generated successfully'),
-                writeln('Diet generated successfully'),
-                writeln('Diet generated successfully'),
-                writeln('Diet generated successfully')
+                writeln('Daily diet generated successfully')
             ;
             MacronutrientResult = -1    ->
-                writeln('---Failed macronutrient'),
-                writeln(FailedMacroNutrient - MacronutrientResult),
-                writeln('Iteration'),
-                writeln(Iteration),
-
                 fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
             ;
             MacronutrientResult = 1     ->
-                writeln('---Failed macronutrient'),
-                writeln(FailedMacroNutrient - MacronutrientResult),
-                writeln('Iteration'),
-                writeln(Iteration),
-
                 fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
             ;
             CaloryResult = -1    ->
-                writeln('---Failed calories'),
-                writeln(CaloriesResult), 
-                writeln('Iteration'),
-                writeln(Iteration),
-
                 fix_calories(NewId, CaloriesResult)
             ;
             CaloryResult = 1     ->
-                writeln('---Failed calories'),
-                writeln(CaloriesResult), 
-                writeln('Iteration'),
-                writeln(Iteration),
-
                 fix_calories(NewId, CaloriesResult)
         )
     ).
@@ -966,11 +985,6 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, MaxIteration
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
-
-    writeln(''),
-    writeln('ListDish'),
-    writeln(ListDish),
-
     fix_macronutrients_grams(NewId, ListDish, MacroNutrient, MacronutrientResult),
     !,
     fail.
@@ -1023,14 +1037,7 @@ check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, 
     convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories),
     Min is floor((DayCalories * LowerBound) / 100) - 5,
     Max is ceiling((DayCalories * UpperBound) / 100) + 5,
-
     ActualCalories is ceiling(TotalCalories),
-
-    writeln('Macronutrient'),
-    writeln(MacroNutrient),
-    writeln('Min - ActualCalories - Max'),
-    writeln(Min - ActualCalories - Max),
-
     (
         ActualCalories < Min ->
         TempResult is -1
@@ -1092,40 +1099,6 @@ check_dish_calories([Ingredients | RestIngredients], [DishCalories | RestCalorie
 check_dish_calories(_, _, Result) :- 
     Result \= 0, 
     !.
-
-
-init_diet(Name, Surname, Type, Person, Structure) :-
-    find_person_id(Name, Surname, Person),
-    atomic_concat('diet_', Person, DietName),
-    atomic_concat('Diet for ', Name, Temp),
-    atomic_concat(Temp, ' ', Temp1),
-    atomic_concat(Temp1, Surname, TotalName),
-    Structure = [diet_instance(dietplanner, diet, DietName),
-                attribute_value(dietplanner, DietName, name, TotalName),
-                attribute_value(dietplanner, diet_nome, type, Type),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet1),
-                attribute_value(dietplanner, daily_diet1, name, 'Daily Diet 1'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet2),
-                attribute_value(dietplanner, daily_diet2, name, 'Daily Diet 2'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet3),
-                attribute_value(dietplanner, daily_diet3, name, 'Daily Diet 3'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet4),
-                attribute_value(dietplanner, daily_diet4, name, 'Daily Diet 4'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet5),
-                attribute_value(dietplanner, daily_diet5, name, 'Daily Diet 5'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet6),
-                attribute_value(dietplanner, daily_diet6, name, 'Daily Diet 6'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet7),
-                attribute_value(dietplanner, daily_diet7, name, 'Daily Diet 7'),
-                made_for(DietName, Person),
-                suggested_diet(Person, DietName),
-                composed_of(DietName, daily_diet1),
-                composed_of(DietName, daily_diet2),
-                composed_of(DietName, daily_diet3),
-                composed_of(DietName, daily_diet4),
-                composed_of(DietName, daily_diet5),
-                composed_of(DietName, daily_diet6),
-                composed_of(DietName, daily_diet7)].
 
 % ---------
 % Diet

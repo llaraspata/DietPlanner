@@ -2186,8 +2186,6 @@ carry_out(michael_brown, weightlifting-1.5, 3).
 carry_out(sophia_miller, cycling-2.5, 2).
 carry_out(alice_johnson, yoga-1 , 7).
 carry_out(alice_johnson, swimming-1.5, 5).
-carry_out(bob_smith, running-1, 1).
-carry_out(bob_smith, weightlifting-2, 4).
 carry_out(emma_davis, brisk_walking-1, 5).
 carry_out(emma_davis, swimming-1, 2).
 carry_out(michael_brown, soccer-2, 1).

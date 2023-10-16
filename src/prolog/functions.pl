@@ -1,409 +1,3 @@
-predsort(P, L, R) :-
-	length(L, N),
-	predsort(P, N, L, _, R1), !,
-	R = R1.
-
-predsort(P, 2, [X1, X2|L], L, R) :- !,
-	call(P, Delta, X1, X2),
-	sort2(Delta, X1, X2, R).
-predsort(_, 1, [X|L], L, [X]) :- !.
-predsort(_, 0, L, L, []) :- !.
-predsort(P, N, L1, L3, R) :-
-	N1 is N // 2,
-	plus(N1, N2, N),
-	predsort(P, N1, L1, L2, R1),
-	predsort(P, N2, L2, L3, R2),
-	predmerge(P, R1, R2, R).
-
-sort2(<, X1, X2, [X1, X2]).
-sort2(=, X1, _,  [X1]).
-sort2(>, X1, X2, [X2, X1]).
-
-predmerge(_, [], R, R) :- !.
-predmerge(_, R, [], R) :- !.
-predmerge(P, [H1|T1], [H2|T2], Result) :-
-	call(P, Delta, H1, H2),
-	predmerge(Delta, P, H1, H2, T1, T2, Result).
-
-predmerge(>, P, H1, H2, T1, T2, [H2|R]) :-
-	predmerge(P, [H1|T1], T2, R).
-predmerge(=, P, H1, _, T1, T2, [H1|R]) :-
-	predmerge(P, T1, T2, R).
-predmerge(<, P, H1, H2, T1, T2, [H1|R]) :-
-	predmerge(P, T1, [H2|T2], R).
-
-%%	append(+ListOfLists, ?List)
-%
-%	Concatenate a list of lists.  Is  true   if  Lists  is a list of
-%	lists, and List is the concatenation of these lists.
-%
-%	@param	ListOfLists must be a list of -possibly- partial lists
-
-append(ListOfLists, List) :-
-%	must_be(list, ListOfLists),
-	append_(ListOfLists, List).
-
-append_([], []).
-append_([L|Ls], As) :-
-	append(L, Ws, As),
-	append_(Ls, Ws).
-
-
-%   delete(List, Elem, Residue)
-%   is true when List is a list, in which Elem may or may not occur, and
-%   Residue is a copy of List with all elements identical to Elem deleted.
-
-delete([], _, []).
-delete([Head|List], Elem, Residue) :-
-	Head == Elem, !,
-	delete(List, Elem, Residue).
-delete([Head|List], Elem, [Head|Residue]) :-
-	delete(List, Elem, Residue).
-
-
-%   last(List, Last)
-%   is true when List is a List and Last is identical to its last element.
-%   This could be defined as last(L, X) :- append(_, [X], L).
-
-last([H|List], Last) :-
-	last(List, H, Last).
-
-last([], Last, Last).
-last([H|List], _, Last) :-
-	last(List, H, Last).
-
-%   nextto(X, Y, List)
-%   is true when X and Y appear side-by-side in List.  It could be written as
-%	nextto(X, Y, List) :- append(_, [X,Y,_], List).
-%   It may be used to enumerate successive pairs from the list.
-
-nextto(X,Y, [X,Y|_]).
-nextto(X,Y, [_|List]) :-
-	nextto(X,Y, List).
-
-%   nth0(?N, +List, ?Elem) is true when Elem is the Nth member of List,
-%   counting the first as element 0.  (That is, throw away the first
-%   N elements and unify Elem with the next.)  It can only be used to
-%   select a particular element given the list and index.  For that
-%   task it is more efficient than nmember.
-%   nth(+N, +List, ?Elem) is the same as nth0, except that it counts from
-%   1, that is nth(1, [H|_], H).
-
-nth0(V, In, Element) :- var(V), !,
-	generate_nth(0, V, In, Element).
-nth0(0, [Head|_], Head) :- !.
-nth0(N, [_|Tail], Elem) :-
-	M is N-1,
-	find_nth0(M, Tail, Elem).
-
-find_nth0(0, [Head|_], Head) :- !.
-find_nth0(N, [_|Tail], Elem) :-
-	M is N-1,
-	find_nth0(M, Tail, Elem).
-
-
-nth1(V, In, Element) :- var(V), !,
-	generate_nth(1, V, In, Element).
-nth1(1, [Head|_], Head) :- !.
-nth1(N, [_|Tail], Elem) :-
-	nonvar(N), !,
-	M is N-1,			% should be succ(M, N)
-	find_nth(M, Tail, Elem).
-
-nth(V, In, Element) :- var(V), !,
-	generate_nth(1, V, In, Element).
-nth(1, [Head|_], Head) :- !.
-nth(N, [_|Tail], Elem) :-
-	nonvar(N), !,
-	M is N-1,			% should be succ(M, N)
-	find_nth(M, Tail, Elem).
-
-find_nth(1, [Head|_], Head) :- !.
-find_nth(N, [_|Tail], Elem) :-
-	M is N-1,
-	find_nth(M, Tail, Elem).
-
-
-generate_nth(I, I, [Head|_], Head).
-generate_nth(I, IN, [_|List], El) :-
-	I1 is I+1,
-	generate_nth(I1, IN, List, El).
-
-
-
-%   nth0(+N, ?List, ?Elem, ?Rest) unifies Elem with the Nth element of List,
-%   counting from 0, and Rest with the other elements.  It can be used
-%   to select the Nth element of List (yielding Elem and Rest), or to
-%   insert Elem before the Nth (counting from 1) element of Rest, when
-%   it yields List, e.g. nth0(2, List, c, [a,b,d,e]) unifies List with
-%   [a,b,c,d,e].  nth is the same except that it counts from 1.  nth
-%   can be used to insert Elem after the Nth element of Rest.
-
-nth0(V, In, Element, Tail) :- var(V), !,
-	generate_nth(0, V, In, Element, Tail).
-nth0(0, [Head|Tail], Head, Tail) :- !.
-nth0(N, [Head|Tail], Elem, [Head|Rest]) :-
-	M is N-1,
-	nth0(M, Tail, Elem, Rest).
-
-find_nth0(0, [Head|Tail], Head, Tail) :- !.
-find_nth0(N, [Head|Tail], Elem, [Head|Rest]) :-
-	M is N-1,
-	find_nth0(M, Tail, Elem, Rest).
-
-
-
-nth1(V, In, Element, Tail) :- var(V), !,
-	generate_nth(1, V, In, Element, Tail).
-nth1(1, [Head|Tail], Head, Tail) :- !.
-nth1(N, [Head|Tail], Elem, [Head|Rest]) :-
-	M is N-1,
-	nth1(M, Tail, Elem, Rest).
-
-nth(V, In, Element, Tail) :- var(V), !,
-	generate_nth(1, V, In, Element, Tail).
-nth(1, [Head|Tail], Head, Tail) :- !.
-nth(N, [Head|Tail], Elem, [Head|Rest]) :-
-	M is N-1,
-	nth(M, Tail, Elem, Rest).
-
-find_nth(1, [Head|Tail], Head, Tail) :- !.
-find_nth(N, [Head|Tail], Elem, [Head|Rest]) :-
-	M is N-1,
-	find_nth(M, Tail, Elem, Rest).
-
-
-generate_nth(I, I, [Head|Tail], Head, Tail).
-generate_nth(I, IN, [E|List], El, [E|Tail]) :-
-	I1 is I+1,
-	generate_nth(I1, IN, List, El, Tail).
-
-
-
-%   permutation(List, Perm)
-%   is true when List and Perm are permutations of each other.  Of course,
-%   if you just want to test that, the best way is to keysort/2 the two
-%   lists and see if the results are the same.  Or you could use list_to_bag
-%   (from BagUtl.Pl) to see if they convert to the same bag.  The point of
-%   perm is to generate permutations.  The arguments may be either way round,
-%   the only effect will be the order in which the permutations are tried.
-%   Be careful: this is quite efficient, but the number of permutations of an
-%   N-element list is N!, even for a 7-element list that is 5040.
-
-permutation([], []).
-permutation(List, [First|Perm]) :-
-	select(First, List, Rest),	%  tries each List element in turn
-	permutation(Rest, Perm).
-
-
-% prefix(Part, Whole) iff Part is a leading substring of Whole
-
-prefix([], _).
-prefix([Elem | Rest_of_part], [Elem | Rest_of_whole]) :-
-  prefix(Rest_of_part, Rest_of_whole).
-
-%   remove_duplicates(List, Pruned)
-%   removes duplicated elements from List.  Beware: if the List has
-%   non-ground elements, the result may surprise you.
-
-remove_duplicates([], []).
-remove_duplicates([Elem|L], [Elem|NL]) :-
-	delete(L, Elem, Temp),
-	remove_duplicates(Temp, NL).
-
-%   reverse(List, Reversed)
-%   is true when List and Reversed are lists with the same elements
-%   but in opposite orders.  rev/2 is a synonym for reverse/2.
-
-reverse(List, Reversed) :-
-	reverse(List, [], Reversed).
-
-reverse([], Reversed, Reversed).
-reverse([Head|Tail], Sofar, Reversed) :-
-	reverse(Tail, [Head|Sofar], Reversed).
-
-
-%   same_length(?List1, ?List2)
-%   is true when List1 and List2 are both lists and have the same number
-%   of elements.  No relation between the values of their elements is
-%   implied.
-%   Modes same_length(-,+) and same_length(+,-) generate either list given
-%   the other; mode same_length(-,-) generates two lists of the same length,
-%   in which case the arguments will be bound to lists of length 0, 1, 2, ...
-
-same_length([], []).
-same_length([_|List1], [_|List2]) :-
-	same_length(List1, List2).
-
-%%      selectchk(+Elem, +List, -Rest) is semidet.
-%
-%       Semi-deterministic removal of first element in List that unifies
-%       Elem.
-
-selectchk(Elem, List, Rest) :-
-        select(Elem, List, Rest0), !,
-        Rest = Rest0.
-
-
-%   select(?Element, ?Set, ?Residue)
-%   is true when Set is a list, Element occurs in Set, and Residue is
-%   everything in Set except Element (things stay in the same order).
-
-select(Element, [Element|Rest], Rest).
-select(Element, [Head|Tail], [Head|Rest]) :-
-	select(Element, Tail, Rest).
-
-
-%   sublist(Sublist, List)
-%   is true when both append(_,Sublist,S) and append(S,_,List) hold.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%	sublist(?Sub, +List) is nondet.
-%
-%	True if all elements of Sub appear in List in the same order.
-
-sublist(L, L).
-sublist(Sub, [H|T]) :-
-	'$sublist1'(T, H, Sub).
-
-'$sublist1'(Sub, _, Sub).
-'$sublist1'([H|T], _, Sub) :-
-	'$sublist1'(T, H, Sub).
-'$sublist1'([H|T], X, [X|Sub]) :-
-	'$sublist1'(T, H, Sub).
-
-%   substitute(X, XList, Y, YList)
-%   is true when XList and YList only differ in that the elements X in XList
-%   are replaced by elements Y in the YList.
-substitute(X, XList, Y, YList) :-
-	substitute2(XList, X, Y, YList).
-
-substitute2([], _, _, []).
-substitute2([X0|XList], X, Y, [Y|YList]) :-
-	X == X0, !,
-	substitute2(XList, X, Y, YList).
-substitute2([X0|XList], X, Y, [X0|YList]) :-
-	substitute2(XList, X, Y, YList).
-
-%   suffix(Suffix, List)
-%   holds when append(_,Suffix,List) holds.
-suffix(Suffix, Suffix).
-suffix(Suffix, [_|List]) :-
-	suffix(Suffix,List).
-
-%   sumlist(Numbers, Total)
-%   is true when Numbers is a list of integers, and Total is their sum.
-
-sumlist(Numbers, Total) :-
-	sumlist(Numbers, 0, Total).
-
-sum_list(Numbers, SoFar, Total) :-
-	sumlist(Numbers, SoFar, Total).
-
-sum_list(Numbers, Total) :-
-	sumlist(Numbers, 0, Total).
-
-sumlist([], Total, Total).
-sumlist([Head|Tail], Sofar, Total) :-
-	Next is Sofar+Head,
-	sumlist(Tail, Next, Total).
-
-
-%   list_concat(Lists, List)
-%   is true when Lists is a list of lists, and List is the
-%   concatenation of these lists.
-
-list_concat([], []).
-list_concat([H|T], L) :-
-	list_concat(H, L, Li),
-	list_concat(T, Li).
-
-list_concat([], L, L).
-list_concat([H|T], [H|Lf], Li) :-
-	list_concat(T, Lf, Li).
-
-
-
-%
-% flatten a list
-%
-flatten(X,Y) :- flatten_list(X,Y,[]).
-
-flatten_list(V) --> {var(V)}, !, [V].
-flatten_list([]) --> !.
-flatten_list([H|T]) --> !, flatten_list(H),flatten_list(T).
-flatten_list(H) --> [H].
-
-max_list([H|L],Max) :-
-	max_list(L,H,Max).
-
-max_list([],Max,Max).
-max_list([H|L],Max0,Max) :-
-	(
-	  H > Max0
-	->
-	  max_list(L,H,Max)
-	;
-	  max_list(L,Max0,Max)
-	).
-
-min_list([H|L],Max) :-
-	min_list(L,H,Max).
-
-min_list([],Max,Max).
-min_list([H|L],Max0,Max) :-
-	(
-	  H < Max0
-	->
-	  min_list(L, H, Max)
-	;
-	  min_list(L, Max0, Max)
-	).
-
-%%      numlist(+Low, +High, -List) is semidet.
-%
-%       List is a list [Low, Low+1, ... High].  Fails if High < Low.%
-%
-%       @error type_error(integer, Low)
-%       @error type_error(integer, High)
-
-numlist(L, U, Ns) :-
-        must_be(integer, L),
-        must_be(integer, U),
-        L =< U,
-        numlist_(L, U, Ns).
-
-numlist_(U, U, OUT) :- !, OUT = [U].
-numlist_(L, U, [L|Ns]) :-
-        succ(L, L2),
-        numlist_(L2, U, Ns).
-
-
-% copied from SWI lists library.
-intersection([], _, []) :- !.
-intersection([X|T], L, Intersect) :-
-	memberchk(X, L), !,
-	Intersect = [X|R],
-	intersection(T, L, R).
-intersection([_|T], L, R) :-
-	intersection(T, L, R).
-
-%%	subtract(+Set, +Delete, -Result) is det.
-%
-%	Delete all elements from `Set' that   occur  in `Delete' (a set)
-%	and unify the  result  with  `Result'.   Deletion  is  based  on
-%	unification using memberchk/2. The complexity is |Delete|*|Set|.
-%
-%	@see ord_subtract/3.
-
-subtract([], _, []) :- !.
-subtract([E|T], D, R) :-
-	memberchk(E, D), !,
-	subtract(T, D, R).
-subtract([H|T], D, [H|R]) :-
-	subtract(T, D, R).
-
 % ---------
 % Libraries
 % ---------
@@ -430,8 +24,8 @@ dish_types([breakfast, snack, lunch, snack, dinner]).
 daily_diet_names([daily_diet1, daily_diet2, daily_diet3, daily_diet4, daily_diet5, daily_diet6, daily_diet7]).
 
 % Checks on generated Daily Diet based on diet type
-healthy_weight_nutrient_percentages([carbs-40-55, protein-20-30, lipids-20-30, dietary_fiber-1-5]).
-hyperproteic_nutrient_percentages([carbs-20-30, protein-40-55, lipids-20-30, dietary_fiber-1-5]).
+healthy_weight_nutrient_percentages([carbs-40-55, protein-20-30, lipids-20-30, dietary_fiber-0.5-3]).
+hyperproteic_nutrient_percentages([carbs-30-40, protein-35-60, lipids-20-30, dietary_fiber-0.5-3]).
 
 
 
@@ -477,8 +71,10 @@ create_days_list(N, [[] | Rest]) :-
 % Given a list, where each element is a list, returns the index of the shortest element (among the first and the n-th elements).
 find_shortest_list_index(Lists, N, Index) :-
     (   Lists = []
-    ->  Index = 1  
-     find_shortest_list_index(Lists, N, 1, 9999, -1, Index)
+        ->  
+            Index = 1  
+        ;
+            find_shortest_list_index(Lists, N, 1, 9999, -1, Index)
     ).
 % After analyzing all elements within the given list, returns the index of the shortest one
 find_shortest_list_index(_, 0, _, _, ShortestIndex, ShortestIndex).
@@ -1010,25 +606,14 @@ get_old_new_ingredient_list_by_nutrient(DailyDiet, [_|Tail], Fix, MacroNutrient,
 get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, []) :- !.
 
 % Fix dish grams accoridng to MacroNutrient check results
-fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, Fix) :- 
-    get_old_new_ingredient_list_by_nutrient(NewId, ListDish, Fix, MacroNutrient, OldIngredientList, NewIngredientList),
-    has(NewId, Dish, OldIngredientList),
-    (
-        length(NewIngredientList, 0) ->
-        (
-            has(NewId, DefaultDish, IngredientList),
-            find_ingredients_sorted_by_nutrient(IngredientList, MacroNutrient, OrderedList),
-            nth0(0, OrderedList, FoodWithMoreNutrient-_),
-            default_case_fix(FoodWithMoreNutrient, Fix, IngredientList, [], DefaultIngredientList),
-            retract(has(NewId, DefaultDish, IngredientList)),
-            assertz(has(NewId, DefaultDish, DefaultIngredientList))            
-        )
-        ;
-        (            
-            retract(has(NewId, Dish, OldIngredientList)),
-            assertz(has(NewId, Dish, NewIngredientList))
-        )
-    ).
+fix_macronutrients_grams(DailyDiet, [], MacroNutrient, Fix). 
+fix_macronutrients_grams(DailyDiet, [Dish | Rest], MacroNutrient, Fix) :- 
+    has(DailyDiet, Dish, IngredientsList),
+    change_ingredient_grams_macronutrient(Dish, IngredientsList, Fix, [], NewIngredientList),
+    retract(has(DailyDiet, Dish, IngredientsList)),
+    assertz(has(DailyDiet, Dish, NewIngredientList)),
+    fix_macronutrients_grams(DailyDiet, Rest, MacroNutrient, Fix),
+    !.
 
 
 get_micronutrient_content_list(_, [], Contents, Contents).
@@ -1101,11 +686,11 @@ default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList)
     (
         FoodBeverage = Food,
         (
-            % If Fix = 1, Decrease by 10%
+            % If Fix = 1, Decrease by 5%
             Fix = 1,
             NewGrams is floor((Grams * 90) / 100)
         ;
-            % If Fix = -1, Increase by 10%
+            % If Fix = -1, Increase by 5%
             Fix = -1,
             NewGrams is ceiling((Grams * 110) / 100)
         )
@@ -1161,6 +746,32 @@ change_ingredient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredie
     append(Acc, [FoodBeverage-Grams], NewAcc),
     change_ingredient_grams(Dish, Rest, Fix, NewAcc, NewIngredientList).
 
+
+
+
+change_ingredient_grams_macronutrient(_, [], _, NewIngredientList, NewIngredientList).
+change_ingredient_grams_macronutrient(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+    made_of(Dish, FoodBeverage, Min, Max),
+    (
+        % If Fix = 1, Decrease by 10%
+        (
+            Fix = 1,
+            NewGrams is floor((Grams * 90) / 100),
+            NewGrams >= Min, NewGrams =< Max
+        )
+        ;
+        % If Fix = -1, Increase by 10%
+        (
+            Fix = -1,
+            NewGrams is ceiling((Grams * 110) / 100),
+            NewGrams >= Min, NewGrams =< Max
+        )
+        ; 
+            NewGrams is Grams
+    ),
+    !,
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
+    change_ingredient_grams_macronutrient(Dish, Rest, Fix, NewAcc, NewIngredientList).
 
 
 % Returns the the list of calories, where each element corresponds to the calories of a dish (represented by its ingredients)
@@ -1239,19 +850,22 @@ count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Tot
 % Generate a daily diet for a person
 generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
     prepare_daily_diet(Person, DietType, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories),
-    check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories),
-    writeln('-----------------------').
+    check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, 15).
 
-prepare_daily_diet(Person, DietType, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories) :-
+prepare_daily_diet(Person, DietTypes, NewId, TotalDayCalories, MacronutrientLimits, DailyCalories) :-
     dish_types(DishTypes),
-    get_macronutrient_limits(DietTypeList, MacronutrientLimits),
-    set_total_daily_calories(DietTypeList, TotalDayCalories, NewTotalDayCalories),
-    get_daily_diet_dishes(Person, DietTypeList, DishTypes, [], DailyDietDishes),
+    get_macronutrient_limits(DietTypes, MacronutrientLimits),
+    set_total_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories),
+    get_daily_diet_dishes(Person, DietTypes, DishTypes, [], DailyDietDishes),
     get_daily_diet_calories(NewTotalDayCalories, DailyCalories),
     set_grams_for_dish(NewId, DailyDietDishes),
     !.
 
 get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
+    get_macronutrient_limits_diet_goal(DietTypes, TempMacronutrientLimits),
+    adjust_macronutrient_limits_health_disease(DietTypes, TempMacronutrientLimits, MacronutrientLimits).
+
+get_macronutrient_limits_diet_goal(DietTypes, MacronutrientLimits) :-
     (
         member(healthy_weight_diet, DietTypes)
         ->
@@ -1269,6 +883,68 @@ get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
             healthy_weight_nutrient_percentages(MacronutrientLimits)
     ).
 
+adjust_macronutrient_limits_health_disease([], MacronutrientLimits, MacronutrientLimits).
+adjust_macronutrient_limits_health_disease([DietType | Rest], TempMacronutrientLimits, MacronutrientLimits) :-
+    (
+        DietType = diabetic_diet
+        ->
+            change_macronutrient_limit(carbs, -5, TempMacronutrientLimits, [], NewTempMacronutrientLimits)
+        ;
+        DietType = high_cholesterol_diet
+        ->
+            change_macronutrient_limit(lipids, -9, TempMacronutrientLimits, [], NewTempMacronutrientLimits)
+        ;
+        DietType = kidney_problem_diet
+        ->
+            change_macronutrient_limit(lipids, -5, TempMacronutrientLimits, [], TempMacronutrientLimits2),
+            change_macronutrient_limit(carbs, 5, TempMacronutrientLimits2, [], TempMacronutrientLimits3),
+            change_macronutrient_limit(dietary_fiber, 2, TempMacronutrientLimits3, [], NewTempMacronutrientLimits)
+        ;
+        DietType = gastrointestinal_disorder_diet
+        ->
+            change_macronutrient_limit(carbs, -5, TempMacronutrientLimits, [], TempMacronutrientLimits2),
+            change_macronutrient_limit(dietary_fiber, -2, TempMacronutrientLimits2, [], NewTempMacronutrientLimits)
+        ;
+            % In any other case (or if not specified), the limits remain as are
+            NewTempMacronutrientLimits = TempMacronutrientLimits
+    ), 
+    !,
+    adjust_macronutrient_limits_health_disease(Rest, NewTempMacronutrientLimits, MacronutrientLimits).
+
+change_macronutrient_limit(_, _, [], MacronutrientLimits, MacronutrientLimits).
+change_macronutrient_limit(MacroNutrient, Quantity, [Element-Min-Max | Rest], Acc, MacronutrientLimits) :-
+    (
+        MacroNutrient = Element 
+        ->
+            TempMin is (Min + Quantity),
+            TempMax is (Max + Quantity)
+        ;
+            TempMin is Min,
+            TempMax is Max
+    ),
+    (
+        (TempMin < 0, TempMax < 0)
+        ->
+            NewMin is Min,
+            NewMax is Max
+        ;
+        TempMin < 0 
+        ->
+            NewMin is Min,
+            NewMax is TempMax
+        ;
+        TempMax < 0 
+        ->
+            NewMin is TempMin,
+            NewMax is Max
+        ;
+            NewMin is TempMin, 
+            NewMax is TempMax
+    ),
+    append(Acc, [Element-NewMin-NewMax], NewAcc),
+    !, 
+    change_macronutrient_limit(MacroNutrient, Quantity, Rest, NewAcc, MacronutrientLimits).
+
 set_total_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories) :-
     (
         member(hypocaloric_diet, DietTypes)
@@ -1281,14 +957,15 @@ set_total_daily_calories(DietTypes, TotalDayCalories, NewTotalDayCalories) :-
 
 
 % Checks Macronutrients and Calories contraints and fix the generated daily diet
-check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
-    repeat,
+check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories, MaxIterations) :-
+    between(0, MaxIterations, Iteration),
     (
         check_daily_macronutrient(NewId, DailyCalories, MacronutrientLimits, MacronutrientResult, FailedMacroNutrient),
         check_daily_calories(NewId, DailyCalories, CaloryResult),
         (
             MacronutrientResult = 0, CaloryResult = 0 ->
-                !
+                !,
+                writeln('Daily diet generated successfully')
             ;
             MacronutrientResult = -1    ->
                 fix_macronutient(NewId, FailedMacroNutrient, MacronutrientResult)
@@ -1302,14 +979,13 @@ check_and_fix_daily_diet(NewId, MacronutrientLimits, DailyCalories) :-
             CaloryResult = 1     ->
                 fix_calories(NewId, CaloriesResult)
         )
-    ). % Fail to exit the repeat loop.
+    ).
 
 
 % Fix dish grams w.r.t. macronutrient checks
 fix_macronutient(NewId, MacroNutrient, MacronutrientResult) :-
     get_list_dish_by_nutrient(NewId, MacroNutrient, ListDish),
-    nth0(0, ListDish, DefaultDish),
-    fix_macronutrients_grams(NewId, ListDish, DefaultDish, MacroNutrient, MacronutrientResult),
+    fix_macronutrients_grams(NewId, ListDish, MacroNutrient, MacronutrientResult),
     !,
     fail.
 
@@ -1359,21 +1035,19 @@ check_macronutrient_helper(DailyDiet, DailyCalories, MacroNutrient, LowerBound, 
     !,
     cumulative_macro_nutrient_quantity(UniqueIngredients, MacroNutrient, TotalNutrientQuantity),
     convert_grams_in_calories(MacroNutrient, TotalNutrientQuantity, TotalCalories),
-
-    Min is floor((DayCalories * LowerBound) / 100),
-    Max is ceiling((DayCalories * UpperBound) / 100),
-
+    Min is floor((DayCalories * LowerBound) / 100) - 5,
+    Max is ceiling((DayCalories * UpperBound) / 100) + 5,
+    ActualCalories is ceiling(TotalCalories),
     (
-        TotalCalories < Min ->
+        ActualCalories < Min ->
         TempResult is -1
         ;
-        TotalCalories > Max ->
+        ActualCalories > Max ->
         TempResult is 1
         ;
-        TotalCalories >= Min, TotalCalories =< Max ->
+        ActualCalories >= Min, ActualCalories =< Max ->
         TempResult is 0 
     ),
-
     Result = TempResult.
 
 
@@ -1425,40 +1099,6 @@ check_dish_calories([Ingredients | RestIngredients], [DishCalories | RestCalorie
 check_dish_calories(_, _, Result) :- 
     Result \= 0, 
     !.
-
-
-init_diet(Name, Surname, Type, Person, Structure) :-
-    find_person_id(Name, Surname, Person),
-    atomic_concat('diet_', Person, DietName),
-    atomic_concat('Diet for ', Name, Temp),
-    atomic_concat(Temp, ' ', Temp1),
-    atomic_concat(Temp1, Surname, TotalName),
-    Structure = [diet_instance(dietplanner, diet, DietName),
-                attribute_value(dietplanner, DietName, name, TotalName),
-                attribute_value(dietplanner, diet_nome, type, Type),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet1),
-                attribute_value(dietplanner, daily_diet1, name, 'Daily Diet 1'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet2),
-                attribute_value(dietplanner, daily_diet2, name, 'Daily Diet 2'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet3),
-                attribute_value(dietplanner, daily_diet3, name, 'Daily Diet 3'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet4),
-                attribute_value(dietplanner, daily_diet4, name, 'Daily Diet 4'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet5),
-                attribute_value(dietplanner, daily_diet5, name, 'Daily Diet 5'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet6),
-                attribute_value(dietplanner, daily_diet6, name, 'Daily Diet 6'),
-                daily_diet_instance(dietplanner, daily_diet, daily_diet7),
-                attribute_value(dietplanner, daily_diet7, name, 'Daily Diet 7'),
-                made_for(DietName, Person),
-                suggested_diet(Person, DietName),
-                composed_of(DietName, daily_diet1),
-                composed_of(DietName, daily_diet2),
-                composed_of(DietName, daily_diet3),
-                composed_of(DietName, daily_diet4),
-                composed_of(DietName, daily_diet5),
-                composed_of(DietName, daily_diet6),
-                composed_of(DietName, daily_diet7)].
 
 % ---------
 % Diet

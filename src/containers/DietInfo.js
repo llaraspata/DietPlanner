@@ -3,15 +3,16 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React from "react";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
+import TextItem from "../components/TextItem";
+
+const fromPrologFormatToText = (word) => {
+    const words = word.split('_');
+    const firstWord = words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
+
+    return [firstWord, ...words.slice(1)].join(' ');
+}
 
 function DayItem({dayDiet, index}) {
-
-    const fromPrologFormatToText = (word) => {
-        const words = word.split('_');
-        const firstWord = words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
-
-        return [firstWord, ...words.slice(1)].join(' ');
-    }
 
     return <Card sx={{width: "27rem", height: "67rem", borderRadius: '16px', padding: "2rem", margin: "2rem"}}>
         <Grid container spacing={2} direction="column">
@@ -68,6 +69,40 @@ export default function DietInfo({dietData, patient, onGoBack}) {
                 </Button>
             </Grid>
         </Grid>
+        <Card maxWidth sx={{padding: "1rem"}}>
+            <Grid container alignItems={"flex-end"}>
+                <Grid item xs={12} sm={6} md={4} alignItems={"flex-end"} style={{display: "flex"}}>
+                    <TextItem label="Name">
+                        {patient.name} {patient.surname}
+                    </TextItem>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} alignItems={"flex-end"} style={{display: "flex"}}>
+                    <TextItem label="Height">
+                        {patient.height}
+                    </TextItem>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} alignItems={"flex-end"} style={{display: "flex"}}>
+                    <TextItem label="Weight">
+                        {patient.weight}
+                    </TextItem>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} alignItems={"flex-end"} style={{display: "flex"}}>
+                    <TextItem label="BMI">
+                        {patient.bmi}
+                    </TextItem>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} alignItems={"flex-end"} style={{display: "flex"}}>
+                    <TextItem label="Energy Demand">
+                        {patient.energyDemand} kcal
+                    </TextItem>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} alignItems={"flex-end"} style={{display: "flex"}}>
+                    <TextItem label="Suggested Diets">
+                        {patient.suggestedDiets.map(b => fromPrologFormatToText(b)).join(", ")}
+                    </TextItem>
+                </Grid>
+            </Grid>
+        </Card>
         <Grid container direction="row" justifyContent="space-around" alignItems="center">
             {dietData.diet.map((d, i) => <DayItem dayDiet={d} index={i}/>)}
         </Grid>

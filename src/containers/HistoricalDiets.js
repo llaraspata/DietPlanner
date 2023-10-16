@@ -31,7 +31,7 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
 
     const classes = useStyles();
     const [user, loading, error] = useAuthState(auth);
-    const diet = useGetDiet(patient)
+    const diet = []//useGetDiet(patient)  todo togli il commento per farlo funzionare
     const {enqueueSnackbar} = useSnackbar();
     const dietTypes = useGetAllDietTypes()
     const [historicalDiets, setHistoricalDiets] = useState([])
@@ -67,9 +67,9 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
 
     const columns = [
         { field: 'date', headerName: 'Date', flex: 2, renderCell: (params) => dayjs(params.value).format('DD/MM/YYYY - HH:mm') },
-        { field: 'weight', headerName: 'Weight', flex: 2, renderCell: (params) => `${params.value} kg` },
-        { field: 'height', headerName: 'Height', flex: 2, renderCell: (params) => `${params.value} cm` },
-        { field: 'bmi', headerName: 'BMI', flex: 2, renderCell: (params) => params.value?.toFixed(2) },
+        { field: 'weight', headerName: 'Weight', flex: 1, renderCell: (params) => `${params.value} kg` },
+        { field: 'height', headerName: 'Height', flex: 1, renderCell: (params) => `${params.value} cm` },
+        { field: 'bmi', headerName: 'BMI', flex: 1, renderCell: (params) => params.value?.toFixed(2) },
         { field: 'energyDemand', headerName: 'Energy Demand', flex: 2, renderCell: (params) => `${params.value} kcal` },
         {
             field : "suggestedDiets",

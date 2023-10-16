@@ -279,12 +279,20 @@ export function useGetDiet(patient) {
 
                 session.query(`generate_list_calories_week(${patientCode}, TotalWeekCaloriesList).`)
                 session.answer(a => {
-                    setTotalWeekCaloriesList(fromList(a.lookup("TotalWeekCaloriesList")).map(d => d.value))
+                    try {
+                        setTotalWeekCaloriesList(fromList(a.lookup("TotalWeekCaloriesList")).map(d => d.value))
+                    } catch (e){
+                        console.error(a)
+                    }
                 })
 
                 session.query(`daily_diet_names(DailyDietNames).`)
                 session.answer(a => {
-                    setDailyDietNames(dailyDietNames = fromList(a.lookup("DailyDietNames")).map(d => d.id))
+                    try {
+                        setDailyDietNames(dailyDietNames = fromList(a.lookup("DailyDietNames")).map(d => d.id))
+                    } catch (e){
+                        console.error(a)
+                    }
                 })
             })
         }

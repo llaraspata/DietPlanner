@@ -10,7 +10,7 @@ predsort(_, 1, [X|L], L, [X]) :- !.
 predsort(_, 0, L, L, []) :- !.
 predsort(P, N, L1, L3, R) :-
 	N1 is N // 2,
-	plus(N1, N2, N),
+	N = N1 + N2,
 	predsort(P, N1, L1, L2, R1),
 	predsort(P, N2, L2, L3, R2),
 	predmerge(P, R1, R2, R).

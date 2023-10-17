@@ -1,4 +1,4 @@
-import {Button,Grid,IconButton,Tooltip} from "@mui/material";
+import {Button,CircularProgress,Grid,IconButton,Tooltip} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import {DataGrid} from "@mui/x-data-grid";
@@ -151,8 +151,13 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
                    <span>
                        <Button variant="outlined" fullWidth
                                disabled={diet.length < 7}
-                               startIcon={<AddIcon/>} onClick={saveComputedDiet}>
-                                Add new Diet
+                               startIcon={diet.length < 7 ?
+                                   <CircularProgress size="22px" sx={{color: "#a6a6a6"}}/> :
+                                   <AddIcon/>
+                               }
+                               onClick={saveComputedDiet}
+                       >
+                               {diet.length < 7 ? "Computing Diet" : "Add new Diet"}
                        </Button>
                    </span>
                 </Tooltip>

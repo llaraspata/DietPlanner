@@ -105,8 +105,9 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
 
     const onChangePatientActivity = (newValue, field, index) => {
         let newPatientActivities = structuredClone(patientActivities);
+        const otherNumberDayOnSum = newPatientActivities.reduce((acc, obj, i) => i !== index ? acc + obj.numberDayOn : acc, 0);
         if(field === "numberDayOn")
-            newPatientActivities[index][field] = Math.min(patient.numberDayOn, Math.max(MIN_NUMBER_DAYS_ON_ACTIVITY, parseInt(newValue)))
+            newPatientActivities[index][field] = Math.min(patient.numberDayOn-otherNumberDayOnSum, Math.max(MIN_NUMBER_DAYS_ON_ACTIVITY, parseInt(newValue)))
         else if(field === "avgMinutes")
             newPatientActivities[index][field] = Math.min(MAX_ACTIVITY_DURATION, Math.max(MIN_ACTIVITY_DURATION, parseInt(newValue)))
         else newPatientActivities[index][field] = newValue
@@ -115,7 +116,7 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
 
     const addActivity = () => {
         let newPatientActivities = structuredClone(patientActivities);
-        newPatientActivities.push({activity: activities[0], numberDayOn: 1, avgMinutes: 1})
+        newPatientActivities.push({activity: activities[0], numberDayOn: 0, avgMinutes: 1})
         setPatientActivities(structuredClone(newPatientActivities))
     }
 
@@ -259,13 +260,14 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
                             </Grid>
 
                             {
-                                patientActivities.map((pa, index) =>
-                                    <Grid container alignItems={"center"} className={classes.form} spacing={3}>
-                                        <Grid item xs={4} alignItems={"flex-end"} style={{display: "flex"}}>
+                                patientActivities.map((pa, index) => {
+                                    const otherNumberDayOnSum = patientActivities.reduce((acc, obj, i) => i !== index ? acc + obj.numberDayOn : acc, 0);
+                                    return <Grid container alignItems={"center"} className={classes.form} spacing={3}>
+                                        <Grid item xs={4} alignItems={"flex-end"} style={{display : "flex"}}>
                                             <Autocomplete
                                                 fullWidth value={pa.activity}
-                                                onChange={(evt, newValue) =>
-                                                    onChangePatientActivity(newValue, "activity", index)
+                                                onChange={(evt,newValue) =>
+                                                    onChangePatientActivity(newValue,"activity",index)
                                                 }
                                                 id={`activity-${index}`} options={activities.map(a => a)}
                                                 getOptionLabel={(option) => option}
@@ -274,20 +276,20 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
                                                 )}
                                             />
                                         </Grid>
-                                        <Grid item xs={3.5} alignItems={"flex-end"} style={{display: "flex"}}>
+                                        <Grid item xs={3.5} alignItems={"flex-end"} style={{display : "flex"}}>
                                             <TextInput
                                                 value={pa.numberDayOn} required type="number"
                                                 label="Days a week this activity" id={`numberDayOn-${index}`}
-                                                step={1} min={MIN_NUMBER_DAYS_ON_ACTIVITY} max={patient.numberDayOn}
-                                                onTextChange={(value) => onChangePatientActivity(value, "numberDayOn", index)}
+                                                step={1} min={MIN_NUMBER_DAYS_ON_ACTIVITY} max={patient.numberDayOn-otherNumberDayOnSum}
+                                                onTextChange={(value) => onChangePatientActivity(value,"numberDayOn",index)}
                                             />
                                         </Grid>
-                                        <Grid item xs={3.5} alignItems={"flex-end"} style={{display: "flex"}}>
+                                        <Grid item xs={3.5} alignItems={"flex-end"} style={{display : "flex"}}>
                                             <TextInput
                                                 value={pa.avgMinutes} required type="number"
                                                 label="Minutes for a session" id={`avgMinutes-${index}`}
                                                 step={1} min={MIN_ACTIVITY_DURATION} max={MAX_ACTIVITY_DURATION}
-                                                onTextChange={(value) => onChangePatientActivity(value, "avgMinutes", index)}
+                                                onTextChange={(value) => onChangePatientActivity(value,"avgMinutes",index)}
                                             />
                                         </Grid>
                                         {index !== 0 &&
@@ -299,7 +301,7 @@ export default function PatientModal({open, onClose, onSave, defaultPatient}) {
                                             </Grid>
                                         }
                                     </Grid>
-                                )
+                                })
                             }
                             {patient.numberDayOn > 0 &&
                                 <Grid container alignItems={"flex-end"} className={classes.form}>

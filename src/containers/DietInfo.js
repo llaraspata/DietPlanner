@@ -88,7 +88,7 @@ export default function DietInfo({dietData, patient, onGoBack}) {
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} alignItems={"flex-end"} style={{display: "flex"}}>
                     <TextItem label="BMI">
-                        {patient.bmi}
+                        {patient.bmi.toFixed(2)}
                     </TextItem>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} alignItems={"flex-end"} style={{display: "flex"}}>

@@ -1,4 +1,7 @@
 import {useEffect,useState} from "react";
+
+import utilitiesTauProlog from "../prolog/utilities_for_tauprolog.pl"
+
 import functions from '../prolog/functions.pl'
 import instances from '../prolog/instances.pl'
 
@@ -24,7 +27,13 @@ function fromList(xs) {
     return null;
 }
 
+async function consultUtilitiesForTauprolog(session){
+    const tauPrologUtilitiesCode = await fetch(utilitiesTauProlog).then((res) => res.text()).then((program) => program)
+    session.consult(tauPrologUtilitiesCode);
+}
+
 async function consultFunctionsInstances(session, additionalInstances = ""){
+    await consultUtilitiesForTauprolog(session)
     const functionsCode = await fetch(functions).then((res) => res.text()).then((program) => program)
     let instancesCode = await fetch(instances).then((res) => res.text()).then((program) => program)
     instancesCode = instancesCode + additionalInstances
@@ -33,6 +42,7 @@ async function consultFunctionsInstances(session, additionalInstances = ""){
 }
 
 async function consultUtilitiesQuestionnaire(session){
+    await consultUtilitiesForTauprolog(session)
     const utilitiesCode = await fetch(utilities).then((res) => res.text()).then((program) => program)
     const questionnaireCode = await fetch(questionnaire).then((res) => res.text()).then((program) => program)
     session.consult(utilitiesCode);
@@ -300,8 +310,24 @@ export function useGetDiet(patient) {
 
     const saveMeal = (a, meal, dailyDiet, day) => {
         let lookup = fromList(a.lookup("DailyDietList"))
-        let dishName = lookup[0].args[0].id
 
+        if(meal === "snack1") {
+            let dishName2 = lookup[1].args[0].id
+            let ingredients2 = []
+            let lookup2 = lookup[1].args[1].args
+            while(lookup2.length > 0) {
+                let ingredientName = lookup2[0].args[0].id
+                let ingredientGrams = lookup2[0].args[1].value
+                lookup2 = lookup2[1].args
+                ingredients2.push({name: ingredientName, grams: ingredientGrams})
+            }
+            dailyDiet.snack2 = {
+                name: dishName2,
+                ingredients: ingredients2
+            }
+        }
+
+        let dishName = lookup[0].args[0].id
         let ingredients = []
         lookup = lookup[0].args[1].args
         while(lookup.length > 0) {
@@ -350,9 +376,6 @@ export function useGetDiet(patient) {
 
                     session.query(`read_diet(${dailyName}, snack, DailyDietList).`)
                     session.answer(a => saveMeal(a, "snack1", dailyDiet, i))
-
-                    session.query(`read_diet(${dailyName}, snack, DailyDietList).`)
-                    session.answer(a => saveMeal(a, "snack2", dailyDiet, i))
 
                     session.query(`read_diet(${dailyName}, dinner, DailyDietList).`)
                     session.answer(a => saveMeal(a, "dinner", dailyDiet, i))

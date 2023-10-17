@@ -403,3 +403,7 @@ subtract([E|T], D, R) :-
 	subtract(T, D, R).
 subtract([H|T], D, [H|R]) :-
 	subtract(T, D, R).
+
+pairs_values([], []).
+pairs_values([_-V|T0], [V|T]) :-
+   pairs_values(T0, T).

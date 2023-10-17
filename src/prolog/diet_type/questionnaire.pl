@@ -3,51 +3,51 @@
 % ---------
 inference_goal_instance(dietplanner, diet_type, diabetic_diet).
 attribute_value(dietplanner, diabetic_diet, name, 'Diabetic diet').
-attribute_value(dietplanner, diabetic_diet, description, 'TODO').
+attribute_value(dietplanner, diabetic_diet, description, 'A diabetic diet controls blood sugar through careful food choices.').
 
 inference_goal_instance(dietplanner, diet_type, high_cholesterol_diet).
 attribute_value(dietplanner, high_cholesterol_diet, name, 'High cholesterol diet').
-attribute_value(dietplanner, high_cholesterol_diet, description, 'TODO').
+attribute_value(dietplanner, high_cholesterol_diet, description, 'A high cholesterol diet focuses on reducing dietary cholesterol and saturated fats to manage cholesterol levels.').
 
 inference_goal_instance(dietplanner, diet_type, gastrointestinal_disorder_diet).
 attribute_value(dietplanner, gastrointestinal_disorder_diet, name, 'Gastrointestinal disorders diet').
-attribute_value(dietplanner, gastrointestinal_disorder_diet, description, 'TODO').
+attribute_value(dietplanner, gastrointestinal_disorder_diet, description, 'A diet for gastrointestinal disorders helps manage digestive problems.').
 
 inference_goal_instance(dietplanner, diet_type, kidney_problem_diet).
 attribute_value(dietplanner, kidney_problem_diet, name, 'Kidney problems diet').
-attribute_value(dietplanner, kidney_problem_diet, description, 'TODO').
+attribute_value(dietplanner, kidney_problem_diet, description, 'A kidney problems diet is tailored to support kidney function and manage renal conditions.').
 
 inference_goal_instance(dietplanner, diet_type, omnivorous_diet).
 attribute_value(dietplanner, omnivorous_diet, name, 'Omnivorous diet').
-attribute_value(dietplanner, omnivorous_diet, description, 'TODO').
+attribute_value(dietplanner, omnivorous_diet, description, 'An omnivorous diet includes both plant and animal foods.').
 
 inference_goal_instance(dietplanner, diet_type, vegetarian_diet).
 attribute_value(dietplanner, vegetarian_diet, name, 'Vegetarian diet').
-attribute_value(dietplanner, vegetarian_diet, description, 'TODO').
+attribute_value(dietplanner, vegetarian_diet, description, 'A vegetarian diet excludes meat and fish, emphasizing plant-based foods.').
 
 inference_goal_instance(dietplanner, diet_type, vegan_diet).
 attribute_value(dietplanner, vegan_diet, name, 'Vegan diet').
-attribute_value(dietplanner, vegan_diet, description, 'TODO').
+attribute_value(dietplanner, vegan_diet, description, 'A vegan diet excludes all animal products.').
 
 inference_goal_instance(dietplanner, diet_type, no_meat_diet).
-attribute_value(dietplanner, no_meat_diet, name, 'No meat diet').
-attribute_value(dietplanner, no_meat_diet, description, 'TODO').
+attribute_value(dietplanner, no_meat_diet, name, 'No-meat diet').
+attribute_value(dietplanner, no_meat_diet, description, 'A no-meat diet eliminates meat consumption.').
 
 inference_goal_instance(dietplanner, diet_type, no_fish_seafood_diet).
-attribute_value(dietplanner, no_fish_seafood_diet, name, 'No fish and seafood diet').
-attribute_value(dietplanner, no_fish_seafood_diet, description, 'TODO').
+attribute_value(dietplanner, no_fish_seafood_diet, name, 'No-fish-and-seafood diet').
+attribute_value(dietplanner, no_fish_seafood_diet, description, 'A no-fish-and-seafood diet excludes fish and other aquatic foods.').
 
 inference_goal_instance(dietplanner, diet_type, healthy_weight_diet).
 attribute_value(dietplanner, healthy_weight_diet, name, 'Healty weight diet').
-attribute_value(dietplanner, healthy_weight_diet, description, 'TODO').
+attribute_value(dietplanner, healthy_weight_diet, description, 'A healthy weight diet promotes weight management and overall well-being through balanced eating.').
 
 inference_goal_instance(dietplanner, diet_type, hyperproteic_diet).
 attribute_value(dietplanner, hyperproteic_diet, name, 'Hyperproteic diet').
-attribute_value(dietplanner, hyperproteic_diet, description, 'TODO').
+attribute_value(dietplanner, hyperproteic_diet, description, 'A hyperproteic diet is characterized by a high intake of protein-rich foods.').
 
 inference_goal_instance(dietplanner, diet_type, hypocaloric_diet).
 attribute_value(dietplanner, hypocaloric_diet, name, 'Hypocaloric diet').
-attribute_value(dietplanner, hypocaloric_diet, description, 'TODO').
+attribute_value(dietplanner, hypocaloric_diet, description, 'A hypocaloric diet involves a reduced calorie intake to promote weight loss or manage certain health conditions.').
 
 % ---------
 % Topic
@@ -60,9 +60,6 @@ attribute_value(dietplanner, health_conditions, name, 'Health conditions').
 
 topic_instance(dietplanner, topic, body_goal).
 attribute_value(dietplanner, body_goal, name, 'Body goal').
-
-topic_instance(dietplanner, topic, dietary_habits).
-attribute_value(dietplanner, dietary_habits, name, 'Dietary habits').
 
 
 
@@ -147,18 +144,6 @@ attribute_value(dietplanner, q13, asked_why, 'TODO').
 attribute_value(dietplanner, q13, mandatory, TODO).
 attribute_value(dietplanner, q13, importance, TODO).
 
-question_instance(dietplanner, question, q14).
-attribute_value(dietplanner, q14, text, 'Do you consider yourself capable of following a strict diet?').
-attribute_value(dietplanner, q14, asked_why, 'TODO').
-attribute_value(dietplanner, q14, mandatory, TODO).
-attribute_value(dietplanner, q14, importance, TODO).
-
-question_instance(dietplanner, question, q15).
-attribute_value(dietplanner, q15, text, 'Do you pay attention to the nutritional values of what you eat?').
-attribute_value(dietplanner, q15, asked_why, 'TODO').
-attribute_value(dietplanner, q15, mandatory, TODO).
-attribute_value(dietplanner, q15, importance, TODO).
-
 
 % ---------
 % Answer
@@ -175,7 +160,6 @@ attribute_value(dietplanner, a2, text, 'No').
 % ---------
 comes_after(eating_habits, health_conditions).
 comes_after(health_conditions, body_goal).
-% comes_after(body_goal, dietary_habits). -> non le dobbiamo mettere??
 
 
 % ---------
@@ -276,5 +260,3 @@ is_related_to(q9, q10, a2, []).
 
 is_related_to(q11, q12, a2, []).
 is_related_to(q12, q13, a2, []).
-
-% is_related_to(q14, q15).		-> non sappiamo se metterle: TODO discuterne

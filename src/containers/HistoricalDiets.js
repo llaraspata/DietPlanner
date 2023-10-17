@@ -31,7 +31,7 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
 
     const classes = useStyles();
     const [user, loading, error] = useAuthState(auth);
-    const diet = []//useGetDiet(patient)  todo togli il commento per farlo funzionare
+    const diet = useGetDiet(patient)
     const {enqueueSnackbar} = useSnackbar();
     const dietTypes = useGetAllDietTypes()
     const [historicalDiets, setHistoricalDiets] = useState([])

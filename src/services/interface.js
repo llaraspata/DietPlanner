@@ -339,7 +339,7 @@ export function useGetDiet(patient) {
                 let dailyDiet = {}
 
                 consultFunctionsInstances(session, patientInstance).then(() => {
-                    session.query(`generate_daily_diet(${patientCode}, [], ${dailyDietNames[i]}, ${totalWeekCaloriesList[i]}).`)
+                    session.query(`generate_daily_diet(${patientCode}, [${patient.suggestedDiets.join()}], ${dailyDietNames[i]}, ${totalWeekCaloriesList[i]}).`)
                     session.answer(a => {})
 
                     session.query(`read_diet(${dailyName}, breakfast, DailyDietList).`)

@@ -595,7 +595,7 @@ has_food_category(FoodInCategory, [Food | Rest], Acc, List) :-
 get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrient, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
     find_ingredients_sorted_by_nutrient(IngredientsList, MacroNutrient, OrderedList),
-    dif(OrderedList, []),
+    is_not_empty(OrderedList),
     change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
     IngredientsList \== TempIngredientList,
     OldRel = IngredientsList, 
@@ -652,7 +652,7 @@ extract_pairs_values([_-Food-Gram | T1], [Food-Gram | T2]) :-
 get_old_new_ingredient_list_by_calories(DailyDiet, ListDish, Fix, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
     sort_ingredients_by_calories(IngredientsList, OrderedList),
-    dif(OrderedList, []),
+    is_not_empty(OrderedList),
     change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
     IngredientsList \== TempIngredientList,
     OldRel = IngredientsList, 

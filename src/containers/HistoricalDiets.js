@@ -1,4 +1,4 @@
-import {Button,Grid,IconButton} from "@mui/material";
+import {Button,CircularProgress,Grid,IconButton,Tooltip} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import {DataGrid} from "@mui/x-data-grid";
@@ -6,7 +6,7 @@ import React,{useEffect,useState} from "react";
 import dayjs from "dayjs"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useGetAllDietTypes,useGetDiet} from "../services/interface";
-import {addDoc,collection,deleteDoc,doc,getDoc,getDocs,updateDoc} from "firebase/firestore";
+import {addDoc,collection,deleteDoc,doc,getDocs} from "firebase/firestore";
 import {auth,db} from "../firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useSnackbar} from "notistack";
@@ -14,6 +14,7 @@ import {HtmlTooltip} from "./Users";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {makeStyles} from "@mui/styles";
 import ConfirmDeleteIconButton from "../components/ConfirmDeleteIconButton";
+import DietInfo from "./DietInfo";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -66,9 +67,9 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
 
     const columns = [
         { field: 'date', headerName: 'Date', flex: 2, renderCell: (params) => dayjs(params.value).format('DD/MM/YYYY - HH:mm') },
-        { field: 'weight', headerName: 'Weight', flex: 2, renderCell: (params) => `${params.value} kg` },
-        { field: 'height', headerName: 'Height', flex: 2, renderCell: (params) => `${params.value} cm` },
-        { field: 'bmi', headerName: 'BMI', flex: 2, renderCell: (params) => params.value?.toFixed(2) },
+        { field: 'weight', headerName: 'Weight', flex: 1, renderCell: (params) => `${params.value} kg` },
+        { field: 'height', headerName: 'Height', flex: 1, renderCell: (params) => `${params.value} cm` },
+        { field: 'bmi', headerName: 'BMI', flex: 1, renderCell: (params) => params.value?.toFixed(2) },
         { field: 'energyDemand', headerName: 'Energy Demand', flex: 2, renderCell: (params) => `${params.value} kcal` },
         {
             field : "suggestedDiets",
@@ -128,6 +129,11 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
         }
     }
 
+    if(showingDiet) return <DietInfo
+        dietData={historicalDiets.find(hd => hd.id === showingDiet)} patient={patient}
+        onGoBack={() => setShowingDiet(false)}
+    />
+
     return <div style={{ height: '80%', width: '100%' }}>
         <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{padding: "1rem"}}>
             <Grid item>
@@ -137,19 +143,35 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
             </Grid>
             <Grid item>
                 <Typography component="h2" variant="h5">
-                    Historical data for <b>{patient.name} {patient.surname}</b>
+                    Historical data for <b>{patient?.name} {patient?.surname}</b>
                 </Typography>
             </Grid>
             <Grid item>
-                <Button variant="outlined" fullWidth startIcon={<AddIcon/>} onClick={saveComputedDiet}>
-                    Compute New Diet
-                </Button>
+                <Tooltip title={diet.length < 7 && "Computing new diet, please wait..."}>
+                   <span>
+                       <Button variant="outlined" fullWidth
+                               disabled={diet.length < 7}
+                               startIcon={diet.length < 7 ?
+                                   <CircularProgress size="22px" sx={{color: "#a6a6a6"}}/> :
+                                   <AddIcon/>
+                               }
+                               onClick={saveComputedDiet}
+                       >
+                               {diet.length < 7 ? "Computing Diet" : "Add new Diet"}
+                       </Button>
+                   </span>
+                </Tooltip>
             </Grid>
         </Grid>
         <DataGrid
             className={classes.table}
             rows={historicalDiets || []}
             columns={columns}
+            initialState={{
+                sorting: {
+                    sortModel: [{ field: 'date', sort: 'desc' }],
+                },
+            }}
         />
     </div>
 }

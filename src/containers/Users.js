@@ -56,9 +56,9 @@ export default function Users(){
     const [user, loading, error] = useAuthState(auth);
 
     const columns = [
-        { field: 'name', headerName: 'Name', flex: 2 },
-        { field: 'surname', headerName: 'Surname', flex: 2 },
-        { field: 'bmi', headerName: 'BMI', flex: 2, renderCell: (params) => params.value?.toFixed(2) },
+        { field: 'name', headerName: 'Name', flex: 1 },
+        { field: 'surname', headerName: 'Surname', flex: 1 },
+        { field: 'bmi', headerName: 'BMI', flex: 1, renderCell: (params) => params.value?.toFixed(2) },
         { field: 'energyDemand', headerName: 'Energy Demand (kcal)', flex: 2},
         {
             field: "suggestedDiets",

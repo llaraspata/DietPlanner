@@ -7,6 +7,7 @@
 % ---------
 % Inference Goals
 % ---------
+% Gets the list of all possible inference goals
 collect_inference_goals(GoalList) :-
     findall(Id-Name, (inference_goal_instance(_, _, Id), attribute_value(_, Id, name, Name)), GoalListWithDuplicates),
     remove_duplicates(GoalListWithDuplicates, GoalList).

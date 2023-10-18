@@ -15,6 +15,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import {makeStyles} from "@mui/styles";
 import ConfirmDeleteIconButton from "../components/ConfirmDeleteIconButton";
 import DietInfo from "./DietInfo";
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -27,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
+export default function HistoricalDiets({onGoBack, patient}) {
 
     const classes = useStyles();
     const [user, loading, error] = useAuthState(auth);
-    const diet = useGetDiet(patient)
+    const [toComputeDietPatient, setToComputeDietPatient] = useState(null)
+    const diet = useGetDiet(toComputeDietPatient)
     const {enqueueSnackbar} = useSnackbar();
     const dietTypes = useGetAllDietTypes()
     const [historicalDiets, setHistoricalDiets] = useState([])
@@ -147,17 +149,17 @@ export default function HistoricalDiets({onGoBack, patient, fetchPatients}) {
                 </Typography>
             </Grid>
             <Grid item>
-                <Tooltip title={diet.length < 7 && "Computing new diet, please wait..."}>
+                <Tooltip title={diet.length < 7 && toComputeDietPatient && "Computing new diet, please wait..."}>
                    <span>
                        <Button variant="outlined" fullWidth
-                               disabled={diet.length < 7}
+                               disabled={toComputeDietPatient && diet.length < 7}
                                startIcon={diet.length < 7 ?
-                                   <CircularProgress size="22px" sx={{color: "#a6a6a6"}}/> :
+                                   toComputeDietPatient ? <CircularProgress size="22px" sx={{color: "#a6a6a6"}}/> : <AutorenewIcon/> :
                                    <AddIcon/>
                                }
-                               onClick={saveComputedDiet}
+                               onClick={toComputeDietPatient ? saveComputedDiet : () => setToComputeDietPatient(patient)}
                        >
-                               {diet.length < 7 ? "Computing Diet" : "Add new Diet"}
+                               {diet.length < 7 ? toComputeDietPatient ? "Computing Diet" : "Generate new Diet" : "Add new Diet"}
                        </Button>
                    </span>
                 </Tooltip>

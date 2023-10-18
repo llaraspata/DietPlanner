@@ -50,10 +50,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+/**Component that requires email and password to access the page**/
+//Example user:
+//email = dietologo@studenti.uniba.it
+//password = Password00!
 export default function Login(){
-
-    //dietologo@studenti.uniba.it
-    //Password00!
 
     const classes = useStyles();
 

@@ -43,6 +43,10 @@ export const HtmlTooltip = styled(({ className, ...props }) => (
     },
 }));
 
+/**Component showing a table with the fields: "Name", "Surname", "BMI", "Energy Demand", "Diet Types", "Actions".
+To allow the dietician to see all users already added to the system and insert new users using the Dialog PatientModal.
+For each user already added to the system it is possible to generate his DietTypes through the Dialog QuestionnaireModal,
+modify it, delete it and view his diet history with the HistoricalDiets component with the possibility of generating a new one.**/
 export default function Users(){
 
     const classes = useStyles();
@@ -182,7 +186,6 @@ export default function Users(){
     if(showHistoricalDietsPatientId) return <HistoricalDiets
                                         patient={patients.find(p => p.id === showHistoricalDietsPatientId)}
                                         onGoBack={() => setShowHistoricalDietsPatientId(false)}
-                                        fetchPatients={fetchPatients}
                                      />
 
     return <div style={{ height: '80%', width: '100%' }}>

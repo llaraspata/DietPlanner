@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+/**Component that displays the header and sidebar, then calls Users as a child**/
 export default function Main(){
 
     const classes = useStyles();

@@ -5,6 +5,7 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "./firebase";
 import {CircularProgress} from "@mui/material";
 
+/**if the user is logged in it shows the Main component, if not it redirects to the login page**/
 export default function App() {
 
     const [user, loading] = useAuthState(auth);

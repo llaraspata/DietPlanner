@@ -5,6 +5,8 @@ import {StyledEngineProvider,ThemeProvider} from "@mui/material/styles";
 import {SnackbarProvider} from "notistack";
 import App from "./App";
 
+/**Defines the default theme used in the web-app
+editing this will change the web-app colours**/
 const defaultTheme = createTheme({
     palette : {
         primary : {
@@ -29,6 +31,8 @@ const onClickDismiss = key => () => {
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+/**Render the main react components with some providers to define the app theme and the snackbar behavior**/
 root.render(
   <React.StrictMode>
       <StyledEngineProvider injectFirst>

@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ( {
     },
 }));
 
+/**Header present at the top of the web-app, with a logout button.**/
 export default function Header(){
 
     const classes = useStyles();

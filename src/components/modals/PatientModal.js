@@ -55,6 +55,12 @@ const PillsGridContainer = styled(Grid)(({ theme }) => ({
     backgroundColor : theme.palette.primary.light,
 }));
 
+/**Modal used for inserting all the data used in tau-prolog to build a patient instance.
+ The component is divided into three Accordions dedicated to the insertion of:
+ - Patient data: Name, Surname, Age, Gender and Allergies
+ - Data for processing BMI and energy demand: Weight and Height
+ - Physical activities: Total days of physical activity and for each type of activity carried out,
+   the number of days per week in which it is carried out and for how long per session.**/
 export default function PatientModal({open, onClose, onSave, defaultPatient}) {
 
     const classes = useStyles();

@@ -10,6 +10,7 @@ const CustomAccordion = styled(Accordion)(({ theme }) => ({
     },
 }));
 
+/**Accordion used in the modal to create the patient.**/
 export default function Pill ({id, title, children}) {
 
     let [expanded,setExpanded] = useState(true);

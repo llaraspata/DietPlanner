@@ -1,3 +1,5 @@
+/**This file contains all asynchronous functions used for interacting with prolog.**/
+
 import {useEffect,useState} from "react";
 
 import utilitiesTauProlog from "../prolog/utilities_for_tauprolog.pl"
@@ -16,6 +18,8 @@ const pl = require('tau-prolog');
 const listLoader = require("tau-prolog/modules/lists.js");
 const randomLoader = require("tau-prolog/modules/random.js")
 
+/**Function that, given the computed answer substitution on the interested variable,
+   reprocesses the object returned by tau-prolog into an array**/
 function fromList(xs) {
     let arr = [];
     while(pl.type.is_term(xs) && xs.indicator === "./2") {
@@ -27,11 +31,15 @@ function fromList(xs) {
     return null;
 }
 
+/**Asynchronous function to consult the "utilities_for_tauprolog.pl" file.
+ Reads the text contained in the file and consults with the current session.**/
 async function consultUtilitiesForTauprolog(session){
     const tauPrologUtilitiesCode = await fetch(utilitiesTauProlog).then((res) => res.text()).then((program) => program)
     session.consult(tauPrologUtilitiesCode);
 }
 
+/**Asynchronous function to consult the "utilities_for_tauprolog.pl", "functions.pl" and "instances.pl" files.
+ Reads the text contained in the files and consults with the current session.**/
 async function consultFunctionsInstances(session, additionalInstances = ""){
     await consultUtilitiesForTauprolog(session)
     const functionsCode = await fetch(functions).then((res) => res.text()).then((program) => program)
@@ -41,6 +49,8 @@ async function consultFunctionsInstances(session, additionalInstances = ""){
     session.consult(instancesCode);
 }
 
+/**Asynchronous function to consult the "utilities_for_tauprolog.pl", "utilities.pl" and "questionnaire.pl" files.
+ Reads the text contained in the files and consults with the current session.**/
 async function consultUtilitiesQuestionnaire(session){
     await consultUtilitiesForTauprolog(session)
     const utilitiesCode = await fetch(utilities).then((res) => res.text()).then((program) => program)
@@ -49,6 +59,9 @@ async function consultUtilitiesQuestionnaire(session){
     session.consult(questionnaireCode);
 }
 
+/**Asynchronous function to consult the "utilities_for_tauprolog.pl", "utilities.pl",
+   "questionnaire.pl", "rules.pl" and "inference_engine.pl" files.
+   Reads the text contained in the files and consults with the current session.**/
 async function consultUtilitiesQuestionnaireRulesInferenceEngine(session){
     await consultUtilitiesQuestionnaire(session);
     const rulesCode = await fetch(rules).then((res) => res.text()).then((program) => program)
@@ -57,6 +70,9 @@ async function consultUtilitiesQuestionnaireRulesInferenceEngine(session){
     session.consult(inferenceEngineCode);
 }
 
+/**Function that creates a tau-prolog session, consult the list module and the files "utilities_for_tauprolog.pl", "functions.pl" and "instances.pl".
+  Then queries the session with the goal "collect_allergen_names(Names)." and reads the computed answer substitution looking up the variable "Names".
+  Then queries the session with the goal "collect_activities_names(Names)." and reads the computed answer substitution looking up the variable "Names".**/
 export function useGetActivityAllergenNames() {
 
     listLoader(pl)
@@ -80,6 +96,10 @@ export function useGetActivityAllergenNames() {
     return {allergens, activities}
 }
 
+/**Function that creates a tau-prolog session and consults the files "utilities_for_tauprolog.pl", "functions.pl" and "instances.pl".
+  Then creates the person instance to let the prolog consult the patient.
+  Then queries the session with the goal "compute_needed_calories(patientCode, NeededCalories)."
+  and reads the computed answer substitution looking up the variable "NeededCalories".**/
 export function useGetComputedCalories(patient){
 
     let session = pl.create();
@@ -112,6 +132,11 @@ export function useGetComputedCalories(patient){
     return energyDemand
 }
 
+/**Function that receives as input an array of the questions and answers processed by the user, the array contains objects of the type {questionId, answerId}.
+  Start a session and consult the list module and the files "utilities_for_tauprolog.pl", "utilities.pl" and "questionnaire.pl".
+  Then creates the query goal using "get_next_question([], q0, a0, NextQuestionId, NextQuestion, NextAnswers).", that contains in the first place
+  a list of all the old questions, in the second place the last answer question id, and in the third place the last user answer.
+  Then reads the computed answer substitution looking up the variables "NextQuestionId", "NextQuestion", "NextAnswers".**/
 export function useGetQuestions(answeredQuestions = []) {
 
     listLoader(pl)
@@ -161,6 +186,12 @@ export function useGetQuestions(answeredQuestions = []) {
     }
 }
 
+/**Function that receives as input an array of the questions and answers processed by the user, the array contains
+  objects of the type {questionId, answerId}, and the inferential strategy chosen by the user.
+  So lets the session consult all the user answer.
+  Then starts the inference using the inferential strategy chosen by the user.
+  Then queries the session with the goal "get_suggested_diet_type(userId, SuggestedTypes)." and reads the
+  computed answer substitution looking up the variable "SuggestedTypes".**/
 export function useGetSuggestedDietTypes(answeredQuestions, inferenceMethod) {
 
     listLoader(pl)
@@ -202,6 +233,9 @@ export function useGetSuggestedDietTypes(answeredQuestions, inferenceMethod) {
     return suggestedTypes
 }
 
+/**Function that queries the session with the goal ""collect_inference_goals(X)."" and reads the
+   computed answer substitution looking up the variable "X", containing a list of all the diet types available.
+   Useful to allow the user to modify the types of inferred diet.**/
 export function useGetAllDietTypes() {
 
     listLoader(pl)
@@ -227,6 +261,8 @@ export function useGetAllDietTypes() {
     return dietTypes
 }
 
+/**Function that generates the code to consult a person instance, considering all the patient's data
+   including allergies and physical activity**/
 function getPatientInstance(patient, session) {
     patient.name = patient.name.replace(/\s/g,'');
     patient.surname = patient.surname.replace(/\s/g,'');
@@ -255,7 +291,18 @@ function getPatientInstance(patient, session) {
     return {patientCode, patientInstance};
 }
 
+/**Function that starts a tau-prolog session, consults the list and random modules, the "utilities_for_tauprolog.pl",
+ "functions.pl" and "instances.pl" files and the user instance whose diet you want to generate.
 
+ Then queries the session with the goals "generate_list_calories_week(patientCode, TotalWeekCaloriesList)." and
+ "daily_diet_names(DailyDietNames)." to save the list of daily calorie intake for each day of the week also taking into
+ account the physical activity the user carries out, and the names of the daily diets for each day of the week.
+
+ Then parallelize the seven queries "generate_daily_diet(Person, DietType, NewId, TotalDayCalories)" using the id of the
+ dailyDiet as NewId, the calorie intake of that day as TotalDayCalories and the types of diet needed for that user as DietType.
+ Then for each diet it reads the five main meals saving everything in the DietDay object.
+ At the end it returns an array of seven elements containing all the daily diets.
+ **/
 export function useGetDiet(patient) {
 
     listLoader(pl)

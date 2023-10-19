@@ -49,6 +49,9 @@ function DayItem({dayDiet, index}) {
     </Card>
 }
 
+/**Component showing details of the patient's selected diet.
+ It shows an overview of the patient's data at the time the diet was developed, and for each day
+ it shows a card which shows the ingredients and quantities to be used for each meal.**/
 export default function DietInfo({dietData, patient, onGoBack}) {
 
     return <div style={{ height: '80%', width: '100%' }}>

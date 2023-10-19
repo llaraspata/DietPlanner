@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+/**Modal that shows for each type of inferred diet, why it was chosen taking into account the user's answers.**/
 export default function WhyModal({open, onClose, suggestedTypes, dietTypes}) {
 
     const classes = useStyles();

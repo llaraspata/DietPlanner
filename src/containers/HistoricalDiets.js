@@ -28,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+/**Component that shows the patient the history in tabular view of the diets generated over time.
+ For each diet, an overview is available which shows the date on which it was processed, the patient's weight, height,
+ BMI, energy demand and type of inferred diet at that time.
+ Furthermore, for each diet it is possible to delete and view it in detail.
+ At the top right there is a button to start processing the new diet. Once clicked, processing starts with tau-prolog
+ using the useGetDiet() function. Once the processing has been completed, with the same button it is possible
+ to add the diet to the history.**/
 export default function HistoricalDiets({onGoBack, patient}) {
 
     const classes = useStyles();

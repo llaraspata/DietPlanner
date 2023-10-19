@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from "@mui/icons-material/Delete";
 import {IconButton} from "@mui/material";
 
+/**Button that shows a dialog to confirm the operation, useful when deleting an element.**/
 export default function ConfirmDeleteIconButton({title, description, onDelete}) {
     const [open, setOpen] = React.useState(false);
 

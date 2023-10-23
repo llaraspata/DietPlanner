@@ -213,6 +213,3 @@ relationships(8, composed_of(Diet, DailyDiet), 7, 7).
 relationships(9, has(DailyDiet, Dish, Ingredients), 5, 5).  % TotalQuantities is a list of pairs FoodBeverage-TotalGrams
 relationships(10, made_of(Dish, FoodBeverage), 1, 100).
 
-
-% TODO: find (or ask) a way to define relationships 
-% in other KB they seem to be defined through rules (sinceramente non mi convince granché, ma lo faccio lo stesso)

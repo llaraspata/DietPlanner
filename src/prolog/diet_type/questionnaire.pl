@@ -1,5 +1,5 @@
 % ---------
-% Diet Types
+% Inference goals (Diet Types)
 % ---------
 inference_goal_instance(dietplanner, diet_type, diabetic_diet).
 attribute_value(dietplanner, diabetic_diet, name, 'Diabetic diet').

@@ -2,6 +2,7 @@
 % Rules
 % ---------
 % rule(id, conclusion, [premises])
+% explanation(rule_id, explanation)
 % ---------
 rule(
     r1,

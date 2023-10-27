@@ -7,6 +7,7 @@
 % ---------
 % Inference Goals
 % ---------
+% Gets the list of all possible inference goals
 collect_inference_goals(GoalList) :-
     findall(Id-Name, (inference_goal_instance(_, _, Id), attribute_value(_, Id, name, Name)), GoalListWithDuplicates),
     remove_duplicates(GoalListWithDuplicates, GoalList).
@@ -55,7 +56,7 @@ get_next_topic(CurrentTopic, NextTopic) :-
 % ---------
 % Question
 % ---------
-% Gets the next question id and its text, and the list of its possible answers, considering the current question and the given answer
+% Gets the next question id and its text, and the list of its possible answers, considering the current question, the given answer and the history of the given answers
 get_next_question([], q0, a0, NextQuestionId, NextQuestion, NextAnswers) :-
     get_topic_order(SortedTopics),
     nth(1, SortedTopics, FirstTopic),
@@ -134,7 +135,7 @@ get_question_possible_answers_helper([Id | Rest], Acc, AnswerList) :-
     append(Acc, [Text], NewAcc),
     get_question_possible_answers_helper(Rest, NewAcc, AnswerList).
 
-% Get user's answers
+% Assert user facts according to his or her answer to a given question
 has_answered(User, q1, a1) :-
     assertz(fact(has_dietary_restrictions(User))).
 

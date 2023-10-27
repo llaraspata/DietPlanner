@@ -576,19 +576,6 @@ has_food_category(FoodInCategory, [Food | Rest], Acc, List) :-
     ),
     has_food_category(FoodInCategory, Rest, NewAcc, List).
 
-% This function iterates through each dish in the daily diet and updates the grams of ingredients based on their macronutrient content.
-fix_macronutrients_grams(DailyDiet, [], MacroNutrient, Fix). % Ends the recursion when there are no dishes left to process.
-fix_macronutrients_grams(DailyDiet, [Dish | Rest], MacroNutrient, Fix) :- 
-    has(DailyDiet, Dish, IngredientsList),
-    % Modifies the quantity of ingredients based on the given fix and the macro-nutrient.
-    change_ingredient_grams_macronutrient(Dish, IngredientsList, Fix, [], NewIngredientList), 
-    % Removes the original relation of the dish and its ingredients from the knowledg base.
-    retract(has(DailyDiet, Dish, IngredientsList)),
-    % Adds the new relation of the dish and its modified ingredients list to the knowledg base.
-    assertz(has(DailyDiet, Dish, NewIngredientList)), 
-    fix_macronutrients_grams(DailyDiet, Rest, MacroNutrient, Fix),
-    !. 
-
 % This function computes the micronutrient content of a given food item and its quantity in grams, 
 % and returns a list of the micronutrient contents for each specified micronutrient.
 get_micronutrient_content_list(_, [], Contents, Contents).
@@ -597,22 +584,6 @@ get_micronutrient_content_list(Food-Gram, [Nutrient | Rest], Acc, Contents) :-
     append(Acc, TempContents, NewAcc),
     get_micronutrient_content_list(Food-Gram, Rest, NewAcc, Contents),
     !.
-
-% This function retrieves the ingredients list of dishes from a given daily diet and sorts it based on calories content.
-% Then, it adjusts the amount (grams) of the ingredients to meet a certain caloric target (defined by the 'Fix' parameter).
-% Finally, it provides the old and new ingredient lists for the dishes that required adjustments.
-get_old_new_ingredient_list_by_calories(DailyDiet, ListDish, Fix, OldRel, NewRel) :-
-    has(DailyDiet, Head, IngredientsList),
-    sort_ingredients_by_calories(IngredientsList, OrderedList),
-    is_not_empty(OrderedList),
-    change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
-    IngredientsList \== TempIngredientList,
-    OldRel = IngredientsList, 
-    NewRel = TempIngredientList,
-    !.
-get_old_new_ingredient_list_by_calories(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
-    get_old_new_ingredient_list_by_calories(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
-get_old_new_ingredient_list_by_calories(_, [], _, _, _, 0).
 
 % This function sorts a list of ingredients based on their calories in ascending way.
 sort_ingredients_by_calories([], []).
@@ -633,108 +604,6 @@ insert_ingredient(FoodBeverage1-Grams1, [FoodBeverage2-Grams2 | Tail], [FoodBeve
     attribute_value(dietplanner, FoodBeverage2, calories, Calories2),
     Calories1 > Calories2,
     insert_ingredient(FoodBeverage1-Grams1, Tail, NewTail).
-
-% This function modifies the grams of a specific ingredient in a list based on a given Fix value.
-%  If the ingredient is not found or the Fix value does not match the conditions, the grams remain unchanged.
-default_case_fix(_, _, [], NewIngredientList, NewIngredientList).
-default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList) :-
-    (
-        FoodBeverage = Food,
-        (
-            % If Fix = 1, Decrease by 5%
-            Fix = 1,
-            NewGrams is floor((Grams * 90) / 100)
-        ;
-            % If Fix = -1, Increase by 5%
-            Fix = -1,
-            NewGrams is ceiling((Grams * 110) / 100)
-        )
-        ;
-        NewGrams = Grams
-    ),
-    !,
-    append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    default_case_fix(Food, Fix, Rest, NewAcc, NewIngredientList).
-
-
-% This function is responsible for fixing the calories in the grams of ingredients for a given dish in a user's diet.
-%
-% The function operates as follows:
-% 1. For a given dish, it tries to get the old and new ingredient list where the calories are adjusted.
-% 2. If the adjustment leads to an empty new ingredient list, it adjusts the default dish the ingredient with the highest calories.
-% 3. If the new ingredient list is not empty, it updates the user's diet with the adjusted ingredients.
-fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
-    get_old_new_ingredient_list_by_calories(NewId, ListDish, Fix, OldRel, NewRel),
-    has(NewId, Dish, OldIngredientList),
-    (
-        length(NewIngredientList, 0) ->
-        (            
-            has(NewId, DefaultDish, IngredientList),
-            sort_ingredients_by_calories(IngredientList, OrderedList),
-            nth0(0, OrderedList, FoodWithMoreCalories),
-            default_case_fix(FoodWithMoreCalories, Fix, IngredientList, [], DefaultIngredientList),
-            !,
-            retract(has(NewId, DefaultDish, IngredientList)),
-            assertz(has(NewId, DefaultDish, DefaultIngredientList))
-        )
-        ;
-        (
-            retract(has(NewId, Dish, OldIngredientList)),
-            assertz(has(NewId, Dish, NewIngredientList))
-        )
-    ).
-
-% This function adjusts the grams of each ingredient in a dish based on the given Fix value, while ensuring 
-% the adjusted grams lie within predefined minimum and maximum bounds for that dish and ingredient.
-% And if the quantity cannot be adjusted within these bounds, it remains unchanged.
-change_ingredient_grams(_, [], _, NewIngredientList, NewIngredientList).
-change_ingredient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
-    made_of(Dish, FoodBeverage, Min, Max),
-    (
-        % If Fix = 1, Decrease by 10%
-        Fix = 1,
-        NewGrams is floor((Grams * 90) / 100),
-        NewGrams >= Min, NewGrams =< Max
-        ;
-        % If Fix = -1, Increase by 10%
-        Fix = -1,
-        NewGrams is ceiling((Grams * 110) / 100),
-        NewGrams >= Min, NewGrams =< Max
-    ),
-    !,
-    append(Acc, [FoodBeverage-NewGrams | Rest], NewIngredientList).
-change_ingredient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
-    % This clause handles the case where no change is made
-    append(Acc, [FoodBeverage-Grams], NewAcc),
-    change_ingredient_grams(Dish, Rest, Fix, NewAcc, NewIngredientList).
-
-% This function adjusts the grams of each ingredient in a dish based on the given Fix value and considering the macronutrient content. 
-% It ensures the adjusted grams lie within predefined minimum and maximum bounds for that dish and ingredient.
-% And if the quantity cannot be adjusted within these bounds, it remains unchanged.
-change_ingredient_grams_macronutrient(_, [], _, NewIngredientList, NewIngredientList).
-change_ingredient_grams_macronutrient(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
-    made_of(Dish, FoodBeverage, Min, Max),
-    (
-        % If Fix = 1, Decrease by 10%
-        (
-            Fix = 1,
-            NewGrams is floor((Grams * 90) / 100),
-            NewGrams >= Min, NewGrams =< Max
-        )
-        ;
-        % If Fix = -1, Increase by 10%
-        (
-            Fix = -1,
-            NewGrams is ceiling((Grams * 110) / 100),
-            NewGrams >= Min, NewGrams =< Max
-        )
-        ; 
-            NewGrams is Grams
-    ),
-    !,
-    append(Acc, [FoodBeverage-NewGrams], NewAcc),
-    change_ingredient_grams_macronutrient(Dish, Rest, Fix, NewAcc, NewIngredientList).
-
 
 % Returns the the list of calories, where each element corresponds to the calories of a dish (represented by its ingredients)
 get_dish_calories_lists([], CaloriesList, CaloriesList).
@@ -994,6 +863,136 @@ fix_calories(NewId, CaloriesResult) :-
     fix_calories_grams(NewId, ListDish, DefaultDish, CaloryResult),
     !,
     fail.
+
+% This function iterates through each dish in the daily diet and updates the grams of ingredients based on their macronutrient content.
+fix_macronutrients_grams(DailyDiet, [], MacroNutrient, Fix). % Ends the recursion when there are no dishes left to process.
+fix_macronutrients_grams(DailyDiet, [Dish | Rest], MacroNutrient, Fix) :- 
+    has(DailyDiet, Dish, IngredientsList),
+    % Modifies the quantity of ingredients based on the given fix and the macro-nutrient.
+    change_ingredient_grams_macronutrient(Dish, IngredientsList, Fix, [], NewIngredientList), 
+    % Removes the original relation of the dish and its ingredients from the knowledg base.
+    retract(has(DailyDiet, Dish, IngredientsList)),
+    % Adds the new relation of the dish and its modified ingredients list to the knowledg base.
+    assertz(has(DailyDiet, Dish, NewIngredientList)), 
+    fix_macronutrients_grams(DailyDiet, Rest, MacroNutrient, Fix),
+    !. 
+
+% This function modifies the grams of a specific ingredient in a list based on a given Fix value.
+%  If the ingredient is not found or the Fix value does not match the conditions, the grams remain unchanged.
+default_case_fix(_, _, [], NewIngredientList, NewIngredientList).
+default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList) :-
+    (
+        FoodBeverage = Food,
+        (
+            % If Fix = 1, Decrease by 5%
+            Fix = 1,
+            NewGrams is floor((Grams * 90) / 100)
+        ;
+            % If Fix = -1, Increase by 5%
+            Fix = -1,
+            NewGrams is ceiling((Grams * 110) / 100)
+        )
+        ;
+        NewGrams = Grams
+    ),
+    !,
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
+    default_case_fix(Food, Fix, Rest, NewAcc, NewIngredientList).
+
+
+% This function is responsible for fixing the calories in the grams of ingredients for a given dish in a user's diet.
+%
+% The function operates as follows:
+% 1. For a given dish, it tries to get the old and new ingredient list where the calories are adjusted.
+% 2. If the adjustment leads to an empty new ingredient list, it adjusts the default dish the ingredient with the highest calories.
+% 3. If the new ingredient list is not empty, it updates the user's diet with the adjusted ingredients.
+fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
+    get_old_new_ingredient_list_by_calories(NewId, ListDish, Fix, OldRel, NewRel),
+    has(NewId, Dish, OldIngredientList),
+    (
+        length(NewIngredientList, 0) ->
+        (            
+            has(NewId, DefaultDish, IngredientList),
+            sort_ingredients_by_calories(IngredientList, OrderedList),
+            nth0(0, OrderedList, FoodWithMoreCalories),
+            default_case_fix(FoodWithMoreCalories, Fix, IngredientList, [], DefaultIngredientList),
+            !,
+            retract(has(NewId, DefaultDish, IngredientList)),
+            assertz(has(NewId, DefaultDish, DefaultIngredientList))
+        )
+        ;
+        (
+            retract(has(NewId, Dish, OldIngredientList)),
+            assertz(has(NewId, Dish, NewIngredientList))
+        )
+    ).
+
+% This function adjusts the grams of each ingredient in a dish based on the given Fix value, while ensuring 
+% the adjusted grams lie within predefined minimum and maximum bounds for that dish and ingredient.
+% And if the quantity cannot be adjusted within these bounds, it remains unchanged.
+change_ingredient_grams(_, [], _, NewIngredientList, NewIngredientList).
+change_ingredient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+    made_of(Dish, FoodBeverage, Min, Max),
+    (
+        % If Fix = 1, Decrease by 10%
+        Fix = 1,
+        NewGrams is floor((Grams * 90) / 100),
+        NewGrams >= Min, NewGrams =< Max
+        ;
+        % If Fix = -1, Increase by 10%
+        Fix = -1,
+        NewGrams is ceiling((Grams * 110) / 100),
+        NewGrams >= Min, NewGrams =< Max
+    ),
+    !,
+    append(Acc, [FoodBeverage-NewGrams | Rest], NewIngredientList).
+change_ingredient_grams(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+    % This clause handles the case where no change is made
+    append(Acc, [FoodBeverage-Grams], NewAcc),
+    change_ingredient_grams(Dish, Rest, Fix, NewAcc, NewIngredientList).
+
+% This function adjusts the grams of each ingredient in a dish based on the given Fix value and considering the macronutrient content. 
+% It ensures the adjusted grams lie within predefined minimum and maximum bounds for that dish and ingredient.
+% And if the quantity cannot be adjusted within these bounds, it remains unchanged.
+change_ingredient_grams_macronutrient(_, [], _, NewIngredientList, NewIngredientList).
+change_ingredient_grams_macronutrient(Dish, [FoodBeverage-Grams | Rest], Fix, Acc, NewIngredientList) :-
+    made_of(Dish, FoodBeverage, Min, Max),
+    (
+        % If Fix = 1, Decrease by 10%
+        (
+            Fix = 1,
+            NewGrams is floor((Grams * 90) / 100),
+            NewGrams >= Min, NewGrams =< Max
+        )
+        ;
+        % If Fix = -1, Increase by 10%
+        (
+            Fix = -1,
+            NewGrams is ceiling((Grams * 110) / 100),
+            NewGrams >= Min, NewGrams =< Max
+        )
+        ; 
+            NewGrams is Grams
+    ),
+    !,
+    append(Acc, [FoodBeverage-NewGrams], NewAcc),
+    change_ingredient_grams_macronutrient(Dish, Rest, Fix, NewAcc, NewIngredientList).
+
+% This function retrieves the ingredients list of dishes from a given daily diet and sorts it based on calories content.
+% Then, it adjusts the amount (grams) of the ingredients to meet a certain caloric target (defined by the 'Fix' parameter).
+% Finally, it provides the old and new ingredient lists for the dishes that required adjustments.
+get_old_new_ingredient_list_by_calories(DailyDiet, ListDish, Fix, OldRel, NewRel) :-
+    has(DailyDiet, Head, IngredientsList),
+    sort_ingredients_by_calories(IngredientsList, OrderedList),
+    is_not_empty(OrderedList),
+    change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
+    IngredientsList \== TempIngredientList,
+    OldRel = IngredientsList, 
+    NewRel = TempIngredientList,
+    !.
+get_old_new_ingredient_list_by_calories(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
+    get_old_new_ingredient_list_by_calories(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
+get_old_new_ingredient_list_by_calories(_, [], _, _, _, 0).
 
 % The function first fetches relationships associated with the daily diet. 
 % Then, using these relationships, it then retrieves an ordered list of dishes based on their calorie content.

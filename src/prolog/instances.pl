@@ -2177,7 +2177,7 @@ has_nutrient(taco_shells, complex_carbohydrates, 72.0).
 has_nutrient(taco_shells, insoluble_fiber, 3.0).
 
 % ---------
-% carry_out(person, activity-housPerTime, numberOfDays)
+% carry_out(person, activity-hoursPerTime, numberOfDays)
 % ---------
 carry_out(alice_johnson, running-1, 4).
 carry_out(bob_smith, swimming-2, 1).

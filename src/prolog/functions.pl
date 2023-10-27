@@ -264,20 +264,6 @@ compute_nutrient_quantity([FoodBeverage-Grams|Rest], Nutrient, PartialCumulative
     ),
     compute_nutrient_quantity(Rest, Nutrient, NewPartialCumulativeQuantity, CumulativeQuantity).
 
-% Helper predicate to accumulate micronutrient from a list
-accumulate_micronutrient_content_from_list([], FinalContentFoodList, FinalContentFoodList).
-accumulate_micronutrient_content_from_list([Content-Food-Grams|Rest], Acc, FinalContentFoodList) :-
-    % Check if the micronutrient is already in the accumulated list
-    (member(ExistingContent-Food-Grams, Acc) ->
-        NewContent is ExistingContent + Content,
-        select(ExistingContent-Food-Grams, Acc, TempAcc), % Remove the old entry
-        append(TempAcc, [NewContent-Food-Grams], UpdatedAcc)
-    ;
-        append(Acc, [Content-Food-Grams], UpdatedAcc)
-    ),
-    accumulate_micronutrient_content_from_list(Rest, UpdatedAcc, FinalContentFoodList),
-    !.
-
 % ---------
 % Allergen
 % ---------
@@ -590,21 +576,6 @@ has_food_category(FoodInCategory, [Food | Rest], Acc, List) :-
     ),
     has_food_category(FoodInCategory, Rest, NewAcc, List).
 
-% TODO: controllare se la funzione serve
-% Searches through a daily diet's dishes to identify and modify the quantity of ingredients based on their macro-nutrient content.
-get_old_new_ingredient_list_by_nutrient(DailyDiet, [Head|Tail], Fix, MacroNutrient, OldRel, NewRel) :-
-    has(DailyDiet, Head, IngredientsList),
-    find_ingredients_sorted_by_nutrient(IngredientsList, MacroNutrient, OrderedList),
-    is_not_empty(OrderedList),
-    change_ingredient_grams(Head, OrderedList, Fix, [], TempIngredientList),
-    IngredientsList \== TempIngredientList,
-    OldRel = IngredientsList, 
-    NewRel = TempIngredientList,
-    !.
-get_old_new_ingredient_list_by_nutrient(DailyDiet, [_|Tail], Fix, MacroNutrient, OldIngredientList, NewIngredientList) :-
-    get_old_new_ingredient_list_by_nutrient(DailyDiet, Tail, Fix, MacroNutrient, OldIngredientList, NewIngredientList).
-get_old_new_ingredient_list_by_nutrient(_, [], _, _, _, []) :- !.
-
 % This function iterates through each dish in the daily diet and updates the grams of ingredients based on their macronutrient content.
 fix_macronutrients_grams(DailyDiet, [], MacroNutrient, Fix). % Ends the recursion when there are no dishes left to process.
 fix_macronutrients_grams(DailyDiet, [Dish | Rest], MacroNutrient, Fix) :- 
@@ -626,41 +597,6 @@ get_micronutrient_content_list(Food-Gram, [Nutrient | Rest], Acc, Contents) :-
     append(Acc, TempContents, NewAcc),
     get_micronutrient_content_list(Food-Gram, Rest, NewAcc, Contents),
     !.
-
-% This function aggregates the nutrient content for a list of foods and their respective quantities in grams. 
-% For each food in the list, it collects the content of specified nutrients and accumulates these results in a list of pairs.
-collect_nutrient_content([], _, NutrientContentPairs, NutrientContentPairs).
-collect_nutrient_content([Food-Gram | Rest], Nutrients, Acc, NutrientContentPairs) :-
-    get_micronutrient_content_list(Food-Gram, Nutrients, [], Contents),
-    (
-        % If the retrieved content list is empty (i.e., no nutrient content was found for the food),
-        % it appends a default value of '0' for that food and nutrient combination.
-        length(Contents, 0) 
-        ->
-            append(Acc, [0-Food-Gram], NewAcc)
-        ;
-        % If the content list is not empty, appends the retrieved contents to the accumulator list.
-            append(Acc, Contents, NewAcc)
-    ),
-    !, % The cut ensures that once the rule succeeds for a given food, Prolog will not backtrack to explore other possible paths.
-    collect_nutrient_content(Rest, Nutrients, NewAcc, NutrientContentPairs).
-
-% This function retrieves a list of ingredients sorted based on their content of a specified macronutrient.
-% It starts by collecting all nutrients that belong to a given macronutrient category, computes the content 
-% of these nutrients for each ingredient in the input list, and then sorts the ingredients based on this content.
-find_ingredients_sorted_by_nutrient(Aliments, MacroNutrient, SortedFood) :- 
-    findall(Nutrient, nutrient_instance(_, MacroNutrient, Nutrient), Nutrients),
-    collect_nutrient_content(Aliments, Nutrients, [], NutrientContentPairs),
-    keysort(NutrientContentPairs, SortedPairs),
-    accumulate_micronutrient_content_from_list(SortedPairs, [], FinalSortedPairs),
-    reverse(FinalSortedPairs, DescSortedPairs),
-    extract_pairs_values(DescSortedPairs, SortedFood).
-
-% It extracts the food names and their grams from pairs that are prefixed with nutrient content
-% and produces a new list containing just the values.
-extract_pairs_values([], []).
-extract_pairs_values([_-Food-Gram | T1], [Food-Gram | T2]) :-
-    extract_pairs_values(T1, T2).
 
 % This function retrieves the ingredients list of dishes from a given daily diet and sorts it based on calories content.
 % Then, it adjusts the amount (grams) of the ingredients to meet a certain caloric target (defined by the 'Fix' parameter).

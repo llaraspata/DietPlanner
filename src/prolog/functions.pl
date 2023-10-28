@@ -981,7 +981,7 @@ change_ingredient_grams_macronutrient(Dish, [FoodBeverage-Grams | Rest], Fix, Ac
 % This function retrieves the ingredients list of dishes from a given daily diet and sorts it based on calories content.
 % Then, it adjusts the amount (grams) of the ingredients to meet a certain caloric target (defined by the 'Fix' parameter).
 % Finally, it provides the old and new ingredient lists for the dishes that required adjustments.
-get_old_new_ingredient_list_by_calories(DailyDiet, ListDish, Fix, OldRel, NewRel) :-
+get_old_new_ingredient_list_by_calories(DailyDiet, [Head|_], Fix, OldRel, NewRel) :-
     has(DailyDiet, Head, IngredientsList),
     sort_ingredients_by_calories(IngredientsList, OrderedList),
     is_not_empty(OrderedList),

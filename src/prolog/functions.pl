@@ -290,7 +290,7 @@ get_activities(PersonID, ActivityList) :-
         ActivityList = []
     ).
 
-% Equally distribuites the activities over 7 days
+% Equally distribuites the activities over 7 days considering the number of day on which the person makes phisical activity
 distribute_activities(DaysPerWeek, ActivityList, DistributedList) :-
     DaysPerWeek > 0,
     create_days_list(7, EmptyList),  
@@ -309,13 +309,13 @@ compare_activity_frequency(Order, [_, Frequency1], [_, Frequency2]) :-
     compare(OrderFreq, Frequency2, Frequency1),
     (OrderFreq = (=) -> compare(OrderName, [_, Name1], [_, Name2]), Order = OrderName ; Order = OrderFreq).
 
-% Distributes the given list of activities across the week based on their frequency,
+% Distributes the given list of activities across the week based on their frequency
 distribute_activities_recursive(_, [], DistributedList, DistributedList). 
 distribute_activities_recursive(DaysPerWeek, [[Activity-Hours, Frequency] | RestActivities], EmptyList, DistributedList) :-
     distribute_activity(Activity-Hours, Frequency, DaysPerWeek, EmptyList, TempDistributedList),
     distribute_activities_recursive(DaysPerWeek, RestActivities, TempDistributedList, DistributedList).
 
-% Distributes an activity according to hours and a list of days
+% Distributes an individual activity according to its hours and frequency.
 distribute_activity(_, 0, _, DaysList, DaysList).
 distribute_activity(ActivityHours, Frequency, DaysPerWeek, [Day | RestDays], DistributedList) :-
     Frequency > 0,
@@ -706,7 +706,7 @@ get_macronutrient_limits(DietTypes, MacronutrientLimits) :-
     adjust_macronutrient_limits_health_disease(DietTypes, TempMacronutrientLimits, MacronutrientLimits).
 
 % The function takes as input the diet type and returns the macronutrient limits associated with that specific diet goal. 
-% It evaluates the diet type and accordingly calls the relevant function % to get the macronutrient percentage limits for 
+% It evaluates the diet type and accordingly calls the relevant function to get the macronutrient percentage limits for 
 % a healthy weight diet, a hyperproteic diet, or a hypocaloric diet.
 % If none of the specified diet types are matched, it defaults to a healthy (standard) weight diet.
 get_macronutrient_limits_diet_goal(DietTypes, MacronutrientLimits) :-

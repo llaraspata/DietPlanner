@@ -576,15 +576,6 @@ has_food_category(FoodInCategory, [Food | Rest], Acc, List) :-
     ),
     has_food_category(FoodInCategory, Rest, NewAcc, List).
 
-% This function computes the micronutrient content of a given food item and its quantity in grams, 
-% and returns a list of the micronutrient contents for each specified micronutrient.
-get_micronutrient_content_list(_, [], Contents, Contents).
-get_micronutrient_content_list(Food-Gram, [Nutrient | Rest], Acc, Contents) :-
-    findall(Content-Food-Gram, (has_nutrient(Food, Nutrient, Content)), TempContents),
-    append(Acc, TempContents, NewAcc),
-    get_micronutrient_content_list(Food-Gram, Rest, NewAcc, Contents),
-    !.
-
 % This function sorts a list of ingredients based on their calories in ascending way.
 sort_ingredients_by_calories([], []).
 sort_ingredients_by_calories([Head|Tail], SortedList) :-
@@ -652,33 +643,6 @@ actual_foodbeverage_grams([FoodBeverage | Rest], Dish, Acc, IngredientLists) :-
 % ---------
 % Daily Diet
 % ---------
-% Get the list of food and beverages in a dish of a daily diet
-get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList) :-
-    findall(Ingredient, has(DailyDiet, _, Ingredient), Ingredients),
-    flatten_list(Ingredients, IngredientLists),
-    get_only_foodbeverages(IngredientLists, [], FoodBeverageList).
-
-% Extract a list of FoodBeverages from a list of ingredients.
-get_only_foodbeverages([], Acc, Acc). 
-get_only_foodbeverages([FoodBeverage-_Grams | Rest], Acc, FoodBeverageList) :-
-    append(Acc, [FoodBeverage], UpdatedAcc),
-    get_only_foodbeverages(Rest, UpdatedAcc, FoodBeverageList).
-
-% Count how many instances of a class of FoodBeverage there are in a daily diet
-count_foodbeverage_in_daily_diet(DailyDiet, ItemToCount, Total) :-
-    get_foodbeverages_in_daily_diet(DailyDiet, FoodBeverageList),
-    count_foodbeverage_in_list(ItemToCount, FoodBeverageList, 0, Total).
-
-% Count occurrences of a specific FoodBeverage item in a list of FoodBeverages.
-count_foodbeverage_in_list(_, [], Count, Count).
-count_foodbeverage_in_list(ItemToCount, [FoodBeverage | Rest], PartialCount, Total) :-
-    (foodbeverage_instance(dietplanner, ItemToCount, FoodBeverage) ->
-        NewPartialCount is PartialCount + 1
-        ;
-        NewPartialCount is PartialCount
-    ),
-    count_foodbeverage_in_list(ItemToCount, Rest, NewPartialCount, Total).
-
 % The function prepares a daily diet for the given person based on the diet type and ensures that the generated daily diet 
 % adheres to specific nutritional limits and constraints.
 generate_daily_diet(Person, DietType, NewId, TotalDayCalories) :-
@@ -907,7 +871,7 @@ default_case_fix(Food, Fix, [FoodBeverage-Grams | Rest], Acc, NewIngredientList)
 % 2. If the adjustment leads to an empty new ingredient list, it adjusts the default dish the ingredient with the highest calories.
 % 3. If the new ingredient list is not empty, it updates the user's diet with the adjusted ingredients.
 fix_calories_grams(NewId, ListDish, DefaultDish, Fix) :-
-    get_old_new_ingredient_list_by_calories(NewId, ListDish, Fix, OldRel, NewRel),
+    get_old_new_ingredient_list_by_calories(NewId, ListDish, Fix, OldIngredientList, NewIngredientList),
     has(NewId, Dish, OldIngredientList),
     (
         length(NewIngredientList, 0) ->

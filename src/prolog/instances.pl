@@ -406,7 +406,7 @@ attribute_value(dietplanner, feta_cheese, name, 'Feta Cheese').
 attribute_value(dietplanner, feta_cheese, description, 'Feta cheese, crumbly and tangy, often used in Mediterranean dishes.').
 attribute_value(dietplanner, feta_cheese, calories, 264).
 
-foodbeverage_instance(dietplanner, dairy_cheese, fresh_mozzarella).
+foodbeverage_instance(dietplanner, milk_cheese, fresh_mozzarella).
 attribute_value(dietplanner, fresh_mozzarella, name, 'Fresh Mozzarella').
 attribute_value(dietplanner, fresh_mozzarella, description, 'Fresh Mozzarella, a soft and mild cheese with a creamy texture, often used in salads, sandwiches, and Italian dishes.').
 attribute_value(dietplanner, fresh_mozzarella, calories, 280).
@@ -547,7 +547,7 @@ attribute_value(dietplanner, light_cake, name, 'Light Cake').
 attribute_value(dietplanner, light_cake, description, 'A reduced-calorie cake option, perfect for those watching their intake.').
 attribute_value(dietplanner, light_cake, calories, 150).
 
-foodbeverage_instance(dietplanner, sweet, honey).
+foodbeverage_instance(dietplanner, sweets, honey).
 attribute_value(dietplanner, honey, name, 'Honey').
 attribute_value(dietplanner, honey, description, 'Pure honey, a natural sweetener with various health benefits.').
 attribute_value(dietplanner, honey, calories, 304).
@@ -569,7 +569,7 @@ attribute_value(dietplanner, spinach, name, 'Spinach').
 attribute_value(dietplanner, spinach, description, 'Leafy green vegetable packed with nutrients.').
 attribute_value(dietplanner, spinach, calories, 23).
 
-foodbeverage_instance(dietplanner, vegetable, zucchini).
+foodbeverage_instance(dietplanner, vegetables, zucchini).
 attribute_value(dietplanner, zucchini, name, 'Zucchini').
 attribute_value(dietplanner, zucchini, description, 'Fresh zucchini, a versatile vegetable for cooking.').
 attribute_value(dietplanner, zucchini, calories, 17).
@@ -950,7 +950,7 @@ nutrient_instance(dietplanner, vitamin, vitamin_e).
 attribute_value(dietplanner, vitamin_e, name, 'Vitamin E').
 attribute_value(dietplanner, vitamin_e, description, 'Antioxidant vitamin protecting cells from damage.').
 
-nutrient_instance(dietplanner, vitamins, vitamin_b3).
+nutrient_instance(dietplanner, vitamin, vitamin_b3).
 attribute_value(dietplanner, vitamin_b3, name, 'Vitamin B3 (Niacin)').
 attribute_value(dietplanner, vitamin_b3, description, 'Niacin, or vitamin B3, is important for DNA repair and converting food into energy.').
 
@@ -958,7 +958,7 @@ nutrient_instance(dietplanner, vitamin, vitamin_b6).
 attribute_value(dietplanner, vitamin_b6, name, 'Vitamin B6').
 attribute_value(dietplanner, vitamin_b6, description, 'Vitamin B6 is vital for metabolism, neurotransmitters, and immunity.').
 
-nutrient_instance(dietplanner, vitamins, vitamin_b9).
+nutrient_instance(dietplanner, vitamin, vitamin_b9).
 attribute_value(dietplanner, vitamin_b9, name, 'Vitamin B9 (Folate)').
 attribute_value(dietplanner, vitamin_b9, description, 'Folate, or vitamin B9, is crucial for cell division and the development of DNA and RNA.').
 
@@ -981,11 +981,11 @@ allergen_instance(dietplanner, allergen, shellfish).
 attribute_value(dietplanner, shellfish, name, 'Shellfish').
 attribute_value(dietplanner, shellfish, description, 'Seafood like shrimp, crab, and lobster.').
 
-allergen_instance(dietplanner, allergens, nuts).
+allergen_instance(dietplanner, allergen, nuts).
 attribute_value(dietplanner, nuts, name, 'Nuts').
 attribute_value(dietplanner, nuts, description, 'Common allergen, various types of nuts can trigger allergic reactions.').
 
-allergen_instance(dietplanner, allergens, eggs).
+allergen_instance(dietplanner, allergen, eggs).
 attribute_value(dietplanner, eggs, name, 'Eggs').
 attribute_value(dietplanner, eggs, description, 'Common allergen, egg allergies are especially common in children.').
 
